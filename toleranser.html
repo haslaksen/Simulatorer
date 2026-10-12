@@ -1,0 +1,664 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1040px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Toleranser og pasninger</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Måleteknikk</div>
+      <h1>Toleranser og pasninger</h1>
+      <p class="lk-lead">Finn største og minste tillatte mål for hull og aksel, og se om en målt del blir godkjent.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg hull eller aksel, og skriv inn nominelt mål.</span></li><li><span>Velg toleransebokstav og toleransegrad, for eksempel H7.</span></li><li><span>Les største og minste tillatte mål.</span></li><li><span>Skriv inn det målte målet, og se om delen blir godkjent.</span></li></ol>
+      <a class="lk-hb" href="https://verkstedhandboka.vercel.app/#t2-tol" target="_blank" rel="noopener">Les mer i Verkstedhåndboka: 2.2 ISO-toleranser ↗</a>
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Toleranser og pasninger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: verkstedtavle. Toleransediagrammet øverst som "tegningen", innstillinger og avlesning i to kolonner under, tabellutdrag fra ISO 286 nederst. Stables på mobil. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc; --grid:#e4e9ec;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c; --warn:#a86a00;
+  --hole:#2f6fa8; --hole-fill:rgba(47,111,168,.2); --shaft:#d9661f; --shaft-fill:rgba(217,102,31,.2);
+  --hl:rgba(217,102,31,.16); --hl2:rgba(47,111,168,.16);
+  --display:"Barlow Condensed", "Arial Narrow", sans-serif;
+  --body:"Barlow", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Consolas", monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40; --grid:#273035;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --hole:#74abde; --hole-fill:rgba(116,171,222,.24); --shaft:#f08a45; --shaft-fill:rgba(240,138,69,.24);
+  --hl:rgba(240,138,69,.2); --hl2:rgba(116,171,222,.2); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40; --grid:#273035;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --hole:#74abde; --hole-fill:rgba(116,171,222,.24); --shaft:#f08a45; --shaft-fill:rgba(240,138,69,.24);
+  --hl:rgba(240,138,69,.2); --hl2:rgba(116,171,222,.2); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px 20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0;letter-spacing:.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.tabs button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:7px 11px;border-radius:7px;cursor:pointer;min-width:38px}
+.tabs button[aria-selected="true"],.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.tabs.mono button{font-family:var(--mono);font-size:14px}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.label{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:14px;color:var(--muted)}
+.callout{font-family:var(--mono);font-weight:700;font-size:20px;display:flex;gap:14px;flex-wrap:wrap}
+.callout .h{color:var(--hole)} .callout .s{color:var(--shaft)}
+#dia{display:block;width:100%;height:auto}
+#dia .gl{stroke:var(--grid)} #dia .zero{stroke:var(--ink)} #dia .tx{fill:var(--ink)} #dia .txm{fill:var(--muted)}
+#dia .zh{fill:var(--hole-fill);stroke:var(--hole)} #dia .zs{fill:var(--shaft-fill);stroke:var(--shaft)}
+#dia .th{fill:var(--hole)} #dia .ts{fill:var(--shaft)}
+#dia .meas{stroke:var(--ink)} #dia .mok{stroke:var(--ok)} #dia .mbad{stroke:var(--bad)} #dia .mwarn{stroke:var(--warn)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;padding:0 14px 10px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle;border:1.5px solid}
+.legend .lh{background:var(--hole-fill);border-color:var(--hole)} .legend .ls{background:var(--shaft-fill);border-color:var(--shaft)}
+.legend .lz{height:0;border-width:1.5px 0 0;border-color:var(--ink);border-radius:0}
+.placeholder{padding:40px 16px;text-align:center;color:var(--muted)}
+.taskbox{padding:16px 14px 6px}
+.task{font-family:var(--display);font-size:24px;font-weight:600;line-height:1.25;text-wrap:balance}
+.task b{font-family:var(--mono);font-size:21px;color:var(--accent)}
+.notes{display:grid;gap:6px;padding:10px 14px;border-top:1px solid var(--line);min-height:46px;align-content:center}
+.note{font-size:15px;padding-left:12px;border-left:4px solid var(--line)}
+.note.bad{border-color:var(--bad);color:var(--bad);font-weight:600}
+.note.warn{border-color:var(--warn);color:var(--warn);font-weight:600}
+.note.info{border-color:var(--muted);color:var(--muted)}
+.note.ok{border-color:var(--ok);color:var(--ok);font-weight:600}
+.note.plain{border-color:var(--line)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.card.wide{grid-column:1/-1}
+.field{display:grid;gap:6px}
+.field>span{font-size:14px;color:var(--muted)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:420px){.pair{grid-template-columns:1fr}}
+input[type=text]{font:700 18px var(--mono);padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%;max-width:220px}
+.btn{font:600 15px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.readout{display:grid;gap:4px;font-variant-numeric:tabular-nums}
+.readout .r{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:4px;font-size:15px}
+.readout .r span:first-child{color:var(--muted)}
+.readout .r span:last-child{font-family:var(--mono);text-align:right}
+.readout .r.big{font-size:20px;font-weight:700;border:0}
+.readout .r.big span:first-child{font-family:var(--display);color:var(--ink);font-weight:600}
+.readout .sec{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase;padding-top:8px}
+.readout .sec.h{color:var(--hole)} .readout .sec.s{color:var(--shaft)}
+.presets{display:grid;gap:6px}
+.preset{display:grid;grid-template-columns:86px 1fr;gap:10px;align-items:baseline;text-align:left;font:15px var(--body);background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer}
+.preset b{font-family:var(--mono);font-size:15px}
+.preset span{color:var(--muted);font-size:14px}
+.preset[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.howto ol{margin:0;padding-left:20px;display:grid;gap:6px}
+.howto p{margin:0;color:var(--muted);font-size:15px}
+.fb{padding:10px 12px;border-radius:8px;font-size:15px;border:1px solid var(--line)}
+.fb.ok{border-color:var(--ok)} .fb.bad{border-color:var(--bad)}
+.fb ul{margin:4px 0 0;padding-left:18px}
+.fb .y{color:var(--ok);font-weight:700} .fb .n{color:var(--bad);font-weight:700}
+.score{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.hint{font-size:13px;color:var(--muted)}
+.tw{overflow-x:auto}
+table.t{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.t td,table.t th{padding:4px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.t th{color:var(--muted);font-weight:600;font-family:var(--body)}
+table.t td{font-family:var(--mono);font-size:13px}
+table.t td:first-child,table.t th:first-child{text-align:left;font-family:var(--body);font-size:14px}
+table.t .hr td{background:var(--hl)}
+table.t .hc{background:var(--hl)}
+table.t .hr .hc{background:var(--accent);color:var(--accent-ink);font-weight:700}
+table.t .hr2 td{background:var(--hl2)}
+table.t .hc2{background:var(--hl2)}
+table.t .hr2 .hc2,table.t .hr .hc2{background:var(--hole);color:var(--panel);font-weight:700}
+@media (prefers-reduced-motion:no-preference){.zone{transition:all .25s}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Toleranser og pasninger</h1>
+      <p class="sub">ISO 286, mål fra 1 til 250 mm. Slå opp grensemål, kontroller målte deler og beregn klaring.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Modus">
+      <button role="tab" aria-selected="true" data-mode="opp">Slå opp</button>
+      <button role="tab" aria-selected="false" data-mode="pas">Pasning</button>
+      <button role="tab" aria-selected="false" data-mode="oppg">Oppgaver</button>
+    </div>
+  </header>
+
+  <section class="stage" aria-label="Toleransediagram">
+    <div class="stage-head"><span class="label" id="stagelabel">Toleransesone</span><span class="callout" id="callout"></span></div>
+    <div class="taskbox" id="taskbox" hidden><div class="task" id="tasktext"></div></div>
+    <svg id="dia" role="img" aria-label="Toleransediagram"></svg>
+    <div class="placeholder" id="diaph" hidden>Toleransediagrammet vises når du har svart.</div>
+    <div class="legend" id="legend"></div>
+    <div class="notes" id="notes" aria-live="polite"></div>
+  </section>
+
+  <div class="grid">
+    <!-- Slå opp -->
+    <section class="card" data-show="opp">
+      <span class="label">Tegningsmål</span>
+      <div class="field"><span>Del</span>
+        <div class="tabs" id="kindsel" role="group" aria-label="Del">
+          <button type="button" data-kind="hole">Hull</button><button type="button" data-kind="shaft">Aksel</button>
+        </div></div>
+      <label class="field"><span>Nominelt mål (mm)</span><input type="text" id="nom" inputmode="decimal" value="40"></label>
+      <div class="field"><span>Toleransebokstav (grunnavvik)</span><div class="tabs mono" id="letsel" role="group" aria-label="Toleransebokstav"></div></div>
+      <div class="field"><span>Toleransegrad (IT)</span><div class="tabs mono" id="gradesel" role="group" aria-label="Toleransegrad"></div></div>
+      <label class="field"><span>Målt mål (mm)</span><input type="text" id="meas" inputmode="decimal" value="40,012"></label>
+      <span class="hint">Prøv å endre det målte målet og se om delen blir godkjent.</span>
+    </section>
+    <section class="card" data-show="opp">
+      <span class="label">Grensemål</span>
+      <div class="readout" id="ro-opp"></div>
+    </section>
+
+    <!-- Pasning -->
+    <section class="card" data-show="pas">
+      <span class="label">Hull og aksel</span>
+      <label class="field"><span>Nominelt mål (mm)</span><input type="text" id="nom2" inputmode="decimal" value="40"></label>
+      <div class="field"><span>Hull: bokstav og grad</span>
+        <div class="tabs mono" id="hlet" role="group" aria-label="Hull bokstav"></div>
+        <div class="tabs mono" id="hgr" role="group" aria-label="Hull grad"></div></div>
+      <div class="field"><span>Aksel: bokstav og grad</span>
+        <div class="tabs mono" id="slet" role="group" aria-label="Aksel bokstav"></div>
+        <div class="tabs mono" id="sgr" role="group" aria-label="Aksel grad"></div></div>
+    </section>
+    <section class="card" data-show="pas">
+      <span class="label">Klaring</span>
+      <div class="readout" id="ro-pas"></div>
+      <span class="label">Vanlige pasninger (hullbasis)</span>
+      <div class="presets" id="presets"></div>
+    </section>
+
+    <!-- Oppgaver -->
+    <section class="card" data-show="oppg">
+      <span class="label" id="tasklabel">Oppgave</span>
+      <form id="ansform" autocomplete="off" class="field" style="gap:12px">
+        <div class="pair">
+          <label class="field"><span id="l1">Største tillatte mål (mm)</span><input type="text" id="a1" inputmode="decimal"></label>
+          <label class="field"><span id="l2">Minste tillatte mål (mm)</span><input type="text" id="a2" inputmode="decimal"></label>
+        </div>
+        <div class="field"><span id="l3">Vurdering av delen</span><div class="tabs" id="a3" role="group" aria-label="Vurdering"></div></div>
+        <div class="row">
+          <button class="btn primary" type="submit" id="checkbtn">Sjekk svaret</button>
+          <button class="btn" type="button" id="newbtn">Ny oppgave</button>
+        </div>
+      </form>
+      <div id="fb" class="fb" hidden></div>
+      <div class="score" id="score">0 av 0 riktige</div>
+    </section>
+
+    <section class="card howto">
+      <span class="label" id="howlabel">Slik finner du grensemålene</span>
+      <div id="how"></div>
+    </section>
+
+    <section class="card wide">
+      <div class="row" style="justify-content:space-between">
+        <span class="label">Utdrag fra ISO 286 (verdier i µm)</span>
+        <div class="tabs" id="tabsel" role="tablist" aria-label="Tabell">
+          <button role="tab" data-tab="it">Toleransegrader IT</button>
+          <button role="tab" data-tab="sh">Grunnavvik aksler</button>
+          <button role="tab" data-tab="ho">Grunnavvik hull</button>
+        </div>
+      </div>
+      <div class="tw" id="table"></div>
+      <p class="hint" id="tablenote"></p>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+
+  // ---------- ISO 286-data (µm) ----------
+  const R = [3,6,10,18,30,50,80,120,180,250];
+  const rLab = i => i===0 ? 't.o.m. 3' : `over ${R[i-1]} t.o.m. ${R[i]}`;
+  const rShort = i => i===0 ? '1–3' : `${R[i-1]}–${R[i]}`;
+  const rIdx = D => R.findIndex(b => D <= b);
+  const IT = {
+    5:[4,5,6,8,9,11,13,15,18,20], 6:[6,8,9,11,13,16,19,22,25,29], 7:[10,12,15,18,21,25,30,35,40,46],
+    8:[14,18,22,27,33,39,46,54,63,72], 9:[25,30,36,43,52,62,74,87,100,115],
+    10:[40,48,58,70,84,100,120,140,160,185], 11:[60,75,90,110,130,160,190,220,250,290]};
+  const SUP = { // øvre avvik es for aksler a–h
+    d:[-20,-30,-40,-50,-65,-80,-100,-120,-145,-170], e:[-14,-20,-25,-32,-40,-50,-60,-72,-85,-100],
+    f:[-6,-10,-13,-16,-20,-25,-30,-36,-43,-50], g:[-2,-4,-5,-6,-7,-9,-10,-12,-14,-15], h:[0,0,0,0,0,0,0,0,0,0]};
+  const SLOW = { // nedre avvik ei for aksler k–p
+    k:[0,1,1,1,2,2,2,3,3,4], m:[2,4,6,7,8,9,11,13,15,17], n:[4,8,10,12,15,17,20,23,27,31], p:[6,12,15,18,22,26,32,37,43,50]};
+  const DELTA = {6:[0,3,3,3,4,5,6,7,7,9], 7:[0,4,6,7,8,9,11,13,15,17], 8:[0,6,7,9,12,14,16,19,23,26]};
+  const GR = {
+    shaft:{d:[8,9,10,11], e:[7,8,9], f:[6,7,8,9], g:[5,6,7], h:[5,6,7,8,9,10,11], js:[5,6,7,8,9,10,11], k:[5,6,7], m:[5,6,7], n:[5,6,7], p:[5,6,7]},
+    hole:{D:[8,9,10,11], E:[7,8,9], F:[6,7,8,9], G:[6,7], H:[6,7,8,9,10,11], JS:[6,7,8,9,10,11], K:[6,7,8], M:[6,7,8], N:[6,7,8], P:[6,7]}};
+  const KN = {hole:'Hull', shaft:'Aksel'};
+
+  // ---------- Formatering ----------
+  const fnum = v => String(Math.round(v*10)/10).replace('.', ',');
+  const sgn = v => v>0 ? '+'+fnum(v) : v<0 ? '−'+fnum(-v) : '0';
+  const mm = x => { const dec = Math.round(Math.abs(x)*1e4) % 10 ? 4 : 3; return x.toFixed(dec).replace('.', ','); };
+  const dmm = v => v===0 ? '0' : (v>0?'+':'−') + mm(Math.abs(v)/1000);
+  const fD = D => String(D).replace('.', ',');
+  const parse = s => { const v = parseFloat(String(s).trim().replace(/\s/g,'').replace(',', '.').replace('−','-')); return isFinite(v) ? v : NaN; };
+  const code = (L,g) => L+g;
+
+  // ---------- Beregning ----------
+  function zone(kind, L, g, D){
+    const i = rIdx(D), it = IT[g][i], l = L.toLowerCase();
+    const z = {kind, L, g, D, i, it, steps:[]};
+    const E = kind==='hole' ? ['ES','EI'] : ['es','ei'];
+    z.steps.push(`Nominelt mål ${fD(D)} mm ligger i området <b>${rLab(i)} mm</b>.`);
+    z.steps.push(`Toleransegrad IT${g} i dette området er <b>${it} µm</b>. Det er toleransen, altså bredden på sonen.`);
+    if(l==='js'){
+      const half = (g>=7 && it%2) ? (it-1)/2 : it/2;
+      z.up = half; z.lo = -half;
+      z.steps.push(`${L} ligger symmetrisk om nullinjen: avvik = ±IT/2 = <b>±${fnum(half)} µm</b>.` + (g>=7 && it%2 ? ` IT-verdien er et oddetall, så den rundes ned til ${it-1} µm før deling.` : ''));
+    } else if(kind==='shaft'){
+      if(SUP[l]){
+        z.up = SUP[l][i]; z.lo = z.up - it;
+        z.steps.push(`Grunnavviket for ${L} er øvre avvik: es = <b>${sgn(z.up)} µm</b>.`);
+        z.steps.push(`Nedre avvik: ei = es − IT = ${sgn(z.up)} − ${it} = <b>${sgn(z.lo)} µm</b>.`);
+      } else {
+        z.lo = SLOW[l][i]; z.up = z.lo + it;
+        z.steps.push(`Grunnavviket for ${L} er nedre avvik: ei = <b>${sgn(z.lo)} µm</b>.`);
+        z.steps.push(`Øvre avvik: es = ei + IT = ${sgn(z.lo)} + ${it} = <b>${sgn(z.up)} µm</b>.`);
+      }
+    } else {
+      if(SUP[l]){
+        z.lo = -SUP[l][i]; z.up = z.lo + it;
+        z.steps.push(`Grunnavviket for ${L} er nedre avvik: EI = <b>${sgn(z.lo)} µm</b>. Det er samme tall som es for aksel ${l}, med motsatt fortegn.`);
+        z.steps.push(`Øvre avvik: ES = EI + IT = ${sgn(z.lo)} + ${it} = <b>${sgn(z.up)} µm</b>.`);
+      } else {
+        const base = -SLOW[l][i], d = DELTA[g][i];
+        z.up = base + d; z.lo = z.up - it;
+        z.steps.push(`Grunnavviket for ${L} er øvre avvik: ES = ${sgn(base)} + Δ, der Δ = ${d} µm for IT${g}. Det gir ES = <b>${sgn(z.up)} µm</b>.`);
+        z.steps.push(`Nedre avvik: EI = ES − IT = ${sgn(z.up)} − ${it} = <b>${sgn(z.lo)} µm</b>.`);
+      }
+    }
+    z.max = D + z.up/1000; z.min = D + z.lo/1000;
+    z.steps.push(`Største mål = ${fD(D)} ${dmm(z.up).replace(/^([+−])/,'$1 ')} = <b>${mm(z.max)} mm</b>. Minste mål = ${fD(D)} ${dmm(z.lo).replace(/^([+−])/,'$1 ')} = <b>${mm(z.min)} mm</b>.`.replace(/ 0 =/g,' + 0 ='));
+    return z;
+  }
+  function verdict(z, m){
+    const dev = Math.round((m - z.D)*1e4)/10;
+    if(dev >= z.lo - 1e-9 && dev <= z.up + 1e-9) return {c:'ok', name:'Godkjent', t:`Godkjent. ${mm(m)} mm ligger mellom ${mm(z.min)} og ${mm(z.max)} mm.`, dev};
+    const over = dev > z.up;
+    const diff = fnum(over ? dev - z.up : z.lo - dev);
+    if(z.kind==='shaft') return over
+      ? {c:'warn', name:'Etterarbeid', t:`Etterarbeid. Akselen er ${diff} µm for stor. Den kan dreies eller slipes ned til riktig mål.`, dev}
+      : {c:'bad', name:'Kassert', t:`Kassert. Akselen er ${diff} µm for liten. Materiale som er tatt bort, kan ikke settes på igjen.`, dev};
+    return over
+      ? {c:'bad', name:'Kassert', t:`Kassert. Hullet er ${diff} µm for stort. Det kan ikke gjøres mindre igjen.`, dev}
+      : {c:'warn', name:'Etterarbeid', t:`Etterarbeid. Hullet er ${diff} µm for lite. Det kan brotsjes, bores eller dreies opp til riktig mål.`, dev};
+  }
+  const FITTYPE = {
+    klaring:{name:'Klaringspasning', t:'Det er alltid luft mellom hull og aksel. Delene kan gli eller rotere mot hverandre.'},
+    overgang:{name:'Overgangspasning', t:'Det kan bli litt klaring eller litt overmål, avhengig av hvor i sonene delene havner. Monteres for hånd eller med lett press.'},
+    press:{name:'Presspasning', t:'Akselen er alltid større enn hullet. Delene presses eller krympes sammen og sitter fast.'}};
+  function fit(h, s){
+    const maxC = h.up - s.lo, minC = h.lo - s.up;
+    const type = minC >= 0 ? 'klaring' : maxC <= 0 ? 'press' : 'overgang';
+    return {maxC, minC, type};
+  }
+  const clr = v => v >= 0 ? `${fnum(v)} µm klaring` : `${fnum(-v)} µm overmål`;
+
+  // ---------- Diagram ----------
+  const svg = $('dia');
+  function niceStep(r){ const p = Math.pow(10, Math.floor(Math.log10(r))), n = r/p; return (n<1.5?1:n<3?2:n<7?5:10)*p; }
+  function draw(zs, meas){
+    const W = Math.max(340, Math.min(800, Math.round(svg.getBoundingClientRect().width || 700))), H = 300;
+    const x0 = 60, x1 = W - 14, top = 18, bot = H - 40;
+    const vals = [0]; zs.forEach(z => vals.push(z.up, z.lo)); if(meas) vals.push(meas.dev);
+    let mn = Math.min(...vals), mx = Math.max(...vals); const span = (mx - mn) || 10;
+    const step = niceStep(span/5);
+    mn = Math.floor((mn - span*.12)/step)*step; mx = Math.ceil((mx + span*.12)/step)*step;
+    const y = v => top + (mx - v)/(mx - mn)*(bot - top);
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    let s = `<text x="${x0-8}" y="${top-4}" text-anchor="end" font-size="12" class="txm">µm</text>`;
+    for(let t = mn; t <= mx + 1e-9; t += step){
+      const yy = y(t);
+      s += `<line x1="${x0}" x2="${x1}" y1="${yy}" y2="${yy}" class="gl" stroke-width="1"/>
+        <text x="${x0-8}" y="${yy+4}" text-anchor="end" font-size="12" class="txm" font-family="JetBrains Mono, monospace">${sgn(Math.round(t*10)/10)}</text>`;
+    }
+    const pw = x1 - x0;
+    const pos = zs.length===1 ? [{cx:x0+pw*.42, w:Math.min(190, pw*.34), side:1}]
+      : [{cx:x0+pw*.33, w:Math.min(150, pw*.22), side:-1}, {cx:x0+pw*.67, w:Math.min(150, pw*.22), side:1}];
+    zs.forEach((z, k) => {
+      const p = pos[k], cls = z.kind==='hole' ? 'h' : 's';
+      const yu = y(z.up), yl = y(z.lo), hgt = Math.max(2, yl - yu);
+      s += `<rect class="zone z${cls}" x="${p.cx-p.w/2}" y="${yu}" width="${p.w}" height="${hgt}" stroke-width="2" rx="2"/>`;
+      const lx = p.side>0 ? p.cx + p.w/2 + 7 : p.cx - p.w/2 - 7, an = p.side>0 ? 'start' : 'end';
+      let uy = yu + 13, ly = yl - 4;
+      if(ly - uy < 13){ uy = yu - 4; ly = yl + 14; }
+      const n = z.kind==='hole' ? ['ES','EI'] : ['es','ei'];
+      s += `<text x="${lx}" y="${uy}" text-anchor="${an}" font-size="13" class="t${cls}" font-weight="700" font-family="JetBrains Mono, monospace">${n[0]} ${sgn(z.up)}</text>
+        <text x="${lx}" y="${ly}" text-anchor="${an}" font-size="13" class="t${cls}" font-weight="700" font-family="JetBrains Mono, monospace">${n[1]} ${sgn(z.lo)}</text>
+        <text x="${p.cx}" y="${H-14}" text-anchor="middle" font-size="15" font-weight="700" class="t${cls}" font-family="Barlow, sans-serif">${KN[z.kind]} ${code(z.L, z.g)}</text>`;
+    });
+    s += `<line x1="${x0}" x2="${x1}" y1="${y(0)}" y2="${y(0)}" class="zero" stroke-width="2.5"/>`;
+    if(meas){
+      const ym = y(meas.dev), mc = {ok:'mok', bad:'mbad', warn:'mwarn'}[meas.c];
+      s += `<line x1="${x0}" x2="${x1}" y1="${ym}" y2="${ym}" class="${mc}" stroke-width="2.5" stroke-dasharray="7 5"/>
+        <text x="${x0+6}" y="${ym-6}" font-size="13" font-weight="700" class="tx" font-family="Barlow, sans-serif">Målt ${mm(meas.m)} (${sgn(meas.dev)} µm)</text>`;
+    }
+    svg.innerHTML = s;
+    const lg = [];
+    if(zs.some(z=>z.kind==='hole')) lg.push('<span><i class="lh"></i>Hull</span>');
+    if(zs.some(z=>z.kind==='shaft')) lg.push('<span><i class="ls"></i>Aksel</span>');
+    lg.push(`<span><i class="lz"></i>Nullinje = nominelt mål Ø${fD(zs[0].D)}</span>`);
+    if(meas) lg.push('<span>Stiplet linje = målt mål</span>');
+    $('legend').innerHTML = lg.join('');
+  }
+
+  // ---------- Tabeller ----------
+  let tab = 'it', hiRow = -1, hiCols = [], hiRow2 = -1, hiCols2 = [];
+  function buildTable(){
+    let cols, cell, note;
+    if(tab==='it'){ cols = [5,6,7,8,9,10,11].map(g=>({k:g, h:'IT'+g})); cell = (c,i) => IT[c.k][i]; note = 'Toleransen er bredden på toleransesonen. Den avhenger bare av nominelt mål og toleransegrad, ikke av bokstaven.'; }
+    else if(tab==='sh'){ cols = ['d','e','f','g','h','k','m','n','p'].map(l=>({k:l, h:l + (SUP[l]?' (es)':' (ei)')})); cell = (c,i) => sgn(SUP[c.k] ? SUP[c.k][i] : SLOW[c.k][i]); note = 'd–h: tabellen gir øvre avvik es, og ei = es − IT. k–p: tabellen gir nedre avvik ei, og es = ei + IT. k gjelder IT5–IT7. js: ±IT/2.'; }
+    else { cols = ['D','E','F','G','H'].map(L=>({k:L, h:L+' (EI)'})).concat(['K','M','N','P'].map(L=>({k:L, h:L+'7 (ES)'}))); cell = (c,i) => SUP[c.k.toLowerCase()] ? sgn(-SUP[c.k.toLowerCase()][i]) : sgn(-SLOW[c.k.toLowerCase()][i] + DELTA[7][i]); note = 'D–H: tabellen gir nedre avvik EI, og ES = EI + IT. K, M, N og P: øvre avvik ES for IT7 (Δ er tatt med), og EI = ES − IT. JS: ±IT/2.'; }
+    let h = `<table class="t"><thead><tr><th>Mål (mm)</th>${cols.map(c=>`<th>${c.h}</th>`).join('')}</tr></thead><tbody>`;
+    R.forEach((_, i) => {
+      const rc = i===hiRow ? 'hr' : i===hiRow2 ? 'hr2' : '';
+      h += `<tr class="${rc}"><td>${rShort(i)}</td>${cols.map(c=>{
+        const cc = hiCols.includes(String(c.k)) ? 'hc' : hiCols2.includes(String(c.k)) ? 'hc2' : '';
+        return `<td class="${cc}">${cell(c,i)}</td>`; }).join('')}</tr>`;
+    });
+    $('table').innerHTML = h + '</tbody></table>';
+    $('tablenote').textContent = note;
+    document.querySelectorAll('#tabsel button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab===tab)));
+  }
+  function highlight(list){ // list: [{z, which:1|2}]
+    hiRow = hiRow2 = -1; hiCols = []; hiCols2 = [];
+    list.forEach(z => {
+      const two = z.kind==='hole' && list.length>1;
+      if(two) hiRow2 = z.i; else hiRow = z.i;
+      const cs = two ? hiCols2 : hiCols;
+      if(tab==='it') cs.push(String(z.g));
+      if(tab==='sh' && z.kind==='shaft') cs.push(z.L);
+      if(tab==='ho' && z.kind==='hole') cs.push(z.L);
+    });
+    if(list.length===2 && list[0].i===list[1].i) hiRow2 = -1;
+  }
+
+  // ---------- Tilstand ----------
+  let mode = 'opp';
+  const st = {kind:'hole', L:'H', g:7, D:40, hL:'H', hg:7, sL:'g', sg:6, D2:40};
+  let task = null, answered = false, choice = null, score = {ok:0, tot:0};
+
+  function btnGroup(el, items, cur, onPick){
+    el.innerHTML = '';
+    items.forEach(([v, lab]) => {
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = lab;
+      b.setAttribute('aria-pressed', String(v===cur));
+      b.onclick = () => onPick(v); el.append(b);
+    });
+  }
+  const fixGrade = (kind, L, g) => { const a = GR[kind][L]; return a.includes(g) ? g : a.reduce((p,c)=> Math.abs(c-g) < Math.abs(p-g) ? c : p); };
+  const validD = D => isFinite(D) && D >= 1 && D <= 250;
+  function notes(list){
+    $('notes').innerHTML = '';
+    list.forEach(([c,t]) => { const d = document.createElement('div'); d.className = 'note '+c; d.innerHTML = t; $('notes').append(d); });
+  }
+  const r = (a, b, cls='') => `<div class="r ${cls}"><span>${a}</span><span>${b}</span></div>`;
+
+  // ---------- Slå opp ----------
+  function renderOpp(){
+    document.querySelectorAll('#kindsel button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.kind===st.kind)));
+    btnGroup($('letsel'), Object.keys(GR[st.kind]).map(L=>[L,L]), st.L, L => { st.L = L; st.g = fixGrade(st.kind, L, st.g); update(); });
+    btnGroup($('gradesel'), GR[st.kind][st.L].map(g=>[g, String(g)]), st.g, g => { st.g = g; update(); });
+    const D = parse($('nom').value);
+    if(!validD(D)){
+      $('callout').textContent = ''; svg.innerHTML = ''; $('legend').innerHTML = '';
+      notes([['warn', 'Skriv et nominelt mål mellom 1 og 250 mm.']]); $('ro-opp').innerHTML = ''; $('how').innerHTML = ''; buildTable(); return;
+    }
+    st.D = D;
+    const z = zone(st.kind, st.L, st.g, D);
+    $('callout').innerHTML = `<span class="${st.kind==='hole'?'h':'s'}">Ø${fD(D)} ${code(st.L,st.g)}</span>`;
+    const m = parse($('meas').value);
+    let v = null;
+    if(isFinite(m) && Math.abs(m - D) < Math.max(1, D*0.05)) v = verdict(z, m);
+    draw([z], v ? {dev:v.dev, m, c:v.c} : null);
+    if(v) notes([[v.c, v.t]]);
+    else if($('meas').value.trim()) notes([['info', 'Det målte målet ligger langt fra nominelt mål. Sjekk at du har skrevet det i mm.']]);
+    else notes([['info', 'Skriv inn et målt mål for å vurdere delen.']]);
+    const E = st.kind==='hole' ? ['ES','EI'] : ['es','ei'];
+    $('ro-opp').innerHTML = r('Toleransesone', `${code(st.L,st.g)}`) + r('Område', rLab(z.i)+' mm') + r('Toleranse IT'+st.g, z.it+' µm')
+      + r('Øvre avvik '+E[0], `${sgn(z.up)} µm  (${dmm(z.up)} mm)`) + r('Nedre avvik '+E[1], `${sgn(z.lo)} µm  (${dmm(z.lo)} mm)`)
+      + r('Største mål', mm(z.max)+' mm', 'big') + r('Minste mål', mm(z.min)+' mm', 'big')
+      + r('På tegningen', `Ø${fD(D)} ${dmm(z.up)} / ${dmm(z.lo)}`);
+    $('howlabel').textContent = 'Slik finner du grensemålene';
+    $('how').innerHTML = `<ol>${z.steps.map(t=>`<li>${t}</li>`).join('')}</ol>`;
+    highlight([z]); buildTable();
+  }
+
+  // ---------- Pasning ----------
+  const PRESETS = [
+    ['H','11','d','9'], ['H','9','d','9'], ['H','8','f','7'], ['H','7','g','6'], ['H','7','h','6'], ['H','7','js','6'], ['H','7','k','6'], ['H','7','n','6'], ['H','7','p','6']];
+  const PDESC = {
+    'H11/d9':'Grov løs pasning. Landbruksmaskiner, hengsler.',
+    'H9/d9':'Løs løpepasning. Lagre med stor klaring, store temperaturforskjeller.',
+    'H8/f7':'Løpepasning. Aksler i glidelager, pumper.',
+    'H7/g6':'Glidepasning. Presise føringer og styringer.',
+    'H7/h6':'Skyvepasning. Monteres for hånd, sentrering av deler.',
+    'H7/js6':'Lett overgangspasning. Navs og koblinger som skal kunne tas av.',
+    'H7/k6':'Overgangspasning. Kulelager på aksel, tannhjul med kile.',
+    'H7/n6':'Fast overgangspasning. Monteres med press eller hammer.',
+    'H7/p6':'Presspasning. Bøssinger og deler som ikke skal demonteres.'};
+  function renderPas(){
+    btnGroup($('hlet'), Object.keys(GR.hole).map(L=>[L,L]), st.hL, L => { st.hL = L; st.hg = fixGrade('hole', L, st.hg); update(); });
+    btnGroup($('hgr'), GR.hole[st.hL].map(g=>[g,'IT'+g]), st.hg, g => { st.hg = g; update(); });
+    btnGroup($('slet'), Object.keys(GR.shaft).map(L=>[L,L]), st.sL, L => { st.sL = L; st.sg = fixGrade('shaft', L, st.sg); update(); });
+    btnGroup($('sgr'), GR.shaft[st.sL].map(g=>[g,'IT'+g]), st.sg, g => { st.sg = g; update(); });
+    const key = `${st.hL}${st.hg}/${st.sL}${st.sg}`;
+    $('presets').innerHTML = '';
+    PRESETS.forEach(([hL,hg,sL,sg]) => {
+      const k = `${hL}${hg}/${sL}${sg}`, b = document.createElement('button');
+      b.type = 'button'; b.className = 'preset'; b.setAttribute('aria-pressed', String(k===key));
+      b.innerHTML = `<b>${k}</b><span>${PDESC[k]}</span>`;
+      b.onclick = () => { st.hL = hL; st.hg = +hg; st.sL = sL; st.sg = +sg; update(); };
+      $('presets').append(b);
+    });
+    const D = parse($('nom2').value);
+    if(!validD(D)){ $('callout').textContent=''; svg.innerHTML=''; $('legend').innerHTML=''; notes([['warn','Skriv et nominelt mål mellom 1 og 250 mm.']]); $('ro-pas').innerHTML=''; $('how').innerHTML=''; buildTable(); return; }
+    st.D2 = D;
+    const h = zone('hole', st.hL, st.hg, D), s = zone('shaft', st.sL, st.sg, D), f = fit(h, s);
+    $('callout').innerHTML = `<span>Ø${fD(D)}</span><span class="h">${code(st.hL,st.hg)}</span><span>/</span><span class="s">${code(st.sL,st.sg)}</span>`;
+    draw([h, s], null);
+    notes([[f.type==='klaring' ? 'ok' : f.type==='press' ? 'bad' : 'warn', FITTYPE[f.type].name], ['plain', FITTYPE[f.type].t]]);
+    $('ro-pas').innerHTML = `<div class="sec h">Hull ${code(st.hL,st.hg)}</div>` + r('Største / minste mål', `${mm(h.max)} / ${mm(h.min)}`) + r('Avvik ES / EI', `${sgn(h.up)} / ${sgn(h.lo)} µm`)
+      + `<div class="sec s">Aksel ${code(st.sL,st.sg)}</div>` + r('Største / minste mål', `${mm(s.max)} / ${mm(s.min)}`) + r('Avvik es / ei', `${sgn(s.up)} / ${sgn(s.lo)} µm`)
+      + `<div class="sec">Pasning</div>` + r('Største klaring', clr(f.maxC)) + r('Minste klaring', clr(f.minC)) + r('Type', FITTYPE[f.type].name, 'big');
+    $('howlabel').textContent = 'Slik beregner du klaringen';
+    $('how').innerHTML = `<ol>
+      <li>Finn grensemålene for hullet og akselen hver for seg (se Slå opp).</li>
+      <li>Største klaring = største hull − minste aksel = ES − ei = ${sgn(h.up)} − (${sgn(s.lo)}) = <b>${sgn(f.maxC)} µm</b>.</li>
+      <li>Minste klaring = minste hull − største aksel = EI − es = ${sgn(h.lo)} − (${sgn(s.up)}) = <b>${sgn(f.minC)} µm</b>.</li>
+      <li>Negativ klaring betyr overmål: akselen er større enn hullet.</li>
+      <li>Begge positive gir klaringspasning. Begge negative gir presspasning. Én av hver gir overgangspasning.</li></ol>
+      <p>Hullbasis betyr at hullet har H (EI = 0), og pasningen velges med akselbokstaven. Det er vanligst, fordi aksler er lettere å dreie og slipe til ulike mål enn hull er å bore til ulike mål.</p>`;
+    highlight([h, s]); buildTable();
+  }
+
+  // ---------- Oppgaver ----------
+  const T_HOLES = [['H',7],['H',7],['H',8],['H',9],['H',6],['F',7],['G',7],['K',7],['M',7],['N',7],['P',7],['JS',7],['E',8],['D',9]];
+  const T_SHAFTS = [['h',6],['h',7],['h',9],['g',6],['f',7],['k',6],['m',6],['n',6],['p',6],['js',6],['e',8],['d',9]];
+  const NOMS = [6,8,10,12,16,20,22,25,30,32,35,40,45,50,55,60,63,70,80,90,100,110,125,140,160,180,200,220,250];
+  const pick = a => a[Math.floor(Math.random()*a.length)];
+  const rint = (a, b) => a + Math.floor(Math.random()*(b - a + 1));
+  function newTask(){
+    answered = false; choice = null;
+    const D = pick(NOMS);
+    if(Math.random() < .68){
+      const kind = Math.random() < .5 ? 'hole' : 'shaft';
+      const [L, g] = pick(kind==='hole' ? T_HOLES : T_SHAFTS);
+      const z = zone(kind, L, g, D);
+      const lo = Math.ceil(z.lo), up = Math.floor(z.up), roll = Math.random();
+      const dev = roll < .5 ? rint(lo, up) : roll < .75 ? up + rint(1, 12) : lo - rint(1, 12);
+      const m = D + dev/1000;
+      task = {type:'check', z, m, v:verdict(z, m)};
+    } else {
+      const [hL, hg, sL, sg] = pick(PRESETS);
+      const h = zone('hole', hL, +hg, D), s = zone('shaft', sL, +sg, D);
+      task = {type:'fit', h, s, f:fit(h, s)};
+    }
+    ['a1','a2'].forEach(id => $(id).value = '');
+    $('fb').hidden = true;
+    renderOppg();
+    $('a1').focus({preventScroll:true});
+  }
+  function renderOppg(){
+    const t = task;
+    $('taskbox').hidden = false;
+    $('score').textContent = `${score.ok} av ${score.tot} riktige`;
+    if(t.type==='check'){
+      const z = t.z, kn = z.kind==='hole' ? 'Hullet' : 'Akselen';
+      $('tasklabel').textContent = 'Oppgave: kontroller delen';
+      $('tasktext').innerHTML = `${kn} er tegnet med <b>Ø${fD(z.D)} ${code(z.L,z.g)}</b>. Du måler ${z.kind==='hole' ? 'med innvendig mikrometer' : 'med mikrometer'} og får <b>${mm(t.m)} mm</b>.`;
+      $('callout').innerHTML = `<span class="${z.kind==='hole'?'h':'s'}">Ø${fD(z.D)} ${code(z.L,z.g)}</span>`;
+      $('l1').textContent = 'Største tillatte mål (mm)'; $('l2').textContent = 'Minste tillatte mål (mm)'; $('l3').textContent = 'Vurdering av delen';
+      btnGroup($('a3'), [['Godkjent','Godkjent'],['Etterarbeid','Etterarbeid'],['Kassert','Kassert']], choice, c => { choice = c; renderOppg(); });
+    } else {
+      const {h, s} = t;
+      $('tasklabel').textContent = 'Oppgave: beregn pasningen';
+      $('tasktext').innerHTML = `Et hull <b>Ø${fD(h.D)} ${code(h.L,h.g)}</b> skal monteres på en aksel <b>Ø${fD(s.D)} ${code(s.L,s.g)}</b>. Finn største og minste klaring, og hva slags pasning det er.`;
+      $('callout').innerHTML = `<span>Ø${fD(h.D)}</span><span class="h">${code(h.L,h.g)}</span><span>/</span><span class="s">${code(s.L,s.g)}</span>`;
+      $('l1').textContent = 'Største klaring (µm)'; $('l2').textContent = 'Minste klaring (µm)'; $('l3').textContent = 'Pasningstype (bruk minus for overmål)';
+      btnGroup($('a3'), [['klaring','Klaring'],['overgang','Overgang'],['press','Press']], choice, c => { choice = c; renderOppg(); });
+    }
+    const zs = t.type==='check' ? [t.z] : [t.h, t.s];
+    if(answered){
+      $('diaph').hidden = true; svg.style.display = '';
+      draw(zs, t.type==='check' ? {dev:t.v.dev, m:t.m, c:t.v.c} : null);
+      if(t.type==='check') notes([[t.v.c, t.v.t]]);
+      else notes([[t.f.type==='klaring'?'ok':t.f.type==='press'?'bad':'warn', FITTYPE[t.f.type].name], ['plain', FITTYPE[t.f.type].t]]);
+      $('howlabel').textContent = 'Løsning';
+      const steps = t.type==='check' ? t.z.steps : [
+        ...t.h.steps.slice(1).map(x => 'Hull: ' + x), ...t.s.steps.slice(1).map(x => 'Aksel: ' + x),
+        `Største klaring = ES − ei = ${sgn(t.h.up)} − (${sgn(t.s.lo)}) = <b>${sgn(t.f.maxC)} µm</b>.`,
+        `Minste klaring = EI − es = ${sgn(t.h.lo)} − (${sgn(t.s.up)}) = <b>${sgn(t.f.minC)} µm</b>.`];
+      $('how').innerHTML = `<ol>${steps.map(x=>`<li>${x}</li>`).join('')}</ol>`;
+      highlight(zs);
+    } else {
+      svg.style.display = 'none'; $('legend').innerHTML = ''; $('diaph').hidden = false;
+      notes([['info', 'Slå opp i tabellene nederst på siden. Toleransegrad IT gir bredden på sonen, og grunnavviket gir hvor sonen ligger.']]);
+      $('howlabel').textContent = 'Fremgangsmåte';
+      $('how').innerHTML = t.type==='check' ? `<ol>
+        <li>Finn riktig målområde (rad) i tabellen for nominelt mål.</li>
+        <li>Les av toleransen i IT-tabellen.</li>
+        <li>Les av grunnavviket for bokstaven. Små bokstaver er aksler, store bokstaver er hull.</li>
+        <li>Regn ut det andre avviket med toleransen.</li>
+        <li>Legg avvikene til nominelt mål. 1 µm = 0,001 mm.</li>
+        <li>Vurder: innenfor er godkjent. For stor aksel eller for lite hull kan etterarbeides. For liten aksel eller for stort hull er kassert.</li></ol>`
+        : `<ol><li>Finn avvikene for hullet og akselen hver for seg.</li>
+        <li>Største klaring = ES − ei.</li><li>Minste klaring = EI − es.</li>
+        <li>Negativt svar betyr overmål. Skriv det med minus.</li></ol>`;
+      hiRow = hiRow2 = -1; hiCols = []; hiCols2 = [];
+    }
+    buildTable();
+  }
+  function check(e){
+    e.preventDefault();
+    if(!task || answered) return;
+    const a1 = parse($('a1').value), a2 = parse($('a2').value);
+    if(!isFinite(a1) || !isFinite(a2) || !choice){ $('fb').hidden = false; $('fb').className = 'fb'; $('fb').textContent = 'Fyll inn begge tallene og velg et svar.'; return; }
+    const t = task, items = [];
+    if(t.type==='check'){
+      items.push([Math.abs(a1 - t.z.max) < 5e-5, `Største mål: ${mm(t.z.max)} mm`]);
+      items.push([Math.abs(a2 - t.z.min) < 5e-5, `Minste mål: ${mm(t.z.min)} mm`]);
+      items.push([choice===t.v.name, `Vurdering: ${t.v.name}`]);
+    } else {
+      items.push([Math.abs(a1 - t.f.maxC) < .05, `Største klaring: ${sgn(t.f.maxC)} µm`]);
+      items.push([Math.abs(a2 - t.f.minC) < .05, `Minste klaring: ${sgn(t.f.minC)} µm`]);
+      items.push([choice===t.f.type, `Type: ${FITTYPE[t.f.type].name}`]);
+    }
+    const all = items.every(x => x[0]);
+    score.tot++; if(all) score.ok++;
+    answered = true;
+    $('fb').hidden = false; $('fb').className = 'fb ' + (all ? 'ok' : 'bad');
+    $('fb').innerHTML = (all ? '<b>Alt riktig.</b>' : '<b>Ikke helt. Riktige svar:</b>') + '<ul>' + items.map(([ok, txt]) => `<li><span class="${ok?'y':'n'}">${ok?'✓':'✗'}</span> ${txt}</li>`).join('') + '</ul>';
+    renderOppg();
+  }
+
+  // ---------- Oppdatering ----------
+  function update(){
+    document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode===mode)));
+    document.querySelectorAll('[data-show]').forEach(el => el.hidden = !el.dataset.show.split(' ').includes(mode));
+    $('stagelabel').textContent = mode==='pas' ? 'Pasning' : mode==='oppg' ? 'Oppgave' : 'Toleransesone';
+    if(mode!=='oppg'){ $('taskbox').hidden = true; $('diaph').hidden = true; svg.style.display = ''; }
+    if(mode==='opp') renderOpp();
+    else if(mode==='pas') renderPas();
+    else { if(!task) newTask(); else renderOppg(); }
+  }
+
+  document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => { mode = b.dataset.mode; update(); });
+  document.querySelectorAll('#kindsel button').forEach(b => b.onclick = () => {
+    const k = b.dataset.kind; if(k===st.kind) return;
+    st.kind = k; const L = k==='hole' ? st.L.toUpperCase() : st.L.toLowerCase();
+    st.L = GR[k][L] ? L : (k==='hole' ? 'H' : 'h'); st.g = fixGrade(k, st.L, st.g);
+    if(k==='shaft' && st.L==='h' && st.g===7) st.g = 6;
+    update();
+  });
+  document.querySelectorAll('#tabsel button').forEach(b => b.onclick = () => { tab = b.dataset.tab; update(); });
+  ['nom','meas','nom2'].forEach(id => $(id).addEventListener('input', update));
+  $('ansform').addEventListener('submit', check);
+  $('newbtn').onclick = newTask;
+  let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(update, 120); });
+  update();
+})();
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

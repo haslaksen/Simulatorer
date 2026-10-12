@@ -1,0 +1,587 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1040px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Gjenger</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Måleteknikk</div>
+      <h1>Gjenger</h1>
+      <p class="lk-lead">Finn ut hvilken gjenge du har: mål diameteren, finn stigningen og slå opp i tabellen.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Mål ytre diameter med skyvelæra.</span></li><li><span>Bytt blad i stigningslæra til det ikke er lys mellom bladet og gjengen.</span></li><li><span>Slå opp diameter og stigning i gjengetabellen.</span></li><li><span>Prøv <b>Identifiser</b> og <b>Kjernebor</b>. Kjernebor for metrisk gjenge: d − P.</span></li></ol>
+      <a class="lk-hb" href="https://verkstedhandboka.vercel.app/#g6-metrisk" target="_blank" rel="noopener">Les mer i Verkstedhåndboka: 6.1 Metriske gjenger ↗</a>
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Gjengesimulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: verkstedbenk. Bolt med stigningslære og skyvelære øverst, forstørret utsnitt mot lyset under, verktøy, data og gjengetabell i to kolonner. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c; --warn:#a86a00;
+  --sel:#fbe3d2; --light:#fff3bf; --bench:#dfe5e8; --bench-line:#c4ced3;
+  --display:"Barlow Condensed", "Arial Narrow", sans-serif;
+  --body:"Barlow", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Consolas", monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --sel:#3d2a1c; --light:#ffe9a3; --bench:#232c31; --bench-line:#334047; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --sel:#3d2a1c; --light:#ffe9a3; --bench:#232c31; --bench-line:#334047; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px 20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0;letter-spacing:.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.tabs button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:7px;cursor:pointer}
+.tabs button[aria-selected="true"],.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+button:focus-visible,select:focus-visible,input:focus-visible,tr:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);flex-wrap:wrap}
+.label{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:14px;color:var(--muted)}
+svg.view{display:block;width:100%;height:auto}
+#lupewrap{border-top:1px solid var(--line);background:var(--bench)}
+.tx{fill:var(--ink)} .txm{fill:var(--muted)}
+.notes{display:grid;gap:6px;padding:10px 14px;border-top:1px solid var(--line);min-height:46px;align-content:center}
+.note{font-size:15px;padding-left:12px;border-left:4px solid var(--line)}
+.note.bad{border-color:var(--bad)}
+.note.warn{border-color:var(--warn)}
+.note.info{border-color:var(--muted);color:var(--muted)}
+.note.ok{border-color:var(--ok);color:var(--ok);font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.field{display:grid;gap:6px}
+.field>span{font-size:14px;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+select,.answer input{font:600 16px var(--body);padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%}
+.btn{font:600 15px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:disabled,select:disabled{opacity:.45;cursor:not-allowed}
+.blade{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.blade select{flex:1 1 160px}
+.readout{display:grid;gap:4px;font-variant-numeric:tabular-nums}
+.readout .r{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:4px;font-size:15px}
+.readout .r span:first-child{color:var(--muted)}
+.readout .r span:last-child{font-family:var(--mono);text-align:right}
+.readout .big span:last-child{font-family:var(--display);font-size:24px;font-weight:700;line-height:1.1}
+.hidden-val{filter:blur(7px);user-select:none}
+.task{font-family:var(--display);font-size:23px;font-weight:600;line-height:1.2;text-wrap:balance}
+.task b{color:var(--accent)}
+.answer{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.answer input{font:700 22px var(--mono);width:7ch}
+.fb{padding:10px 12px;border-radius:8px;font-size:15px;border:1px solid var(--line)}
+.fb.ok{border-color:var(--ok)}
+.fb.bad{border-color:var(--bad)}
+.fb b.h{display:block}
+.fb.ok b.h{color:var(--ok)} .fb.bad b.h{color:var(--bad)}
+.fb ul{margin:4px 0 0;padding-left:18px}
+.score{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.howto ol{margin:0;padding-left:20px;display:grid;gap:6px}
+.howto p{margin:0;color:var(--muted);font-size:15px}
+.chk{display:flex;gap:8px;align-items:center;font-size:15px;cursor:pointer}
+.chk input{accent-color:var(--accent);width:18px;height:18px}
+.hint{font-size:14px;color:var(--muted);margin:0}
+.tw{overflow-x:auto}
+table.gt{border-collapse:collapse;font-size:15px;width:100%;font-variant-numeric:tabular-nums}
+table.gt th,table.gt td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+table.gt th{color:var(--muted);font-weight:600;font-size:13px}
+table.gt td:first-child{font-weight:700}
+table.gt td.n{font-family:var(--mono);font-size:14px}
+table.gt tbody tr{cursor:pointer}
+table.gt tbody tr:hover{background:var(--bg)}
+table.gt tbody tr.sel{background:var(--sel)}
+table.gt tbody tr.right{background:color-mix(in srgb, var(--ok) 18%, transparent)}
+table.gt tbody tr.wrong{background:color-mix(in srgb, var(--bad) 18%, transparent)}
+.wide{grid-column:1 / -1}
+@media (prefers-reduced-motion: no-preference){ .fb{animation:fade .25s ease-out} @keyframes fade{from{opacity:.3}to{opacity:1}} }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Gjenger: identifisering og måling</h1>
+      <p class="sub">Mål ytre diameter med skyvelære, finn stigningen med stigningslære og slå opp i gjengetabellen.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Modus" id="modes">
+      <button role="tab" aria-selected="true" data-mode="utforsk">Utforsk</button>
+      <button role="tab" aria-selected="false" data-mode="ident">Identifiser</button>
+      <button role="tab" aria-selected="false" data-mode="bor">Kjernebor</button>
+    </div>
+  </header>
+
+  <section class="stage" aria-label="Arbeidsbenk">
+    <div class="stage-head"><span class="label">Arbeidsbenk</span><span>Bytt blad i stigningslæra til det ikke er lys mellom bladet og gjengen.</span></div>
+    <svg class="view" id="over" viewBox="0 0 700 300" role="img" aria-label="Bolt med stigningslære og skyvelære"></svg>
+    <div id="lupewrap"><svg class="view" id="lupe" viewBox="0 0 640 220" role="img" aria-label="Forstørret utsnitt av stigningslæra mot gjengen"></svg></div>
+    <div class="notes" id="notes" aria-live="polite"></div>
+  </section>
+
+  <div class="grid">
+    <section class="card" id="ctrlcard">
+      <span class="label">Måleverktøy</span>
+      <label class="field" id="objwrap"><span>Arbeidsstykke</span><select id="obj"></select></label>
+      <div class="field"><span>Stigningslære</span>
+        <div class="tabs" id="sets" role="group" aria-label="Type stigningslære"></div>
+      </div>
+      <div class="field"><span>Blad</span>
+        <div class="blade">
+          <button class="btn" type="button" id="finer" aria-label="Finere blad">− Finere</button>
+          <select id="bladesel" aria-label="Blad"></select>
+          <button class="btn" type="button" id="coarser" aria-label="Grovere blad">Grovere +</button>
+        </div>
+      </div>
+      <div class="field"><span>Skyvelære</span>
+        <div class="row">
+          <label class="chk"><input type="checkbox" id="cal" checked> Mål diameteren</label>
+          <div class="tabs" id="units" role="group" aria-label="Enhet på skyvelæra">
+            <button type="button" data-unit="mm" aria-pressed="true">mm</button>
+            <button type="button" data-unit="in" aria-pressed="false">tommer</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="taskcard" hidden>
+      <span class="label" id="tasklabel">Oppgave</span>
+      <div class="task" id="tasktext"></div>
+      <form class="answer" id="ansform" autocomplete="off" hidden>
+        <input id="ans" inputmode="decimal" placeholder="0,0" aria-label="Borstørrelse i mm"><span>mm</span>
+        <button class="btn primary" type="submit">Sjekk</button>
+      </form>
+      <div id="fb" class="fb" hidden></div>
+      <div class="row"><button class="btn" type="button" id="newbtn">Ny oppgave</button><span class="score" id="score"></span></div>
+    </section>
+
+    <section class="card" id="datacard">
+      <span class="label">Gjengedata</span>
+      <div class="readout" id="readout">
+        <div class="r big"><span>Betegnelse</span><span id="d-name"></span></div>
+        <div class="r"><span>Standard</span><span id="d-std"></span></div>
+        <div class="r"><span>Flankevinkel</span><span id="d-ang"></span></div>
+        <div class="r"><span>Ytre diameter d</span><span id="d-d"></span></div>
+        <div class="r"><span>Stigning P</span><span id="d-p"></span></div>
+        <div class="r"><span>Flankediameter d₂</span><span id="d-d2"></span></div>
+        <div class="r"><span>Kjernediameter bolt d₃</span><span id="d-d3"></span></div>
+        <div class="r"><span>Kjernebor (mutter)</span><span id="d-drill"></span></div>
+      </div>
+    </section>
+
+    <section class="card" id="tablecard">
+      <span class="label">Gjengetabell</span>
+      <div class="tabs" id="famtabs" role="tablist" aria-label="Gjengesystem"></div>
+      <p class="hint" id="famnote"></p>
+      <div class="tw">
+        <table class="gt" id="gtable">
+          <thead><tr><th>Betegnelse</th><th>Ytre Ø d</th><th>Stigning P</th><th>Kjernebor</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card howto wide">
+      <span class="label">Slik identifiserer du en gjenge</span>
+      <ol>
+        <li>Mål <b>ytre diameter</b> over gjengetoppene med skyvelære. En bolt måler litt under nominelt mål: en M10 viser gjerne 9,8–9,9 mm.</li>
+        <li>Hold <b>stigningslæra</b> langs aksen og se mot lyset. Riktig blad ligger an i alle sporene uten lys. Glir tennene gradvis ut av sporene, er stigningen nesten riktig, men ikke helt.</li>
+        <li>Metriske blad er merket i <b>mm</b>. Tommeblad er merket i <b>gjenger per tomme (TPI)</b>. Stigning i mm = 25,4 / TPI.</li>
+        <li>Rørgjenger (G/BSP) har <b>55°</b> flankevinkel. Metriske gjenger og UNC/UNF har <b>60°</b>. Ligger bladet an i sporene, men det er lys langs flankene, har du feil vinkel.</li>
+        <li>Slå opp i tabellen: finn nærmeste nominelle diameter med samme stigning. Rørgjenger har et tommemål som ikke stemmer med diameteren: G 1/2 er nesten 21 mm.</li>
+      </ol>
+      <p><b>Kjernebor</b> for metrisk gjenge: d − P. M10 gir 10 − 1,5 = 8,5 mm. For tommegjenger og rørgjenger bruker du tabellen.</p>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const fmt = (v, d) => v.toFixed(d).replace('.', ',');
+  const trim = (v, d) => String(parseFloat(v.toFixed(d))).replace('.', ',');
+
+  // ---------- Gjengetabell ----------
+  const FAM = {
+    M:   {tab:'Metrisk', std:'ISO metrisk grovgjenge', ang:60, note:'ISO metrisk grovgjenge, 60°. Skrives bare med diameter: M10 har stigning 1,5 mm.'},
+    MF:  {tab:'Metrisk fin', std:'ISO metrisk fingjenge', ang:60, note:'ISO metrisk fingjenge, 60°. Stigningen skrives alltid: M10×1,25.'},
+    UNC: {tab:'UNC', std:'Unified grov (tomme)', ang:60, note:'Unified Coarse, 60°. 1/2"-13 betyr 1/2 tomme i diameter og 13 gjenger per tomme.'},
+    UNF: {tab:'UNF', std:'Unified fin (tomme)', ang:60, note:'Unified Fine, 60°. Samme diameter som UNC, men flere gjenger per tomme.'},
+    G:   {tab:'G (BSP)', std:'Whitworth rørgjenge, sylindrisk', ang:55, note:'Sylindrisk rørgjenge (BSPP), 55°. Tommemålet er rørets innvendige størrelse, ikke gjengediameteren.'},
+  };
+  const T = [];
+  const add = (fam, name, d, P, drill, tpi) => T.push({id:name, fam, name, d, P, drill, tpi});
+  [['M3',3,.5,2.5],['M4',4,.7,3.3],['M5',5,.8,4.2],['M6',6,1,5],['M8',8,1.25,6.8],['M10',10,1.5,8.5],['M12',12,1.75,10.2],['M14',14,2,12],['M16',16,2,14],['M20',20,2.5,17.5],['M24',24,3,21]]
+    .forEach(a => add('M', ...a));
+  [['M8×1',8,1,7],['M10×1',10,1,9],['M10×1,25',10,1.25,8.8],['M12×1,25',12,1.25,10.8],['M12×1,5',12,1.5,10.5],['M16×1,5',16,1.5,14.5],['M20×1,5',20,1.5,18.5]]
+    .forEach(a => add('MF', ...a));
+  [['1/4"-20 UNC',6.35,20,5.1],['5/16"-18 UNC',7.938,18,6.6],['3/8"-16 UNC',9.525,16,8],['1/2"-13 UNC',12.7,13,10.8],['5/8"-11 UNC',15.875,11,13.5],['3/4"-10 UNC',19.05,10,16.5]]
+    .forEach(([n,d,tpi,dr]) => add('UNC', n, d, 25.4/tpi, dr, tpi));
+  [['1/4"-28 UNF',6.35,28,5.5],['5/16"-24 UNF',7.938,24,6.9],['3/8"-24 UNF',9.525,24,8.5],['1/2"-20 UNF',12.7,20,11.5],['5/8"-18 UNF',15.875,18,14.5]]
+    .forEach(([n,d,tpi,dr]) => add('UNF', n, d, 25.4/tpi, dr, tpi));
+  [['G 1/8',9.728,28,8.8],['G 1/4',13.157,19,11.8],['G 3/8',16.662,19,15.25],['G 1/2',20.955,14,19],['G 3/4',26.441,14,24.5],['G 1',33.249,11,30.25]]
+    .forEach(([n,d,tpi,dr]) => add('G', n, d, 25.4/tpi, dr, tpi));
+  const byId = id => T.find(t => t.id === id);
+  const angOf = t => FAM[t.fam].ang;
+  const pTxt = t => t.tpi ? `${t.tpi} TPI (${fmt(t.P,3)} mm)` : `${trim(t.P,2)} mm`;
+  const dTxt = t => t.tpi ? fmt(t.d, 3) : String(t.d);
+  // målt ytre diameter: litt under nominelt, fast for hver gjenge
+  const hash = s => { let h = 7; for(const c of s) h = (h*31 + c.charCodeAt(0)) % 1000; return h/1000; };
+  const measured = t => t.fam === 'G'
+    ? t.d - (0.03 + 0.004*t.d) - hash(t.id)*0.04
+    : t.d - (0.05 + 0.012*t.d) - hash(t.id)*0.06;
+
+  // ---------- Profil ----------
+  // h(x): høyde over gjengebunn i mm. Avkorting i topp (tt) og bunn (tb) som andel av P.
+  const PROF = {
+    60: {H:0.866025, tt:0.866025/8, tb:0.866025/4},
+    55: {H:0.960491, tt:0.960491/6, tb:0.960491/6},
+  };
+  const depth = (P, a) => (PROF[a].H - PROF[a].tt - PROF[a].tb) * P;
+  function hAt(x, P, a){
+    const pr = PROF[a], u = ((x % P) + P) % P, H = pr.H*P;
+    const tri = H*(1 - Math.abs(u - P/2)/(P/2));
+    return Math.min(Math.max(tri, pr.tb*P), H - pr.tt*P) - pr.tb*P;
+  }
+
+  // ---------- Stigningslærer ----------
+  const SETS = {
+    met:{lab:'Metrisk 60°', ang:60, list:[0.25,0.3,0.35,0.4,0.45,0.5,0.6,0.7,0.75,0.8,1,1.25,1.5,1.75,2,2.5,3,3.5,4,4.5,5,5.5,6], P:v=>v, txt:v=>trim(v,2)+' mm', mark:v=>trim(v,2)},
+    ww: {lab:'Whitworth 55°', ang:55, list:[62,60,56,48,40,36,32,28,26,24,22,20,19,18,16,14,12,11,10,9,8,7,6,5,4.5,4], P:v=>25.4/v, txt:v=>trim(v,1)+' TPI ('+fmt(25.4/v,3)+' mm)', mark:v=>trim(v,1)},
+    un: {lab:'UN 60°', ang:60, list:[80,72,64,56,48,44,40,36,32,28,27,24,20,18,16,14,13,12,11.5,11,10,9,8,7,6,5,4.5,4], P:v=>25.4/v, txt:v=>trim(v,1)+' TPI ('+fmt(25.4/v,3)+' mm)', mark:v=>trim(v,1)},
+  };
+  const NPITCH = 8; // antall gjengestigninger bladet ligger mot
+
+  function fit(t, g){
+    const N = 480, L = NPITCH*t.P, xs = [], ht = [];
+    for(let i=0;i<=N;i++){ const x = i/N*L; xs.push(x); ht.push(hAt(x, t.P, angOf(t))); }
+    let best = null;
+    for(let k=0;k<72;k++){
+      const ph = k/72*g.P, hg = xs.map(x => hAt(x+ph, g.P, g.ang));
+      let off = -Infinity; for(let i=0;i<=N;i++) off = Math.max(off, ht[i]-hg[i]);
+      let sum = 0, mx = 0; for(let i=0;i<=N;i++){ const gap = off + hg[i] - ht[i]; sum += gap; if(gap > mx) mx = gap; }
+      if(!best || sum < best.sum - 1e-12) best = {ph, off, sum, mx};
+    }
+    best.rel = best.mx / depth(t.P, angOf(t));
+    return best;
+  }
+
+  // ---------- Tilstand ----------
+  const st = {mode:'utforsk', th:'M10', set:'met', bi:11, cal:true, unit:'mm', fam:'M'};
+  let task = null, answered = false, nr = 0;
+  const score = {ident:{ok:0,tot:0}, bor:{ok:0,tot:0}};
+  const gauge = () => { const S = SETS[st.set], v = S.list[st.bi]; return {v, P:S.P(v), ang:S.ang, S}; };
+  const cur = () => byId(st.th);
+
+  // ---------- Tegning: oversikt ----------
+  const STEEL = `<linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5a636a"/><stop offset=".28" stop-color="#d3d9dd"/><stop offset=".55" stop-color="#8f989e"/><stop offset="1" stop-color="#4a5359"/></linearGradient>
+    <linearGradient id="head" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4f585e"/><stop offset=".33" stop-color="#b9c1c6"/><stop offset=".34" stop-color="#9aa3a9"/><stop offset=".66" stop-color="#7e878d"/><stop offset=".67" stop-color="#5d666c"/><stop offset="1" stop-color="#454d53"/></linearGradient>`;
+
+  function drawOver(f){
+    const t = cur(), a = angOf(t), P = t.P, g = gauge();
+    const R = 60, cy = 150, X0 = 110, X1 = 590, s = 2*R/t.d, dep = depth(P, a)*s;
+    const top = [], bot = [];
+    for(let X=X0; X<=X1+1e-6; X+=0.5){
+      const x = (X-X0)/s;
+      top.push(`${X.toFixed(1)},${(cy-(R-dep+hAt(x,P,a)*s)).toFixed(2)}`);
+      bot.push(`${X.toFixed(1)},${(cy+(R-dep+hAt(x+P/2,P,a)*s)).toFixed(2)}`);
+    }
+    const ident = st.mode === 'ident';
+    const title = ident ? `Ukjent gjenge nr. ${nr}` : (t.fam==='G' ? `Rørnippel ${t.name}` : `Bolt ${t.name}`);
+    let s1 = `<defs>${STEEL}</defs>
+      <rect x="1" y="1" width="698" height="298" rx="12" fill="var(--bench)" stroke="var(--bench-line)"/>
+      <text x="18" y="30" font-size="20" font-weight="700" class="tx" font-family="Barlow Condensed, sans-serif">${title}</text>`;
+
+    // lys bak stigningslæra
+    const n = Math.max(1, Math.round(((X1-X0)/s)*0.1/P)), Xw0 = X0 + n*P*s, Xw1 = Xw0 + NPITCH*P*s;
+    s1 += `<rect x="${Xw0}" y="${cy-R-dep-40}" width="${Xw1-Xw0}" height="${dep+46}" fill="var(--light)"/>`;
+
+    // hode
+    const hh = Math.min(1.55*R, 128);
+    s1 += `<rect x="34" y="${cy-hh}" width="${X0-32}" height="${2*hh}" rx="5" fill="url(#head)" stroke="#3f474d"/>`;
+    // skaft
+    s1 += `<polygon points="${top.join(' ')} ${bot.reverse().join(' ')}" fill="url(#steel)" stroke="#3f474d" stroke-width="1"/>`;
+    for(let k=0; (k+1)*P*s <= X1-X0; k++){
+      const xa = X0+(k+.5)*P*s, xb = X0+(k+1)*P*s;
+      s1 += `<line x1="${xa}" y1="${cy-R+1}" x2="${xb}" y2="${cy+R-1}" stroke="rgba(255,255,255,.28)" stroke-width="${Math.min(1.4, P*s/6)}"/>`;
+    }
+    if(t.fam === 'G') s1 += `<path d="M34 ${cy-R*.62} H${X1} M34 ${cy+R*.62} H${X1}" stroke="#2b3237" stroke-width="1.5" stroke-dasharray="7 5" fill="none" opacity=".7"/>`;
+
+    // stigningslære
+    const edge = [];
+    let minY = Infinity;
+    for(let X=Xw0; X<=Xw1+1e-6; X+=0.5){
+      const x = (X-Xw0)/s, y = cy-(R-dep) - (f.off + hAt(x+f.ph, g.P, g.ang))*s;
+      edge.push(`${X.toFixed(1)},${y.toFixed(2)}`); minY = Math.min(minY, y);
+    }
+    const Bx1 = Math.max(Xw1, Xw0+150), bTop = 40, bBot = Math.max(bTop+30, Math.min(cy-R-18, minY-2));
+    s1 += `<polygon points="${Xw0},${bTop} ${Bx1-14},${bTop} ${Bx1},${bTop+14} ${Bx1},${bBot} ${Xw1},${bBot} ${edge.reverse().join(' ')}" fill="#b4bdc3" stroke="#6f7a81" stroke-width="1.2"/>
+      <circle cx="${Bx1-14}" cy="${bTop+15}" r="5" fill="var(--bench)" stroke="#6f7a81"/>
+      <text x="${Xw0+10}" y="${bTop+19}" font-size="15" font-weight="700" fill="#22292e" font-family="JetBrains Mono, monospace">${g.S.mark(g.v)}</text>
+      <text x="${Xw0+10}" y="${bTop+34}" font-size="11" fill="#22292e" font-family="Barlow, sans-serif">${st.set==='met'?'mm':'TPI'} · ${g.ang}°</text>`;
+
+    // skyvelære
+    if(st.cal){
+      const dm = measured(t);
+      const val = st.unit==='mm' ? fmt(dm,2) : fmt(Math.round(dm/25.4*2000)/2000, 4);
+      const yT = cy-R, yB = cy+R, BX = 640;
+      s1 += `<g>
+        <rect x="${BX-11}" y="8" width="22" height="284" rx="3" fill="#c9d0d5" stroke="#7d878e"/>
+        <path d="M${BX-11} 14 V286" stroke="#7d878e" stroke-dasharray="1 5" stroke-width="5" opacity=".6"/>
+        <polygon points="${BX+11},${yT-30} ${BX+11},${yT-6} 510,${yT} 510,${yT-2} 540,${yT-30}" fill="#d6dce0" stroke="#7d878e"/>
+        <polygon points="${BX+11},${yB+30} ${BX+11},${yB+6} 510,${yB} 510,${yB+2} 540,${yB+30}" fill="#d6dce0" stroke="#7d878e"/>
+        <rect x="${BX-56}" y="${yB+18}" width="${60+40}" height="58" rx="6" fill="#30363b" stroke="#1d2226"/>
+        <rect x="${BX-50}" y="${yB+24}" width="88" height="28" rx="3" fill="#b9c6a8"/>
+        <text x="${BX+34}" y="${yB+45}" text-anchor="end" font-size="17" font-weight="700" fill="#1a2118" font-family="JetBrains Mono, monospace">${val}</text>
+        <text x="${BX-6}" y="${yB+69}" text-anchor="middle" font-size="11" fill="#cfd6db" font-family="Barlow, sans-serif">${st.unit==='mm'?'mm':'tommer'}</text>
+      </g>`;
+    }
+    $('over').innerHTML = s1;
+  }
+
+  // ---------- Tegning: forstørret ----------
+  function drawLupe(f){
+    const t = cur(), a = angOf(t), g = gauge();
+    const LX0 = 20, W = 600, sx = W/(NPITCH*t.P), rootY = 176;
+    const th = [`${LX0},220`], ga = [`${LX0},0`];
+    for(let X=LX0; X<=LX0+W+1e-6; X+=0.5){
+      const x = (X-LX0)/sx;
+      th.push(`${X.toFixed(1)},${(rootY - hAt(x,t.P,a)*sx).toFixed(2)}`);
+      ga.push(`${X.toFixed(1)},${(rootY - (f.off + hAt(x+f.ph,g.P,g.ang))*sx).toFixed(2)}`);
+    }
+    th.push(`${LX0+W},220`); ga.push(`${LX0+W},0`);
+    $('lupe').innerHTML = `<defs><linearGradient id="steel2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aa3a9"/><stop offset="1" stop-color="#4a5359"/></linearGradient>
+        <clipPath id="lclip"><rect x="${LX0}" y="0" width="${W}" height="220"/></clipPath></defs>
+      <g clip-path="url(#lclip)">
+        <rect x="${LX0}" y="0" width="${W}" height="220" fill="var(--light)"/>
+        <polygon points="${ga.join(' ')}" fill="#b4bdc3" stroke="#6f7a81" stroke-width="1.2"/>
+        <polygon points="${th.join(' ')}" fill="url(#steel2)" stroke="#3f474d" stroke-width="1.2"/>
+      </g>
+      <text x="${LX0+12}" y="24" font-size="15" font-weight="700" fill="#22292e" font-family="Barlow, sans-serif">Forstørret: blad ${g.S.txt(g.v)}, ${g.ang}°</text>
+      <text x="${LX0+12}" y="210" font-size="14" font-weight="600" fill="#ffffff" font-family="Barlow, sans-serif">Gjengen, ${NPITCH} stigninger</text>`;
+  }
+
+  // ---------- Merknader ----------
+  function fitNotes(f){
+    const t = cur(), g = gauge(), notes = [];
+    const dp = Math.abs(g.P - t.P)/t.P, angOk = g.ang === angOf(t);
+    if(f.rel < 0.03) notes.push(['ok', `Bladet passer. Ingen lys mellom bladet og gjengen: stigningen er ${g.S.txt(g.v)}.`]);
+    else if(dp < 0.005 && !angOk) notes.push(['warn', `Tennene går ned i sporene, men det er lys langs flankene. Stigningen stemmer, men flankevinkelen er feil. Prøv en lære med ${angOf(t)===55?'55°':'60°'}.`]);
+    else if(dp < 0.06) notes.push(['warn', `Nesten. Bladet ligger an midt på, men tennene glir gradvis ut av sporene mot endene. Stigningen er litt for ${g.P < t.P ? 'liten' : 'stor'}. Prøv nabobladet, eller en annen type lære (mm eller TPI).`]);
+    else notes.push(['bad', `Tydelig lys mellom bladet og gjengen. Bladet er for ${g.P < t.P ? 'fint (for liten stigning)' : 'grovt (for stor stigning)'}.`]);
+    if(st.mode === 'utforsk') notes.push(['info', `${t.name}: stigning ${pTxt(t)}, flankevinkel ${angOf(t)}°.`]);
+    return notes;
+  }
+
+  // ---------- Oppdatering ----------
+  function render(){
+    const f = fit(cur(), gauge());
+    drawOver(f); drawLupe(f);
+    $('notes').innerHTML = '';
+    fitNotes(f).forEach(([c,txt]) => { const d = document.createElement('div'); d.className = 'note '+c; d.textContent = txt; $('notes').append(d); });
+    syncData(); syncControls(); syncTable();
+  }
+
+  function syncData(){
+    const t = cur(), a = angOf(t);
+    const d2 = t.d - (a===55 ? 0.6403 : 0.6495)*t.P, d3 = t.d - (a===55 ? 1.2806 : 1.2269)*t.P;
+    $('d-name').textContent = t.name;
+    $('d-std').textContent = FAM[t.fam].std;
+    $('d-ang').textContent = a + '°';
+    $('d-d').textContent = (t.tpi ? fmt(t.d,3) : fmt(t.d,0)) + ' mm';
+    $('d-p').textContent = pTxt(t);
+    $('d-d2').textContent = fmt(d2,3) + ' mm';
+    $('d-d3').textContent = fmt(d3,3) + ' mm';
+    $('d-drill').textContent = trim(t.drill,2) + ' mm' + (t.fam==='M'||t.fam==='MF' ? ` (d − P = ${trim(t.d-t.P,2)})` : '');
+    const hideAll = st.mode==='ident' && !answered, hideDrill = st.mode==='bor' && !answered;
+    $('readout').querySelectorAll('.r span:last-child').forEach(e => e.classList.toggle('hidden-val', hideAll || (hideDrill && e.id==='d-drill')));
+  }
+
+  function syncControls(){
+    document.querySelectorAll('#modes button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode===st.mode)));
+    $('objwrap').hidden = st.mode !== 'utforsk';
+    $('obj').value = st.th;
+    document.querySelectorAll('#sets button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.set===st.set)));
+    const sel = $('bladesel'), S = SETS[st.set];
+    if(sel.dataset.set !== st.set){
+      sel.innerHTML = ''; S.list.forEach((v,i) => sel.append(new Option(S.txt(v), i))); sel.dataset.set = st.set;
+    }
+    sel.value = st.bi;
+    $('finer').disabled = st.bi === 0; $('coarser').disabled = st.bi === S.list.length-1;
+    $('cal').checked = st.cal;
+    document.querySelectorAll('#units button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.unit===st.unit)));
+    // oppgavekort
+    $('taskcard').hidden = st.mode === 'utforsk';
+    $('ansform').hidden = st.mode !== 'bor';
+    const sc = score[st.mode];
+    $('score').textContent = sc ? `${sc.ok} av ${sc.tot} riktige` : '';
+  }
+
+  function syncTable(){
+    document.querySelectorAll('#famtabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.fam===st.fam)));
+    $('famnote').textContent = FAM[st.fam].note;
+    const tb = $('gtable').tBodies[0]; tb.innerHTML = '';
+    const hideDrill = st.mode==='bor' && !answered;
+    T.filter(t => t.fam===st.fam).forEach(t => {
+      const tr = document.createElement('tr');
+      tr.tabIndex = 0; tr.dataset.id = t.id;
+      tr.innerHTML = `<td>${t.name}</td><td class="n">${dTxt(t)}</td><td class="n">${t.tpi ? t.tpi+' TPI' : trim(t.P,2)}</td><td class="n${hideDrill?' hidden-val':''}">${trim(t.drill,2)}</td>`;
+      if(st.mode==='utforsk' && t.id===st.th) tr.classList.add('sel');
+      if(st.mode==='bor' && t.id===st.th) tr.classList.add('sel');
+      if(st.mode==='ident' && answered){
+        if(t.id===st.th) tr.classList.add('right');
+        else if(task && t.id===task.pick) tr.classList.add('wrong');
+      }
+      tb.append(tr);
+    });
+  }
+
+  // ---------- Oppgaver ----------
+  function newTask(){
+    answered = false; $('fb').hidden = true; $('ans').value = '';
+    nr++;
+    if(st.mode === 'ident'){
+      let t; do { t = T[Math.floor(Math.random()*T.length)]; } while(t.id === st.th);
+      st.th = t.id; task = {pick:null};
+      $('tasklabel').textContent = 'Identifiser gjengen';
+      $('tasktext').innerHTML = 'Hvilken gjenge er dette? Mål diameteren, finn bladet som passer, og <b>klikk på riktig rad</b> i gjengetabellen.';
+    } else if(st.mode === 'bor'){
+      const pool = T.filter(t => t.fam==='M' || t.fam==='MF');
+      let t; do { t = pool[Math.floor(Math.random()*pool.length)]; } while(t.id === st.th);
+      st.th = t.id; st.fam = t.fam; task = {};
+      $('tasklabel').textContent = 'Kjernebor';
+      $('tasktext').innerHTML = `Du skal gjenge et hull for <b>${t.name}</b>. Hvilket bor bruker du før du gjenger?`;
+    }
+    render();
+  }
+
+  function answerIdent(id){
+    if(answered) return;
+    const a = cur(), c = byId(id);
+    task.pick = id; answered = true;
+    const sc = score.ident; sc.tot++;
+    const fb = $('fb'); fb.hidden = false;
+    if(c.id === a.id){
+      sc.ok++; fb.className = 'fb ok';
+      fb.innerHTML = `<b class="h">Riktig! Det er ${a.name}.</b>Ytre diameter ${dTxt(a)} mm (målt ${fmt(measured(a),2)} mm), stigning ${pTxt(a)}, ${angOf(a)}°.`;
+    } else {
+      fb.className = 'fb bad';
+      const why = [];
+      if(Math.abs(c.d - a.d) > 0.01) why.push(`Diameteren passer ikke: skyvelæra viser ${fmt(measured(a),2)} mm, mens ${c.name} har ${dTxt(c)} mm.`);
+      if(Math.abs(c.P - a.P) > 0.005) why.push(`Stigningen passer ikke: ${c.name} har ${pTxt(c)}, men gjengen har ${pTxt(a)}.`);
+      if(angOf(c) !== angOf(a)) why.push(`Flankevinkelen er feil: ${c.name} har ${angOf(c)}°, gjengen har ${angOf(a)}°.`);
+      fb.innerHTML = `<b class="h">Ikke riktig. Det er ${a.name}.</b><ul>${why.map(w=>`<li>${w}</li>`).join('')}</ul>`;
+    }
+    st.fam = a.fam;
+    render();
+  }
+
+  function answerBor(e){
+    e.preventDefault();
+    if(answered) return;
+    const v = parseFloat($('ans').value.replace(',', '.'));
+    if(!isFinite(v)){ $('ans').focus(); return; }
+    const t = cur(), ideal = t.d - t.P, ok = Math.abs(v - ideal) <= 0.1 + 1e-9;
+    answered = true;
+    const sc = score.bor; sc.tot++; if(ok) sc.ok++;
+    const fb = $('fb'); fb.hidden = false; fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+    fb.innerHTML = `<b class="h">${ok ? 'Riktig!' : `Ikke riktig. Du svarte ${trim(v,2)} mm.`}</b>Kjernebor ≈ d − P = ${t.d} − ${trim(t.P,2)} = ${trim(ideal,2)} mm. Standard bor fra tabellen: ${trim(t.drill,2)} mm.`;
+    render();
+  }
+
+  // ---------- Kontroller ----------
+  function build(){
+    let og = null, g0 = '';
+    T.forEach(t => { if(t.fam !== g0){ og = document.createElement('optgroup'); og.label = FAM[t.fam].tab; g0 = t.fam; $('obj').append(og); } og.append(new Option(t.name, t.id)); });
+    Object.entries(SETS).forEach(([k,S]) => { const b = document.createElement('button'); b.type = 'button'; b.dataset.set = k; b.textContent = S.lab; $('sets').append(b); });
+    Object.entries(FAM).forEach(([k,F]) => { const b = document.createElement('button'); b.type = 'button'; b.setAttribute('role','tab'); b.dataset.fam = k; b.textContent = F.tab; $('famtabs').append(b); });
+
+    $('modes').addEventListener('click', e => {
+      const b = e.target.closest('button'); if(!b || b.dataset.mode === st.mode) return;
+      st.mode = b.dataset.mode;
+      if(st.mode === 'utforsk'){ answered = false; task = null; $('fb').hidden = true; st.fam = cur().fam; render(); }
+      else { nr = 0; newTask(); }
+    });
+    $('obj').addEventListener('change', e => { st.th = e.target.value; st.fam = cur().fam; render(); });
+    $('sets').addEventListener('click', e => {
+      const b = e.target.closest('button'); if(!b) return;
+      const P = gauge().P; st.set = b.dataset.set;
+      const L = SETS[st.set].list; let bi = 0;
+      L.forEach((v,i) => { if(Math.abs(SETS[st.set].P(v)-P) < Math.abs(SETS[st.set].P(L[bi])-P)) bi = i; });
+      st.bi = bi; render();
+    });
+    $('bladesel').addEventListener('change', e => { st.bi = +e.target.value; render(); });
+    $('finer').addEventListener('click', () => { if(st.bi > 0){ st.bi--; render(); } });
+    $('coarser').addEventListener('click', () => { if(st.bi < SETS[st.set].list.length-1){ st.bi++; render(); } });
+    $('cal').addEventListener('change', e => { st.cal = e.target.checked; render(); });
+    $('units').addEventListener('click', e => { const b = e.target.closest('button'); if(!b) return; st.unit = b.dataset.unit; render(); });
+    $('famtabs').addEventListener('click', e => { const b = e.target.closest('button'); if(!b) return; st.fam = b.dataset.fam; syncTable(); });
+    const pickRow = tr => {
+      if(!tr) return;
+      if(st.mode === 'utforsk'){ st.th = tr.dataset.id; render(); }
+      else if(st.mode === 'ident') answerIdent(tr.dataset.id);
+    };
+    $('gtable').addEventListener('click', e => pickRow(e.target.closest('tbody tr')));
+    $('gtable').addEventListener('keydown', e => { if(e.key==='Enter' || e.key===' '){ e.preventDefault(); pickRow(e.target.closest('tbody tr')); } });
+    $('newbtn').addEventListener('click', newTask);
+    $('ansform').addEventListener('submit', answerBor);
+  }
+
+  build();
+  render();
+})();
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

@@ -1,0 +1,548 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1120px}
+:root[data-theme]{--bg:var(--lk-bg);--surface:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--f-display:var(--lk-font);--f-body:var(--lk-font);--f-mono:var(--lk-mono);}
+.wrap > header{display:none!important}
+</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Charpy-prøve</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Materiallære</div>
+      <h1>Charpy-prøve</h1>
+      <p class="lk-lead">Test hvor mye energi et materiale tåler før det brekker ved et brått slag, og se hvordan kulde gjør stål sprøtt.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg materiale.</span></li><li><span>Velg prøvetemperatur.</span></li><li><span>Trykk <b>Slipp pendelen</b> og les slagenergien KV2.</span></li><li><span>Prøv flere temperaturer. Når blir stålet sprøtt?</span></li></ol>
+      <a class="lk-hb" href="https://verkstedhandboka.vercel.app/#materialer" target="_blank" rel="noopener">Les mer i Verkstedhåndboka: Emne 7 Materialer ↗</a>
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Charpy-simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: laboratorie-instrument. Maskinen og målevisning øverst, kurve + logg under, forklaringer som oppslagskort nederst. */
+:root{
+  --bg:#e9ecef; --surface:#ffffff; --ink:#1a2028; --muted:#5a6470; --line:#cfd5dc;
+  --accent:#d95f14; --accent-ink:#ffffff; --steel:#3b4b5d; --steel-soft:#dde3ea;
+  --ok:#2c8549; --bad:#c2352b; --warn:#b47c0c; --cold:#2f74b5;
+  --metal-dull:#7d838b; --metal-dark:#5f656d; --metal-bright:#e3e7eb; --metal-mid:#b9bfc6;
+  --f-display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11151a; --surface:#1a1f26; --ink:#e5e9ee; --muted:#9aa4b0; --line:#2d343d;
+  --accent:#f07a2e; --accent-ink:#1a1008; --steel:#a9bccf; --steel-soft:#252c35;
+  --ok:#52b472; --bad:#e85b50; --warn:#e2a63c; --cold:#6aa8e4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151a; --surface:#1a1f26; --ink:#e5e9ee; --muted:#9aa4b0; --line:#2d343d;
+  --accent:#f07a2e; --accent-ink:#1a1008; --steel:#a9bccf; --steel-soft:#252c35;
+  --ok:#52b472; --bad:#e85b50; --warn:#e2a63c; --cold:#6aa8e4; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:clamp(2rem,6vw,2.9rem);line-height:1;text-transform:uppercase}
+h2{font-size:1.45rem;text-transform:uppercase}
+h3{font-size:1.15rem;text-transform:uppercase}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+header{display:flex;flex-direction:column;gap:8px}
+header p{max-width:62ch;color:var(--muted)}
+
+.lab{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.lab{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.machine{padding:0;overflow:hidden}
+.machine canvas{display:block;width:100%;height:clamp(300px,52vw,430px)}
+.machine .cap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 16px;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+
+label.lbl{font-size:.75rem;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:6px}
+select,input[type=range]{width:100%}
+select{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink)}
+.matinfo{font-size:.88rem;color:var(--muted)}
+.temprow{display:flex;align-items:baseline;justify-content:space-between}
+.tempval{font-family:var(--f-display);font-size:1.9rem;font-variant-numeric:tabular-nums}
+.tempval.cold{color:var(--cold)} .tempval.warm{color:var(--accent)}
+input[type=range]{accent-color:var(--accent)}
+.ticks{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.7rem;color:var(--muted)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;font-weight:600;border-radius:4px;padding:11px 16px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+button.go{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);flex:1;font-family:var(--f-display);font-size:1.2rem;letter-spacing:.06em;text-transform:uppercase}
+button:disabled{opacity:.5;cursor:default}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.result{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start;border-top:1px solid var(--line);padding-top:14px}
+.kv{font-family:var(--f-display);font-size:3.2rem;line-height:1;font-variant-numeric:tabular-nums}
+.kv small{font-size:1.2rem;color:var(--muted);margin-left:4px}
+.kvlabel{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:.86rem;margin-top:10px}
+.facts dt{color:var(--muted)} .facts dd{margin:0;font-variant-numeric:tabular-nums}
+.frac{display:flex;flex-direction:column;align-items:center;gap:4px}
+.frac canvas{width:96px;height:96px;border-radius:2px}
+.frac span{font-family:var(--f-mono);font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:99px;border:1px solid currentColor}
+.pill.ok{color:var(--ok)} .pill.bad{color:var(--bad)} .pill.warn{color:var(--warn)}
+.verdict{font-size:.86rem;display:flex;flex-direction:column;gap:6px;grid-column:1/-1}
+
+.data{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.data{grid-template-columns:1fr}}
+.charthead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.toggle{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--muted)}
+svg.chart{width:100%;height:auto;display:block}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:0;border-top:2px solid;vertical-align:middle;margin-right:6px}
+.tablewrap{overflow:auto;max-height:330px}
+table{border-collapse:collapse;width:100%;font-size:.86rem;font-variant-numeric:tabular-nums}
+th{font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:left;font-weight:500;padding:6px 8px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface)}
+td{padding:6px 8px;border-bottom:1px solid var(--line)}
+td.num{text-align:right} th.num{text-align:right}
+td .ex{font-family:var(--f-mono);font-size:.68rem;color:var(--muted)}
+.empty{color:var(--muted);font-size:.88rem}
+
+.learn{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card p,.card li{max-width:65ch;font-size:.93rem}
+.card ul,.card ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.formula{font-family:var(--f-mono);background:var(--steel-soft);border-radius:4px;padding:10px 12px;font-size:.88rem;overflow-x:auto}
+.grades{border-collapse:collapse;width:100%;font-size:.88rem}
+.grades td,.grades th{padding:5px 8px;border-bottom:1px solid var(--line)}
+.grades th{position:static}
+.tasks{border-color:var(--accent)}
+.sectionhead{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">VG2 Industriteknologi · Materiallære</span>
+    <h1>Charpy-simulator</h1>
+    <p>Test hvor mye energi et materiale tåler før det brekker ved et brått slag. Velg materiale og temperatur, og slipp pendelen.</p>
+  </header>
+
+  <section class="lab">
+    <div class="panel machine">
+      <canvas id="rig" aria-label="Animasjon av Charpy-pendel" role="img"></canvas>
+      <div class="cap"><span>Pendel 300 J · start 150°</span><span>Slaghastighet ≈ 5,4 m/s</span><span>Prøve 10×10×55 mm, V-kjerv</span></div>
+    </div>
+
+    <div class="panel">
+      <div>
+        <label class="lbl" for="mat">Materiale</label>
+        <select id="mat"></select>
+        <p class="matinfo" id="matinfo" style="margin-top:8px"></p>
+      </div>
+      <div>
+        <div class="temprow"><label class="lbl" for="temp">Prøvetemperatur</label><span class="tempval" id="tempval">+20 °C</span></div>
+        <input type="range" id="temp" min="-100" max="60" step="5" value="20">
+        <div class="ticks"><span>−100</span><span>−60</span><span>−20</span><span>+20</span><span>+60</span></div>
+      </div>
+      <div class="btns">
+        <button class="go" id="go">Slipp pendelen</button>
+        <button id="clear">Tøm logg</button>
+      </div>
+      <div class="result" id="result" aria-live="polite">
+        <div>
+          <div class="kvlabel">Slagenergi KV2</div>
+          <div class="kv"><span id="kvnum">—</span><small>J</small></div>
+          <dl class="facts">
+            <dt>Utsving etter brudd</dt><dd id="beta">—</dd>
+            <dt>Seigt brudd</dt><dd id="shear">—</dd>
+            <dt>Bruddtype</dt><dd id="ftype">—</dd>
+          </dl>
+        </div>
+        <div class="frac"><canvas id="fracview" width="192" height="192"></canvas><span>Bruddflate</span></div>
+        <div class="verdict" id="verdict"><span class="empty">Slipp pendelen for å få et resultat.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="data">
+    <div class="panel">
+      <div class="charthead">
+        <h2 id="charttitle">Slagenergi mot temperatur</h2>
+        <label class="toggle"><input type="checkbox" id="showcurve"> Vis fasitkurve</label>
+      </div>
+      <svg class="chart" id="chart" viewBox="0 0 600 300" role="img" aria-label="Diagram over slagenergi mot temperatur"></svg>
+      <div class="legend"><span><i style="border-color:var(--accent)"></i>Dine målinger</span><span><i style="border-color:var(--steel);border-top-style:dashed"></i>Fasitkurve</span><span><i style="border-color:var(--ok);border-top-style:dotted"></i>Krav</span></div>
+    </div>
+    <div class="panel">
+      <h2>Prøvelogg</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>#</th><th>Materiale</th><th class="num">Temp</th><th class="num">KV2</th><th>Brudd</th></tr></thead>
+          <tbody id="log"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="sectionhead">
+    <span class="eyebrow">Forklaringer</span>
+    <h2>Slik henger det sammen</h2>
+  </div>
+
+  <section class="learn">
+    <article class="card">
+      <h3>Hva er slagseighet?</h3>
+      <p>Slagseighet er hvor mye energi et materiale tar opp før det brekker når det får et brått slag. Den måles i joule (J).</p>
+      <p>Høy verdi betyr at materialet er <b>seigt</b>: det bøyer seg og drar seg ut før det ryker. Lav verdi betyr at det er <b>sprøtt</b>: det knekker som glass, nesten uten forvarsel.</p>
+      <p>Strekkprøven sier hvor sterkt et materiale er. Slagprøven sier hvordan det oppfører seg når noe går galt.</p>
+    </article>
+
+    <article class="card">
+      <h3>Slik virker maskinen</h3>
+      <p>Pendelen løftes til startvinkelen α og har da 300 J stillingsenergi. Den svinger ned, slår av prøven i bunnen og fortsetter opp på andre siden.</p>
+      <p>Energien prøven tok opp mangler når pendelen svinger opp igjen. Jo lavere pendelen kommer (vinkel β), desto mer energi tok prøven. En slepeviser på skiven viser svaret direkte.</p>
+      <div class="formula">KV = m·g·L·(cos β − cos α)</div>
+      <p style="font-size:.86rem;color:var(--muted)">m = pendelmasse, g = 9,81 m/s², L = pendellengde. Prøven tas ut av kjølebadet og må slås innen 5 sekunder.</p>
+    </article>
+
+    <article class="card">
+      <h3>Prøvestaven</h3>
+      <ul>
+        <li>Størrelse 10 × 10 × 55 mm, maskinert etter ISO 148-1.</li>
+        <li>V-formet kjerv: 2 mm dyp, 45° vinkel, 0,25 mm radius i bunnen.</li>
+        <li>Kjerven gir spenningskonsentrasjon, så bruddet starter alltid samme sted.</li>
+        <li>Hammeren treffer på motsatt side av kjerven.</li>
+      </ul>
+      <p>Resultatet skrives <b>KV2</b>: K for slag, V for V-kjerv og 2 for hammerens eggradius i mm.</p>
+    </article>
+
+    <article class="card">
+      <h3>Overgangstemperatur</h3>
+      <p>Vanlig stål blir sprøtt i kulde. Kurven har tre deler: en <b>øvre hylle</b> (seigt), et <b>overgangsområde</b> og en <b>nedre hylle</b> (sprøtt).</p>
+      <p>I overgangsområdet spriker resultatene mye. Derfor tester man alltid tre prøver og bruker gjennomsnittet.</p>
+      <p>Rustfritt austenittisk stål og aluminium har en annen krystallstruktur (kubisk flatesentrert) og blir <b>ikke</b> sprø i kulde. Derfor brukes de i LNG-tanker og frysere.</p>
+    </article>
+
+    <article class="card">
+      <h3>Les bruddflaten</h3>
+      <ul>
+        <li><b>Seigt brudd:</b> matt, grå og fibrøs flate. Prøven er tydelig deformert, med «skjegg» langs kantene.</li>
+        <li><b>Sprøtt brudd:</b> blank, krystallinsk flate som glitrer. Prøven er nesten ikke deformert.</li>
+        <li><b>Blandet brudd:</b> seig ramme rundt en blank kjerne. Andel seigt brudd oppgis i prosent.</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <h3>Bokstavene i stålnavnet</h3>
+      <p>I EN 10025 forteller bokstavene etter fastheten hvilket slagkrav stålet garanterer.</p>
+      <div style="overflow-x:auto">
+      <table class="grades">
+        <thead><tr><th>Kode</th><th class="num">Minst</th><th class="num">Ved</th></tr></thead>
+        <tbody>
+          <tr><td>JR</td><td class="num">27 J</td><td class="num">+20 °C</td></tr>
+          <tr><td>J0</td><td class="num">27 J</td><td class="num">0 °C</td></tr>
+          <tr><td>J2</td><td class="num">27 J</td><td class="num">−20 °C</td></tr>
+          <tr><td>K2</td><td class="num">40 J</td><td class="num">−20 °C</td></tr>
+          <tr><td>NL</td><td class="num">27 J</td><td class="num">−50 °C</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">S355J2 betyr altså: flytegrense 355 MPa, og minst 27 J ved −20 °C.</p>
+    </article>
+
+    <article class="card">
+      <h3>Hvorfor bryr vi oss?</h3>
+      <p>Under andre verdenskrig knakk flere sveisede Liberty-skip i to i kaldt vann. Stålet var sterkt nok, men sprøtt i kulden.</p>
+      <p>I dag stiller standarder krav til slagseighet for konstruksjoner, trykkbeholdere og offshore. Sveiser og varmepåvirket sone slagtestes også, fordi sveising kan gjøre stålet sprøere.</p>
+    </article>
+
+    <article class="card tasks">
+      <h3>Oppgaver</h3>
+      <ol>
+        <li>Test S235JR fra +40 °C ned til −40 °C i steg på 10 °C. Ved hvilken temperatur faller verdien under 27 J?</li>
+        <li>Test S355J2 tre ganger ved −20 °C. Regn ut gjennomsnittet. Er stålet godkjent?</li>
+        <li>Sammenlign S355J2 og 316L ved −80 °C. Se på bruddflatene. Hvorfor oppfører de seg så ulikt?</li>
+        <li>Gråstøpejern gir nesten ingen slagenergi. Hva betyr det for hvor du kan bruke det?</li>
+      </ol>
+    </article>
+  </section>
+</div>
+
+<script>
+(function(){
+const MATS=[
+ {id:'s235',name:'S235JR',US:150,LS:5,T0:-8,C:14,mode:'bcc',req:{J:27,T:20},info:'Vanlig konstruksjonsstål for bjelker, plater og sveisede konstruksjoner innendørs.'},
+ {id:'s355j2',name:'S355J2',US:180,LS:6,T0:-40,C:13,mode:'bcc',req:{J:27,T:-20},info:'Sterkere konstruksjonsstål for bruer, kraner og utendørs konstruksjoner.'},
+ {id:'s355nl',name:'S355NL',US:200,LS:8,T0:-78,C:13,mode:'bcc',req:{J:27,T:-50},info:'Normalisert finkornstål for lave temperaturer: offshore, arktiske forhold og løfteutstyr.'},
+ {id:'c45',name:'C45 (normalisert)',US:55,LS:4,T0:18,C:18,mode:'bcc',req:null,info:'Maskinstål for aksler og tannhjul. Mer karbon gir høyere fasthet, men lavere seighet.'},
+ {id:'316l',name:'316L rustfritt',US:210,LS:175,T0:-150,C:60,mode:'fcc',req:null,info:'Austenittisk rustfritt stål. Har ingen sprø overgang, og prøven brekker ofte ikke helt av.'},
+ {id:'al6082',name:'Aluminium 6082-T6',US:21,LS:17,T0:-110,C:80,mode:'fcc',req:null,info:'Aluminium tar opp lite energi, men blir ikke sprøtt i kulde.'},
+ {id:'gjl',name:'Gråstøpejern GJL-250',US:4,LS:2.5,T0:0,C:60,mode:'brittle',req:null,info:'Grafittflakene virker som små sprekker inne i materialet. Bryter sprøtt ved alle temperaturer.'}
+];
+const E0=300, ALPHA=150*Math.PI/180, MGL=E0/(1-Math.cos(ALPHA)), LM=0.8, G=9.81, SLOW=0.55;
+const $=id=>document.getElementById(id);
+const matSel=$('mat'), tempIn=$('temp');
+MATS.forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.name;matSel.appendChild(o)});
+matSel.value='s355j2';
+let mat=MATS[1];
+let log=[];
+
+function model(m,T){return m.LS+(m.US-m.LS)/2*(1+Math.tanh((T-m.T0)/m.C))}
+function transF(m,T){return m.mode==='bcc'?1-Math.abs(Math.tanh((T-m.T0)/m.C)):0}
+function gauss(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+function shearOf(m,kv){if(m.mode==='fcc')return 100;if(m.mode==='brittle')return 0;return Math.max(0,Math.min(100,Math.round((kv-m.LS)/(m.US-m.LS)*100)))}
+function ftypeOf(s){return s>=90?'Seigt':s<=10?'Sprøtt':'Blandet'}
+function betaOf(kv){return Math.acos(1-(E0-kv)/MGL)}
+function runTest(m,T){
+  const base=model(m,T), sd=base*0.04+transF(m,T)*(m.US-m.LS)*0.13;
+  let kv=Math.max(m.mode==='brittle'?1.5:2,base+gauss()*sd); kv=Math.min(kv,290);
+  kv=Math.round(kv*(kv<20?10:1))/(kv<20?10:1);
+  const s=shearOf(m,kv);
+  return {mat:m.id,T,kv,shear:s,ftype:ftypeOf(s),beta:betaOf(kv),broken:!(m.mode==='fcc'&&kv>150),seed:Math.random()*1e9|0};
+}
+const fmtT=t=>(t>0?'+':t<0?'−':'')+Math.abs(t)+' °C';
+const fmtJ=v=>(v<20?v.toFixed(1):Math.round(v)).toString().replace('.',',');
+
+/* ---------- Rig canvas ---------- */
+const cv=$('rig'), ctx=cv.getContext('2d');
+let W=0,H=0,dpr=1,geo={};
+let st={theta:-ALPHA,omega:0,phase:'idle',impacted:false,pointer:0,pieces:[],test:null,specimen:true};
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+let C={};
+function readColors(){['--ink','--muted','--line','--accent','--steel','--steel-soft','--surface','--cold','--metal-dull','--metal-mid','--metal-dark','--metal-bright','--bad','--ok'].forEach(k=>C[k]=css(k))}
+function resize(){
+  const r=cv.getBoundingClientRect(); dpr=window.devicePixelRatio||1;
+  W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;
+  const m=22, base=34;
+  const L=Math.min((W/2-m)/1.16,(H-2*m-base)/(1.866+0.3));
+  const rH=0.14*L;
+  geo={L,rH,px:W/2,py:m+0.866*L+rH,sw:Math.max(8,0.075*L)};
+  geo.sx=geo.px+rH*0.95+geo.sw/2+2; geo.sy=geo.py+L;
+  draw();
+}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.roundRect?ctx.roundRect(x,y,w,h,r):ctx.rect(x,y,w,h)}
+function drawSpecimen(x,y,s,rot,kind){
+  ctx.save();ctx.translate(x,y);ctx.rotate(rot||0);
+  const T=+tempIn.value;
+  ctx.fillStyle=C['--metal-mid'];ctx.strokeStyle=C['--metal-dark'];ctx.lineWidth=1;
+  if(kind==='bent'){
+    ctx.beginPath();ctx.moveTo(-s*.5,-s*.9);ctx.lineTo(s*.35,0);ctx.lineTo(-s*.5,s*.9);ctx.lineTo(-s*.1,s*.9);ctx.lineTo(s*.7,0);ctx.lineTo(-s*.1,-s*.9);ctx.closePath();ctx.fill();ctx.stroke();
+  }else if(kind==='half'){
+    ctx.fillRect(-s/2,-s/4,s,s/2);ctx.strokeRect(-s/2,-s/4,s,s/2);
+  }else{
+    ctx.fillRect(-s/2,-s/2,s,s);ctx.strokeRect(-s/2,-s/2,s,s);
+    ctx.fillStyle=C['--surface'];ctx.beginPath();ctx.moveTo(s/2+.5,-s*.18);ctx.lineTo(s*.3,0);ctx.lineTo(s/2+.5,s*.18);ctx.closePath();ctx.fill();
+    if(T<0){ctx.globalAlpha=Math.min(.55,-T/140);ctx.fillStyle=C['--cold'];ctx.fillRect(-s/2,-s/2,s,s);ctx.globalAlpha=1}
+  }
+  ctx.restore();
+}
+function draw(){
+  if(!W)return;
+  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+  const {L,rH,px,py,sw,sx,sy}=geo;
+  // frame
+  ctx.fillStyle=C['--steel-soft'];
+  rr(px-W*0.42,sy+sw*0.9,W*0.84,10,2);ctx.fill();
+  ctx.strokeStyle=C['--line'];ctx.lineWidth=6;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(px-12,py);ctx.lineTo(px-0.42*L,sy+sw*0.9);ctx.moveTo(px+12,py);ctx.lineTo(px+0.42*L,sy+sw*0.9);ctx.stroke();
+  // anvil (behind)
+  ctx.fillStyle=C['--line'];ctx.fillRect(sx+sw/2,sy-sw*.9,sw*.7,sw*1.8+sw*.9);
+  // dial scale
+  const R=0.3*L;
+  ctx.lineWidth=1;ctx.strokeStyle=C['--muted'];
+  ctx.beginPath();for(let a=0;a<=ALPHA+1e-6;a+=0.02){const x=px+R*Math.sin(a),y=py+R*Math.cos(a);a?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke();
+  ctx.fillStyle=C['--muted'];ctx.font=`500 ${Math.max(9,L*0.045)}px ${css('--f-mono')}`;ctx.textAlign='center';ctx.textBaseline='middle';
+  for(let kv=0;kv<=300;kv+=25){const a=betaOf(kv),big=kv%50===0;
+    ctx.beginPath();ctx.moveTo(px+R*Math.sin(a),py+R*Math.cos(a));ctx.lineTo(px+(R+(big?8:4))*Math.sin(a),py+(R+(big?8:4))*Math.cos(a));ctx.stroke();
+    if(big&&kv<300)ctx.fillText(kv,px+(R+20)*Math.sin(a),py+(R+20)*Math.cos(a));}
+  ctx.fillText('J',px+(R+20)*Math.sin(0.12),py+(R+20)*Math.cos(0.12));
+  // drag pointer
+  if(st.pointer>0){ctx.strokeStyle=C['--accent'];ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+(R+6)*Math.sin(st.pointer),py+(R+6)*Math.cos(st.pointer));ctx.stroke()}
+  // specimen
+  if(st.specimen)drawSpecimen(sx,sy,sw,0,'whole');
+  // pendulum
+  const th=st.theta,hx=px+L*Math.sin(th),hy=py+L*Math.cos(th);
+  ctx.strokeStyle=C['--steel'];ctx.lineWidth=Math.max(4,L*0.03);ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(hx,hy);ctx.stroke();
+  ctx.save();ctx.translate(hx,hy);ctx.rotate(-th);
+  ctx.fillStyle=C['--steel'];rr(-rH,-rH*0.75,rH*2,rH*1.5,rH*0.25);ctx.fill();
+  ctx.fillStyle=C['--accent'];ctx.beginPath();ctx.moveTo(rH-1,-rH*0.35);ctx.lineTo(rH*1.0+sw*0.55,0);ctx.lineTo(rH-1,rH*0.35);ctx.closePath();ctx.fill();
+  ctx.restore();
+  ctx.fillStyle=C['--ink'];ctx.beginPath();ctx.arc(px,py,6,0,7);ctx.fill();
+  // pieces
+  st.pieces.forEach(p=>drawSpecimen(p.x,p.y,sw,p.rot,p.kind));
+  // labels
+  ctx.textAlign='left';ctx.fillStyle=C['--muted'];ctx.font=`500 ${Math.max(10,L*0.05)}px ${css('--f-mono')}`;
+  ctx.fillText(fmtT(+tempIn.value),sx-sw*0.6,sy+sw*0.9+24);
+  ctx.textAlign='right';ctx.fillText('α = 150°',px-0.5*L-rH,py-0.866*L-rH*0.2>12?py-0.866*L+rH*1.4:24);
+  if(st.phase==='done'&&st.test){ctx.textAlign='left';ctx.fillStyle=C['--accent'];ctx.fillText('β = '+(st.test.beta*180/Math.PI).toFixed(1).replace('.',',')+'°',px+R+28,py-6)}
+}
+
+let last=0;
+function frame(t){
+  const dtR=Math.min(0.033,(t-last)/1000||0.016);last=t;
+  if(st.phase==='swing'||st.phase==='after'){
+    let dt=dtR*SLOW;const n=Math.ceil(dt/0.002),h=dt/n;
+    for(let i=0;i<n&&st.phase!=='done';i++){
+      st.omega+=-(G/LM)*Math.sin(st.theta)*h;st.theta+=st.omega*h;
+      if(!st.impacted&&st.theta>=0){
+        st.impacted=true;st.theta=0;st.phase='after';
+        const E1=E0-st.test.kv;st.omega=Math.sqrt(Math.max(0,2*E1*G/(MGL*LM)));
+        spawnPieces();
+      }
+      if(st.impacted){st.pointer=Math.max(st.pointer,st.theta);
+        if(st.omega<=0){st.theta=st.test.beta;st.pointer=st.test.beta;st.phase='done';finish()}}
+    }
+  }
+  if(st.pieces.length){
+    const g=1400*SLOW;
+    st.pieces.forEach(p=>{p.vy+=g*dtR;p.x+=p.vx*dtR;p.y+=p.vy*dtR;p.rot+=p.vr*dtR});
+    st.pieces=st.pieces.filter(p=>p.y<H+40&&p.x<W+40);
+  }
+  draw();
+  if(st.phase!=='done'||st.pieces.length)requestAnimationFrame(frame);
+}
+function spawnPieces(){
+  st.specimen=false;const {sx,sy,sw,L}=geo;const sp=Math.max(120,(1-st.test.kv/320)*L*2.2);
+  if(st.test.broken){
+    st.pieces=[{x:sx,y:sy-sw/4,vx:sp*0.9,vy:-sp*0.55,rot:0,vr:-7,kind:'half'},{x:sx,y:sy+sw/4,vx:sp*0.75,vy:-sp*0.15,rot:0,vr:5,kind:'half'}];
+  }else st.pieces=[{x:sx,y:sy,vx:sp*0.7,vy:-sp*0.3,rot:0,vr:2,kind:'bent'}];
+}
+function strike(){
+  if(st.phase==='swing'||st.phase==='after')return;
+  const T=+tempIn.value;const test=runTest(mat,T);
+  st={theta:-ALPHA,omega:0,phase:'swing',impacted:false,pointer:0,pieces:[],test,specimen:true};
+  $('go').disabled=true;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){st.impacted=true;st.specimen=false;st.theta=test.beta;st.pointer=test.beta;st.phase='done';draw();finish();return}
+  last=performance.now();requestAnimationFrame(frame);
+}
+function finish(){
+  $('go').disabled=false;
+  const t=st.test;t.n=log.length+1;log.push(t);
+  showResult(t);renderLog();renderChart();
+}
+
+/* ---------- Result ---------- */
+function showResult(t){
+  const m=MATS.find(x=>x.id===t.mat);
+  $('kvnum').textContent=fmtJ(t.kv);
+  $('beta').textContent=(t.beta*180/Math.PI).toFixed(1).replace('.',',')+'°';
+  $('shear').textContent=t.shear+' %';
+  $('ftype').textContent=t.ftype+(t.broken?'':' (ikke helt avbrutt)');
+  drawFracture(t);
+  const v=$('verdict');let h='';
+  if(m.req){
+    const ok=t.kv>=m.req.J;
+    if(t.T===m.req.T){
+      h+=`<span><span class="pill ${ok?'ok':'bad'}">${ok?'Over kravet':'Under kravet'}</span> Krav for ${m.name}: minst ${m.req.J} J ved ${fmtT(m.req.T)}.</span>`;
+      const same=log.filter(x=>x.mat===m.id&&x.T===m.req.T).slice(-3);
+      if(same.length===3){const avg=same.reduce((a,b)=>a+b.kv,0)/3;const pass=avg>=m.req.J&&same.every(x=>x.kv>=m.req.J*0.7);
+        h+=`<span><span class="pill ${pass?'ok':'bad'}">${pass?'Godkjent':'Ikke godkjent'}</span> Snitt av siste 3 prøver: ${fmtJ(avg)} J. Ingen enkeltprøve kan ligge under 70 % av kravet.</span>`}
+      else h+=`<span style="color:var(--muted)">Standarden krever snitt av 3 prøver. Du har ${same.length} av 3 ved denne temperaturen.</span>`;
+    }else h+=`<span style="color:var(--muted)">Krav for ${m.name}: minst ${m.req.J} J ved ${fmtT(m.req.T)}. Still temperaturen dit for å sjekke.</span>`;
+  }else h+=`<span style="color:var(--muted)">${m.name} har ikke et standard slagkrav i navnet sitt.</span>`;
+  if(transF(m,t.T)>0.35)h+=`<span><span class="pill warn">Overgangsområde</span> Her spriker resultatene mye. Ta flere prøver.</span>`;
+  v.innerHTML=h;
+}
+function rng(seed){let s=seed>>>0||1;return()=>(s=(s*1664525+1013904223)>>>0)/4294967296}
+function drawFracture(t){
+  const c=$('fracview'),x=c.getContext('2d'),S=192;readColors();
+  x.clearRect(0,0,S,S);const r=rng(t.seed),f=t.shear/100;
+  x.fillStyle=C['--metal-dull'];x.fillRect(0,0,S,S);
+  for(let i=0;i<900;i++){x.fillStyle=r()<.5?C['--metal-dark']:C['--metal-mid'];x.globalAlpha=.35;x.fillRect(r()*S,r()*S,2,2)}
+  x.globalAlpha=1;
+  const inner=S*Math.sqrt(1-f)*0.92;
+  if(inner>2){const ox=(S-inner)/2,oy=S*0.12+(S*0.88-inner)/2;
+    x.fillStyle=C['--metal-bright'];x.fillRect(ox,oy,inner,inner*0.95);
+    for(let i=0;i<Math.max(8,inner*inner/90);i++){const px=ox+r()*inner,py=oy+r()*inner*0.95,s=3+r()*9;
+      x.fillStyle=[C['--metal-mid'],'#ffffff',C['--metal-bright']][r()*3|0];x.globalAlpha=.55+r()*.45;
+      x.beginPath();x.moveTo(px,py);x.lineTo(px+s,py+r()*s*.6);x.lineTo(px+r()*s*.5,py+s);x.closePath();x.fill()}
+    x.globalAlpha=1}
+  // notch at top
+  x.fillStyle=C['--surface'];x.fillRect(0,0,S,S*0.11);
+  x.strokeStyle=C['--metal-dark'];x.lineWidth=2;x.strokeRect(1,1,S-2,S-2);
+}
+
+/* ---------- Log & chart ---------- */
+function renderLog(){
+  const tb=$('log');
+  if(!log.length){tb.innerHTML='<tr><td colspan="5" class="empty">Ingen prøver ennå.</td></tr>';return}
+  tb.innerHTML=log.slice().reverse().map(t=>{const m=MATS.find(x=>x.id===t.mat);
+    return `<tr><td>${t.n}${t.ex?' <span class="ex">eks.</span>':''}</td><td>${m.name}</td><td class="num">${fmtT(t.T)}</td><td class="num">${fmtJ(t.kv)} J</td><td>${t.ftype}</td></tr>`}).join('');
+}
+function renderChart(){
+  readColors();
+  const svg=$('chart'),w=600,h=300,ml=46,mr=14,mt=14,mb=40,iw=w-ml-mr,ih=h-mt-mb;
+  const ymax=mat.US<30?(mat.US<8?10:30):Math.ceil(mat.US*1.2/50)*50;
+  const X=t=>ml+(t+100)/160*iw,Y=v=>mt+ih-(v/ymax)*ih;
+  let s='';const step=ymax<=10?2:ymax<=30?5:ymax<=100?20:50;
+  for(let v=0;v<=ymax;v+=step){s+=`<line x1="${ml}" x2="${w-mr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${ml-6}" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${v}</text>`}
+  for(let t=-100;t<=60;t+=20){s+=`<line x1="${X(t)}" x2="${X(t)}" y1="${mt+ih}" y2="${mt+ih+5}" stroke="var(--muted)"/><text x="${X(t)}" y="${mt+ih+18}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${t>0?'+':''}${t}</text>`}
+  s+=`<line x1="${X(0)}" x2="${X(0)}" y1="${mt}" y2="${mt+ih}" stroke="var(--muted)" stroke-dasharray="2 3" opacity=".6"/>`;
+  s+=`<text x="${ml+iw/2}" y="${h-4}" text-anchor="middle" font-size="11" fill="var(--muted)">Temperatur (°C)</text>`;
+  s+=`<text x="12" y="${mt+ih/2}" text-anchor="middle" font-size="11" fill="var(--muted)" transform="rotate(-90 12 ${mt+ih/2})">KV2 (J)</text>`;
+  if(mat.req&&mat.req.J<=ymax){s+=`<line x1="${ml}" x2="${w-mr}" y1="${Y(mat.req.J)}" y2="${Y(mat.req.J)}" stroke="var(--ok)" stroke-dasharray="1 4" stroke-width="2" stroke-linecap="round"/><circle cx="${X(mat.req.T)}" cy="${Y(mat.req.J)}" r="5" fill="none" stroke="var(--ok)" stroke-width="2"/><text x="${w-mr-4}" y="${Y(mat.req.J)-6}" text-anchor="end" font-size="11" fill="var(--ok)" font-family="var(--f-mono)">${mat.req.J} J ved ${fmtT(mat.req.T)}</text>`}
+  if($('showcurve').checked){let d='';for(let t=-100;t<=60;t+=2)d+=(d?'L':'M')+X(t).toFixed(1)+','+Y(model(mat,t)).toFixed(1);
+    s+=`<path d="${d}" fill="none" stroke="var(--steel)" stroke-width="2" stroke-dasharray="6 4"/>`}
+  const pts=log.filter(t=>t.mat===mat.id);
+  pts.forEach((t,i)=>{const last=i===pts.length-1;s+=`<circle cx="${X(t.T)}" cy="${Y(Math.min(t.kv,ymax))}" r="${last?6:4.5}" fill="${last?'var(--accent)':'var(--surface)'}" stroke="var(--accent)" stroke-width="2"><title>${fmtT(t.T)}: ${fmtJ(t.kv)} J</title></circle>`});
+  if(!pts.length)s+=`<text x="${ml+iw/2}" y="${mt+ih/2}" text-anchor="middle" font-size="13" fill="var(--muted)">Ingen målinger for ${mat.name} ennå</text>`;
+  svg.innerHTML=s;$('charttitle').textContent=mat.name+': KV2 mot temperatur';
+}
+
+/* ---------- UI ---------- */
+function setTempLabel(){const t=+tempIn.value,el=$('tempval');el.textContent=fmtT(t);el.className='tempval '+(t<0?'cold':t>30?'warm':'');draw()}
+function setMat(){mat=MATS.find(m=>m.id===matSel.value);$('matinfo').textContent=mat.info;renderChart()}
+matSel.addEventListener('change',setMat);
+tempIn.addEventListener('input',setTempLabel);
+$('go').addEventListener('click',strike);
+$('clear').addEventListener('click',()=>{log=[];renderLog();renderChart()});
+$('showcurve').addEventListener('change',renderChart);
+
+// eksempeldata
+[[20,168],[-20,96],[-50,14]].forEach(([T,kv],i)=>{const s=shearOf(MATS[1],kv);log.push({mat:'s355j2',T,kv,shear:s,ftype:ftypeOf(s),beta:betaOf(kv),broken:true,seed:1234+i,n:i+1,ex:true})});
+
+function refreshTheme(){readColors();draw();renderChart();if(log.length)drawFracture(st.test||log[log.length-1])}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',refreshTheme);
+new MutationObserver(refreshTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+readColors();setMat();setTempLabel();renderLog();
+const lastEx=log[log.length-1];st.test=lastEx;showResult(lastEx);
+new ResizeObserver(resize).observe(cv);
+if(document.fonts)document.fonts.ready.then(()=>draw());
+})();
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

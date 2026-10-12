@@ -1,0 +1,592 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1240px}
+:root[data-theme]{--paper:var(--lk-bg);--sheet:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--rule:var(--lk-line);--accent:var(--lk-orange);--ok:var(--lk-green);--bad:var(--lk-red);--f-display:var(--lk-font);--f-body:var(--lk-font);--f-mono:var(--lk-mono);}
+.wrap > header{display:none!important}
+</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Bjelke</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Mekanikk</div>
+      <h1>Bjelke</h1>
+      <p class="lk-lead">Se hvor mye en bjelke bøyer seg, og om den holder. Endre inspenning, profil, lengde og last.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg inspenning.</span></li><li><span>Velg profil og materiale.</span></li><li><span>Still inn lengde og last.</span></li><li><span>Se nedbøyning og utnyttelse. Under 100 % betyr at bjelken holder.</span></li></ol>
+      <a class="lk-hb" href="https://verkstedhandboka.vercel.app/#me12-nedboy" target="_blank" rel="noopener">Les mer i Verkstedhåndboka: 12.10 Dragere – nedbøyning ↗</a>
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Bjelkesimulatoren</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: verkstedtegning — kontrollpanel til venstre, tegning + diagrammer til høyre, stabler på mobil */
+:root{
+  --paper:#eef1ef; --sheet:#fbfcfb; --ink:#1a2321; --muted:#5b6865; --rule:#cdd5d2;
+  --steel:#36566a; --steel-soft:#c4d3dc; --accent:#d9861a; --moment:#8a3b6f; --shear:#2d7a5f;
+  --ok:#2d7a5f; --warn:#b8741a; --bad:#b23a2e; --grid:#e1e7e4;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#121816; --sheet:#1a2220; --ink:#e3ebe8; --muted:#94a39f; --rule:#2f3b38;
+  --steel:#8fb3c9; --steel-soft:#2e4250; --accent:#f0a540; --moment:#d68ab9; --shear:#5fc49d;
+  --ok:#5fc49d; --warn:#f0a540; --bad:#ef7b6e; --grid:#222c29; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#121816; --sheet:#1a2220; --ink:#e3ebe8; --muted:#94a39f; --rule:#2f3b38;
+  --steel:#8fb3c9; --steel-soft:#2e4250; --accent:#f0a540; --moment:#d68ab9; --shear:#5fc49d;
+  --ok:#5fc49d; --warn:#f0a540; --bad:#ef7b6e; --grid:#222c29; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:20px 40px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 20px;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:18px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,5vw,40px);letter-spacing:.01em;margin:0;line-height:1;text-wrap:balance}
+.tag{font-family:var(--f-display);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.layout{display:grid;grid-template-columns:340px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:16px;display:flex;flex-direction:column;gap:18px}
+fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+legend{font-family:var(--f-display);font-weight:600;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0;margin-bottom:8px}
+.sup-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sup{appearance:none;border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:3px;padding:8px 6px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font:500 13px/1.2 var(--f-body)}
+.sup svg{width:100%;height:34px}
+.sup[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--sheet)}
+.sup:focus-visible,select:focus-visible,input:focus-visible,.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+label.row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 10px;font-size:14px}
+label.row .lbl{color:var(--ink)}
+label.row input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--accent)}
+.num{display:flex;align-items:center;gap:4px}
+.num input{width:82px;text-align:right;font:500 14px var(--f-mono);background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:3px;padding:4px 6px}
+.num span{font:13px var(--f-mono);color:var(--muted);min-width:38px}
+select{width:100%;font:500 14px var(--f-body);background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:3px;padding:7px 8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg{display:flex;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.seg button{flex:1;appearance:none;border:0;background:var(--paper);color:var(--muted);font:500 13px var(--f-body);padding:6px 4px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--steel);color:var(--sheet)}
+.check{display:flex;gap:8px;align-items:center;font-size:14px}
+.check input{accent-color:var(--accent);width:16px;height:16px}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+.secprops{font:12.5px/1.6 var(--f-mono);color:var(--muted);background:var(--paper);border-radius:3px;padding:8px 10px;display:grid;grid-template-columns:auto 1fr;gap:0 12px}
+.secprops b{color:var(--ink);font-weight:600;text-align:right}
+.main{display:flex;flex-direction:column;gap:16px;min-width:0}
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:14px 16px;min-width:0}
+.card h2{font-family:var(--f-display);font-weight:600;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.card h2 small{font-family:var(--f-body);text-transform:none;letter-spacing:0;font-weight:400;font-size:12.5px}
+svg.draw{width:100%;height:auto;display:block}
+.results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+@media (max-width:640px){.results{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.res{background:var(--sheet);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.res .k{font-family:var(--f-display);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.res .v{font:600 22px var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.res .v small{font-size:13px;font-weight:400;color:var(--muted);margin-left:3px}
+.res .s{font-size:12.5px;color:var(--muted)}
+.chip{display:inline-block;font:600 11px var(--f-display);letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:2px;border:1px solid currentColor;align-self:flex-start}
+.chip.ok{color:var(--ok)} .chip.warn{color:var(--warn)} .chip.bad{color:var(--bad)}
+.formulas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:640px){.formulas{grid-template-columns:minmax(0,1fr)}}
+.f{border-left:2px solid var(--rule);padding-left:12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.f .t{font-size:13px;color:var(--muted)}
+.f .eq{font:600 15px var(--f-mono);overflow-x:auto}
+.f .calc{font:13px var(--f-mono);color:var(--muted);overflow-x:auto}
+.reac{font:13px/1.7 var(--f-mono);font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:4px 24px}
+.notes{font-size:13.5px;color:var(--muted);max-width:75ch;display:flex;flex-direction:column;gap:6px}
+.notes p{margin:0}
+.notes b{color:var(--ink);font-weight:600}
+text{font-family:var(--f-mono)}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Bjelkesimulatoren</h1>
+  <span class="tag">Nedbøyning · moment · spenning — VG2 Industriteknologi</span>
+</header>
+
+<div class="layout">
+<!-- KONTROLLER -->
+<aside class="panel">
+  <fieldset>
+    <legend>1 · Inspenning</legend>
+    <div class="sup-grid" id="supports"></div>
+  </fieldset>
+
+  <fieldset>
+    <legend>2 · Profil</legend>
+    <select id="family" aria-label="Profiltype"></select>
+    <select id="size" aria-label="Dimensjon"></select>
+    <div id="custom" class="two" hidden></div>
+    <div id="axisWrap">
+      <div class="seg" role="group" aria-label="Bøyeakse">
+        <button type="button" id="axStrong" aria-pressed="true">Sterk akse (y)</button>
+        <button type="button" id="axWeak" aria-pressed="false">Svak akse (z)</button>
+      </div>
+    </div>
+    <div class="secprops" id="secprops"></div>
+  </fieldset>
+
+  <fieldset>
+    <legend>3 · Materiale</legend>
+    <select id="material" aria-label="Materiale"></select>
+  </fieldset>
+
+  <fieldset>
+    <legend>4 · Lengde og last</legend>
+    <label class="row"><span class="lbl">Lengde L</span>
+      <span class="num"><input id="Ln" type="number" min="200" max="12000" step="50"><span>mm</span></span>
+      <input id="L" type="range" min="200" max="12000" step="50"></label>
+    <label class="row"><span class="lbl">Punktlast P</span>
+      <span class="num"><input id="Pn" type="number" min="0" max="200" step="0.5"><span>kN</span></span>
+      <input id="P" type="range" min="0" max="100" step="0.5"></label>
+    <label class="row"><span class="lbl">Plassering a</span>
+      <span class="num"><input id="an" type="number" min="0" step="10"><span>mm</span></span>
+      <input id="a" type="range" min="0" max="1000" step="1"></label>
+    <label class="row"><span class="lbl">Jevnt fordelt last q</span>
+      <span class="num"><input id="qn" type="number" min="0" max="100" step="0.1"><span>kN/m</span></span>
+      <input id="q" type="range" min="0" max="40" step="0.1"></label>
+    <label class="check"><input type="checkbox" id="sw"> Ta med egenvekt av bjelken</label>
+  </fieldset>
+
+  <fieldset>
+    <legend>5 · Krav til nedbøyning</legend>
+    <select id="limit" aria-label="Nedbøyningskrav">
+      <option value="200">L/200 — sekundære konstruksjoner</option>
+      <option value="250">L/250 — vanlig krav</option>
+      <option value="300" selected>L/300 — bjelker med påkjenning</option>
+      <option value="500">L/500 — maskinbord, kranbaner</option>
+    </select>
+  </fieldset>
+</aside>
+
+<!-- RESULTATER -->
+<section class="main">
+  <div class="results" id="results"></div>
+
+  <div class="card">
+    <h2>Nedbøyd form <small id="scaleNote"></small></h2>
+    <svg class="draw" id="beamSvg" viewBox="0 0 800 250" role="img" aria-label="Bjelke med laster og nedbøyd form"></svg>
+  </div>
+
+  <div class="card">
+    <h2>Momentdiagram M <small>tegnet på strekksiden</small></h2>
+    <svg class="draw" id="mSvg" viewBox="0 0 800 170" role="img" aria-label="Momentdiagram"></svg>
+  </div>
+
+  <div class="card">
+    <h2>Skjærkraftdiagram V</h2>
+    <svg class="draw" id="vSvg" viewBox="0 0 800 170" role="img" aria-label="Skjærkraftdiagram"></svg>
+  </div>
+
+  <div class="card">
+    <h2>Opplagerkrefter</h2>
+    <div class="reac" id="reac"></div>
+  </div>
+
+  <div class="card">
+    <h2>Kontroll mot håndformler <small id="fNote"></small></h2>
+    <div class="formulas" id="formulas"></div>
+  </div>
+
+  <div class="card notes">
+    <p><b>Slik regner simulatoren:</b> Bjelken deles i 200 elementer og løses med elementmetoden (Euler–Bernoulli bjelketeori). Den tåler punktlast og jevnt fordelt last samtidig, i hvilken som helst inspenning. Håndformlene over gjelder én last om gangen og kan brukes til å sjekke svaret.</p>
+    <p><b>Stivhet EI</b> bestemmer nedbøyningen: E er materialets elastisitetsmodul, I er profilets annet arealmoment. Dobler du høyden på en rektangulær bjelke, blir I åtte ganger større.</p>
+    <p><b>Spenning</b> σ = M / W, der W er motstandsmomentet. Utnyttelsen er σ delt på flytegrensen f<sub>y</sub>. Dette er en forenklet kontroll uten sikkerhetsfaktorer, knekking eller vipping. Ekte dimensjonering etter Eurokode 3 krever mer.</p>
+    <p><b>Hulprofiler</b> regnes uten hjørneradius, så I og W blir noen prosent høyere enn i produsentens tabeller.</p>
+  </div>
+</section>
+</div>
+</div>
+
+<script>
+// ---------- DATA ----------
+// Tabellprofiler: [navn, Iy cm4, Wy cm3, Iz cm4, Wz cm3, kg/m]
+const TABLES = {
+  IPE: [["IPE 80",80.1,20.0,8.49,3.69,6.0],["IPE 100",171,34.2,15.9,5.79,8.1],["IPE 120",318,53.0,27.7,8.65,10.4],["IPE 140",541,77.3,44.9,12.3,12.9],["IPE 160",869,109,68.3,16.7,15.8],["IPE 180",1317,146,101,22.2,18.8],["IPE 200",1943,194,142,28.5,22.4],["IPE 220",2772,252,205,37.3,26.2],["IPE 240",3892,324,284,47.3,30.7],["IPE 270",5790,429,420,62.2,36.1],["IPE 300",8356,557,604,80.5,42.2],["IPE 330",11770,713,788,98.5,49.1],["IPE 360",16270,904,1043,123,57.1],["IPE 400",23130,1160,1318,146,66.3]],
+  HEA: [["HE 100 A",349,72.8,134,26.8,16.7],["HE 120 A",606,106,231,38.5,19.9],["HE 140 A",1033,155,389,55.6,24.7],["HE 160 A",1673,220,616,76.9,30.4],["HE 180 A",2510,294,925,103,35.5],["HE 200 A",3692,389,1336,134,42.3],["HE 220 A",5410,515,1955,178,50.5],["HE 240 A",7763,675,2769,231,60.3],["HE 260 A",10450,836,3668,282,68.2],["HE 280 A",13670,1013,4763,340,76.4],["HE 300 A",18260,1260,6310,421,88.3]],
+  HEB: [["HE 100 B",450,89.9,167,33.5,20.4],["HE 120 B",864,144,318,52.9,26.7],["HE 140 B",1509,216,550,78.5,33.7],["HE 160 B",2492,311,889,111,42.6],["HE 180 B",3831,426,1363,151,51.2],["HE 200 B",5696,570,2003,200,61.3],["HE 220 B",8091,736,2843,258,71.5],["HE 240 B",11260,938,3923,327,83.2],["HE 260 B",14920,1148,5135,395,93.0],["HE 280 B",19270,1376,6595,471,103],["HE 300 B",25170,1678,8563,571,117]],
+  UNP: [["UNP 80",106,26.5,19.4,6.36,8.64],["UNP 100",206,41.2,29.3,8.49,10.6],["UNP 120",364,60.7,43.2,11.1,13.4],["UNP 140",605,86.4,62.7,14.8,16.0],["UNP 160",925,116,85.3,18.3,18.8],["UNP 180",1350,150,114,22.4,22.0],["UNP 200",1910,191,148,27.0,25.3],["UNP 220",2690,245,197,33.6,29.4],["UNP 240",3600,300,248,39.6,33.2],["UNP 260",4820,371,317,47.7,37.9],["UNP 300",8030,535,495,67.8,46.2]]
+};
+const SQ = [[40,40,3],[50,50,4],[60,60,4],[70,70,5],[80,80,5],[100,100,5],[100,100,8],[120,120,6],[150,150,8],[200,200,10]];
+const RHS = [[60,40,3],[80,40,4],[100,50,4],[100,60,5],[120,60,5],[120,80,6],[150,100,6],[200,100,6],[200,100,8],[250,150,8]];
+const CHS = [[33.7,3.2],[42.4,3.2],[48.3,4],[60.3,4],[76.1,4],[88.9,5],[114.3,6],[139.7,6.3],[168.3,8]];
+
+const FAMILIES = [
+  {id:"IPE",name:"IPE — I-bjelke",kind:"table",axis:true},
+  {id:"HEA",name:"HEA — bredflenset, lett",kind:"table",axis:true},
+  {id:"HEB",name:"HEB — bredflenset, tung",kind:"table",axis:true},
+  {id:"UNP",name:"UNP — U-profil",kind:"table",axis:true},
+  {id:"SQ",name:"Kvadratisk hulprofil (KFHUP)",kind:"sq",axis:false},
+  {id:"RHS",name:"Rektangulært hulprofil (RHS)",kind:"rhs",axis:true},
+  {id:"CHS",name:"Rundrør (CHS)",kind:"chs",axis:false},
+  {id:"FLAT",name:"Flatstål / massiv rektangel",kind:"flat",axis:false},
+  {id:"ROUND",name:"Rundstål",kind:"round",axis:false}
+];
+
+const MATERIALS = [
+  {id:"s235",name:"Konstruksjonsstål S235",E:210000,fy:235,rho:7850},
+  {id:"s355",name:"Konstruksjonsstål S355",E:210000,fy:355,rho:7850},
+  {id:"ss",name:"Rustfritt 1.4301 (304)",E:200000,fy:210,rho:7900},
+  {id:"alu",name:"Aluminium 6082-T6",E:70000,fy:250,rho:2700},
+  {id:"c24",name:"Konstruksjonstre C24",E:11000,fy:24,rho:420}
+];
+
+const SUPPORTS = [
+  {id:"ss",name:"Fritt opplagt",fixed:n=>[0,2*n]},
+  {id:"cant",name:"Utkraget",fixed:n=>[0,1]},
+  {id:"ff",name:"Fast innspent",fixed:n=>[0,1,2*n,2*n+1]},
+  {id:"fp",name:"Innspent + opplagt",fixed:n=>[0,1,2*n]}
+];
+
+// ---------- STATE ----------
+const S = {support:"ss",family:"IPE",size:4,axis:"y",mat:"s235",L:4000,P:10,a:2000,q:2,sw:true,limit:300,flatB:60,flatH:10,roundD:40};
+const $ = id => document.getElementById(id);
+const fmt = (v,d=1) => Number.isFinite(v) ? v.toLocaleString("nb-NO",{minimumFractionDigits:d,maximumFractionDigits:d}) : "–";
+
+// ---------- SEKSJONSDATA (mm-enheter) ----------
+function section(){
+  const f = FAMILIES.find(x=>x.id===S.family), mat = MATERIALS.find(m=>m.id===S.mat);
+  let I,W,A,name,h,shape;
+  if(f.kind==="table"){
+    const r = TABLES[f.id][S.size]; name=r[0];
+    const y = S.axis==="y";
+    I=(y?r[1]:r[3])*1e4; W=(y?r[2]:r[4])*1e3; A=r[5]/7850*1e6; shape=f.id==="UNP"?"U":"I";
+  } else if(f.kind==="sq"||f.kind==="rhs"){
+    let [B,H,t] = (f.kind==="sq"?SQ:RHS)[S.size];
+    name = `${B}×${H}×${t}`;
+    if(f.kind==="rhs" && S.axis==="z") [B,H]=[H,B];
+    I=(B*H**3-(B-2*t)*(H-2*t)**3)/12; W=I/(H/2); A=B*H-(B-2*t)*(H-2*t); shape="box";
+  } else if(f.kind==="chs"){
+    const [D,t]=CHS[S.size]; const d=D-2*t; name=`Ø${D}×${t}`;
+    I=Math.PI/64*(D**4-d**4); W=I/(D/2); A=Math.PI/4*(D*D-d*d); shape="tube";
+  } else if(f.kind==="flat"){
+    const b=S.flatB,hh=S.flatH; name=`${b}×${hh}`;
+    I=b*hh**3/12; W=b*hh*hh/6; A=b*hh; shape="rect";
+  } else {
+    const d=S.roundD; name=`Ø${d}`;
+    I=Math.PI*d**4/64; W=Math.PI*d**3/32; A=Math.PI*d*d/4; shape="rod";
+  }
+  const massPerM = A*1e-6*mat.rho; // kg/m
+  return {I,W,A,name,massPerM,shape,mat};
+}
+
+// ---------- FEM-LØSER ----------
+// Enheter: N, mm. Opp er positiv, laster virker nedover.
+function solve(L,EI,supportId,P,a,q,N=200){
+  const n=2*(N+1), le=L/N;
+  const K=new Float64Array(n*n), F=new Float64Array(n);
+  const c=EI/le**3, l=le, l2=le*le;
+  const ke=[[12,6*l,-12,6*l],[6*l,4*l2,-6*l,2*l2],[-12,-6*l,12,-6*l],[6*l,2*l2,-6*l,4*l2]];
+  for(let e=0;e<N;e++){
+    const d=2*e;
+    for(let i=0;i<4;i++)for(let j=0;j<4;j++)K[(d+i)*n+d+j]+=c*ke[i][j];
+    F[d]-=q*le/2; F[d+1]-=q*l2/12; F[d+2]-=q*le/2; F[d+3]+=q*l2/12;
+  }
+  const k=Math.round(a/le); const aSnap=k*le;
+  F[2*k]-=P;
+  const Ko=K.slice(), Fo=F.slice();
+  const fixed=SUPPORTS.find(s=>s.id===supportId).fixed(N);
+  for(const d of fixed){
+    for(let j=0;j<n;j++){K[d*n+j]=0;K[j*n+d]=0}
+    K[d*n+d]=1; F[d]=0;
+  }
+  // båndløser (halv båndbredde 3)
+  const bw=3;
+  for(let p=0;p<n;p++){
+    const piv=K[p*n+p];
+    for(let i=p+1;i<=Math.min(n-1,p+bw);i++){
+      const fct=K[i*n+p]/piv; if(!fct)continue;
+      for(let j=p;j<=Math.min(n-1,p+bw);j++)K[i*n+j]-=fct*K[p*n+j];
+      F[i]-=fct*F[p];
+    }
+  }
+  const u=new Float64Array(n);
+  for(let i=n-1;i>=0;i--){
+    let s=F[i]; for(let j=i+1;j<=Math.min(n-1,i+bw);j++)s-=K[i*n+j]*u[j];
+    u[i]=s/K[i*n+i];
+  }
+  const R={};
+  for(const d of fixed){let s=0;for(let j=Math.max(0,d-bw);j<=Math.min(n-1,d+bw);j++)s+=Ko[d*n+j]*u[j];R[d]=s-Fo[d]}
+  const Rv0=R[0]||0, Mr0=R[1]||0, RvN=R[2*N]||0, MrN=R[2*N+1]||0;
+  // V og M fra venstre frilegeme. M positiv = strekk i underkant.
+  const VM=(x,right)=>{
+    let V=Rv0-q*x, M=Rv0*x-Mr0-q*x*x/2;
+    if(x>aSnap||(right&&x>=aSnap)){V-=P;M-=P*(x-aSnap)}
+    return [V,M];
+  };
+  const xs=[],v=[];
+  for(let i=0;i<=N;i++){xs.push(i*le);v.push(u[2*i])}
+  // prøvepunkter for diagram, med sprang ved punktlast
+  const sx=[];
+  for(let i=0;i<=400;i++)sx.push({x:L*i/400,r:false});
+  sx.push({x:aSnap,r:false},{x:aSnap,r:true});
+  sx.sort((A,B)=>A.x-B.x||(A.r-B.r));
+  const Vs=[],Ms=[];
+  for(const p of sx){
+    // ved x=0 vises verdien rett innenfor opplegget
+    const [V,M]=VM(p.x,p.r); Vs.push(V); Ms.push(M);
+  }
+  // endepunkter: skjærkraft faller til null utenfor bjelken
+  return {xs,v,sx:sx.map(p=>p.x),Vs,Ms,Rv0,Mr0,RvN,MrN,aSnap,le};
+}
+
+// ---------- UI-BYGGING ----------
+const supIcon = id => {
+  const beam='<line x1="14" y1="12" x2="86" y2="12" stroke="currentColor" stroke-width="3"/>';
+  const pin=x=>`<path d="M${x} 13 l-6 10 h12z" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="${x-9}" y1="25" x2="${x+9}" y2="25" stroke="currentColor" stroke-width="1.5"/>`;
+  const roll=x=>`<path d="M${x} 13 l-6 8 h12z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="${x-3}" cy="24" r="2" fill="none" stroke="currentColor"/><circle cx="${x+3}" cy="24" r="2" fill="none" stroke="currentColor"/><line x1="${x-9}" y1="27.5" x2="${x+9}" y2="27.5" stroke="currentColor" stroke-width="1.5"/>`;
+  const wallL='<line x1="14" y1="2" x2="14" y2="24" stroke="currentColor" stroke-width="2"/><path d="M14 4 l-5 4 M14 10 l-5 4 M14 16 l-5 4 M14 22 l-5 4" stroke="currentColor"/>';
+  const wallR='<line x1="86" y1="2" x2="86" y2="24" stroke="currentColor" stroke-width="2"/><path d="M86 4 l5 4 M86 10 l5 4 M86 16 l5 4 M86 22 l5 4" stroke="currentColor"/>';
+  const parts={ss:pin(20)+roll(80),cant:wallL,ff:wallL+wallR,fp:wallL+roll(80)}[id];
+  return `<svg viewBox="0 0 100 32" aria-hidden="true">${beam}${parts}</svg>`;
+};
+$("supports").innerHTML=SUPPORTS.map(s=>`<button type="button" class="sup" id="sup-${s.id}" data-id="${s.id}" aria-pressed="${s.id===S.support}">${supIcon(s.id)}${s.name}</button>`).join("");
+$("supports").addEventListener("click",e=>{
+  const b=e.target.closest(".sup"); if(!b)return;
+  const prev=S.support; S.support=b.dataset.id;
+  if(S.support==="cant" && prev!=="cant") S.a=S.L;           // utkraget: last ytterst
+  else if(prev==="cant" && S.support!=="cant") S.a=S.L/2;     // tilbake til midten
+  document.querySelectorAll(".sup").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  syncInputs(); update();
+});
+$("family").innerHTML=FAMILIES.map(f=>`<option value="${f.id}">${f.name}</option>`).join("");
+$("material").innerHTML=MATERIALS.map(m=>`<option value="${m.id}">${m.name} — E ${fmt(m.E/1000,0)} GPa, f<sub>y</sub> ${m.fy} MPa</option>`.replace(/<\/?sub>/g,"")).join("");
+
+function fillSizes(){
+  const f=FAMILIES.find(x=>x.id===S.family);
+  let opts=[];
+  if(f.kind==="table")opts=TABLES[f.id].map(r=>r[0]);
+  else if(f.kind==="sq")opts=SQ.map(r=>`${r[0]}×${r[1]}×${r[2]} mm`);
+  else if(f.kind==="rhs")opts=RHS.map(r=>`${r[0]}×${r[1]}×${r[2]} mm`);
+  else if(f.kind==="chs")opts=CHS.map(r=>`Ø${String(r[0]).replace(".",",")}×${String(r[1]).replace(".",",")} mm`);
+  const custom = f.kind==="flat"||f.kind==="round";
+  $("size").hidden=custom; $("custom").hidden=!custom;
+  if(!custom){
+    $("size").innerHTML=opts.map((o,i)=>`<option value="${i}">${o}</option>`).join("");
+    if(S.size>=opts.length)S.size=Math.floor(opts.length/2);
+    $("size").value=S.size;
+  } else if(f.kind==="flat"){
+    $("custom").innerHTML=`<label class="row"><span class="lbl">Bredde b</span><span class="num"><input id="fb" type="number" min="5" max="500" step="1" value="${S.flatB}"><span>mm</span></span></label><label class="row"><span class="lbl">Høyde h</span><span class="num"><input id="fh" type="number" min="2" max="500" step="1" value="${S.flatH}"><span>mm</span></span></label>`;
+    $("fb").oninput=e=>{S.flatB=Math.max(1,+e.target.value||1);update()};
+    $("fh").oninput=e=>{S.flatH=Math.max(1,+e.target.value||1);update()};
+  } else {
+    $("custom").innerHTML=`<label class="row" style="grid-column:1/-1"><span class="lbl">Diameter d</span><span class="num"><input id="rd" type="number" min="3" max="400" step="1" value="${S.roundD}"><span>mm</span></span></label>`;
+    $("rd").oninput=e=>{S.roundD=Math.max(1,+e.target.value||1);update()};
+  }
+  $("axisWrap").hidden=!f.axis;
+  if(!f.axis)S.axis="y";
+  setAxis(S.axis);
+}
+function setAxis(ax){S.axis=ax;$("axStrong").setAttribute("aria-pressed",ax==="y");$("axWeak").setAttribute("aria-pressed",ax==="z")}
+$("family").onchange=e=>{S.family=e.target.value;S.size=3;fillSizes();update()};
+$("size").onchange=e=>{S.size=+e.target.value;update()};
+$("axStrong").onclick=()=>{setAxis("y");update()};
+$("axWeak").onclick=()=>{setAxis("z");update()};
+$("material").onchange=e=>{S.mat=e.target.value;update()};
+$("sw").onchange=e=>{S.sw=e.target.checked;update()};
+$("limit").onchange=e=>{S.limit=+e.target.value;update()};
+
+function bindPair(r,nId,key,after){
+  const set=v=>{S[key]=v;after&&after();syncInputs();update()};
+  $(r).oninput=e=>set(+e.target.value);
+  $(nId).onchange=e=>{let v=+e.target.value;if(!Number.isFinite(v))return;set(Math.max(+$(nId).min||0,v))};
+}
+bindPair("L","Ln","L",()=>{S.L=Math.max(200,S.L);if(S.support==="cant")S.a=S.L;S.a=Math.min(S.a,S.L)});
+bindPair("P","Pn","P");
+bindPair("a","an","a",()=>{S.a=Math.min(Math.max(0,S.a),S.L)});
+bindPair("q","qn","q");
+function syncInputs(){
+  $("L").value=S.L;$("Ln").value=S.L;
+  if(S.P>+$("P").max)$("P").max=S.P; $("P").value=S.P;$("Pn").value=S.P;
+  $("a").max=S.L;$("a").step=S.L/200;$("a").value=S.a;$("an").max=S.L;$("an").value=Math.round(S.a);
+  if(S.q>+$("q").max)$("q").max=S.q; $("q").value=S.q;$("qn").value=S.q;
+  $("sw").checked=S.sw;$("material").value=S.mat;$("family").value=S.family;
+}
+
+// ---------- TEGNING ----------
+const X0=60,X1=740;
+const sx=(x,L)=>X0+(X1-X0)*x/L;
+function supportSvg(type,x,y,side){
+  const st='stroke="var(--ink)" stroke-width="1.6" fill="none"';
+  if(type==="pin")return `<path d="M${x} ${y} l-11 18 h22z" ${st}/><line x1="${x-16}" y1="${y+18}" x2="${x+16}" y2="${y+18}" ${st}/>${hatchH(x-16,y+18,32)}`;
+  if(type==="roll")return `<path d="M${x} ${y} l-11 15 h22z" ${st}/><circle cx="${x-6}" cy="${y+19}" r="3.5" ${st}/><circle cx="${x+6}" cy="${y+19}" r="3.5" ${st}/><line x1="${x-16}" y1="${y+23}" x2="${x+16}" y2="${y+23}" ${st}/>${hatchH(x-16,y+23,32)}`;
+  // innspenning
+  const dir=side==="L"?-1:1; let h=`<line x1="${x}" y1="${y-34}" x2="${x}" y2="${y+34}" stroke="var(--ink)" stroke-width="2.5"/>`;
+  for(let k=-30;k<=30;k+=8)h+=`<line x1="${x}" y1="${y+k}" x2="${x+dir*9}" y2="${y+k+7}" stroke="var(--ink)" stroke-width="1"/>`;
+  return h;
+}
+function hatchH(x,y,w){let h="";for(let k=0;k<=w;k+=6)h+=`<line x1="${x+k}" y1="${y}" x2="${x+k-5}" y2="${y+6}" stroke="var(--ink)" stroke-width="1"/>`;return h}
+const arrow=(x,y1,y2,col,w=2)=>`<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2-7}" stroke="${col}" stroke-width="${w}"/><path d="M${x} ${y2} l-5 -9 h10z" fill="${col}"/>`;
+
+function drawBeam(res,L,P,q,qsw){
+  const yB=130; const vmax=Math.max(...res.v.map(Math.abs));
+  const scale = vmax>1e-9 ? 50/vmax : 0;
+  const realRatio = vmax>0 ? (50/vmax) : 0; // px per mm nedbøyning
+  const pxPerMmLen=(X1-X0)/L;
+  const mag = vmax>0 ? realRatio/pxPerMmLen : 0;
+  $("scaleNote").textContent = vmax>0 ? `nedbøyning forstørret ×${fmt(mag,0)}` : "";
+  let s="";
+  // rutenett
+  for(let gx=X0;gx<=X1;gx+=34)s+=`<line x1="${gx}" y1="20" x2="${gx}" y2="200" stroke="var(--grid)" stroke-width="1"/>`;
+  // udeformert bjelke
+  s+=`<rect x="${X0}" y="${yB-5}" width="${X1-X0}" height="10" fill="var(--steel-soft)" opacity=".55"/>`;
+  s+=`<line x1="${X0}" y1="${yB}" x2="${X1}" y2="${yB}" stroke="var(--muted)" stroke-dasharray="5 4" stroke-width="1"/>`;
+  // jevn last
+  const qTot=q+qsw;
+  if(qTot>0){
+    const top=60; s+=`<line x1="${X0}" y1="${top}" x2="${X1}" y2="${top}" stroke="var(--accent)" stroke-width="1.5"/>`;
+    for(let i=0;i<=17;i++){const x=X0+(X1-X0)*i/17;s+=arrow(x,top,yB-8,"var(--accent)",1.3)}
+    s+=`<text x="${X1}" y="${top-8}" text-anchor="end" font-size="13" fill="var(--accent)">q = ${fmt(qTot,2)} kN/m${qsw>0?` (inkl. egenvekt ${fmt(qsw,2)})`:""}</text>`;
+  }
+  // deformert bjelke
+  const pts=res.xs.map((x,i)=>`${sx(x,L).toFixed(1)},${(yB-res.v[i]*scale).toFixed(1)}`).join(" ");
+  s+=`<polyline points="${pts}" fill="none" stroke="var(--steel)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>`;
+  // opplegg
+  const t=S.support, yS=yB+6;
+  if(t==="ss")s+=supportSvg("pin",X0,yS)+supportSvg("roll",X1,yS);
+  if(t==="cant")s+=supportSvg("fix",X0,yB,"L");
+  if(t==="ff")s+=supportSvg("fix",X0,yB,"L")+supportSvg("fix",X1,yB,"R");
+  if(t==="fp")s+=supportSvg("fix",X0,yB,"L")+supportSvg("roll",X1,yS);
+  // punktlast
+  if(P>0){
+    const k=Math.round(res.aSnap/res.le), xp=sx(res.aSnap,L), yp=yB-res.v[k]*scale-7;
+    s+=arrow(xp,22,yp,"var(--ink)",2.6);
+    const anc= xp>X1-90?"end":xp<X0+90?"start":"middle";
+    s+=`<text x="${xp+(anc==="start"?6:anc==="end"?-6:0)}" y="16" text-anchor="${anc}" font-size="13" font-weight="600" fill="var(--ink)">P = ${fmt(P,1)} kN</text>`;
+  }
+  // maks nedbøyning
+  if(vmax>0){
+    let im=0;res.v.forEach((v,i)=>{if(Math.abs(v)>Math.abs(res.v[im]))im=i});
+    const xm=sx(res.xs[im],L), ym=yB-res.v[im]*scale;
+    s+=`<circle cx="${xm}" cy="${ym}" r="4.5" fill="var(--sheet)" stroke="var(--accent)" stroke-width="2"/>`;
+    const anc= xm>X1-120?"end":xm<X0+120?"start":"middle";
+    s+=`<text x="${xm}" y="${Math.min(ym+24,214)}" text-anchor="${anc}" font-size="13" font-weight="600" fill="var(--accent)">δmax ${fmt(Math.abs(res.v[im]),2)} mm</text>`;
+  }
+  // målsetting
+  const yd=236;
+  s+=`<line x1="${X0}" y1="${yd}" x2="${X1}" y2="${yd}" stroke="var(--muted)"/><line x1="${X0}" y1="${yd-6}" x2="${X0}" y2="${yd+6}" stroke="var(--muted)"/><line x1="${X1}" y1="${yd-6}" x2="${X1}" y2="${yd+6}" stroke="var(--muted)"/>`;
+  s+=`<rect x="370" y="${yd-9}" width="60" height="16" fill="var(--sheet)"/><text x="400" y="${yd+4}" text-anchor="middle" font-size="12" fill="var(--muted)">L = ${fmt(L,0)}</text>`;
+  $("beamSvg").innerHTML=s;
+}
+
+function drawDiagram(id,xsArr,vals,L,col,unit,factor,flip,dec){
+  const H=170, y0=85, data=vals.map(v=>v*factor);
+  const m=Math.max(...data.map(Math.abs),1e-9), sc=58/m;
+  const yy=v=>y0+(flip?1:-1)*v*sc;
+  let s=`<line x1="${X0}" y1="${y0}" x2="${X1}" y2="${y0}" stroke="var(--ink)" stroke-width="1.5"/>`;
+  s+=`<line x1="${X0}" y1="${y0-70}" x2="${X0}" y2="${y0+70}" stroke="var(--grid)"/><line x1="${X1}" y1="${y0-70}" x2="${X1}" y2="${y0+70}" stroke="var(--grid)"/>`;
+  let d=`M${X0} ${y0} `+xsArr.map((x,i)=>`L${sx(x,L).toFixed(1)} ${yy(data[i]).toFixed(1)}`).join(" ")+` L${X1} ${y0}Z`;
+  s+=`<path d="${d}" fill="${col}" fill-opacity=".16" stroke="${col}" stroke-width="2" stroke-linejoin="round"/>`;
+  // merk maks og min
+  let iMax=0,iMin=0; data.forEach((v,i)=>{if(v>data[iMax])iMax=i;if(v<data[iMin])iMin=i});
+  const lab=(i,below)=>{
+    const v=data[i]; if(Math.abs(v)<m*0.02)return "";
+    const x=sx(xsArr[i],L), y=yy(v);
+    const anc=x>X1-80?"end":x<X0+80?"start":"middle";
+    const ty = below ? Math.min(y+17,H-4) : Math.max(y-8,12);
+    return `<circle cx="${x}" cy="${y}" r="3" fill="${col}"/><text x="${x}" y="${ty}" text-anchor="${anc}" font-size="12.5" font-weight="600" fill="var(--ink)">${fmt(v,dec)} ${unit}</text>`;
+  };
+  const maxBelow = flip; // positiv verdi tegnes under når flip
+  s+=lab(iMax,maxBelow);
+  if(iMin!==iMax) s+=lab(iMin,!maxBelow);
+  $(id).innerHTML=s;
+}
+
+// ---------- HÅNDFORMLER ----------
+const FORM = {
+  ss:{P:{t:"P midt på spennet",d:"δ = P·L³ / (48·E·I)",dk:1/48,m:"M = P·L / 4",mk:1/4},q:{t:"Jevnt fordelt last q",d:"δ = 5·q·L⁴ / (384·E·I)",dk:5/384,m:"M = q·L² / 8",mk:1/8},pos:"midt på"},
+  cant:{P:{t:"P ytterst på utkragningen",d:"δ = P·L³ / (3·E·I)",dk:1/3,m:"M = P·L",mk:1},q:{t:"Jevnt fordelt last q",d:"δ = q·L⁴ / (8·E·I)",dk:1/8,m:"M = q·L² / 2",mk:1/2},pos:"ytterst"},
+  ff:{P:{t:"P midt på spennet",d:"δ = P·L³ / (192·E·I)",dk:1/192,m:"M = P·L / 8",mk:1/8},q:{t:"Jevnt fordelt last q",d:"δ = q·L⁴ / (384·E·I)",dk:1/384,m:"M = q·L² / 12 (ved innspenning)",mk:1/12},pos:"midt på"},
+  fp:{P:{t:"P midt på spennet",d:"δ = P·L³ / (48·√5·E·I)",dk:1/(48*Math.sqrt(5)),m:"M = 3·P·L / 16 (ved innspenning)",mk:3/16},q:{t:"Jevnt fordelt last q",d:"δ = q·L⁴ / (185·E·I)",dk:1/184.6,m:"M = q·L² / 8 (ved innspenning)",mk:1/8},pos:"midt på"}
+};
+
+// ---------- OPPDATER ----------
+function update(){
+  const sec=section(), mat=sec.mat, L=S.L, P=S.P*1000, q=S.q;
+  const qsw = S.sw ? sec.massPerM*9.81/1000 : 0; // kN/m = N/mm
+  const EI=mat.E*sec.I;
+  const res=solve(L,EI,S.support,P,S.a,q+qsw);
+  const vmax=Math.max(...res.v.map(Math.abs));
+  const Mmax=Math.max(...res.Ms.map(Math.abs)); // Nmm
+  const sigma=Mmax/sec.W;
+  const util=sigma/mat.fy;
+  const lim=L/S.limit;
+  const dRatio=vmax>0?L/vmax:Infinity;
+
+  // seksjon
+  $("secprops").innerHTML=`<span>Profil</span><b>${sec.name}</b><span>I</span><b>${fmt(sec.I/1e4,1)} cm⁴</b><span>W</span><b>${fmt(sec.W/1e3,1)} cm³</b><span>A</span><b>${fmt(sec.A/100,2)} cm²</b><span>Vekt</span><b>${fmt(sec.massPerM,1)} kg/m</b>`;
+
+  const dChip = vmax<=lim ? `<span class="chip ok">OK mot L/${S.limit}</span>` : `<span class="chip bad">Over L/${S.limit}</span>`;
+  const uChip = util<=0.8 ? `<span class="chip ok">OK</span>` : util<=1 ? `<span class="chip warn">Høy</span>` : `<span class="chip bad">Flyter</span>`;
+  $("results").innerHTML=`
+    <div class="res"><span class="k">Maks nedbøyning</span><span class="v">${fmt(vmax,2)}<small>mm</small></span><span class="s">L/${dRatio===Infinity?"∞":fmt(dRatio,0)} · krav ${fmt(lim,1)} mm</span>${dChip}</div>
+    <div class="res"><span class="k">Maks moment</span><span class="v">${fmt(Mmax/1e6,2)}<small>kNm</small></span><span class="s">største absoluttverdi</span></div>
+    <div class="res"><span class="k">Bøyespenning</span><span class="v">${fmt(sigma,0)}<small>MPa</small></span><span class="s">σ = M / W</span></div>
+    <div class="res"><span class="k">Utnyttelse</span><span class="v">${fmt(util*100,0)}<small>%</small></span><span class="s">av f<sub>y</sub> = ${mat.fy} MPa</span>${uChip}</div>`;
+
+  drawBeam(res,L,S.P,q,qsw);
+  drawDiagram("mSvg",res.sx,res.Ms,L,"var(--moment)","kNm",1e-6,true,2);
+  drawDiagram("vSvg",res.sx,res.Vs,L,"var(--shear)","kN",1e-3,false,2);
+
+  const r=[];
+  const sup=S.support;
+  r.push(`Venstre: R<sub>A</sub> = ${fmt(res.Rv0/1000,2)} kN`);
+  if(sup!=="ss")r.push(`M<sub>A</sub> = ${fmt(Math.abs(res.Mr0)/1e6,2)} kNm`);
+  if(sup!=="cant")r.push(`Høyre: R<sub>B</sub> = ${fmt(res.RvN/1000,2)} kN`);
+  if(sup==="ff")r.push(`M<sub>B</sub> = ${fmt(Math.abs(res.MrN)/1e6,2)} kNm`);
+  r.push(`<span style="color:var(--muted)">Sum last = ${fmt((P+(q+qsw)*L)/1000,2)} kN</span>`);
+  $("reac").innerHTML=r.map(x=>`<span>${x}</span>`).join("");
+
+  // håndformler
+  const F=FORM[sup];
+  const atStd = sup==="cant" ? Math.abs(res.aSnap-L)<1e-6 : Math.abs(res.aSnap-L/2)<L/200+1e-6;
+  $("fNote").textContent = S.P>0 && !atStd ? `punktlastformelen gjelder bare når P står ${F.pos}` : "";
+  const dP=F.P.dk*P*L**3/EI, mP=F.P.mk*P*L/1e6;
+  const qq=q+qsw, dQ=F.q.dk*qq*L**4/EI, mQ=F.q.mk*qq*L*L/1e6;
+  $("formulas").innerHTML=`
+    <div class="f"><span class="t">${F.P.t}</span><span class="eq">${F.P.d}</span><span class="eq">${F.P.m}</span>
+      <span class="calc">P = ${fmt(S.P,1)} kN → δ = ${fmt(dP,2)} mm, M = ${fmt(mP,2)} kNm</span></div>
+    <div class="f"><span class="t">${F.q.t}</span><span class="eq">${F.q.d}</span><span class="eq">${F.q.m}</span>
+      <span class="calc">q = ${fmt(qq,2)} kN/m → δ = ${fmt(dQ,2)} mm, M = ${fmt(mQ,2)} kNm</span></div>`;
+}
+
+fillSizes(); syncInputs(); update();
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

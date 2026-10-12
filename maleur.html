@@ -1,0 +1,638 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1040px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Måleur</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Måleteknikk</div>
+      <h1>Måleur</h1>
+      <p class="lk-lead">Les av en indikatorklokke, og mål kast og planhet. Hver strek på skiva er 0,01 mm.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Den lille viseren teller hele millimeter.</span></li><li><span>Den store viseren viser hundredeler: hver strek er 0,01 mm.</span></li><li><span>Legg sammen: 3 og 47 gir 3,47 mm.</span></li><li><span>Kast og planhet: nullstill skiva, mål, og regn største minus minste utslag.</span></li></ol>
+      
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Måleursimulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: verkstedtavle som i multimeter-simulatoren. Stort måleur (og oppspenningen) øverst, kontroller, oppgave og forklaring i to kolonner under. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c; --warn:#a86a00;
+  --bench:#dfe5e8; --bench-line:#c4ced3; --steel:#9aa6ad; --steel-dark:#5f6b72; --granite:#3d4448;
+  --display:"Barlow Condensed", "Arial Narrow", sans-serif;
+  --body:"Barlow", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Consolas", monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --bench:#232c31; --bench-line:#334047; --steel:#7d8a92; --steel-dark:#a9b5bc; --granite:#0d1012; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --bench:#232c31; --bench-line:#334047; --steel:#7d8a92; --steel-dark:#a9b5bc; --granite:#0d1012; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px 20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0;letter-spacing:.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.tabs button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:7px;cursor:pointer}
+.tabs button[aria-selected="true"],.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);flex-wrap:wrap}
+.label{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:14px;color:var(--muted)}
+.stagebody{display:grid;grid-template-columns:1fr;justify-items:center;gap:8px;padding:12px;background:var(--bench)}
+.stagebody.two{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:center}
+@media (max-width:720px){.stagebody.two{grid-template-columns:1fr}}
+#dial{width:100%;max-width:400px;height:auto;display:block;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}
+#dial.lock{cursor:default}
+#scene{width:100%;max-width:520px;height:auto;display:block;user-select:none}
+#scene .tx{fill:var(--ink)} #scene .txm{fill:var(--muted)}
+.notes{display:grid;gap:6px;padding:10px 14px;border-top:1px solid var(--line);min-height:46px;align-content:center}
+.note{font-size:15px;padding-left:12px;border-left:4px solid var(--line)}
+.note.bad{border-color:var(--bad);color:var(--bad);font-weight:600}
+.note.warn{border-color:var(--warn)}
+.note.info{border-color:var(--muted);color:var(--muted)}
+.note.ok{border-color:var(--ok)}
+.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.field{display:grid;gap:6px}
+.field>span{font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.field>span b{font-family:var(--mono);color:var(--ink);font-weight:700}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input[type=range]{width:100%;accent-color:var(--accent)}
+select,.answer input{font:600 16px var(--body);padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%}
+.btn{font:600 15px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:6px 10px;font-size:14px;font-family:var(--mono)}
+.readout{display:grid;gap:6px;font-variant-numeric:tabular-nums}
+.readout .r{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:4px;font-size:15px}
+.readout .r span:first-child{color:var(--muted)}
+.readout .r span:last-child{font-family:var(--mono);text-align:right}
+.readout .sum{font-size:24px;font-weight:700;border:0;padding-top:6px}
+.readout .sum span:first-child{font-family:var(--display);font-size:20px;color:var(--ink);font-weight:600;align-self:center}
+.hidden-val{filter:blur(7px);user-select:none}
+.task{font-family:var(--display);font-size:23px;font-weight:600;line-height:1.2;text-wrap:balance}
+.task b{color:var(--accent)}
+.answer{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.answer input{font:700 22px var(--mono);width:7ch}
+.answer .unit{font:600 18px var(--body);color:var(--muted)}
+.fb{padding:10px 12px;border-radius:8px;font-size:15px;border:1px solid var(--line)}
+.fb.ok{border-color:var(--ok);color:var(--ok)}
+.fb.bad{border-color:var(--bad);color:var(--bad)}
+.fb .why{display:block;color:var(--ink);margin-top:4px}
+.score{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.howto ol{margin:0;padding-left:20px;display:grid;gap:6px}
+.howto p{margin:0;color:var(--muted);font-size:15px}
+.howto h3{font-family:var(--display);font-size:19px;margin:4px 0 0;font-weight:600}
+.hint{font-size:13px;color:var(--muted)}
+table.ex{border-collapse:collapse;font-size:14px;width:100%}
+table.ex td,table.ex th{padding:4px 6px;border-bottom:1px solid var(--line);text-align:left}
+table.ex th{color:var(--muted);font-weight:600}
+table.ex td{font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Måleur</h1>
+      <p class="sub">Indikatorklokke 0–10 mm, delingsverdi 0,01 mm. Les av, nullstill og mål kast og planhet.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Modus">
+      <button role="tab" aria-selected="true" data-mode="utforsk">Utforsk</button>
+      <button role="tab" aria-selected="false" data-mode="lesav">Les av</button>
+      <button role="tab" aria-selected="false" data-mode="kast">Mål kast</button>
+      <button role="tab" aria-selected="false" data-mode="plan">Mål planhet</button>
+    </div>
+  </header>
+
+  <section class="stage" aria-label="Måleur og oppspenning">
+    <div class="stage-head"><span class="label" id="stagelabel">Måleuret</span><span id="draghint">Dra i måleuret for å dreie skiva.</span></div>
+    <div class="stagebody" id="stagebody">
+      <svg id="dial" viewBox="0 0 400 540" role="img" aria-label="Måleur"></svg>
+      <svg id="scene" viewBox="0 0 440 420" role="img" aria-label="Oppspenning" hidden></svg>
+    </div>
+    <div class="notes" id="notes" aria-live="polite"></div>
+  </section>
+
+  <div class="grid">
+    <section class="card" id="ctrlcard">
+      <span class="label">Betjening</span>
+      <div class="field" id="f-pos">
+        <span>Skyv spindelen inn <b id="v-pos"></b></span>
+        <input type="range" id="pos" min="0" max="10" step="0.01" value="1.25" aria-label="Spindelposisjon">
+        <div class="row">
+          <button class="btn sm" type="button" data-step="-0.1">−0,10</button>
+          <button class="btn sm" type="button" data-step="-0.01">−0,01</button>
+          <button class="btn sm" type="button" data-step="0.01">+0,01</button>
+          <button class="btn sm" type="button" data-step="0.1">+0,10</button>
+        </div>
+      </div>
+      <div class="field" id="f-d">
+        <span>Senk måleuret mot arbeidsstykket <b id="v-d"></b></span>
+        <input type="range" id="dset" min="-2" max="11" step="0.05" value="-1.5" aria-label="Høyde på måleuret">
+      </div>
+      <div class="field" id="f-th">
+        <span>Drei akselen <b id="v-th"></b></span>
+        <input type="range" id="th" min="0" max="360" step="1" value="0" aria-label="Vinkel">
+        <div class="row"><button class="btn" type="button" id="spin">Drei én runde</button></div>
+      </div>
+      <div class="field" id="f-x">
+        <span>Flytt måleuret langs platen <b id="v-x"></b></span>
+        <input type="range" id="x" min="0" max="200" step="1" value="0" aria-label="Posisjon langs platen">
+        <div class="row"><button class="btn" type="button" id="sweep">Kjør over hele platen</button></div>
+      </div>
+      <div class="field" id="f-bez">
+        <span>Skiva (dra i måleuret, eller bruk knappene)</span>
+        <div class="row">
+          <button class="btn primary" type="button" id="zero">Nullstill skiva</button>
+          <button class="btn sm" type="button" data-bez="-1">◀ 1</button>
+          <button class="btn sm" type="button" data-bez="1">1 ▶</button>
+        </div>
+      </div>
+      <label class="field" id="f-scale"><span>Skiveinndeling</span>
+        <select id="scale"><option value="cont">0–100 (fortløpende)</option><option value="bal">0–50–0 (balansert, ±)</option></select>
+      </label>
+    </section>
+
+    <section class="card" id="taskcard" hidden>
+      <span class="label" id="tasklabel">Oppgave</span>
+      <div class="task" id="tasktext"></div>
+      <form class="answer" id="ansform" autocomplete="off">
+        <input id="ans" inputmode="decimal" placeholder="0,00" aria-label="Svar i mm">
+        <span class="unit">mm</span>
+        <button class="btn primary" type="submit">Sjekk</button>
+        <button class="btn" type="button" id="newbtn">Ny oppgave</button>
+        <button class="btn" type="button" id="showbtn">Vis fasit</button>
+      </form>
+      <div id="fb" class="fb" hidden></div>
+      <div class="score" id="score"></div>
+    </section>
+
+    <section class="card">
+      <span class="label">Hva viser måleuret?</span>
+      <div class="readout" id="readout"></div>
+    </section>
+
+    <section class="card howto">
+      <span class="label">Slik måler du</span>
+      <h3>Avlesning</h3>
+      <ol>
+        <li>Den <b>lille viseren</b> teller hele millimeter. Les tallet den har passert.</li>
+        <li>Den <b>store viseren</b> går én runde per millimeter. Skiva har 100 streker, så hver strek er <b>0,01 mm</b>.</li>
+        <li>Legg sammen: lille viser 3 og store viser 47 gir 3 + 0,47 = <b>3,47 mm</b>.</li>
+        <li>Skiva kan dreies. Still 0 mot den store viseren (nullstill), så leser du endringen direkte.</li>
+      </ol>
+      <h3>Kast (rundløp)</h3>
+      <ol>
+        <li>Spenn opp akselen og sett måleuret i magnetstativet, vinkelrett på overflaten.</li>
+        <li>Senk måleuret til spindelen er skjøvet inn ca. 0,5–1 mm. Det kalles <b>forspenning</b>, og sørger for at spindelen aldri slipper.</li>
+        <li>Nullstill skiva og drei akselen én hel runde, sakte.</li>
+        <li>Noter største og minste utslag. <b>Kast = største − minste utslag.</b> Kastet er dobbelt så stort som senterforskyvningen (eksentrisiteten).</li>
+      </ol>
+      <h3>Planhet</h3>
+      <ol>
+        <li>Legg emnet på tre justerbare støtter på måleplaten. Juster til måleuret viser likt i endene.</li>
+        <li>Før måleuret langs flaten uten å løfte stativet fra måleplaten.</li>
+        <li><b>Planhetsavvik = største − minste utslag.</b></li>
+      </ol>
+      <div class="tw">
+        <table class="ex">
+          <tr><th>Lille viser</th><th>Store viser</th><th>Avlesning</th></tr>
+          <tr><td>0</td><td>8</td><td>0,08 mm</td></tr>
+          <tr><td>3</td><td>47</td><td>3,47 mm</td></tr>
+          <tr><td>6</td><td>90</td><td>6,90 mm</td></tr>
+          <tr><td>9</td><td>5</td><td>9,05 mm</td></tr>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const rad = d => d*Math.PI/180;
+  const fmt = (v, d=2) => v.toFixed(d).replace('.', ',').replace('-', '−');
+  const clamp = (v,a,b) => Math.min(b, Math.max(a, v));
+  const rnd = (a,b) => a + Math.random()*(b-a);
+
+  // ---------- Tilstand ----------
+  const st = {pos:1.25, bez:0, scale:'cont', zeroRef:null, d:-1.5, th:0, x:0};
+  let mode = 'utforsk', answered = false, revealed = false;
+  const score = {lesav:{ok:0,tot:0}, kast:{ok:0,tot:0}, plan:{ok:0,tot:0}};
+  let lesTask = 0, kastP = null, planP = null;
+
+  // ---------- Modeller ----------
+  function newKast(){
+    const e = Math.round(rnd(0.025, 0.12)*200)/200;
+    const p = {e, phi:rnd(0,360), ov:Math.random()<.5 ? 0 : rnd(0.004,0.015), psi:rnd(0,180)};
+    let mx=-1e9, mn=1e9; for(let t=0;t<360;t+=0.5){ const h = devKast(t,p); mx=Math.max(mx,h); mn=Math.min(mn,h); }
+    p.K = mx-mn; p.max=mx; p.min=mn; return p;
+  }
+  function devKast(t, p=kastP){ return p.e*Math.sin(rad(p.phi+t)) + p.ov*Math.cos(2*rad(90-t-p.psi)); }
+  function newPlan(){
+    const s = () => Math.random()<.5 ? -1 : 1;
+    const p = {A:s()*rnd(0.012,0.05), B:s()*rnd(0,0.015), C:s()*rnd(0,0.01)};
+    let mx=-1e9, mn=1e9; for(let i=0;i<=400;i++){ const h = devPlan(i/400,p); mx=Math.max(mx,h); mn=Math.min(mn,h); }
+    p.P = mx-mn; p.max=mx; p.min=mn; return p;
+  }
+  function devPlan(x, p=planP){ return p.A*Math.sin(Math.PI*x) + p.B*Math.sin(3*Math.PI*x) + p.C*Math.sin(2*Math.PI*x); }
+
+  function rawPos(){
+    if(mode==='kast') return st.d + devKast(st.th);
+    if(mode==='plan') return st.d + devPlan(st.x/200);
+    return st.pos;
+  }
+  const shownPos = () => clamp(rawPos(), 0, 10);
+  // verdi på skiva (0–100) der store viser peker
+  function scaleVal(){ return (((shownPos()*100 - st.bez) % 100) + 100) % 100; }
+  // utslag i forhold til nullstilling, tolket som ± innenfor en halv runde
+  function relVal(){ let v = scaleVal(); if(v > 50) v -= 100; return v/100; }
+
+  // ---------- Måleuret ----------
+  const C = {x:200, y:205};
+  function dialSvg(){
+    const p = shownPos(), bz = st.bez;
+    let s = `<defs>
+      <radialGradient id="chrome" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#f4f6f7"/><stop offset=".55" stop-color="#aab3b9"/><stop offset="1" stop-color="#6f7a81"/></radialGradient>
+      <linearGradient id="stem" x1="0" x2="1"><stop offset="0" stop-color="#8b959b"/><stop offset=".45" stop-color="#eef1f3"/><stop offset="1" stop-color="#7d878d"/></linearGradient>
+      <radialGradient id="face" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eceeea"/></radialGradient>
+    </defs>`;
+    // spindel og innføring
+    const plen = 22 + (10-p)*5.2;
+    s += `<rect x="186" y="380" width="28" height="78" rx="3" fill="url(#stem)" stroke="#6f7a81"/>
+      <rect x="194" y="456" width="12" height="${plen}" fill="url(#stem)" stroke="#6f7a81"/>
+      <circle cx="200" cy="${456+plen+5}" r="7" fill="#d8dcde" stroke="#6f7a81"/>
+      <rect x="191" y="6" width="18" height="26" rx="4" fill="url(#stem)" stroke="#6f7a81"/>
+      <rect x="185" y="0" width="30" height="10" rx="4" fill="#4b555b"/>`;
+    // hus og skivering
+    s += `<circle cx="${C.x}" cy="${C.y}" r="188" fill="url(#chrome)" stroke="#5f6b72" stroke-width="1.5"/>
+      <circle cx="${C.x}" cy="${C.y}" r="172" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="2"/>
+      <circle cx="${C.x}" cy="${C.y}" r="164" fill="url(#face)"/>`;
+    // knurl på skiveringen
+    for(let i=0;i<120;i++){ const a = rad(i*3 + bz*3.6); s += `<line x1="${C.x+176*Math.sin(a)}" y1="${C.y-176*Math.cos(a)}" x2="${C.x+186*Math.sin(a)}" y2="${C.y-186*Math.cos(a)}" stroke="rgba(0,0,0,.18)" stroke-width="1.4"/>`; }
+    // skala (følger skiva)
+    for(let i=0;i<100;i++){
+      const a = rad((i + bz)*3.6), L = i%10===0 ? 24 : i%5===0 ? 17 : 10, w = i%10===0 ? 2.6 : i%5===0 ? 1.9 : 1.2;
+      s += `<line x1="${C.x+160*Math.sin(a)}" y1="${C.y-160*Math.cos(a)}" x2="${C.x+(160-L)*Math.sin(a)}" y2="${C.y-(160-L)*Math.cos(a)}" stroke="#16191b" stroke-width="${w}"/>`;
+      if(i%10===0){
+        const n = st.scale==='bal' && i>50 ? 100-i : i;
+        const lab = st.scale==='bal' && i!==0 && i!==50 ? (i<50 ? '+' : '−') + n : String(n);
+        s += `<text x="${C.x+118*Math.sin(a)}" y="${C.y-118*Math.cos(a)+7}" text-anchor="middle" font-size="${st.scale==='bal'?17:20}" font-weight="700" fill="#16191b" font-family="Barlow Condensed, sans-serif">${lab}</text>`;
+      }
+    }
+    s += `<text x="${C.x}" y="${C.y+62}" text-anchor="middle" font-size="13" font-weight="600" fill="#3c4347" font-family="Barlow, sans-serif">0,01 mm</text>
+      <text x="${C.x}" y="${C.y+80}" text-anchor="middle" font-size="10" letter-spacing="2" fill="#6a7277" font-family="Barlow, sans-serif">0–10 mm</text>`;
+    // omdreiningsteller
+    const T = {x:200, y:146, r:30};
+    s += `<circle cx="${T.x}" cy="${T.y}" r="${T.r}" fill="#f7f7f4" stroke="#9aa3a9" stroke-width="1.5"/>`;
+    for(let i=0;i<10;i++){ const a = rad(i*36);
+      s += `<line x1="${T.x+T.r*Math.sin(a)}" y1="${T.y-T.r*Math.cos(a)}" x2="${T.x+(T.r-6)*Math.sin(a)}" y2="${T.y-(T.r-6)*Math.cos(a)}" stroke="#16191b" stroke-width="1.4"/>
+        <text x="${T.x+(T.r-14)*Math.sin(a)}" y="${T.y-(T.r-14)*Math.cos(a)+3.5}" text-anchor="middle" font-size="10" font-weight="700" fill="#16191b" font-family="Barlow, sans-serif">${i}</text>`; }
+    const ta = p*36;
+    s += `<g transform="rotate(${ta} ${T.x} ${T.y})"><path d="M${T.x-2.2} ${T.y+5} L${T.x} ${T.y-T.r+4} L${T.x+2.2} ${T.y+5} Z" fill="#c62828"/></g><circle cx="${T.x}" cy="${T.y}" r="3" fill="#2a2f33"/>`;
+    // stor viser
+    const pa = p*360;
+    s += `<g transform="rotate(${pa} ${C.x} ${C.y})">
+      <path d="M${C.x-3.5} ${C.y+34} L${C.x-1.4} ${C.y-150} L${C.x} ${C.y-156} L${C.x+1.4} ${C.y-150} L${C.x+3.5} ${C.y+34} Z" fill="#16191b"/>
+      <circle cx="${C.x}" cy="${C.y+42}" r="9" fill="#16191b"/></g>
+      <circle cx="${C.x}" cy="${C.y}" r="10" fill="#2a2f33"/><circle cx="${C.x}" cy="${C.y}" r="4" fill="#9aa3a9"/>`;
+    // glassrefleks
+    s += `<path d="M${C.x-120} ${C.y-90} A150 150 0 0 1 ${C.x+60} ${C.y-150}" stroke="rgba(255,255,255,.55)" stroke-width="10" fill="none" stroke-linecap="round"/>`;
+    return s;
+  }
+
+  // mini-måleur i oppspenningen
+  function miniDial(x, y){
+    const p = shownPos();
+    let s = `<rect x="${x-5}" y="${y+26}" width="10" height="16" fill="#aab3b9" stroke="#6f7a81"/>
+      <circle cx="${x}" cy="${y}" r="30" fill="#c4cacf" stroke="#5f6b72"/><circle cx="${x}" cy="${y}" r="25" fill="#fbfbf8"/>`;
+    for(let i=0;i<20;i++){ const a = rad(i*18 + st.bez*3.6); s += `<line x1="${x+25*Math.sin(a)}" y1="${y-25*Math.cos(a)}" x2="${x+(i%2?22:19)*Math.sin(a)}" y2="${y-(i%2?22:19)*Math.cos(a)}" stroke="#16191b" stroke-width="1"/>`; }
+    const a0 = rad(st.bez*3.6);
+    s += `<circle cx="${x+15*Math.sin(a0)}" cy="${y-15*Math.cos(a0)}" r="2" fill="#c62828"/>`;
+    s += `<g transform="rotate(${p*360} ${x} ${y})"><line x1="${x}" y1="${y+5}" x2="${x}" y2="${y-22}" stroke="#16191b" stroke-width="2"/></g><circle cx="${x}" cy="${y}" r="2.5" fill="#16191b"/>`;
+    return s;
+  }
+
+  // ---------- Oppspenning: kast ----------
+  function kastScene(){
+    const cx = 220, cy = 272, R = 92, K = 160; // K: px per mm (overdrevet)
+    const p = kastP, th = st.th;
+    let s = `<text x="16" y="26" font-size="17" font-weight="700" class="tx" font-family="Barlow Condensed, sans-serif">Aksel i chuck, sett fra enden</text>
+      <text x="16" y="44" font-size="12" class="txm" font-family="Barlow, sans-serif">Senterforskyvningen er tegnet sterkt forstørret</text>`;
+    // chuck
+    s += `<circle cx="${cx}" cy="${cy}" r="136" fill="#4a5459" stroke="#2f363a" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="125" fill="#5a656b"/>`;
+    for(let j=0;j<3;j++){
+      s += `<g transform="rotate(${j*120 - th} ${cx} ${cy})"><rect x="${cx-14}" y="${cy-134}" width="28" height="${134-R-6}" rx="3" fill="#7c878d" stroke="#3a4246"/>
+        <line x1="${cx-9}" y1="${cy-124}" x2="${cx+9}" y2="${cy-124}" stroke="#3a4246"/><line x1="${cx-9}" y1="${cy-116}" x2="${cx+9}" y2="${cy-116}" stroke="#3a4246"/></g>`; }
+    // akselende
+    const pts = [];
+    const ex = p.e*K, ov = p.ov*K;
+    const ccx = ex*Math.cos(rad(p.phi+th)), ccy = ex*Math.sin(rad(p.phi+th));
+    for(let i=0;i<=120;i++){
+      const b = i*3; // vinkel i arbeidsstykkets ramme
+      const r = R + ov*Math.cos(2*rad(b - p.psi));
+      const a = rad(b + th);
+      pts.push(`${(cx + ccx + r*Math.cos(a)).toFixed(1)},${(cy - ccy - r*Math.sin(a)).toFixed(1)}`);
+    }
+    s += `<polygon points="${pts.join(' ')}" fill="#c9d0d4" stroke="#6f7a81" stroke-width="2"/>`;
+    const mc = [cx+ccx, cy-ccy];
+    s += `<circle cx="${mc[0]}" cy="${mc[1]}" r="4" fill="#5f6b72"/>
+      <line x1="${mc[0]}" y1="${mc[1]}" x2="${mc[0]+(R-12)*Math.cos(rad(th))}" y2="${mc[1]-(R-12)*Math.sin(rad(th))}" stroke="#c62828" stroke-width="3" stroke-linecap="round"/>`;
+    // dreieakse
+    s += `<line x1="${cx-12}" y1="${cy}" x2="${cx+12}" y2="${cy}" stroke="#f0b51e" stroke-width="2"/><line x1="${cx}" y1="${cy-12}" x2="${cx}" y2="${cy+12}" stroke="#f0b51e" stroke-width="2"/>`;
+    s += `<text x="16" y="62" font-size="12" class="txm" font-family="Barlow, sans-serif">Gult kryss: dreieaksen. Rød strek: merke på akselen.</text>`;
+    const topY = cy - (R + (devKast(th))*K);
+    s += probeAndStand(cx, topY, cy - R, 420);
+    return s;
+  }
+  function probeAndStand(px, surfY, nomY, standX){
+    // kroppen flyttes med innstillingen, spissen ligger mot overflaten når det er kontakt
+    const bodyY = nomY - 92 + st.d*5;
+    const freeTip = bodyY + 42 + 46;
+    const contact = rawPos() >= 0;
+    const tipY = contact ? surfY : Math.min(freeTip, surfY - 4);
+    let s = `<rect x="${standX-8}" y="40" width="10" height="${nomY}" style="fill:var(--steel)"/>
+      <rect x="${px+20}" y="${bodyY-4}" width="${standX-px-24}" height="8" rx="3" style="fill:var(--steel)"/>
+      <rect x="${standX-14}" y="${bodyY-9}" width="22" height="18" rx="3" style="fill:var(--steel-dark)"/>`;
+    s += `<line x1="${px}" y1="${bodyY+40}" x2="${px}" y2="${tipY-4}" stroke="#aab3b9" stroke-width="4"/><circle cx="${px}" cy="${tipY-3}" r="4" fill="#d8dcde" stroke="#6f7a81"/>`;
+    s += miniDial(px, bodyY);
+    return s;
+  }
+
+  // ---------- Oppspenning: planhet ----------
+  function planScene(){
+    const x0 = 60, x1 = 380, topNom = 250, K = 900; // px per mm
+    const xx = st.x/200, px = x0 + xx*(x1-x0);
+    let s = `<text x="16" y="26" font-size="17" font-weight="700" class="tx" font-family="Barlow Condensed, sans-serif">Plate på tre støtter, måleplate under</text>
+      <text x="16" y="44" font-size="12" class="txm" font-family="Barlow, sans-serif">Avviket i overflaten er tegnet sterkt forstørret</text>`;
+    // stativ bak emnet
+    const bodyY = topNom - 92 + st.d*5;
+    s += `<rect x="${px+30}" y="360" width="70" height="14" rx="3" style="fill:var(--steel-dark)" opacity=".8"/>
+      <rect x="${px+60}" y="${Math.min(bodyY-30, 150)}" width="10" height="${360-Math.min(bodyY-30,150)}" style="fill:var(--steel)"/>
+      <rect x="${px+20}" y="${bodyY-4}" width="46" height="8" rx="3" style="fill:var(--steel)"/>`;
+    s += `<rect x="0" y="372" width="440" height="48" style="fill:var(--granite)"/>
+      <text x="420" y="402" text-anchor="end" font-size="12" fill="#c9d0d5" font-family="Barlow, sans-serif">Måleplate (granitt)</text>`;
+    // støtter
+    [x0+20, x1-20].forEach(sx => { s += `<path d="M${sx-14} 372 L${sx-8} 340 L${sx+8} 340 L${sx+14} 372 Z" fill="#7c878d" stroke="#3a4246"/>`; });
+    // emne
+    const top = [];
+    for(let i=0;i<=80;i++){ const u = i/80; top.push(`${(x0+u*(x1-x0)).toFixed(1)},${(topNom - devPlan(u)*K).toFixed(1)}`); }
+    s += `<polygon points="${x0},340 ${top.join(' ')} ${x1},340" fill="#c9d0d4" stroke="#6f7a81" stroke-width="2"/>`;
+    s += `<line x1="${x0}" y1="${topNom}" x2="${x1}" y2="${topNom}" stroke="#6f7a81" stroke-dasharray="4 4" opacity=".7"/>`;
+    s += `<text x="${x0}" y="356" font-size="11" fill="#3a4246" font-family="Barlow, sans-serif">0 mm</text><text x="${x1}" y="356" text-anchor="end" font-size="11" fill="#3a4246" font-family="Barlow, sans-serif">200 mm</text>`;
+    const surfY = topNom - devPlan(xx)*K;
+    const contact = rawPos() >= 0, freeTip = bodyY + 88;
+    const tipY = contact ? surfY : Math.min(freeTip, surfY - 4);
+    s += `<line x1="${px}" y1="${bodyY+40}" x2="${px}" y2="${tipY-4}" stroke="#aab3b9" stroke-width="4"/><circle cx="${px}" cy="${tipY-3}" r="4" fill="#d8dcde" stroke="#6f7a81"/>`;
+    s += miniDial(px, bodyY);
+    return s;
+  }
+
+  // ---------- Merknader ----------
+  function notes(){
+    const n = [];
+    if(mode==='utforsk'){
+      n.push(['ok', `Lille viser står mellom ${Math.floor(st.pos+1e-9)} og ${Math.min(10,Math.floor(st.pos+1e-9)+1)}. Store viser peker på ${fmt(scaleVal(),0)}. Spindelen er skjøvet inn ${fmt(st.pos)} mm.`]);
+      if(Math.abs(st.bez) > 0.01 && st.zeroRef===null) n.push(['info', 'Skiva er dreid, så tallet på skiva er ikke lenger det samme som hundredelene på spindelen.']);
+      if(st.zeroRef!==null) n.push(['info', `Du nullstilte ved ${fmt(st.zeroRef)} mm. Endringen siden da er ${(st.pos-st.zeroRef>=0?'+':'')}${fmt(st.pos-st.zeroRef)} mm.`]);
+      return n;
+    }
+    if(mode==='lesav'){ n.push(['info', answered ? 'Trykk «Ny oppgave» for en ny avlesning.' : 'Les av den lille viseren først, så den store.']); return n; }
+    const raw = rawPos();
+    const devs = mode==='kast' ? [kastP.min, kastP.max] : [planP.min, planP.max];
+    if(raw < 0) n.push(['warn', 'Måleuret har ikke kontakt med arbeidsstykket. Senk det til spindelen er skjøvet inn ca. 0,5–1 mm.']);
+    else if(raw > 10) n.push(['bad', 'Spindelen er i bunn. Måleuret kan bli ødelagt. Hev det.']);
+    else if(st.d + devs[0] < 0) n.push(['warn', 'Spindelen slipper kontakten et sted underveis. Gi litt mer forspenning.']);
+    else if(raw > 3) n.push(['warn', `Forspenningen er ${fmt(raw)} mm. Det holder med 0,5–1 mm.`]);
+    else n.push(['ok', `Forspenning ${fmt(raw)} mm. ${Math.abs(relVal())<0.005 ? (mode==='kast' ? 'Skiva står på null. Drei akselen og følg viseren.' : 'Skiva står på null. Flytt måleuret langs platen.') : 'Nullstill skiva før du begynner å måle.'}`]);
+    return n;
+  }
+
+  // ---------- Avlesningsboks ----------
+  function readout(){
+    const hide = (mode!=='utforsk') && !revealed;
+    const rows = [];
+    const p = shownPos();
+    if(mode==='utforsk' || mode==='lesav'){
+      rows.push(['Lille viser (hele mm)', String(Math.floor(p+1e-9)), mode==='lesav']);
+      rows.push(['Store viser (hundredeler)', fmt(Math.round(p*100)%100,0), mode==='lesav']);
+      if(mode==='utforsk'){
+        rows.push(['Skiva viser', fmt(st.scale==='bal' ? relVal()*100 : scaleVal(), 0)]);
+        rows.push(['Endring siden nullstilling', st.zeroRef===null ? '–' : (st.pos-st.zeroRef>=0?'+':'')+fmt(st.pos-st.zeroRef)+' mm']);
+      }
+      rows.push(['Avlesning', fmt(p)+' mm', mode==='lesav', true]);
+    } else {
+      const P = mode==='kast' ? kastP : planP;
+      rows.push([mode==='kast' ? 'Vinkel' : 'Posisjon', mode==='kast' ? `${st.th}°` : `${st.x} mm`]);
+      rows.push(['Utslag fra null', rawPos()<0 ? 'ingen kontakt' : (relVal()>=0?'+':'')+fmt(relVal())+' mm']);
+      rows.push([mode==='kast' ? 'Eksentrisitet' : 'Høyeste punkt', mode==='kast' ? fmt(kastP.e,3)+' mm' : 'ved '+Math.round(argmax()*200)+' mm', true]);
+      rows.push([mode==='kast' ? 'Kast' : 'Planhetsavvik', fmt(mode==='kast'?kastP.K:planP.P)+' mm', true, true]);
+    }
+    $('readout').innerHTML = rows.map(([a,b,h,sum]) => `<div class="r${sum?' sum':''}"><span>${a}</span><span class="${h&&hide?'hidden-val':''}">${b}</span></div>`).join('');
+  }
+  function argmax(){ let bi=0, bv=-1e9; for(let i=0;i<=200;i++){ const v = devPlan(i/200); if(v>bv){bv=v;bi=i/200;} } return bi; }
+
+  // ---------- Tegn alt ----------
+  function update(){
+    $('dial').innerHTML = dialSvg();
+    $('dial').classList.toggle('lock', mode==='lesav');
+    if(mode==='kast') $('scene').innerHTML = kastScene();
+    if(mode==='plan') $('scene').innerHTML = planScene();
+    $('notes').innerHTML = '';
+    notes().forEach(([c,t]) => { const d = document.createElement('div'); d.className = 'note '+c; d.textContent = t; $('notes').append(d); });
+    readout();
+    $('v-pos').textContent = fmt(st.pos)+' mm';
+    $('pos').value = st.pos;
+    $('v-d').textContent = (st.d>=0?'':'')+fmt(st.d)+' mm';
+    $('dset').value = st.d;
+    $('v-th').textContent = st.th+'°'; $('th').value = st.th;
+    $('v-x').textContent = st.x+' mm'; $('x').value = st.x;
+    const sc = score[mode];
+    $('score').textContent = sc ? `${sc.ok} av ${sc.tot} riktige` : '';
+  }
+
+  // ---------- Moduser ----------
+  function setMode(m){
+    mode = m; stopAnim();
+    document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode===m)));
+    const scene = m==='kast' || m==='plan';
+    $('scene').toggleAttribute('hidden', !scene);
+    $('stagebody').classList.toggle('two', scene);
+    $('stagelabel').textContent = scene ? (m==='kast' ? 'Måling av kast' : 'Måling av planhet') : 'Måleuret';
+    $('draghint').textContent = m==='lesav' ? 'Les av måleuret og skriv svaret i millimeter.' : 'Dra i måleuret for å dreie skiva.';
+    $('f-pos').hidden = m!=='utforsk';
+    $('f-d').hidden = $('f-bez').hidden = !(scene || m==='utforsk');
+    $('f-d').hidden = !scene;
+    $('f-th').hidden = m!=='kast';
+    $('f-x').hidden = m!=='plan';
+    $('f-scale').hidden = m==='lesav';
+    $('ctrlcard').hidden = m==='lesav';
+    $('taskcard').hidden = m==='utforsk';
+    if(m==='lesav'){ st.scale = 'cont'; $('scale').value = 'cont'; }
+    newTask();
+  }
+  function newTask(){
+    answered = false; revealed = false; $('fb').hidden = true; $('ans').value = '';
+    if(mode==='utforsk'){ update(); return; }
+    if(mode==='lesav'){
+      let v; do { v = Math.round(rnd(5, 990)); } while(v === lesTask);
+      lesTask = v; st.pos = v/100; st.bez = 0;
+      $('tasklabel').textContent = 'Les av';
+      $('tasktext').innerHTML = 'Hvor mange millimeter er spindelen <b>skjøvet inn</b>?';
+    } else if(mode==='kast'){
+      kastP = newKast(); st.d = -1.5; st.th = 0; st.bez = 0;
+      $('tasklabel').textContent = 'Mål kast';
+      $('tasktext').innerHTML = 'Senk måleuret, nullstill skiva og drei akselen én runde. Hvor stort er <b>kastet</b>?';
+    } else {
+      planP = newPlan(); st.d = -1.5; st.x = 0; st.bez = 0;
+      $('tasklabel').textContent = 'Mål planhet';
+      $('tasktext').innerHTML = 'Senk måleuret, nullstill i den ene enden og kjør over hele platen. Hvor stort er <b>planhetsavviket</b>?';
+    }
+    update();
+  }
+
+  // ---------- Svar ----------
+  $('ansform').addEventListener('submit', e => {
+    e.preventDefault();
+    const a = parseFloat($('ans').value.trim().replace(',', '.').replace('−','-'));
+    const fb = $('fb'); fb.hidden = false;
+    if(isNaN(a)){ fb.className = 'fb bad'; fb.textContent = 'Skriv et tall i millimeter, for eksempel 0,12.'; return; }
+    const sc = score[mode];
+    let ok, why;
+    if(mode==='lesav'){
+      const v = lesTask/100, whole = Math.floor(v+1e-9), hund = lesTask%100;
+      ok = Math.abs(a - v) < 0.005;
+      why = `Lille viser har passert ${whole}, store viser peker på ${hund}. ${whole} + ${fmt(hund/100)} = ${fmt(v)} mm.`;
+      if(!ok){
+        const aw = Math.floor(a+1e-9), ah = Math.round((a-aw)*100);
+        if(ah===hund && aw!==whole) why = 'Hundredelene stemmer, men sjekk den lille viseren. ' + why;
+        else if(aw===whole) why = 'Hele millimeter stemmer, men sjekk den store viseren. Hver strek er 0,01 mm. ' + why;
+        else if(Math.abs(a - hund/10) < 0.005) why = 'Husk at hver strek er 0,01 mm, ikke 0,1 mm. ' + why;
+      }
+    } else if(mode==='kast'){
+      const K = kastP.K;
+      ok = Math.abs(a - K) <= 0.011;
+      why = `Viseren svinger ${fmt(K)} mm fra laveste til høyeste punkt. Kast = største − minste utslag = ${fmt(K)} mm.`;
+      if(!ok && Math.abs(a - K/2) <= 0.011) why = 'Det du har funnet er eksentrisiteten (halve utslaget). Kastet er hele utslaget fra minste til største verdi. ' + why;
+    } else {
+      const P = planP.P;
+      ok = Math.abs(a - P) <= 0.011;
+      why = `Høyeste punkt er ${fmt(planP.max)} mm og laveste ${fmt(planP.min)} mm i forhold til endene. Planhetsavvik = ${fmt(P)} mm.`;
+    }
+    if(!answered){ sc.tot++; if(ok) sc.ok++; }
+    answered = true;
+    if(ok) revealed = true;
+    fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+    fb.innerHTML = `<b>${ok ? 'Riktig!' : 'Ikke helt.'}</b>` + (ok || revealed ? `<span class="why"></span>` : `<span class="why">Prøv igjen, eller trykk «Vis fasit».</span>`);
+    if(ok) fb.querySelector('.why').textContent = why;
+    else fb.dataset.why = why;
+    update();
+  });
+  $('showbtn').addEventListener('click', () => {
+    revealed = true; answered = true;
+    const fb = $('fb'); fb.hidden = false; fb.className = 'fb';
+    let why;
+    if(mode==='lesav') why = `Lille viser har passert ${Math.floor(lesTask/100)}, store viser peker på ${lesTask%100}. Avlesning ${fmt(lesTask/100)} mm.`;
+    else if(mode==='kast') why = `Kastet er ${fmt(kastP.K)} mm. Eksentrisiteten er ${fmt(kastP.e,3)} mm${kastP.ov ? ', og akselen er litt oval i tillegg' : ''}.`;
+    else why = `Planhetsavviket er ${fmt(planP.P)} mm.`;
+    fb.innerHTML = '<b>Fasit</b><span class="why"></span>'; fb.querySelector('.why').textContent = why;
+    update();
+  });
+  $('newbtn').addEventListener('click', newTask);
+
+  // ---------- Kontroller ----------
+  document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  $('pos').addEventListener('input', e => { st.pos = +e.target.value; update(); });
+  document.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => { st.pos = Math.round(clamp(st.pos + +b.dataset.step, 0, 10)*100)/100; update(); }));
+  $('dset').addEventListener('input', e => { st.d = +e.target.value; update(); });
+  $('th').addEventListener('input', e => { stopAnim(); st.th = +e.target.value; update(); });
+  $('x').addEventListener('input', e => { stopAnim(); st.x = +e.target.value; update(); });
+  $('zero').addEventListener('click', () => { st.bez = shownPos()*100 % 100; st.zeroRef = mode==='utforsk' ? st.pos : null; update(); });
+  document.querySelectorAll('[data-bez]').forEach(b => b.addEventListener('click', () => { st.bez = (st.bez + +b.dataset.bez + 100) % 100; st.zeroRef = null; update(); }));
+  $('scale').addEventListener('change', e => { st.scale = e.target.value; update(); });
+
+  // dra i skiva
+  let drag = null;
+  const angAt = ev => { const r = $('dial').getBoundingClientRect(), k = 400/r.width;
+    const x = (ev.clientX - r.left)*k - C.x, y = (ev.clientY - r.top)*k - C.y; return Math.atan2(x, -y)*180/Math.PI; };
+  $('dial').addEventListener('pointerdown', ev => { if(mode==='lesav') return; drag = {a:angAt(ev), b:st.bez}; $('dial').setPointerCapture(ev.pointerId); });
+  $('dial').addEventListener('pointermove', ev => { if(!drag) return; let da = angAt(ev) - drag.a; if(da>180) da-=360; if(da<-180) da+=360;
+    st.bez = ((drag.b + da/3.6) % 100 + 100) % 100; drag.a += da; drag.b = st.bez; st.zeroRef = null; update(); });
+  const endDrag = () => { drag = null; };
+  $('dial').addEventListener('pointerup', endDrag); $('dial').addEventListener('pointercancel', endDrag);
+
+  // animasjon
+  let anim = null;
+  function stopAnim(){ if(anim){ cancelAnimationFrame(anim.id); anim = null; $('spin').textContent = 'Drei én runde'; $('sweep').textContent = 'Kjør over hele platen'; } }
+  const slow = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function run(key, from, to, dur, btn, label){
+    if(anim){ stopAnim(); return; }
+    const t0 = performance.now(); btn.textContent = 'Stopp';
+    const step = now => { const u = Math.min(1, (now - t0)/dur); st[key] = Math.round(from + (to-from)*u);
+      if(key==='th') st.th = st.th % 360;
+      update(); if(u<1) anim.id = requestAnimationFrame(step); else { anim = null; btn.textContent = label; } };
+    anim = {id:requestAnimationFrame(step)};
+  }
+  $('spin').addEventListener('click', () => run('th', st.th, st.th + 360, slow ? 9000 : 6000, $('spin'), 'Drei én runde'));
+  $('sweep').addEventListener('click', () => { const f = st.x >= 200 ? 200 : st.x, t = st.x >= 200 ? 0 : 200; run('x', f, t, slow ? 9000 : 6000, $('sweep'), 'Kjør over hele platen'); });
+
+  setMode('utforsk');
+})();
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

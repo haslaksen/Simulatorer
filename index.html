@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulatorer – Industriteknologi</title>
+<style>
+:root{--bg:#f5f7fa;--panel:#ffffff;--ink:#14181d;--muted:#56606c;--line:#d9dfe6;--blue:#1c6fd1;--blue-soft:#e4eefc;--orange:#e8590c;--orange-soft:#fff0e5;--green:#2b8a3e;--green-soft:#e7f5ea;--red:#c92a2a;--red-soft:#fdeaea;--steel-soft:#eceff3;--on-accent:#ffffff;--radius:14px;--scale:1}
+:root[data-theme="dark"]{--bg:#12161b;--panel:#1b2128;--ink:#eef1f5;--muted:#a3adb9;--line:#2f3843;--blue:#5aa2f5;--blue-soft:#1b2c42;--orange:#ff8a3d;--orange-soft:#3a2516;--green:#51cf66;--green-soft:#183020;--red:#ff6b6b;--red-soft:#3a1c1c;--steel-soft:#262e37;--on-accent:#ffffff;}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h3{font-size:1.2rem}
+a{color:var(--blue)}
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem; flex:1}
+.top .brand span{color:var(--orange)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.72rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.3rem .6rem}
+.btn:hover{border-color:var(--blue)}
+section{padding:3rem 2.5rem}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:62ch}
+.grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:1rem; margin-top:1.4rem; align-items:start}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.sim{display:block; text-decoration:none; color:var(--ink); padding:.6rem .7rem; margin:.2rem -.2rem; border-radius:10px; border:1px solid transparent}
+.sim:hover{border-color:var(--blue); background:var(--blue-soft)}
+.sim b{display:block; color:var(--blue)}
+.sim span{display:block; font-size:.85rem; color:var(--muted)}
+.sim em{display:inline-block; margin-top:.3rem; font-style:normal; font-size:.75rem; font-weight:600; color:var(--orange); background:var(--orange-soft); padding:.1rem .5rem; border-radius:99px}
+footer{padding:0 2.5rem 2rem; color:var(--muted); font-size:.8rem}
+@media (max-width:700px){ section{padding:2rem 1rem} h1{font-size:2.2rem} .grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Industriteknologi · <span>Simulatorer</span></div>
+  <div class="tools">
+    <button class="btn" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+<main>
+  <section>
+    <div class="wrap">
+      <div class="kicker">Industriteknologi · Vg1 og Vg2</div>
+      <h1>Simulatorer</h1>
+      <p class="lead">Øv på verktøy og maskiner før du bruker dem i verkstedet. Hver simulator starter med «Slik gjør du» i fire steg.</p>
+      <div class="grid">
+      <div class="card">
+        <h3>Måleteknikk</h3>
+        <a class="sim" href="skyvelaere.html"><b>Skyvelære</b><span>Les av en skyvelære med nonius. Start med 0,1 mm nonius. Når du får det til, prøver du 0,05 og 0,02.</span></a>
+        <a class="sim" href="mikrometer.html"><b>Mikrometer</b><span>Les av et utvendig mikrometer. Hver strek på trommelen er 0,01 mm.</span></a>
+        <a class="sim" href="maleur.html"><b>Måleur</b><span>Les av en indikatorklokke, og mål kast og planhet. Hver strek på skiva er 0,01 mm.</span></a>
+        <a class="sim" href="toleranser.html"><b>Toleranser og pasninger</b><span>Finn største og minste tillatte mål for hull og aksel, og se om en målt del blir godkjent.</span></a>
+        <a class="sim" href="gjenger.html"><b>Gjenger</b><span>Finn ut hvilken gjenge du har: mål diameteren, finn stigningen og slå opp i tabellen.</span></a>
+      </div>
+      <div class="card">
+        <h3>Materiallære og mekanikk</h3>
+        <a class="sim" href="strekkprove.html"><b>Strekkprøve</b><span>Dra en prøvestav til den ryker, og se hvordan spenning–tøyningskurven bygger seg opp.</span><em>Passer til: Materiallære, leksjon 3</em></a>
+        <a class="sim" href="charpy.html"><b>Charpy-prøve</b><span>Test hvor mye energi et materiale tåler før det brekker ved et brått slag, og se hvordan kulde gjør stål sprøtt.</span><em>Passer til: Materiallære, leksjon 3</em></a>
+        <a class="sim" href="bjelke.html"><b>Bjelke</b><span>Se hvor mye en bjelke bøyer seg, og om den holder. Endre inspenning, profil, lengde og last.</span></a>
+      </div>
+      <div class="card">
+        <h3>Maskinering</h3>
+        <a class="sim" href="skjaeredata.html"><b>Skjæredata</b><span>Velg turtall og mating for dreiing og fresing ut fra materiale, verktøy og diameter.</span></a>
+        <a class="sim" href="cnc-dreiebenk.html"><b>CNC-dreiebenk</b><span>Øv på betjeningspanelet til en Mazak QT Nexus 250. Oppgavene står på skjermen til venstre.</span></a>
+      </div>
+      <div class="card">
+        <h3>Montering</h3>
+        <a class="sim" href="momentnokkel.html"><b>Momentnøkkel</b><span>Finn riktig tiltrekkingsmoment, still inn momentnøkkelen og trekk til skruen.</span></a>
+      </div>
+      <div class="card">
+        <h3>Elektro</h3>
+        <a class="sim" href="multimeter.html"><b>Multimeter</b><span>Mål spenning, strøm og motstand med et digitalt multimeter. Velg riktig funksjon, område og kontakt.</span><em>Passer til: Elektro Vg1 og Vg2 (leksjon 2)</em></a>
+      </div>
+      <div class="card">
+        <h3>Pneumatikk</h3>
+        <a class="sim" href="pneumatikk-og-hydraulikk.html"><b>Pneumatikk og hydraulikk</b><span>Koble ventiler og sylindre med slanger, og se hva som skjer. Symbolene følger ISO 1219.</span><em>Passer til: Pneumatikk, leksjon 1 og 2</em></a>
+      </div>
+      <div class="card">
+        <h3>Automasjon</h3>
+        <a class="sim" href="robotlab.html"><b>Robotlab</b><span>Programmer en robot med blokker, og se hva den gjør. Blokkene blir til Arduino-kode.</span></a>
+      </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>Simulatorene viser prinsippene. Følg alltid verkstedets rutiner og bruksanvisningen til maskinen. Formler og tabeller finner du i <a href="https://verkstedhandboka.vercel.app/">Verkstedhåndboka</a>.</footer>
+<script>
+let scale = 1;
+document.getElementById("btnSize").onclick = e => {
+  scale = scale >= 1.3 ? 1 : +(scale + 0.15).toFixed(2);
+  document.documentElement.style.setProperty("--scale", scale);
+  e.target.textContent = scale === 1 ? "A+" : "A" + Math.round(scale * 100) + "%";
+};
+document.getElementById("btnTheme").onclick = () => {
+  const r = document.documentElement;
+  r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark";
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,775 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1040px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Momentnøkkel</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Montering</div>
+      <h1>Momentnøkkel</h1>
+      <p class="lk-lead">Finn riktig tiltrekkingsmoment, still inn momentnøkkelen og trekk til skruen.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Finn momentet i tabellen: dimensjon, fasthetsklasse og om gjengene er smurt.</span></li><li><span>Lås opp håndtaket og still inn nøkkelen. Lås håndtaket igjen.</span></li><li><span>Hold inne <b>Hold inne for å trekke</b>, og slipp når nøkkelen klikker.</span></li><li><span>Sett nøkkelen tilbake til laveste verdi når du er ferdig.</span></li></ol>
+      <a class="lk-hb" href="https://verkstedhandboka.vercel.app/#e5-moment" target="_blank" rel="noopener">Les mer i Verkstedhåndboka: 5.2 Tiltrekkingsmoment ↗</a>
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Momentnøkkelsimulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: verkstedtavle. Momentnøkkel på skruen øverst, forstørret skala og skrueforbindelse ved siden av hverandre, kontroller og tabell under. Stables på mobil. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c; --warn:#a86a00;
+  --bench:#dfe5e8; --bench-line:#c4ced3; --hl:rgba(217,102,31,.13);
+  --display:"Barlow Condensed", "Arial Narrow", sans-serif;
+  --body:"Barlow", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Consolas", monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --bench:#232c31; --bench-line:#334047; --hl:rgba(240,138,69,.18); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --bench:#232c31; --bench-line:#334047; --hl:rgba(240,138,69,.18); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px 20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0;letter-spacing:.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.tabs button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:7px;cursor:pointer}
+.tabs button[aria-selected="true"],.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+button:focus-visible,select:focus-visible,input:focus-visible,svg [tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);flex-wrap:wrap}
+.label{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:14px;color:var(--muted)}
+.views{display:grid;grid-template-columns:1.55fr 1fr;border-top:1px solid var(--line)}
+.views>div{min-width:0}
+.views>div+div{border-left:1px solid var(--line)}
+@media (max-width:760px){.views{grid-template-columns:1fr}.views>div+div{border-left:0;border-top:1px solid var(--line)}}
+.vlab{display:flex;justify-content:space-between;gap:8px;padding:8px 14px 0;font-size:13px;color:var(--muted);flex-wrap:wrap}
+svg.view{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none}
+#scale{touch-action:none;cursor:ns-resize}
+svg .tx{fill:var(--ink)} svg .txm{fill:var(--muted)}
+svg .bench{fill:var(--bench);stroke:var(--bench-line)}
+svg .st{stroke:var(--ink)} svg .stm{stroke:var(--muted)}
+.pull{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
+.pullbtn{font:700 18px var(--display);letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:14px 22px;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
+.pullbtn.on{filter:brightness(.88);transform:translateY(1px)}
+.pullbtn:disabled{opacity:.45;cursor:not-allowed}
+.notes{display:grid;gap:6px;padding:10px 14px;border-top:1px solid var(--line);min-height:46px;align-content:center}
+.note{font-size:15px;padding-left:12px;border-left:4px solid var(--line)}
+.note.bad{border-color:var(--bad);color:var(--bad);font-weight:600}
+.note.warn{border-color:var(--warn)}
+.note.info{border-color:var(--muted);color:var(--muted)}
+.note.ok{border-color:var(--ok)}
+.chip{font:700 12px var(--body);letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+.chip.ok{color:var(--ok);border-color:var(--ok)} .chip.bad{color:var(--bad);border-color:var(--bad)} .chip.warn{color:var(--warn);border-color:var(--warn)}
+.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.field{display:grid;gap:6px}
+.field>span{font-size:14px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+select,.answer input{font:600 16px var(--body);padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%;width:100%}
+.btn{font:600 15px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:disabled,select:disabled,.tabs button:disabled{opacity:.45;cursor:not-allowed}
+.adj{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.adj .btn{padding:9px 4px;font-size:14px}
+.readout{display:grid;gap:6px;font-variant-numeric:tabular-nums}
+.readout .r{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:4px;font-size:15px}
+.readout .r span:first-child{color:var(--muted)}
+.readout .r span:last-child{font-family:var(--mono);text-align:right}
+.readout .sum{font-size:24px;font-weight:700;border:0;padding-top:6px}
+.readout .sum span:first-child{font-family:var(--display);font-size:20px;color:var(--ink);font-weight:600;align-self:center}
+.hidden-val{filter:blur(7px);user-select:none}
+.task{font-family:var(--display);font-size:24px;font-weight:600;line-height:1.2;text-wrap:balance}
+.task b{color:var(--accent)}
+.answer{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.answer input{font:700 22px var(--mono);width:8ch}
+.fb{padding:10px 12px;border-radius:8px;font-size:15px;border:1px solid var(--line)}
+.fb.ok{border-color:var(--ok);color:var(--ok)}
+.fb.bad{border-color:var(--bad);color:var(--bad)}
+.fb ul{margin:4px 0 0;padding-left:18px;color:var(--ink)}
+.fb .why{display:block;color:var(--ink);margin-top:4px}
+.score{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.howto ol{margin:0;padding-left:20px;display:grid;gap:6px}
+.howto p{margin:0;color:var(--muted);font-size:15px}
+.formula{font-family:var(--mono);font-size:15px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--ink)}
+.chk{display:flex;gap:8px;align-items:center;font-size:15px;cursor:pointer}
+.chk input{accent-color:var(--accent);width:18px;height:18px}
+.hint{font-size:13px;color:var(--muted);margin:0}
+.tw{overflow-x:auto}
+table.mt{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.mt td,table.mt th{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.mt th{color:var(--muted);font-weight:600}
+table.mt th:first-child,table.mt td:first-child{text-align:left}
+table.mt td{font-family:var(--mono);cursor:pointer}
+table.mt tr.cur td,table.mt td.cur{background:var(--hl)}
+table.mt td.hit{outline:2px solid var(--accent);outline-offset:-2px;font-weight:700}
+.tablock table.mt td{cursor:default}
+@media (prefers-reduced-motion: reduce){.pullbtn{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Momentnøkkel og tiltrekkingsmoment</h1>
+      <p class="sub">Klikk-momentnøkkel med mikrometerskala. Finn riktig moment, still inn nøkkelen og trekk til skruen.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Modus">
+      <button role="tab" aria-selected="true" data-mode="utforsk">Utforsk</button>
+      <button role="tab" aria-selected="false" data-mode="lesav">Les av</button>
+      <button role="tab" aria-selected="false" data-mode="stillinn">Still inn</button>
+    </div>
+  </header>
+
+  <section class="stage" aria-label="Arbeidsbenk">
+    <div class="stage-head"><span class="label">Arbeidsbenk</span><span id="lockchip" class="chip">Låst</span></div>
+    <svg id="over" class="view" viewBox="0 0 900 200" role="img" aria-label="Momentnøkkel på skruen, sett ovenfra"></svg>
+    <div class="views">
+      <div>
+        <div class="vlab"><span class="label">Skala, forstørret</span><span>Dra opp eller ned på håndtaket for å skru det</span></div>
+        <svg id="scale" class="view" viewBox="0 0 600 220" role="slider" tabindex="0" aria-label="Skala på momentnøkkelen. Bruk piltastene for å stille inn."></svg>
+      </div>
+      <div>
+        <div class="vlab"><span class="label">Skrueforbindelsen</span><span id="jointlab"></span></div>
+        <svg id="joint" class="view" viewBox="0 0 360 260" role="img" aria-label="Snitt av skrueforbindelsen"></svg>
+      </div>
+    </div>
+    <div class="pull">
+      <button class="pullbtn" id="pull" type="button">Hold inne for å trekke</button>
+      <button class="btn" id="loosen" type="button">Løsne skruen</button>
+      <button class="btn" id="newbolt" type="button" hidden>Sett inn ny skrue</button>
+      <label class="chk"><input type="checkbox" id="lyd" checked> Lyd</label>
+    </div>
+    <div class="notes" id="notes" aria-live="polite"></div>
+  </section>
+
+  <div class="grid">
+    <section class="card" id="ctrlcard">
+      <span class="label">Oppsett</span>
+      <div class="two">
+        <label class="field"><span>Skrue</span><select id="bolt"></select></label>
+        <label class="field"><span>Fasthetsklasse</span><select id="cls"></select></label>
+      </div>
+      <label class="field"><span>Gjengene er</span><select id="fric"></select></label>
+      <label class="field"><span>Momentnøkkel</span><select id="wrench"></select></label>
+      <div class="field">
+        <span>Still inn håndtaket</span>
+        <div class="adj">
+          <button class="btn" type="button" data-adj="-10">−1 omdr.</button>
+          <button class="btn" type="button" data-adj="-1">−1 strek</button>
+          <button class="btn" type="button" data-adj="1">+1 strek</button>
+          <button class="btn" type="button" data-adj="10">+1 omdr.</button>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn" id="lockbtn" type="button">Lås opp håndtaket</button>
+        <button class="btn" id="minbtn" type="button">Sett til laveste verdi</button>
+      </div>
+    </section>
+
+    <section class="card" id="taskcard" hidden>
+      <span class="label" id="tasklabel">Oppgave</span>
+      <div class="task" id="tasktext"></div>
+      <form class="answer" id="ansform" autocomplete="off">
+        <input id="ans" inputmode="decimal" placeholder="0,0" aria-label="Momentet du leser av">
+        <span>Nm</span>
+        <button class="btn primary" type="submit" id="checkbtn">Sjekk</button>
+      </form>
+      <p class="hint" id="taskhint"></p>
+      <div id="fb" class="fb" hidden></div>
+      <div class="row"><button class="btn" type="button" id="newbtn">Ny oppgave</button><span class="score" id="score">0 av 0 riktige</span></div>
+    </section>
+
+    <section class="card">
+      <span class="label">Hva skjer i skruen?</span>
+      <label class="chk" id="showwrap"><input type="checkbox" id="vis" checked> Vis innstilt verdi</label>
+      <div class="readout">
+        <div class="r"><span>Innstilt på nøkkelen</span><span id="r-set" class="secret"></span></div>
+        <div class="r"><span>Anbefalt moment</span><span id="r-rec" class="secret2"></span></div>
+        <div class="r"><span>Kraft på håndtaket, F = M / L</span><span id="r-f"></span></div>
+        <div class="r"><span>Høyeste påførte moment</span><span id="r-m"></span></div>
+        <div class="r"><span>Forspenningskraft i skruen</span><span id="r-fv"></span></div>
+        <div class="r sum"><span>Utnyttelse av flytegrensen</span><span id="r-u"></span></div>
+      </div>
+      <p class="hint" id="clsinfo"></p>
+    </section>
+
+    <section class="card" id="tabcard">
+      <span class="label">Tiltrekkingsmoment i Nm</span>
+      <label class="field"><span>Friksjon i tabellen</span><select id="tabfric"></select></label>
+      <div class="tw"><table class="mt" id="mt"></table></div>
+      <p class="hint">Beregnet for sekskantskruer med grovgjenger, forspenning 85 % av flytegrensen (forenklet etter VDI 2230). Andre tabeller kan avvike noen prosent. Bruk alltid verdien på tegningen eller fra produsenten når den finnes.</p>
+    </section>
+
+    <section class="card howto">
+      <span class="label">Slik bruker du momentnøkkelen</span>
+      <ol>
+        <li>Finn momentet i tabellen. Se på <b>dimensjon</b>, <b>fasthetsklasse</b> (tallet på skruehodet) og om gjengene er <b>tørre, oljet eller smurt</b>.</li>
+        <li>Velg en nøkkel der momentet ligger inne i området. Nøkkelen er mest nøyaktig mellom 20 % og 100 % av området.</li>
+        <li>Lås opp håndtaket og skru det til riktig verdi. Les hovedskalaen og legg til tallet på trommelen, som på et mikrometer.</li>
+        <li>Lås håndtaket. Trekk jevnt med hånden midt på grepet, vinkelrett på nøkkelen.</li>
+        <li><b>Stopp når nøkkelen klikker.</b> Drar du videre, blir skruen strammere enn den skal.</li>
+        <li>Sett nøkkelen tilbake til laveste verdi før den legges bort, så fjæra ikke mister spenningen. Ikke bruk momentnøkkelen til å løsne skruer.</li>
+      </ol>
+      <div class="formula">M = F · L &nbsp;→&nbsp; F = M / L</div>
+      <p>Momentet <b>M</b> (Nm) er kraften <b>F</b> (N) ganger armen <b>L</b> (m) fra skruen til der du holder. 50 Nm på en nøkkel med L = 0,42 m krever 50 / 0,42 ≈ 119 N, omtrent som å løfte 12 kg.</p>
+      <p><b>Smøring betyr mye.</b> Med olje eller pasta går mer av momentet til å strekke skruen. Bruker du tørrverdien på en smurt skrue, kan den flyte eller ryke.</p>
+      <p><b>Fasthetsklasse 8.8:</b> første tall × 100 gir strekkfastheten Rm = 800 MPa. Første tall × andre tall × 10 gir flytegrensen Re = 640 MPa.</p>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const fmt = (v, d) => v.toFixed(d).replace('.', ',').replace('-', '−');
+  const fmtNm = v => v < 10 ? fmt(v, 1) : v < 100 && Math.abs(v - Math.round(v)) > 0.01 ? fmt(v, 1) : fmt(v, 0);
+  const clean = v => { const s = fmt(v, 2); return s.replace(/,?0+$/, ''); };
+
+  // ---------- Data ----------
+  // Grovgjenger: stigning P, flankediameter d2, kjernediameter d3, spenningsareal As, nøkkelvidde s, anleggsdiameter dw, hulldiameter dh (mm)
+  const BOLTS = [
+    {id:'M6',  d:6,  P:1.0,  d2:5.350,  d3:4.773,  As:20.1, s:10, dw:8.9,  dh:6.6},
+    {id:'M8',  d:8,  P:1.25, d2:7.188,  d3:6.466,  As:36.6, s:13, dw:11.6, dh:9},
+    {id:'M10', d:10, P:1.5,  d2:9.026,  d3:8.160,  As:58.0, s:16, dw:14.6, dh:11},
+    {id:'M12', d:12, P:1.75, d2:10.863, d3:9.853,  As:84.3, s:18, dw:16.6, dh:13.5},
+    {id:'M16', d:16, P:2.0,  d2:14.701, d3:13.546, As:157,  s:24, dw:22.5, dh:17.5},
+    {id:'M20', d:20, P:2.5,  d2:18.376, d3:16.933, As:245,  s:30, dw:28.2, dh:22},
+    {id:'M24', d:24, P:3.0,  d2:22.051, d3:20.319, As:353,  s:36, dw:33.6, dh:26},
+  ];
+  const CLASSES = [
+    {id:'4.6', Rp:240, Rm:400}, {id:'5.6', Rp:300, Rm:500}, {id:'8.8', Rp:640, Rm:800},
+    {id:'10.9', Rp:940, Rm:1040}, {id:'12.9', Rp:1100, Rm:1220},
+  ];
+  const FRIC = [
+    {id:'mos2', lab:'Smurt med MoS₂-pasta', mu:0.08, task:'smurt med <b>MoS₂-pasta</b>'},
+    {id:'olje', lab:'Godt oljet', mu:0.10, task:'<b>godt oljet</b>'},
+    {id:'lett', lab:'Lett oljet eller sortforbrent', mu:0.14, task:'<b>lett oljet</b>'},
+    {id:'zn',   lab:'Varmforsinket og tørr', mu:0.20, task:'<b>varmforsinket og tørr</b>'},
+  ];
+  const WRENCHES = [
+    {id:'w20',   min:4,   max:20,   main:1,  lab:2,   drive:'1/4"', L:0.29},
+    {id:'w100',  min:20,  max:100,  main:5,  lab:10,  drive:'3/8"', L:0.42},
+    {id:'w200',  min:40,  max:200,  main:10, lab:20,  drive:'1/2"', L:0.53},
+    {id:'w340',  min:60,  max:340,  main:20, lab:40,  drive:'1/2"', L:0.66},
+    {id:'w1000', min:200, max:1000, main:50, lab:100, drive:'3/4"', L:1.30},
+  ];
+  WRENCHES.forEach(w => { w.dv = w.main/10; w.N = Math.round((w.max-w.min)/w.dv); w.name = `${w.min}–${w.max} Nm (${w.drive})`; });
+  const byId = (arr, id) => arr.find(x => x.id === id);
+
+  // ---------- Fysikk ----------
+  const RpOf = (b, c) => c.id==='8.8' && b.d > 16 ? 660 : c.Rp;
+  const RmOf = (b, c) => c.id==='8.8' && b.d > 16 ? 830 : c.Rm;
+  function geo(b, mu){
+    const d0 = (b.d2 + b.d3)/2, Wp = Math.PI*d0**3/16;
+    const c = (b.d2/2)*(b.P/(Math.PI*b.d2) + 1.155*mu);          // gjengemoment per N forspenning (mm)
+    const k = (0.16*b.P + 0.58*b.d2*mu + (b.dw + b.dh)/4*mu)/1000;  // totalt moment per N forspenning (m)
+    return {Wp, c, k};
+  }
+  // Forenklet etter VDI 2230: σ_red = σ · √(1 + 3·(1,5 · d2/d0 · (P/(π·d2) + 1,155·µ))²)
+  const redF = (b, mu) => { const d0 = (b.d2 + b.d3)/2; return Math.sqrt(1 + 3*(1.5*b.d2/d0*(b.P/(Math.PI*b.d2) + 1.155*mu))**2); };
+  const sRed = (F, b, mu) => F/b.As*redF(b, mu);
+  const Frec = (b, cl, mu) => 0.85*RpOf(b, cl)*b.As/redF(b, mu);
+  const roundM = m => m < 10 ? Math.round(m*10)/10 : m < 200 ? Math.round(m) : Math.round(m/5)*5;
+  const Mrec = (b, cl, mu) => roundM(Frec(b, cl, mu)*geo(b, mu).k);
+
+  // ---------- Tilstand ----------
+  const st = {bolt:'M10', cls:'8.8', fric:'lett', wrench:'w100', n:62, locked:true, tabfric:'lett'};
+  const jt = {Mmax:0, broken:false, yielded:false};
+  let mode = 'utforsk', task = null, answered = false, score = {ok:0, tot:0};
+  // trekking
+  const pl = {on:false, M:0, t0:0, clicked:false, tClick:0, clickedOnce:false, peak:0, last:0, flash:0, raf:0};
+  let lastEval = null;
+
+  const W = () => byId(WRENCHES, st.wrench);
+  const B = () => byId(BOLTS, st.bolt);
+  const C = () => byId(CLASSES, st.cls);
+  const MU = () => byId(FRIC, st.fric).mu;
+  const setting = () => W().min + st.n*W().dv;
+
+  function jointState(){
+    const b = B(), cl = C(), mu = MU(), g = geo(b, mu);
+    const Rp = RpOf(b, cl), Rm = RmOf(b, cl);
+    const M = Math.max(jt.Mmax, pl.on ? pl.M : 0);
+    let F = M/g.k, u = sRed(F, b, mu)/Rp;
+    const Fy = F > 0 ? F/u : 0;
+    return {F, u, Fy, Rp, Rm, M, rec:Mrec(b, cl, mu), urec:0.85};
+  }
+
+  // ---------- Tegning: oversikt ----------
+  function overSvg(js){
+    const w = W(), b = B(), nz = $('over').getBoundingClientRect().width < 640, fz = v => nz ? Math.round(v*1.7) : v;
+    const cx = 90, cy = 100;
+    const prog = pl.on ? Math.min(1, pl.M/Math.max(setting(), 1)) : 0;
+    let ang = pl.on ? 3.2*prog : 0;
+    if(pl.on && pl.clicked) ang += 2.2; // nøkkelen knekker litt i klikket
+    const nutAng = 15 + (jt.broken ? 0 : Math.min(js.u, 1.4)*70);
+    const hex = (r, a) => Array.from({length:6}, (_, i) => { const t = (a + i*60)*Math.PI/180; return `${cx + r*Math.cos(t)},${cy + r*Math.sin(t)}`; }).join(' ');
+    let s = `<rect class="bench" x="8" y="8" width="884" height="184" rx="12"/>
+      <circle cx="${cx}" cy="${cy}" r="62" fill="#b7c0c6" stroke="#8e999f"/>
+      <circle cx="${cx}" cy="${cy}" r="62" fill="none" stroke="#a3adb3" stroke-dasharray="3 5"/>
+      <polygon points="${hex(32, nutAng)}" fill="#9aa4aa" stroke="#6f7a80" stroke-width="1.5"/>`;
+    // nøkkel
+    const gx0 = 650, gx1 = 870, gmid = (gx0 + gx1)/2;
+    s += `<g transform="rotate(${ang} ${cx} ${cy})">
+      <circle cx="${cx}" cy="${cy}" r="40" fill="#5a646b" stroke="#3d454a" stroke-width="2"/>
+      <circle cx="${cx}" cy="${cy}" r="27" fill="#727d84"/>
+      <rect x="${cx-9}" y="${cy-9}" width="18" height="18" fill="#3d454a" transform="rotate(45 ${cx} ${cy})"/>
+      <path d="M${cx+30} ${cy-17} L210 ${cy-13} L210 ${cy+13} L${cx+30} ${cy+17} Z" fill="#6c777e"/>
+      <rect x="205" y="${cy-16}" width="455" height="32" rx="6" fill="#aab4ba" stroke="#7d888e"/>
+      <rect x="215" y="${cy-4}" width="200" height="8" rx="2" fill="#e9edf0"/>
+      <text x="430" y="${cy+6}" font-size="15" font-weight="700" fill="#2b3237" font-family="Barlow, sans-serif">${w.min}–${w.max} Nm · ${w.drive}</text>
+      <rect x="${gx0}" y="${cy-22}" width="${gx1-gx0}" height="44" rx="14" fill="#2f363b"/>
+      ${Array.from({length:18}, (_, i) => `<line x1="${gx0+18+i*11}" y1="${cy-19}" x2="${gx0+18+i*11}" y2="${cy+19}" stroke="#454e54" stroke-width="3"/>`).join('')}
+      <rect x="${gx1-14}" y="${cy-18}" width="18" height="36" rx="5" fill="${st.locked ? '#d9661f' : '#7d888e'}"/>`;
+    // kraftpil
+    const Mnow = pl.on ? pl.M : setting();
+    const F = Mnow / w.L;
+    s += `<line x1="${gmid}" y1="${cy-74}" x2="${gmid}" y2="${cy-30}" stroke="#d9661f" stroke-width="5"/>
+      <path d="M${gmid-10} ${cy-34} L${gmid} ${cy-22} L${gmid+10} ${cy-34} Z" fill="#d9661f"/>
+      </g>`;
+    s += `<text x="${nz ? gmid - 14 : gmid + 16}" y="${cy-56}" text-anchor="${nz ? 'end' : 'start'}" font-size="${fz(22)}" font-weight="700" class="tx" font-family="Barlow Condensed, sans-serif">F ≈ ${fmt(F, 0)} N</text>`;
+    // L-mål
+    s += `<g class="stm" stroke-width="1.5"><line x1="${cx}" y1="${cy+52}" x2="${cx}" y2="${cy+80}"/><line x1="${gmid}" y1="${cy+40}" x2="${gmid}" y2="${cy+80}"/>
+      <line x1="${cx}" y1="${cy+70}" x2="${gmid}" y2="${cy+70}"/></g>
+      <path d="M${cx} ${cy+70} l10 -5 v10 z M${gmid} ${cy+70} l-10 -5 v10 z" class="txm"/>
+      <rect x="${(cx+gmid)/2-fz(58)}" y="${cy+70-fz(12)}" width="${fz(116)}" height="${fz(24)}" fill="var(--bench)" style="fill:var(--bench)"/>
+      <text x="${(cx+gmid)/2}" y="${cy+70+fz(7)}" text-anchor="middle" font-size="${fz(20)}" font-weight="600" class="tx" font-family="Barlow Condensed, sans-serif">L = ${fmt(w.L, 2)} m</text>
+      <text x="${nz ? 170 : cx}" y="${nz ? 40 : 28}" text-anchor="${nz ? 'start' : 'middle'}" font-size="${fz(16)}" font-weight="700" class="tx" font-family="Barlow Condensed, sans-serif">${b.id} · pipe ${b.s} mm</text>`;
+    if(performance.now() < pl.flash)
+      s += `<text x="${nz ? 170 : 200}" y="${nz ? 175 : 52}" font-size="${fz(34)}" font-weight="700" fill="#d9661f" font-family="Barlow Condensed, sans-serif">KLIKK!</text>`;
+    return s;
+  }
+
+  // ---------- Tegning: skala ----------
+  const X0 = 46, SL = 330, CY = 110, R = 62;
+  function scaleSvg(){
+    const w = W(), steps = (w.max - w.min)/w.main, pitch = SL/steps;
+    const rot = st.n/10, edge = X0 + rot*pitch;
+    const fr = st.n % 10; // posisjon på trommelen i delstreker
+    const nz = sc.getBoundingClientRect().width < 520, shift = nz ? Math.max(0, Math.min(edge - 250, 180)) : 0;
+    sc.setAttribute('viewBox', nz ? `${shift} 0 420 220` : '0 0 600 220');
+    let s = `<defs>
+      <linearGradient id="tube" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e3e8eb"/><stop offset=".45" stop-color="#c3ccd1"/><stop offset="1" stop-color="#8f9ba1"/></linearGradient>
+      <linearGradient id="thim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aa5ab"/><stop offset=".35" stop-color="#e9edef"/><stop offset=".6" stop-color="#d3dade"/><stop offset="1" stop-color="#7d888e"/></linearGradient>
+      <linearGradient id="grip" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20262a"/><stop offset=".4" stop-color="#3d464c"/><stop offset="1" stop-color="#171b1e"/></linearGradient>
+      </defs>
+      <rect class="bench" x="-10" y="0" width="1300" height="220"/>
+      <rect x="-10" y="${CY-40}" width="1300" height="80" fill="url(#tube)" stroke="#7d888e"/>
+      <text x="${shift + 14}" y="${CY+28}" font-size="13" font-weight="700" fill="#3a4247" font-family="Barlow, sans-serif">Nm</text>
+      <line x1="0" y1="${CY}" x2="${edge+2}" y2="${CY}" stroke="#1d2226" stroke-width="2"/>`;
+    for(let i = 0; i <= steps; i++){
+      const x = X0 + i*pitch, v = w.min + i*w.main, labd = Math.abs(((v - w.min) % w.lab)) < 1e-6;
+      if(x > edge + 4) break;
+      s += `<line x1="${x}" y1="${CY}" x2="${x}" y2="${CY - (labd ? 22 : 14)}" stroke="#1d2226" stroke-width="2"/>`;
+      if(labd) s += `<text x="${x}" y="${CY-27}" text-anchor="middle" font-size="16" font-weight="700" fill="#1d2226" font-family="Barlow Condensed, sans-serif">${v}</text>`;
+    }
+    // håndtak (trommel) dekker resten av skalaen
+    s += `<g><rect x="${edge+3}" y="${CY-R}" width="700" height="${2*R}" rx="4" fill="url(#thim)" stroke="#6f7a80"/>
+      <rect x="${edge+3}" y="${CY-R}" width="6" height="${2*R}" fill="#6f7a80" opacity=".5"/>`;
+    const base = Math.floor(fr);
+    for(let k = -3; k <= 3; k++){
+      const j = base + k, phi = 2*Math.PI*(j - fr)/10, cs = Math.cos(phi);
+      if(cs < 0.15) continue;
+      const y = CY - R*Math.sin(phi), jm = ((j % 10) + 10) % 10, long = jm % 2 === 0;
+      s += `<line x1="${edge+3}" y1="${y}" x2="${edge + (long ? 30 : 20)}" y2="${y}" stroke="#1d2226" stroke-width="${1.2 + cs}" opacity="${0.35 + 0.65*cs}"/>`;
+      if(long) s += `<text x="${edge+36}" y="${y + 5*cs}" font-size="${10 + 6*cs}" font-weight="700" fill="#1d2226" opacity="${0.35 + 0.65*cs}" font-family="Barlow Condensed, sans-serif">${clean(jm*w.dv)}</text>`;
+    }
+    // grep
+    s += `<rect x="${edge+92}" y="${CY-R-6}" width="700" height="${2*R+12}" rx="18" fill="url(#grip)"/>`;
+    for(let i = 0; i < 40; i++) s += `<line x1="${edge+104+i*12}" y1="${CY-R}" x2="${edge+104+i*12}" y2="${CY+R}" stroke="#4a545a" stroke-width="3"/>`;
+    s += `</g>`;
+    if(st.locked) s += `<rect x="${edge+100}" y="${CY-14}" width="70" height="28" rx="6" fill="#d9661f"/><text x="${edge+135}" y="${CY+6}" text-anchor="middle" font-size="15" font-weight="700" fill="#fff" font-family="Barlow, sans-serif">LÅST</text>`;
+    s += `<text x="${shift + 12}" y="208" font-size="13" class="txm" font-family="Barlow, sans-serif">Hovedskala: ${w.main} Nm per omdreining · trommel: ${clean(w.dv)} Nm per strek</text>`;
+    return s;
+  }
+
+  // ---------- Tegning: skrueforbindelse ----------
+  function jointSvg(js){
+    const b = B(), cl = C();
+    const u = jt.broken ? 0 : js.u;
+    const col = jt.broken ? 'var(--bad)' : u > 1 ? 'var(--bad)' : u >= 0.8 ? 'var(--ok)' : u >= 0.5 ? 'var(--warn)' : '#9aa5ab';
+    const gap = jt.broken ? 12 : 0, bx = 150, bw = 30;
+    let s = `<rect class="bench" x="0" y="0" width="360" height="260"/>
+      <rect x="30" y="92" width="240" height="44" fill="#b7c0c6" stroke="#8e999f"/>
+      <rect x="30" y="136" width="240" height="44" fill="#a7b1b7" stroke="#8e999f"/>
+      <rect x="${bx-bw/2-3}" y="92" width="${bw+6}" height="88" fill="var(--bench)" style="fill:var(--bench)"/>`;
+    // skruen
+    s += `<g transform="translate(0,${-gap})"><rect x="${bx-38}" y="66" width="76" height="26" rx="3" fill="#6c777e" stroke="#4d575d"/>
+      <text x="${bx}" y="84" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="Barlow, sans-serif">${cl.id}</text>
+      <rect x="${bx-bw/2}" y="92" width="${bw}" height="${jt.broken ? 40 : 108}" style="fill:${col}" stroke="#4d575d"/></g>`;
+    if(jt.broken) s += `<rect x="${bx-bw/2}" y="${142+gap}" width="${bw}" height="58" style="fill:${col}" stroke="#4d575d"/>
+      <path d="M${bx-bw/2} ${132-gap} l8 5 l7 -6 l8 6 l7 -5" class="st" fill="none" stroke-width="1.5"/>`;
+    s += `<g transform="translate(0,${gap})"><rect x="${bx-38}" y="180" width="76" height="26" rx="3" fill="#6c777e" stroke="#4d575d"/>
+      ${Array.from({length:6}, (_, i) => `<line x1="${bx-bw/2}" y1="${208+i*4}" x2="${bx+bw/2}" y2="${206+i*4}" class="stm" stroke-width="1"/>`).join('')}
+      <rect x="${bx-bw/2}" y="206" width="${bw}" height="22" fill="none" stroke="#4d575d"/></g>`;
+    // klemkraftpiler
+    if(!jt.broken && js.F > 0){
+      const th = 2 + Math.min(u, 1.2)*7, len = 10 + Math.min(u, 1.2)*20;
+      [[70, 92, 1], [230, 92, 1], [70, 180, -1], [230, 180, -1]].forEach(([x, y, d]) => {
+        s += `<line x1="${x}" y1="${y - d*(len + 12)}" x2="${x}" y2="${y - d*10}" stroke="var(--accent)" style="stroke:var(--accent)" stroke-width="${th}"/>
+          <path d="M${x-8} ${y - d*12} L${x} ${y - d*2} L${x+8} ${y - d*12} Z" style="fill:var(--accent)"/>`;
+      });
+    }
+    s += `<text x="16" y="28" font-size="15" font-weight="700" class="tx" font-family="Barlow Condensed, sans-serif">Forspenning ${jt.broken ? '0' : fmt(js.F/1000, 1)} kN</text>`;
+    // måler
+    const gx = 305, gy0 = 30, gy1 = 230, top = 1.3;
+    const Y = v => gy1 - (Math.min(v, top)/top)*(gy1 - gy0);
+    const zones = [[0, .5, '#9aa5ab'], [.5, .8, 'var(--warn)'], [.8, .95, 'var(--ok)'], [.95, 1, 'var(--warn)'], [1, top, 'var(--bad)']];
+    zones.forEach(([a, z, c]) => s += `<rect x="${gx}" y="${Y(z)}" width="16" height="${Y(a) - Y(z)}" style="fill:${c}" opacity=".35"/>`);
+    s += `<rect x="${gx}" y="${gy0}" width="16" height="${gy1-gy0}" fill="none" class="stm"/>`;
+    [0, .5, 1].forEach(v => s += `<text x="${gx-4}" y="${Y(v)+4}" text-anchor="end" font-size="11" class="txm" font-family="Barlow, sans-serif">${v*100} %</text>`);
+    s += `<line x1="${gx-4}" y1="${Y(.85)}" x2="${gx+20}" y2="${Y(.85)}" class="st" stroke-width="1" stroke-dasharray="3 2"/>`;
+    const uu = jt.broken ? top : u;
+    s += `<path d="M${gx+18} ${Y(uu)} l12 -7 v14 z" style="fill:var(--ink)"/>`;
+    s += `<text x="${gx+8}" y="${gy1+18}" text-anchor="middle" font-size="11" class="txm" font-family="Barlow, sans-serif">av Re</text>`;
+    return s;
+  }
+
+  // ---------- Status ----------
+  function status(js){
+    if(jt.broken) return ['bad', 'Skruen røk'];
+    if(js.M <= 0) return ['', 'Ikke trukket til'];
+    if(js.u > 1) return ['bad', 'Skruen flyter'];
+    if(js.u >= 0.95) return ['warn', 'På grensen'];
+    if(js.u >= 0.8) return ['ok', 'Riktig strammet'];
+    if(js.u >= 0.5) return ['warn', 'For løs'];
+    return ['warn', 'Altfor løs'];
+  }
+
+  function render(){
+    const js = jointState();
+    $('over').innerHTML = overSvg(js);
+    $('scale').innerHTML = scaleSvg();
+    $('joint').innerHTML = jointSvg(js);
+    $('scale').setAttribute('aria-valuetext', mode === 'utforsk' || answered ? fmtNm(setting()) + ' Nm' : 'skjult');
+    const b = B(), cl = C();
+    $('jointlab').textContent = `${b.id} × ${fmt(b.P, b.P % 1 ? 2 : 0).replace(/0$/, '')} · klasse ${cl.id}`;
+    // avlesning
+    const [sc, stxt] = status(js);
+    $('r-set').textContent = fmtNm(setting()) + ' Nm';
+    $('r-rec').textContent = fmtNm(js.rec) + ' Nm';
+    $('r-f').textContent = fmt((pl.on ? pl.M : setting())/W().L, 0) + ' N';
+    $('r-m').textContent = fmtNm(js.M) + ' Nm';
+    $('r-fv').textContent = jt.broken ? '0 kN' : fmt(js.F/1000, 1) + ' kN';
+    $('r-u').innerHTML = jt.broken ? '<span style="color:var(--bad)">Røket</span>' : `${fmt(Math.min(js.u, 9.99)*100, 0)} %`;
+    const hideSet = mode !== 'utforsk' && !answered || mode === 'utforsk' && !$('vis').checked;
+    $('r-set').classList.toggle('hidden-val', hideSet);
+    $('r-rec').classList.toggle('hidden-val', mode === 'stillinn' && !answered);
+    $('r-f').classList.toggle('hidden-val', mode === 'lesav' && !answered);
+    const Rp = RpOf(b, cl), Rm = RmOf(b, cl);
+    $('clsinfo').innerHTML = `${b.id} ${cl.id}: Rm = ${Rm} MPa, Re = ${Rp} MPa, spenningsareal As = ${fmt(b.As, 1)} mm². Status: <b class="chip ${sc}">${stxt}</b>`;
+    const lc = $('lockchip'); lc.textContent = st.locked ? 'Håndtaket er låst' : 'Håndtaket er ulåst'; lc.className = 'chip ' + (st.locked ? 'ok' : 'warn');
+    $('lockbtn').textContent = st.locked ? 'Lås opp håndtaket' : 'Lås håndtaket';
+    $('newbolt').hidden = !(jt.broken || jt.yielded);
+    $('loosen').hidden = jt.broken || jt.yielded;
+    renderTable();
+  }
+
+  function setNotes(list){
+    const el = $('notes'); el.innerHTML = '';
+    list.forEach(([c, t]) => { const d = document.createElement('div'); d.className = 'note ' + c; d.textContent = t; el.append(d); });
+  }
+  function autoNotes(){
+    const js = jointState(), w = W(), n = [];
+    if(mode === 'lesav'){ setNotes(answered ? [] : [['info', 'Les av skalaen: siste synlige strek på hovedskalaen pluss tallet på trommelen ved midtlinja.']]); if(answered) setNotes(lastEval || []); return; }
+    if(jt.broken) n.push(['bad', 'Skruen røk. Forspenningen ble større enn skruen tåler. Sjekk tabellen og om du brukte riktig verdi for smøringen.']);
+    else if(jt.yielded) n.push(['bad', 'Skruen har strukket seg permanent (flytt). Den må kastes og byttes, selv om den ser hel ut.']);
+    if(js.rec > w.max) n.push(['warn', `Anbefalt moment er større enn denne nøkkelen klarer (maks ${w.max} Nm). Velg en større nøkkel.`]);
+    else if(js.rec < w.min) n.push(['warn', `Anbefalt moment er mindre enn laveste verdi på nøkkelen (${w.min} Nm). Velg en mindre nøkkel.`]);
+    if(!st.locked) n.push(['info', 'Husk å låse håndtaket før du trekker, ellers kan innstillingen endre seg.']);
+    if(mode === 'utforsk' && !n.length && !pl.on){
+      if(js.M <= 0) n.push(['info', 'Still inn nøkkelen og hold inne knappen for å trekke til. Slipp når nøkkelen klikker.']);
+      else { const [c, t] = status(js); n.push([c || 'info', `${t}. Utnyttelse ${fmt(js.u*100, 0)} % av flytegrensen. Anbefalt er rundt 85 %.`]); }
+    }
+    if(lastEval && mode === 'stillinn' && answered) return setNotes(lastEval);
+    setNotes(n);
+  }
+
+  // ---------- Tabell ----------
+  function renderTable(){
+    const mu = byId(FRIC, st.tabfric).mu, b = B(), cl = C();
+    let h = '<tr><th>Skrue</th><th>Nøkkel­vidde</th>' + CLASSES.map(c => `<th class="${c.id === cl.id ? 'cur' : ''}">${c.id}</th>`).join('') + '</tr>';
+    BOLTS.forEach(x => {
+      h += `<tr class="${x.id === b.id ? 'cur' : ''}"><td>${x.id}</td><td>${x.s} mm</td>` + CLASSES.map(c => {
+        const hit = x.id === b.id && c.id === cl.id;
+        return `<td data-b="${x.id}" data-c="${c.id}" class="${c.id === cl.id ? 'cur' : ''} ${hit ? 'hit' : ''}">${fmtNm(Mrec(x, c, mu))}</td>`;
+      }).join('') + '</tr>';
+    });
+    $('mt').innerHTML = h;
+    $('tabcard').classList.toggle('tablock', mode !== 'utforsk');
+  }
+
+  // ---------- Kontroller ----------
+  function buildControls(){
+    BOLTS.forEach(b => $('bolt').append(new Option(`${b.id} (nøkkelvidde ${b.s})`, b.id)));
+    CLASSES.forEach(c => $('cls').append(new Option(c.id, c.id)));
+    FRIC.forEach(f => { $('fric').append(new Option(`${f.lab} (µ = ${fmt(f.mu, 2)})`, f.id)); $('tabfric').append(new Option(`${f.lab} (µ = ${fmt(f.mu, 2)})`, f.id)); });
+    WRENCHES.forEach(w => $('wrench').append(new Option(w.name, w.id)));
+  }
+  function syncControls(){
+    const lockJoint = mode !== 'utforsk', lockAll = mode === 'lesav';
+    $('bolt').value = st.bolt; $('cls').value = st.cls; $('fric').value = st.fric; $('wrench').value = st.wrench; $('tabfric').value = st.tabfric;
+    ['bolt', 'cls', 'fric'].forEach(id => $(id).disabled = lockJoint);
+    $('wrench').disabled = lockAll;
+    document.querySelectorAll('[data-adj]').forEach(b => b.disabled = lockAll);
+    $('lockbtn').disabled = lockAll; $('minbtn').disabled = lockAll;
+    $('pull').disabled = lockAll || jt.broken || jt.yielded;
+    $('loosen').disabled = lockAll;
+    $('showwrap').hidden = mode !== 'utforsk';
+  }
+  function resetJoint(){ jt.Mmax = 0; jt.broken = false; jt.yielded = false; }
+  function update(){ syncControls(); render(); autoNotes(); }
+
+  function adjust(d){
+    if(mode === 'lesav') return;
+    if(st.locked){ setNotes([['warn', 'Håndtaket er låst. Lås det opp før du stiller inn.']]); return; }
+    const w = W(); st.n = Math.max(0, Math.min(w.N, st.n + d)); update();
+  }
+
+  $('bolt').onchange = e => { st.bolt = e.target.value; resetJoint(); update(); };
+  $('cls').onchange = e => { st.cls = e.target.value; resetJoint(); update(); };
+  $('fric').onchange = e => { st.fric = e.target.value; resetJoint(); update(); };
+  $('tabfric').onchange = e => { st.tabfric = e.target.value; render(); };
+  $('wrench').onchange = e => {
+    const old = setting(); st.wrench = e.target.value; const w = W();
+    st.n = Math.max(0, Math.min(w.N, Math.round((old - w.min)/w.dv)));
+    if(mode === 'stillinn') st.n = 0;
+    update();
+  };
+  document.querySelectorAll('[data-adj]').forEach(b => b.onclick = () => adjust(+b.dataset.adj));
+  $('lockbtn').onclick = () => { st.locked = !st.locked; update(); };
+  $('minbtn').onclick = () => { if(st.locked){ setNotes([['warn', 'Lås opp håndtaket først.']]); return; } st.n = 0; update(); };
+  $('loosen').onclick = () => { resetJoint(); update(); };
+  $('newbolt').onclick = () => { resetJoint(); update(); };
+  $('vis').onchange = render;
+  $('mt').onclick = e => {
+    const td = e.target.closest('td[data-b]'); if(!td || mode !== 'utforsk') return;
+    st.bolt = td.dataset.b; st.cls = td.dataset.c; st.fric = st.tabfric; resetJoint(); update();
+  };
+
+  // dra på skalaen
+  const sc = $('scale'); let drag = null;
+  sc.addEventListener('pointerdown', e => { drag = {y:e.clientY, acc:0}; sc.setPointerCapture(e.pointerId); });
+  sc.addEventListener('pointermove', e => {
+    if(!drag) return;
+    const k = sc.viewBox.baseVal.width/sc.getBoundingClientRect().width;
+    drag.acc += (drag.y - e.clientY)*k; drag.y = e.clientY;
+    const steps = Math.trunc(drag.acc/9);
+    if(steps){ drag.acc -= steps*9; adjust(steps); }
+  });
+  ['pointerup', 'pointercancel'].forEach(t => sc.addEventListener(t, () => drag = null));
+  sc.addEventListener('wheel', e => { e.preventDefault(); adjust(e.deltaY < 0 ? 1 : -1); }, {passive:false});
+  sc.addEventListener('keydown', e => {
+    const m = {ArrowUp:1, ArrowRight:1, ArrowDown:-1, ArrowLeft:-1, PageUp:10, PageDown:-10}[e.key];
+    if(m){ e.preventDefault(); adjust(m); }
+  });
+
+  // ---------- Lyd ----------
+  let ac = null;
+  function clickSound(){
+    if(!$('lyd').checked) return;
+    try{
+      if(!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
+      const len = Math.floor(ac.sampleRate*0.03), buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+      for(let i = 0; i < len; i++) d[i] = (Math.random()*2 - 1)*Math.pow(1 - i/len, 3);
+      const src = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
+      f.type = 'bandpass'; f.frequency.value = 3200; f.Q.value = 2; g.gain.value = 0.9;
+      src.buffer = buf; src.connect(f); f.connect(g); g.connect(ac.destination); src.start();
+    }catch(e){}
+  }
+
+  // ---------- Trekking ----------
+  function pullStart(){
+    if(pl.on || $('pull').disabled) return;
+    try{ if(ac && ac.state === 'suspended') ac.resume(); }catch(e){}
+    Object.assign(pl, {on:true, M:0, t0:performance.now(), last:performance.now(), clicked:false, peak:0});
+    $('pull').classList.add('on');
+    pl.raf = requestAnimationFrame(tick);
+  }
+  function tick(now){
+    if(!pl.on) return;
+    const dt = Math.min(0.05, (now - pl.last)/1000); pl.last = now;
+    const set = setting(), rate = Math.max(set, 2)/1.4;
+    if(!pl.clicked){
+      pl.M += rate*dt;
+      if(pl.M >= set){ pl.M = set; pl.clicked = true; pl.tClick = now; pl.flash = now + 600; clickSound(); setTimeout(render, 650); }
+    } else if(now - pl.tClick > 350){
+      pl.M += rate*dt; // drar videre etter klikket
+    }
+    pl.peak = Math.max(pl.peak, pl.M);
+    // brudd eller flyt
+    const b = B(), cl = C(), mu = MU(), g = geo(b, mu);
+    const Mt = Math.max(jt.Mmax, pl.M), u = sRed(Mt/g.k, b, mu)/RpOf(b, cl);
+    if(u >= RmOf(b, cl)/RpOf(b, cl)){ jt.broken = true; jt.Mmax = Mt; return pullEnd(true); }
+    render();
+    pl.raf = requestAnimationFrame(tick);
+  }
+  function pullEnd(forced){
+    if(!pl.on) return;
+    pl.on = false; cancelAnimationFrame(pl.raf);
+    $('pull').classList.remove('on');
+    const b = B(), cl = C(), mu = MU(), g = geo(b, mu);
+    if(!jt.broken){
+      jt.Mmax = Math.max(jt.Mmax, pl.peak);
+      if(sRed(jt.Mmax/g.k, b, mu)/RpOf(b, cl) > 1) jt.yielded = true;
+    }
+    if(mode === 'stillinn' && !answered){
+      if(!pl.clicked && !jt.broken){ update(); setNotes([['warn', 'Du slapp før nøkkelen klikket. Hold inne til du hører eller ser klikket.']]); return; }
+      evaluateTask();
+      return;
+    }
+    update();
+    if(mode === 'utforsk' && !jt.broken){
+      const set = setting(), over = (pl.peak - set)/set;
+      const n = [];
+      if(!pl.clicked) n.push(['warn', 'Du slapp før nøkkelen klikket, så skruen ble ikke trukket til det innstilte momentet.']);
+      else if(over > 0.03) n.push(['warn', `Du dro videre etter klikket. Skruen fikk ${fmtNm(pl.peak)} Nm i stedet for ${fmtNm(set)} Nm.`]);
+      if(n.length){ const old = [...$('notes').children].map(d => [d.className.replace('note ', ''), d.textContent]); setNotes(n.concat(old)); }
+    }
+  }
+  const pb = $('pull');
+  pb.addEventListener('pointerdown', e => { e.preventDefault(); pb.setPointerCapture(e.pointerId); pullStart(); });
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(t => pb.addEventListener(t, () => pullEnd()));
+  pb.addEventListener('keydown', e => { if((e.key === ' ' || e.key === 'Enter') && !e.repeat){ e.preventDefault(); pullStart(); } });
+  pb.addEventListener('keyup', e => { if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); pullEnd(); } });
+  pb.addEventListener('contextmenu', e => e.preventDefault());
+
+  // ---------- Oppgaver ----------
+  const rnd = a => a[Math.floor(Math.random()*a.length)];
+  function newTask(){
+    answered = false; lastEval = null; $('fb').hidden = true; $('ans').value = '';
+    if(mode === 'lesav'){
+      const w = rnd(WRENCHES); st.wrench = w.id;
+      let n; do { n = Math.floor(Math.random()*(w.N + 1)); } while(n % 10 === 0 && Math.random() < 0.7);
+      st.n = n; st.locked = true;
+      task = {kind:'lesav', v:setting()};
+      $('tasklabel').textContent = 'Les av nøkkelen';
+      $('tasktext').innerHTML = `Hvor mange Nm er nøkkelen stilt inn på? <span style="color:var(--muted);font-size:18px">(${w.name})</span>`;
+      $('taskhint').textContent = `Hovedskalaen har én strek per omdreining (${w.main} Nm). Trommelen har 10 streker på ${clean(w.dv)} Nm.`;
+      $('ansform').hidden = false;
+    } else {
+      let b, c, f, m;
+      do { b = rnd(BOLTS.slice(0, 6)); c = rnd([CLASSES[2], CLASSES[2], CLASSES[3], CLASSES[4], CLASSES[0]]); f = rnd(FRIC); m = Mrec(b, c, f.mu); } while(m < 4.5 || m > 1000);
+      st.bolt = b.id; st.cls = c.id; st.fric = f.id; resetJoint();
+      st.wrench = 'w100'; st.n = 0; st.locked = true;
+      task = {kind:'stillinn', m, b, c, f};
+      $('tasklabel').textContent = 'Trekk til skruen';
+      $('tasktext').innerHTML = `Trekk til en <b>${b.id}</b>-skrue i fasthetsklasse <b>${c.id}</b>. Gjengene er ${f.task}.`;
+      $('taskhint').textContent = 'Finn momentet i tabellen, velg nøkkel, lås opp og still inn, lås, og trekk til nøkkelen klikker.';
+      $('ansform').hidden = true;
+    }
+    update();
+  }
+  function evaluateTask(){
+    const t = task, w = W(), set = setting(), errs = [];
+    const tol = Math.max(w.dv, t.m*0.02);
+    if(t.m < w.min || t.m > w.max) errs.push(`Nøkkelen (${w.name}) passer ikke. ${fmtNm(t.m)} Nm ligger utenfor området.`);
+    if(Math.abs(set - t.m) > tol + 1e-9) errs.push(`Nøkkelen var stilt på ${fmtNm(set)} Nm. Riktig moment er ${fmtNm(t.m)} Nm.` + wrongColumn(set, t));
+    if(pl.clicked && (pl.peak - set)/set > 0.03) errs.push(`Du dro videre etter klikket og ga skruen ${fmtNm(pl.peak)} Nm.`);
+    const warn = st.locked ? '' : ' Husk å låse håndtaket før du trekker.';
+    answered = true; score.tot++;
+    const ok = !errs.length && !jt.broken && !jt.yielded;
+    if(ok) score.ok++;
+    if(jt.broken && !errs.length) errs.push('Skruen røk.');
+    const fb = $('fb'); fb.hidden = false; fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+    const js = jointState();
+    fb.innerHTML = ok
+      ? `<b>Riktig!</b> ${fmtNm(t.m)} Nm gir ${fmt(js.F/1000, 1)} kN forspenning, ${fmt(js.u*100, 0)} % av flytegrensen.<span class="why">${warn}</span>`
+      : `<b>Ikke helt.</b><ul>${errs.map(x => `<li>${x}</li>`).join('')}</ul><span class="why">${warn}</span>`;
+    $('score').textContent = `${score.ok} av ${score.tot} riktige`;
+    lastEval = [[ok ? 'ok' : 'bad', ok ? 'Godkjent tiltrekking.' : 'Se tilbakemeldingen i oppgaven.']];
+    update();
+  }
+  function wrongColumn(set, t){
+    for(const f of FRIC){ if(f.id !== t.f.id && Math.abs(Mrec(t.b, t.c, f.mu) - set) <= Math.max(W().dv, set*0.02)) return ` Du brukte verdien for «${f.lab.toLowerCase()}». Gjengene var ${t.f.task.replace(/<\/?b>/g, '')}.`; }
+    for(const c of CLASSES){ if(c.id !== t.c.id && Math.abs(Mrec(t.b, c, t.f.mu) - set) <= Math.max(W().dv, set*0.02)) return ` Det er verdien for fasthetsklasse ${c.id}.`; }
+    return '';
+  }
+  $('ansform').addEventListener('submit', e => {
+    e.preventDefault();
+    if(answered || !task || task.kind !== 'lesav') return;
+    const v = parseFloat($('ans').value.replace(',', '.').replace('−', '-'));
+    if(isNaN(v)){ $('fb').hidden = false; $('fb').className = 'fb bad'; $('fb').textContent = 'Skriv inn et tall, for eksempel 74 eller 12,5.'; return; }
+    const w = W(), ok = Math.abs(v - task.v) < w.dv/2 + 1e-9;
+    answered = true; score.tot++; if(ok) score.ok++;
+    const mainV = w.min + Math.floor(st.n/10)*w.main, th = (st.n % 10)*w.dv;
+    $('fb').hidden = false; $('fb').className = 'fb ' + (ok ? 'ok' : 'bad');
+    $('fb').innerHTML = `<b>${ok ? 'Riktig!' : 'Ikke riktig.'}</b> Nøkkelen står på ${fmtNm(task.v)} Nm.<span class="why">Hovedskala: ${mainV} Nm. Trommelen: ${st.n % 10} streker × ${clean(w.dv)} Nm = ${clean(th)} Nm. Sum: ${mainV} + ${clean(th)} = ${fmtNm(task.v)} Nm.</span>`;
+    $('score').textContent = `${score.ok} av ${score.tot} riktige`;
+    lastEval = [];
+    update();
+  });
+  $('newbtn').onclick = newTask;
+
+  // ---------- Modus ----------
+  document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => {
+    if(pl.on) pullEnd();
+    mode = b.dataset.mode;
+    document.querySelectorAll('[data-mode]').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+    $('taskcard').hidden = mode === 'utforsk';
+    score = {ok:0, tot:0}; $('score').textContent = '0 av 0 riktige';
+    if(mode === 'utforsk'){ task = null; answered = false; lastEval = null; resetJoint(); update(); }
+    else newTask();
+  });
+
+  buildControls();
+  update();
+  window.addEventListener('resize', () => render());
+})();
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

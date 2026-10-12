@@ -1,0 +1,813 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1080px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Skjæredata</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Maskinering</div>
+      <h1>Skjæredata</h1>
+      <p class="lk-lead">Velg turtall og mating for dreiing og fresing ut fra materiale, verktøy og diameter.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg materiale og verktøy.</span></li><li><span>Finn skjærehastigheten v<sub>c</sub> i tabellen nederst.</span></li><li><span>Regn ut turtallet: n = v<sub>c</sub> · 1000 / (π · D).</span></li><li><span>Still inn turtall og mating, og se resultatet. Prøv deretter <b>Oppgave</b>.</span></li></ol>
+      <a class="lk-hb" href="https://verkstedhandboka.vercel.app/#m3-valg" target="_blank" rel="noopener">Les mer i Verkstedhåndboka: 3.1 Valg av skjæredata ↗</a>
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Skjæredatasimulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: verkstedtavle som i multimetersimulatoren. Maskinvisning øverst, oppsett og innstilling i to kolonner, resultater og tabell under. Stables på mobil. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c; --warn:#a86a00;
+  --bench:#dfe5e8; --bench-line:#c4ced3; --zone:rgba(31,138,76,.22);
+  --display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Barlow","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"Consolas",monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --bench:#232c31; --bench-line:#334047; --zone:rgba(76,194,126,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --bench:#232c31; --bench-line:#334047; --zone:rgba(76,194,126,.25); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px 20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0;letter-spacing:.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.tabbar{display:flex;gap:8px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.tabs button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:7px;cursor:pointer}
+.tabs button[aria-selected="true"],.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);flex-wrap:wrap}
+.label{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:14px;color:var(--muted)}
+#cv{display:block;width:100%;height:clamp(210px,30vw,290px);background:var(--bench)}
+.pill{font:600 13px var(--body);padding:3px 10px;border-radius:99px;border:1px solid currentColor}
+.pill.ok{color:var(--ok)} .pill.warn{color:var(--warn)} .pill.bad{color:var(--bad)} .pill.info{color:var(--muted)}
+.notes{display:grid;gap:6px;padding:10px 14px;border-top:1px solid var(--line);min-height:46px;align-content:center}
+.note{font-size:15px;padding-left:12px;border-left:4px solid var(--line)}
+.note.bad{border-color:var(--bad);color:var(--bad);font-weight:600}
+.note.warn{border-color:var(--warn)}
+.note.info{border-color:var(--muted);color:var(--muted)}
+.note.ok{border-color:var(--ok)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.field{display:grid;gap:6px}
+.field>span,.field>label{font-size:14px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+select,input[type=text]{font:600 16px var(--body);padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%;width:100%}
+input[type=text]{font-family:var(--mono);font-size:15px}
+select:disabled,input:disabled,.tabs button:disabled{opacity:.5;cursor:not-allowed}
+.matsel{display:flex;gap:8px;align-items:center}
+.iso{flex:none;width:30px;height:30px;border-radius:6px;display:grid;place-items:center;font:700 16px var(--display);color:#fff}
+.iso.P{background:#1f62c4}.iso.M{background:#e0ad00;color:#1b1b1b}.iso.K{background:#c8322b}.iso.N{background:#2e8f48}
+.slider{display:grid;grid-template-columns:1fr 7.5em;gap:10px;align-items:center}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.big .slider input[type=text]{font-size:20px;font-weight:700;text-align:right}
+.unit{font-size:13px;color:var(--muted)}
+.gauge{position:relative;height:14px;border-radius:7px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.gauge .z{position:absolute;top:0;bottom:0;background:var(--zone);border-left:2px solid var(--ok);border-right:2px solid var(--ok)}
+.gauge .m{position:absolute;top:-2px;bottom:-2px;width:4px;margin-left:-2px;background:var(--ink);border-radius:2px}
+.gl{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;gap:8px}
+.readout{display:grid;gap:4px;font-variant-numeric:tabular-nums}
+.readout .r{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:4px;font-size:15px}
+.readout .r span:first-child{color:var(--muted)}
+.readout .r span:last-child{font-family:var(--mono);text-align:right}
+.readout .r.sum{font-size:20px;font-weight:700;border:0}
+.readout .r.sum span:first-child{font-family:var(--display);color:var(--ink);font-weight:600}
+.hidden-val{filter:blur(7px);user-select:none}
+.formula{font-family:var(--mono);font-size:14px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:4px;overflow-x:auto}
+.formula div{white-space:nowrap}
+.formula .c{color:var(--muted);font-family:var(--body)}
+.task{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.25;text-wrap:balance}
+.task b{color:var(--accent)}
+.btn{font:600 15px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fb{padding:10px 12px;border-radius:8px;font-size:15px;border:1px solid var(--line);display:grid;gap:4px}
+.fb.ok{border-color:var(--ok)} .fb.bad{border-color:var(--bad)}
+.fb .h{font-weight:700} .fb.ok .h{color:var(--ok)} .fb.bad .h{color:var(--bad)}
+.score{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.tw{overflow-x:auto}
+table.data{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.data td,table.data th{padding:5px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;white-space:nowrap}
+table.data th{color:var(--muted);font-weight:600}
+table.data tr.cur td{background:var(--bg);font-weight:700}
+table.data .iso{width:22px;height:22px;font-size:13px;display:inline-grid}
+.howto ol{margin:0;padding-left:20px;display:grid;gap:6px}
+.howto p{margin:0;color:var(--muted);font-size:15px}
+.hint{font-size:13px;color:var(--muted)}
+.wide{grid-column:1/-1}
+.ragrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px;align-items:start}
+@media (max-width:760px){.ragrid{grid-template-columns:1fr}}
+#prof{display:block;width:100%;height:auto;background:var(--bg);border:1px solid var(--line);border-radius:8px}
+#prof .pf{fill:var(--line);stroke:var(--ink);stroke-width:1.5}
+#prof .tx{fill:var(--ink);font:600 12px var(--body)}
+#prof .txm{fill:var(--muted);font:500 11px var(--body)}
+#prof .dim{stroke:var(--accent);stroke-width:1.5;fill:none}
+#prof .tool{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3}
+.rafacts{display:grid;gap:4px;font-variant-numeric:tabular-nums}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Skjæredata</h1>
+      <p class="sub">Velg turtall og mating ut fra materiale, verktøy og diameter.</p>
+    </div>
+    <div class="tabbar">
+      <div class="tabs" role="tablist" aria-label="Prosess" id="proctabs">
+        <button role="tab" aria-selected="true" data-proc="dreiing">Dreiing</button>
+        <button role="tab" aria-selected="false" data-proc="fresing">Fresing</button>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Modus" id="modetabs">
+        <button role="tab" aria-selected="true" data-mode="utforsk">Utforsk</button>
+        <button role="tab" aria-selected="false" data-mode="oppgave">Oppgave</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="stage" aria-label="Maskin">
+    <div class="stage-head"><span class="label" id="stagelabel">Dreiebenk</span><span class="pill info" id="pill">–</span></div>
+    <canvas id="cv" role="img" aria-label="Animasjon av bearbeidingen"></canvas>
+    <div class="notes" id="notes" aria-live="polite"></div>
+  </section>
+
+  <div class="grid">
+    <section class="card" id="taskcard" hidden>
+      <span class="label">Oppgave</span>
+      <div class="task" id="tasktext"></div>
+      <p class="hint" style="margin:0">Finn skjærehastighet og mating i tabellen nederst. Regn ut turtallet, still inn maskinen til høyre og trykk Sjekk.</p>
+      <div class="row">
+        <button class="btn primary" type="button" id="checkbtn">Sjekk</button>
+        <button class="btn" type="button" id="newbtn">Ny oppgave</button>
+      </div>
+      <div class="fb" id="fb" hidden></div>
+      <div class="score" id="score">0 av 0 riktige</div>
+    </section>
+
+    <section class="card" id="setupcard">
+      <span class="label">Oppsett</span>
+      <div class="field"><label for="mat">Materiale</label>
+        <div class="matsel"><span class="iso P" id="isochip">P</span><select id="mat"></select></div></div>
+      <div class="field"><label for="tool">Verktøy</label><select id="tool"></select></div>
+      <div class="field"><span>Bearbeiding</span>
+        <div class="tabs" id="optabs" role="group" aria-label="Bearbeiding">
+          <button type="button" data-op="grov" aria-pressed="true">Grovbearbeiding</button>
+          <button type="button" data-op="fin" aria-pressed="false">Finbearbeiding</button>
+        </div></div>
+      <div class="field"><label for="dtext" id="dlabel">Diameter på emnet, D (mm)</label>
+        <div class="slider"><input type="range" id="drange" aria-label="Diameter"><input type="text" id="dtext" inputmode="decimal"></div></div>
+      <div class="two">
+        <div class="field" id="zwrap"><label for="z">Antall tenner, z</label><select id="z"></select></div>
+        <div class="field"><label for="ap">Skjæredybde, aₚ (mm)</label><input type="text" id="ap" inputmode="decimal"></div>
+        <div class="field" id="aewrap"><label for="ae">Skjærebredde, aₑ (mm)</label><input type="text" id="ae" inputmode="decimal"></div>
+        <div class="field"><label for="len">Lengde å bearbeide (mm)</label><input type="text" id="len" inputmode="decimal"></div>
+      </div>
+    </section>
+
+    <section class="card big" id="machcard">
+      <span class="label">Still inn maskinen</span>
+      <div class="field"><label for="ntext">Turtall, n (o/min)</label>
+        <div class="slider"><input type="range" id="nrange" min="20" step="10" aria-label="Turtall"><input type="text" id="ntext" inputmode="numeric"></div>
+        <div class="gauge" id="gvc"><div class="z"></div><div class="m"></div></div>
+        <div class="gl"><span id="gvcl">Skjærehastighet vc</span><span id="gvcr"></span></div></div>
+      <div class="field"><label for="ftext" id="flabel">Mating, f (mm/omdr)</label>
+        <div class="slider"><input type="range" id="frange" aria-label="Mating"><input type="text" id="ftext" inputmode="decimal"></div>
+        <div class="gauge" id="gf"><div class="z"></div><div class="m"></div></div>
+        <div class="gl"><span id="gfl">Mating</span><span id="gfr"></span></div></div>
+      <div class="two">
+        <div class="field"><label for="maxn">Maskinens maks turtall</label><input type="text" id="maxn" inputmode="numeric"></div>
+        <div class="field"><label for="maxp">Spindeleffekt (kW)</label><input type="text" id="maxp" inputmode="decimal"></div>
+      </div>
+    </section>
+
+    <section class="card wide" id="racard">
+      <span class="label">Overflateruhet, neseradius og mating</span>
+      <div class="ragrid">
+        <div style="display:grid;gap:12px;min-width:0">
+          <div class="field"><span>Neseradius på skjæret, r<sub>ε</sub> (mm)</span>
+            <div class="tabs" id="retabs" role="group" aria-label="Neseradius"></div></div>
+          <div class="field"><label for="ratarget">Krav til overflate</label><select id="ratarget"></select></div>
+          <div class="readout rafacts" id="rafacts">
+            <div class="r"><span>Ruhet med valgt mating, Ra</span><span id="o-ra2"></span></div>
+            <div class="r"><span>Profildybde, Rt</span><span id="o-rt"></span></div>
+            <div class="r sum"><span>Største mating for kravet</span><span id="o-fmax"></span></div>
+          </div>
+          <div class="row"><button class="btn" type="button" id="usefmax">Bruk største mating</button></div>
+        </div>
+        <div style="display:grid;gap:8px;min-width:0">
+          <svg id="prof" viewBox="0 0 460 170" role="img" aria-label="Overflateprofil etter dreiing"></svg>
+          <div class="formula" id="raformula"></div>
+        </div>
+      </div>
+      <p class="hint" style="margin:0">Neseradiusen og matingen lager små riller i overflaten. Rillene står med avstand f, og dybden er Rt ≈ f² / (8 · r<sub>ε</sub>). Dobbelt så stor mating gir fire ganger så dyp rille. Dobbelt så stor neseradius halverer dybden. Stor neseradius gir sterkere egg og finere overflate, men øker skjærkreftene og faren for vibrasjoner på slanke emner. Dette er teoretisk ruhet. I praksis blir overflaten litt grovere.</p>
+    </section>
+
+    <section class="card">
+      <span class="label">Resultat</span>
+      <div class="readout" id="readout">
+        <div class="r sum"><span>Skjærehastighet vc</span><span id="o-vc"></span></div>
+        <div class="r"><span>Anbefalt vc</span><span id="o-vcrec"></span></div>
+        <div class="r"><span>Anbefalt turtall</span><span id="o-nrec"></span></div>
+        <div class="r"><span>Matehastighet vf</span><span id="o-vf"></span></div>
+        <div class="r"><span>Sponvolum Q</span><span id="o-q"></span></div>
+        <div class="r"><span>Effektbehov, ca.</span><span id="o-p"></span></div>
+        <div class="r" id="rarow"><span>Teoretisk ruhet Ra</span><span id="o-ra"></span></div>
+        <div class="r"><span>Verktøylevetid, ca.</span><span id="o-t"></span></div>
+        <div class="r"><span>Bearbeidingstid</span><span id="o-tid"></span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <span class="label">Utregning</span>
+      <div class="formula" id="formula"></div>
+      <p class="hint" style="margin:0">Regn alltid med diameteren der verktøyet skjærer: emnets diameter ved dreiing, fresens diameter ved fresing. Rund turtallet ned til nærmeste verdi maskinen kan stille inn.</p>
+    </section>
+
+    <section class="card wide">
+      <span class="label" id="tablelabel">Veiledende skjæredata</span>
+      <div class="tw"><table class="data" id="table"></table></div>
+      <p class="hint" style="margin:0" id="tablenote"></p>
+    </section>
+
+    <section class="card wide howto">
+      <span class="label">Slik velger du skjæredata</span>
+      <ol>
+        <li>Finn materialgruppen. ISO deler materialene inn i <b>P</b> (stål), <b>M</b> (rustfritt), <b>K</b> (støpejern) og <b>N</b> (aluminium, kobber og messing). Fargen står også på verktøyeskene.</li>
+        <li>Les av skjærehastigheten <b>vc</b> i m/min for verktøyet og bearbeidingen. Hardmetall tåler omtrent 5–8 ganger høyere vc enn HSS.</li>
+        <li>Regn ut turtallet: <b>n = vc · 1000 / (π · D)</b>. Stor diameter gir lavt turtall, liten diameter gir høyt turtall.</li>
+        <li>Velg mating. Ved dreiing er matingen <b>f</b> i mm per omdreining. Ved fresing er den <b>fz</b> i mm per tann, og matehastigheten blir <b>vf = fz · z · n</b>.</li>
+        <li>Grovbearbeiding: stor skjæredybde og stor mating for å fjerne mye materiale. Finbearbeiding: liten skjæredybde, liten mating og gjerne litt høyere vc for fin overflate.</li>
+      </ol>
+      <p>Tallene i tabellen er veiledende utgangsverdier. Les alltid anbefalingene fra verktøyleverandøren, og juster etter lyd, spon og overflate. Gode spon fra stål er brune til gylne. Blå spon betyr at det er varmt, og glødende spon eller gnister betyr at skjærehastigheten er for høy.</p>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const fmt = (v, d=0) => isFinite(v) ? v.toLocaleString('nb-NO', {minimumFractionDigits:d, maximumFractionDigits:d}) : '–';
+  const num = s => parseFloat(String(s).replace(/\s/g,'').replace(',', '.'));
+  const clamp = (v,a,b) => Math.min(b, Math.max(a, v));
+  const rnd = a => a[Math.floor(Math.random()*a.length)];
+
+  // ---------- Materialer ----------
+  const MAT = [
+    {id:'s235', name:'Konstruksjonsstål S235 / S355', short:'konstruksjonsstål', iso:'P', kc:1700, chip:'steel', col:'#9aa3aa'},
+    {id:'42cr', name:'Seigherdet stål 42CrMo4', short:'seigherdet stål (42CrMo4)', iso:'P', kc:2100, chip:'steel', col:'#8d969d'},
+    {id:'316',  name:'Rustfritt stål AISI 316', short:'rustfritt stål (AISI 316)', iso:'M', kc:2300, chip:'stainless', col:'#b9c0c6'},
+    {id:'gg25', name:'Støpejern EN-GJL-250', short:'støpejern', iso:'K', kc:1150, chip:'cast', col:'#6c7075'},
+    {id:'alu',  name:'Aluminium 6082', short:'aluminium', iso:'N', kc:700, chip:'alu', col:'#d4d9dd'},
+    {id:'ms',   name:'Messing CuZn39Pb3', short:'messing', iso:'N', kc:780, chip:'brass', col:'#d2aa4c'},
+  ];
+  // [grov lav, grov høy, fin lav, fin høy] i samme rekkefølge som MAT
+  const TOOLS = {
+    dreiing: [
+      {id:'hm', name:'Hardmetall vendeskjær, belagt', short:'hardmetall vendeskjær', hm:true, re:0.8, tay:0.25, T0:15, Dmin:5, Dmax:200,
+        vc:[[180,250,250,350],[150,200,200,260],[120,170,160,220],[150,220,200,300],[400,800,500,1000],[200,350,250,400]],
+        f:[[.25,.4,.08,.15],[.2,.35,.08,.15],[.2,.3,.08,.15],[.25,.4,.1,.2],[.2,.4,.05,.15],[.2,.35,.05,.15]]},
+      {id:'hss', name:'HSS dreiestål', short:'HSS dreiestål', hm:false, re:0.4, tay:0.125, T0:60, Dmin:5, Dmax:200,
+        vc:[[25,35,35,45],[15,25,20,30],[12,20,15,25],[15,25,20,30],[80,150,120,200],[50,80,70,100]],
+        f:[[.15,.3,.05,.1],[.1,.25,.05,.1],[.1,.2,.05,.1],[.15,.3,.05,.12],[.15,.3,.05,.12],[.1,.25,.05,.1]]},
+    ],
+    fresing: [
+      {id:'hssend', name:'HSS endefres', short:'HSS endefres', kind:'end', hm:false, tay:0.125, T0:60, Dmin:3, Dmax:25, scale:true,
+        vc:[[20,30,25,35],[15,20,18,25],[10,18,12,20],[15,25,18,28],[80,150,100,180],[40,70,50,80]],
+        f:[[.04,.07,.02,.04],[.03,.05,.02,.03],[.02,.04,.015,.03],[.04,.07,.02,.04],[.05,.1,.03,.06],[.04,.08,.02,.05]]},
+      {id:'hmend', name:'Hardmetall endefres', short:'hardmetall endefres', kind:'end', hm:true, tay:0.25, T0:20, Dmin:3, Dmax:25, scale:true,
+        vc:[[120,180,150,220],[90,140,110,160],[70,110,90,130],[100,160,120,180],[300,600,400,800],[150,250,180,300]],
+        f:[[.04,.08,.03,.05],[.04,.07,.02,.04],[.03,.06,.02,.04],[.05,.09,.03,.06],[.06,.12,.04,.08],[.05,.1,.03,.06]]},
+      {id:'plan', name:'Planfres med vendeskjær', short:'planfres med vendeskjær', kind:'plan', hm:true, tay:0.25, T0:20, Dmin:40, Dmax:125,
+        vc:[[180,260,220,300],[150,200,180,240],[120,180,150,200],[180,260,220,300],[400,1000,600,1200],[200,300,250,350]],
+        f:[[.15,.25,.08,.12],[.12,.2,.08,.12],[.1,.18,.06,.1],[.15,.25,.1,.15],[.1,.2,.05,.1],[.1,.2,.06,.1]]},
+    ],
+  };
+
+  // ---------- Tilstand ----------
+  const st = {
+    mode:'utforsk', proc:'dreiing', op:'grov',
+    dreiing:{mat:'s235', tool:'hm', D:60, z:1, ap:3, ae:0, L:100, n:1000, f:0.2, maxN:4000, maxP:15, re:0.8, raT:6.3},
+    fresing:{mat:'s235', tool:'hmend', D:12, z:4, ap:6, ae:6, L:100, n:3000, f:0.04, maxN:6000, maxP:7.5},
+  };
+  const S = () => st[st.proc];
+  const tool = () => TOOLS[st.proc].find(t => t.id === S().tool);
+  const mat = () => MAT.find(m => m.id === S().mat);
+  let task = null, checked = false, score = {ok:0, tot:0};
+  const RADII = [0.2, 0.4, 0.8, 1.2, 1.6];
+  const RA_REQ = [[0.4,'N5'],[0.8,'N6'],[1.6,'N7'],[3.2,'N8'],[6.3,'N9'],[12.5,'N10']];
+  const fMaxFor = (ra, re) => Math.sqrt(ra*32*re/1000);
+
+  function rec(){
+    const s = S(), t = tool(), i = MAT.findIndex(m => m.id === s.mat), o = st.op === 'grov' ? 0 : 2;
+    const k = t.scale ? clamp(s.D/12, .4, 1.6) : 1;
+    const r3 = v => Math.round(v*1000)/1000;
+    const vcLo = t.vc[i][o], vcHi = t.vc[i][o+1];
+    const fLo = r3(t.f[i][o]*k), fHi = r3(t.f[i][o+1]*k);
+    const nOf = vc => vc*1000/(Math.PI*s.D);
+    return {vcLo, vcHi, vcMid:(vcLo+vcHi)/2, fLo, fHi, nLo:nOf(vcLo), nHi:nOf(vcHi), nMid:nOf((vcLo+vcHi)/2)};
+  }
+  function calc(){
+    const s = S(), t = tool(), m = mat(), R = rec();
+    const vc = Math.PI*s.D*s.n/1000;
+    const vf = st.proc === 'dreiing' ? s.f*s.n : s.f*s.z*s.n;
+    const Q = st.proc === 'dreiing' ? s.ap*s.f*vc : s.ap*s.ae*vf/1000;
+    const P = Q*m.kc/60000/0.8;
+    const Ra = st.proc === 'dreiing' ? s.f*s.f/(32*s.re)*1000 : null;
+    const T = t.T0*Math.pow(R.vcMid/vc, 1/t.tay);
+    const tid = s.L/vf;
+    return {vc, vf, Q, P, Ra, T, tid, R};
+  }
+
+  // ---------- Vurdering ----------
+  function assess(c){
+    const s = S(), t = tool(), m = mat(), R = c.R, out = [];
+    if(s.n > s.maxN) out.push(['bad', `Turtallet er høyere enn maskinen klarer. Maks er ${fmt(s.maxN)} o/min.`]);
+    if(R.nLo > s.maxN) out.push(['info', `Maskinen klarer ikke anbefalt skjærehastighet på Ø ${fmt(s.D,1)} mm. Bruk maks turtall, ${fmt(s.maxN)} o/min.`]);
+    const v = c.vc, lo = R.vcLo, hi = R.vcHi;
+    const lowOk = R.nLo > s.maxN && s.n >= s.maxN*0.95 && s.n <= s.maxN;
+    if(v < lo*0.6 && !lowOk) out.push(['warn', t.hm
+      ? `Skjærehastigheten er altfor lav for hardmetall. Det dannes lett løseegg (materiale som sveiser seg fast på eggen), og overflaten blir dårlig. Øk turtallet til minst ${fmt(Math.min(R.nLo, s.maxN), 0)} o/min.`
+      : `Skjærehastigheten er lav. Det går, men jobben tar unødvendig lang tid. Øk turtallet til minst ${fmt(Math.min(R.nLo, s.maxN), 0)} o/min.`]);
+    else if(v < lo && !lowOk) out.push(['info', `Skjærehastigheten er litt lav. Anbefalt turtall er ${fmt(R.nLo)}–${fmt(R.nHi)} o/min.`]);
+    else if(v > hi*1.3) out.push(['bad', t.hm
+      ? 'Altfor høy skjærehastighet! Eggen overopphetes og slites ned på få minutter.'
+      : 'Altfor høy skjærehastighet! HSS-stålet blir glødende og mister hardheten. Eggen brenner opp.']);
+    else if(v > hi) out.push(['warn', 'Høy skjærehastighet. Verktøyet slites fort, og levetiden går kraftig ned.']);
+    else out.push(['ok', 'Skjærehastigheten er innenfor anbefalt område.']);
+    const f = s.f, fn = st.proc === 'dreiing' ? 'Matingen' : 'Matingen per tann';
+    if(f < R.fLo*0.6) out.push(['warn', `${fn} er for liten. Eggen gnir i stedet for å skjære, og det kan bli vibrasjoner.` + (m.id === '316' ? ' Rustfritt stål kaldherder når eggen gnir.' : '')]);
+    else if(f < R.fLo) out.push(['info', `${fn} er litt liten. Anbefalt er ${fmt(R.fLo,3)}–${fmt(R.fHi,3)} mm.`]);
+    else if(f > R.fHi*1.4) out.push(['bad', `${fn} er altfor stor. Skjærkanten kan brekke.`]);
+    else if(f > R.fHi) out.push(['warn', `${fn} er stor. Det gir ru overflate og stor belastning på eggen.`]);
+    else out.push(['ok', `${fn} er innenfor anbefalt område.`]);
+    if(c.P > s.maxP) out.push(['bad', `Effektbehovet (ca. ${fmt(c.P,1)} kW) er større enn spindeleffekten. Reduser skjæredybden eller matingen.`]);
+    if(st.proc === 'dreiing'){
+      const fm = fMaxFor(s.raT, s.re);
+      if(c.Ra > s.raT*1.02) out.push(['warn', `Overflaten blir for grov: Ra ${fmt(c.Ra,2)} µm, men kravet er Ra ${fmt(s.raT,1)} µm. Senk matingen til høyst ${fmt(fm,3)} mm/omdr, eller bruk større neseradius.`]);
+      else out.push(['ok', `Overflatekravet Ra ${fmt(s.raT,1)} µm holdes (teoretisk Ra ${fmt(c.Ra,2)} µm).`]);
+      if(s.f > s.re*0.8) out.push(['warn', `Matingen er stor i forhold til neseradiusen (${fmt(s.re,1)} mm). Hold matingen under omtrent 0,8 · rε, ellers blir eggen overbelastet og sponet styres dårlig.`]);
+    }
+    return out;
+  }
+
+  // ---------- Kontroller ----------
+  function fillMat(){
+    const sel = $('mat'); sel.innerHTML = '';
+    MAT.forEach(m => sel.append(new Option(`${m.iso} · ${m.name}`, m.id)));
+  }
+  function fillTools(){
+    const sel = $('tool'); sel.innerHTML = '';
+    TOOLS[st.proc].forEach(t => sel.append(new Option(t.name, t.id)));
+  }
+  function defaultsCut(){
+    const s = S(), t = tool();
+    if(st.proc === 'dreiing'){ s.ap = st.op === 'grov' ? 3 : 0.5; }
+    else if(t.kind === 'end'){ s.ap = Math.round(s.D*(st.op === 'grov' ? .5 : 1)*10)/10; s.ae = Math.round(s.D*(st.op === 'grov' ? .5 : .1)*10)/10; }
+    else { s.ap = st.op === 'grov' ? 3 : 0.5; s.ae = Math.round(s.D*.7); }
+  }
+  function defaultZ(){
+    const s = S(), t = tool();
+    if(st.proc === 'dreiing') s.z = 1;
+    else if(t.kind === 'end') s.z = s.mat === 'alu' ? 3 : 4;
+    else s.z = clamp(Math.round(s.D/16)+1, 3, 8);
+  }
+  function syncControls(){
+    const s = S(), t = tool(), m = mat(), R = rec(), locked = st.mode === 'oppgave';
+    document.querySelectorAll('#proctabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.proc === st.proc)));
+    document.querySelectorAll('#modetabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode === st.mode)));
+    document.querySelectorAll('#optabs button').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.op === st.op)); b.disabled = locked; });
+    $('stagelabel').textContent = st.proc === 'dreiing' ? 'Dreiebenk' : 'Fresemaskin';
+    $('mat').value = s.mat; $('mat').disabled = locked;
+    $('isochip').className = 'iso ' + m.iso; $('isochip').textContent = m.iso;
+    $('tool').value = s.tool; $('tool').disabled = locked;
+    $('dlabel').textContent = st.proc === 'dreiing' ? 'Diameter på emnet, D (mm)' : 'Diameter på fresen, D (mm)';
+    const dr = $('drange'); dr.min = t.Dmin; dr.max = t.Dmax; dr.step = st.proc === 'dreiing' ? 1 : (t.kind === 'plan' ? 1 : 0.5); dr.value = s.D; dr.disabled = locked;
+    if(document.activeElement !== $('dtext')) $('dtext').value = fmt(s.D, s.D % 1 ? 1 : 0);
+    $('dtext').disabled = locked;
+    $('zwrap').hidden = st.proc === 'dreiing';
+    $('aewrap').hidden = st.proc === 'dreiing';
+    const zs = $('z'); if(zs.options.length !== 10){ zs.innerHTML = ''; for(let i=1;i<=10;i++) zs.append(new Option(i, i)); }
+    zs.value = s.z; zs.disabled = locked;
+    ['ap','ae','len'].forEach(id => { const k = id === 'len' ? 'L' : id; if(document.activeElement !== $(id)) $(id).value = fmt(s[k], s[k] % 1 ? 1 : 0); $(id).disabled = locked && id !== 'len'; });
+    if(document.activeElement !== $('maxn')) $('maxn').value = fmt(s.maxN);
+    if(document.activeElement !== $('maxp')) $('maxp').value = fmt(s.maxP, s.maxP % 1 ? 1 : 0);
+    const nr = $('nrange'); nr.max = s.maxN; nr.value = s.n;
+    if(document.activeElement !== $('ntext')) $('ntext').value = fmt(s.n);
+    const fr = $('frange');
+    if(st.proc === 'dreiing'){ fr.min = .02; fr.max = .8; fr.step = .01; $('flabel').textContent = 'Mating, f (mm/omdr)'; }
+    else { fr.min = .005; fr.max = t.kind === 'plan' ? .4 : .2; fr.step = .005; $('flabel').textContent = 'Mating per tann, fz (mm/tann)'; }
+    fr.value = s.f;
+    if(document.activeElement !== $('ftext')) $('ftext').value = fmt(s.f, s.f < .1 ? 3 : 2);
+  }
+
+  function gauge(id, val, lo, hi, show, lbl, unit, dec){
+    const g = $(id), max = hi*2;
+    const z = g.querySelector('.z'), mk = g.querySelector('.m');
+    z.hidden = !show;
+    z.style.left = (lo/max*100) + '%'; z.style.width = ((hi-lo)/max*100) + '%';
+    mk.style.left = clamp(val/max*100, 0, 100) + '%';
+    $(id + 'l').textContent = lbl + ' ' + fmt(val, dec) + ' ' + unit;
+    $(id + 'r').textContent = show ? `anbefalt ${fmt(lo,dec)}–${fmt(hi,dec)}` : '';
+  }
+
+  function update(){
+    syncControls();
+    const s = S(), t = tool(), c = calc(), R = c.R;
+    const hide = st.mode === 'oppgave' && !checked;
+    gauge('gvc', c.vc, R.vcLo, R.vcHi, !hide, 'vc', 'm/min', 0);
+    gauge('gf', s.f, R.fLo, R.fHi, !hide, st.proc === 'dreiing' ? 'f' : 'fz', st.proc === 'dreiing' ? 'mm/omdr' : 'mm/tann', 3);
+    if(hide){ $('gvcl').textContent = 'Skjærehastighet vc'; $('gfl').textContent = st.proc === 'dreiing' ? 'Mating f' : 'Mating fz'; }
+    $('o-vc').textContent = fmt(c.vc) + ' m/min';
+    $('o-vcrec').textContent = `${fmt(R.vcLo)}–${fmt(R.vcHi)} m/min`;
+    $('o-nrec').textContent = R.nLo > s.maxN ? `maks ${fmt(s.maxN)} o/min` : `${fmt(R.nLo)}–${fmt(Math.min(R.nHi, s.maxN))} o/min`;
+    $('o-vf').textContent = fmt(c.vf) + ' mm/min';
+    $('o-q').textContent = fmt(c.Q, 1) + ' cm³/min';
+    $('o-p').textContent = fmt(c.P, 1) + ' kW';
+    $('rarow').hidden = st.proc !== 'dreiing';
+    if(c.Ra !== null) $('o-ra').textContent = fmt(c.Ra, 2) + ' µm';
+    $('o-t').textContent = c.T > 240 ? 'over 4 timer' : c.T < 1 ? 'under 1 min' : fmt(c.T) + ' min';
+    const tsec = c.tid*60;
+    $('o-tid').textContent = tsec < 90 ? fmt(tsec) + ' s' : fmt(c.tid, 1) + ' min';
+    $('readout').querySelectorAll('.r span:last-child').forEach(e => e.classList.toggle('hidden-val', hide));
+
+    // utregning
+    const vcU = R.vcMid, nU = R.nMid;
+    const lines = [
+      `<div class="c">Turtall fra midt i anbefalt område:</div>`,
+      `<div>n = vc · 1000 / (π · D)</div>`,
+      `<div>n = ${fmt(vcU)} · 1000 / (π · ${fmt(s.D, s.D%1?1:0)}) = <b>${fmt(nU)} o/min</b></div>`,
+      `<div class="c">Med innstilt turtall blir skjærehastigheten:</div>`,
+      `<div>vc = π · D · n / 1000 = π · ${fmt(s.D, s.D%1?1:0)} · ${fmt(s.n)} / 1000 = <b>${fmt(c.vc)} m/min</b></div>`,
+      `<div class="c">Matehastighet:</div>`,
+      st.proc === 'dreiing'
+        ? `<div>vf = f · n = ${fmt(s.f,3)} · ${fmt(s.n)} = <b>${fmt(c.vf)} mm/min</b></div>`
+        : `<div>vf = fz · z · n = ${fmt(s.f,3)} · ${s.z} · ${fmt(s.n)} = <b>${fmt(c.vf)} mm/min</b></div>`,
+    ];
+    $('formula').innerHTML = lines.join('');
+    $('formula').classList.toggle('hidden-val', hide);
+
+    // tabell
+    const iRow = MAT.findIndex(m => m.id === s.mat), k = t.scale ? clamp(s.D/12, .4, 1.6) : 1;
+    const fu = st.proc === 'dreiing' ? 'f (mm/omdr)' : 'fz (mm/tann)';
+    let h = `<tr><th>ISO</th><th>Materiale</th><th>vc grov (m/min)</th><th>vc fin (m/min)</th><th>${fu} grov</th><th>${fu} fin</th></tr>`;
+    const f3 = v => fmt(Math.round(v*k*1000)/1000, 3);
+    MAT.forEach((m, i) => {
+      const v = t.vc[i], f = t.f[i];
+      h += `<tr class="${i===iRow?'cur':''}"><td><span class="iso ${m.iso}">${m.iso}</span></td><td>${m.name}</td><td>${v[0]}–${v[1]}</td><td>${v[2]}–${v[3]}</td><td>${f3(f[0])}–${f3(f[1])}</td><td>${f3(f[2])}–${f3(f[3])}</td></tr>`;
+    });
+    $('table').innerHTML = h;
+    $('tablelabel').textContent = 'Veiledende skjæredata · ' + t.name;
+    $('tablenote').textContent = t.scale
+      ? `Matingen per tann for endefres avhenger av diameteren. Verdiene i tabellen gjelder Ø ${fmt(s.D, s.D%1?1:0)} mm.`
+      : st.proc === 'dreiing' ? `Valgt neseradius på skjæret: ${fmt(S().re,1)} mm. Ved finbearbeiding kan overflatekravet gi lavere mating enn tabellen.` : 'Antall tenner på planfresen følger diameteren. Sjekk alltid hvor mange skjær fresen har.';
+
+    // vurdering
+    const notes = hide ? [['info', 'Regn ut turtall og mating, still inn maskinen og trykk Sjekk.']] : assess(c);
+    $('notes').innerHTML = '';
+    notes.forEach(([cl, tx]) => { const d = document.createElement('div'); d.className = 'note ' + cl; d.textContent = tx; $('notes').append(d); });
+    const worst = hide ? 'info' : notes.some(n => n[0]==='bad') ? 'bad' : notes.some(n => n[0]==='warn') ? 'warn' : notes.some(n => n[0]==='info') ? 'warn' : 'ok';
+    $('pill').className = 'pill ' + worst;
+    $('pill').textContent = hide ? 'Ikke sjekket' : {ok:'Gode skjæredata', warn:'Kan forbedres', bad:'Feil innstilling'}[worst];
+    updateRa(c, hide);
+    sim.c = c; sim.dirty = true;
+  }
+
+  function updateRa(c, hide){
+    const show = st.proc === 'dreiing'; $('racard').hidden = !show; if(!show) return;
+    const s = st.dreiing, locked = st.mode === 'oppgave';
+    document.querySelectorAll('#retabs button').forEach(b => { b.setAttribute('aria-pressed', String(+b.dataset.re === s.re)); b.disabled = locked; });
+    $('ratarget').value = s.raT; $('ratarget').disabled = locked;
+    const f = s.f, re = s.re, rt = f*f/(8*re)*1000, fm = fMaxFor(s.raT, re);
+    $('o-ra2').textContent = fmt(c.Ra, 2) + ' µm';
+    $('o-ra2').style.color = c.Ra > s.raT*1.02 ? 'var(--bad)' : 'var(--ok)';
+    $('o-rt').textContent = fmt(rt, 2) + ' µm';
+    $('o-fmax').textContent = fmt(fm, 3) + ' mm/omdr';
+    $('o-fmax').classList.toggle('hidden-val', hide);
+    $('usefmax').disabled = hide;
+    $('raformula').innerHTML = `<div>Ra ≈ f² · 1000 / (32 · rε)</div>
+      <div>Ra ≈ ${fmt(f,3)}² · 1000 / (32 · ${fmt(re,1)}) = <b>${fmt(c.Ra,2)} µm</b></div>
+      <div class="c">Største mating for kravet:</div>
+      <div class="${hide?'hidden-val':''}">f = √(Ra · 32 · rε / 1000) = √(${fmt(s.raT,1)} · 32 · ${fmt(re,1)} / 1000) = <b>${fmt(fm,3)} mm/omdr</b></div>`;
+    // profil: fire riller, høyden forstørret
+    const W = 460, x0 = 20, x1 = 340, base = 120, n = 4;
+    const sx = (x1-x0)/(n*f);                 // px per mm horisontalt
+    const ex = clamp(60/Math.max(rt/1000*sx, 1e-6), 1, 1e6); // forstørring vertikalt så rillen blir ca. 60 px
+    const sy = sx*ex;
+    let d = `M${x0} ${base+30}`;
+    for(let i=0;i<=200;i++){
+      const xm = i/200*n*f, k = Math.round(xm/f), dx = xm - k*f;
+      const y = re - Math.sqrt(Math.max(0, re*re - dx*dx)); // mm, 0 i bunnen av rillen
+      d += ` L${(x0 + xm*sx).toFixed(1)} ${(base - (y*sy)).toFixed(1)}`;
+    }
+    d += ` L${x1} ${base+30} Z`;
+    const top = base - rt/1000*sy;
+    const cxT = x0 + 2*f*sx;
+    let svgS = `<path class="pf" d="${d}"/>`;
+    // skjæret som sirkel i en rille (stiplet)
+    let tp = '';
+    for(let k=0;k<=60;k++){
+      const dx = (-0.6 + 1.2*k/60)*f; if(Math.abs(dx) >= re) continue;
+      const y = re - Math.sqrt(re*re - dx*dx);
+      tp += (tp ? ' L' : 'M') + (cxT + dx*sx).toFixed(1) + ' ' + (base - y*sy).toFixed(1);
+    }
+    svgS += `<path class="tool" d="${tp}" transform="translate(0 -3)"/>`;
+    // mål f
+    const a = x0 + f*sx, b2 = x0 + 2*f*sx;
+    svgS += `<path class="dim" d="M${a} ${top-18} H${b2} M${a} ${top-24} V${top-12} M${b2} ${top-24} V${top-12}"/>
+      <text class="tx" x="${(a+b2)/2}" y="${top-28}" text-anchor="middle">f = ${fmt(f,3)} mm</text>`;
+    // mål Rt
+    const xr = x1 + 14;
+    svgS += `<path class="dim" d="M${xr} ${top} V${base} M${xr-6} ${top} H${xr+6} M${xr-6} ${base} H${xr+6}"/>
+      <text class="tx" x="${xr+10}" y="${(top+base)/2+4}">Rt = ${fmt(rt,2)} µm</text>`;
+    svgS += `<text class="txm" x="${x0}" y="164">Høyden er forstørret ${fmt(ex, 0)}×. Stiplet: skjæret med rε ${fmt(re,1)} mm.</text>`;
+    $('prof').innerHTML = svgS;
+  }
+
+  // ---------- Oppgaver ----------
+  function newTask(){
+    const tl = TOOLS[st.proc], t = rnd(tl), s = S();
+    s.tool = t.id; s.mat = rnd(MAT).id; st.op = rnd(['grov','fin']);
+    if(st.proc === 'dreiing') s.D = rnd([16,20,25,30,40,50,60,80,100,120,150]);
+    else s.D = t.kind === 'plan' ? rnd([50,63,80,100,125]) : rnd([4,6,8,10,12,16,20]);
+    defaultZ(); defaultsCut();
+    if(st.proc === 'dreiing'){ s.re = t.re; s.raT = st.op === 'grov' ? 6.3 : 1.6; }
+    s.n = Math.min(500, s.maxN); s.f = st.proc === 'dreiing' ? 0.1 : 0.02;
+    const m = mat(), opTxt = st.op === 'grov' ? 'grov' : 'fin';
+    task = {txt: st.proc === 'dreiing'
+      ? `Du skal <b>${opTxt}dreie</b> en aksel i <b>${m.short}</b> med <b>Ø ${fmt(s.D)} mm</b>. Verktøy: ${t.short} med neseradius ${fmt(s.re,1)} mm.` + (st.op === 'fin' ? ` Overflatekrav: <b>Ra ${fmt(s.raT,1)} µm</b>.` : '')
+      : `Du skal <b>${opTxt}frese</b> i <b>${m.short}</b> med en <b>${t.short}, Ø ${fmt(s.D)} mm</b> og <b>${s.z} tenner</b>.`};
+    $('tasktext').innerHTML = task.txt + ` Maskinen går opp til ${fmt(s.maxN)} o/min.`;
+    checked = false; $('fb').hidden = true;
+    update();
+  }
+  function check(){
+    const s = S(), c = calc(), R = c.R;
+    const nMaxOk = Math.min(R.nHi*1.05, s.maxN);
+    const nMinOk = R.nLo > s.maxN ? s.maxN*0.95 : R.nLo*0.95;
+    const nOk = s.n >= nMinOk && s.n <= nMaxOk;
+    let fA = R.fLo*0.95, fB = R.fHi*1.05;
+    const raLim = st.proc === 'dreiing' && st.op === 'fin';
+    const fm = raLim ? fMaxFor(s.raT, s.re) : Infinity;
+    if(raLim){ fB = Math.min(fB, fm*1.02); if(fA > fB) fA = fm*0.7; }
+    const fOk = s.f >= fA && s.f <= fB;
+    const ok = nOk && fOk;
+    score.tot++; if(ok) score.ok++;
+    checked = true;
+    const fb = $('fb'); fb.hidden = false; fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+    const fu = st.proc === 'dreiing' ? 'mm/omdr' : 'mm/tann';
+    const nAns = R.nLo > s.maxN ? `maks turtall, ${fmt(s.maxN)} o/min (anbefalt vc krever ${fmt(R.nLo)}–${fmt(R.nHi)} o/min)` : `${fmt(R.nLo)}–${fmt(Math.min(R.nHi, s.maxN))} o/min`;
+    fb.innerHTML = `<span class="h">${ok ? 'Riktig!' : 'Ikke helt.'}</span>
+      <span>Turtall: ${nOk ? '✓' : '✗'} du valgte ${fmt(s.n)} o/min. Riktig område er ${nAns}.</span>
+      <span>Mating: ${fOk ? '✓' : '✗'} du valgte ${fmt(s.f,3)} ${fu}. Riktig område er ${fmt(fA/0.95 > fm ? fA : R.fLo,3)}–${fmt(Math.min(R.fHi, fm),3)} ${fu}.${raLim ? ` Overflatekravet Ra ${fmt(s.raT,1)} µm gir største mating √(${fmt(s.raT,1)} · 32 · ${fmt(s.re,1)} / 1000) = ${fmt(fm,3)} mm/omdr.` : ''}</span>
+      <span>Utregning: n = ${fmt(R.vcLo)}…${fmt(R.vcHi)} · 1000 / (π · ${fmt(s.D)}) = ${fmt(R.nLo)}…${fmt(R.nHi)} o/min.</span>`;
+    $('score').textContent = `${score.ok} av ${score.tot} riktige`;
+    update();
+  }
+
+  // ---------- Hendelser ----------
+  document.querySelectorAll('#proctabs button').forEach(b => b.onclick = () => {
+    st.proc = b.dataset.proc; fillTools();
+    if(st.mode === 'oppgave') newTask(); else update();
+  });
+  document.querySelectorAll('#modetabs button').forEach(b => b.onclick = () => {
+    st.mode = b.dataset.mode; $('taskcard').hidden = st.mode !== 'oppgave';
+    if(st.mode === 'oppgave') newTask(); else { checked = false; update(); }
+  });
+  document.querySelectorAll('#optabs button').forEach(b => b.onclick = () => { st.op = b.dataset.op; st.dreiing.raT = st.op === 'grov' ? 6.3 : 1.6; defaultsCut(); update(); });
+  $('mat').onchange = e => { S().mat = e.target.value; if(st.proc === 'fresing') defaultZ(); update(); };
+  $('tool').onchange = e => { const s = S(); s.tool = e.target.value; const t = tool(); if(st.proc === 'dreiing') s.re = t.re; s.D = clamp(s.D, t.Dmin, t.Dmax); if(t.kind === 'plan' && s.D < 40) s.D = 63; defaultZ(); defaultsCut(); update(); };
+  $('drange').oninput = e => { const s = S(); s.D = +e.target.value; if(tool().kind === 'plan') defaultZ(); s.ae = Math.min(s.ae, s.D); update(); };
+  $('dtext').onchange = e => { const v = num(e.target.value), t = tool(); if(isFinite(v)) { S().D = clamp(v, t.Dmin, t.Dmax); S().ae = Math.min(S().ae, S().D); } $('dtext').blur(); update(); };
+  $('z').onchange = e => { S().z = +e.target.value; update(); };
+  const numField = (id, key, lo, hi) => $(id).onchange = e => { const v = num(e.target.value); if(isFinite(v)) S()[key] = clamp(v, lo, typeof hi === 'function' ? hi() : hi); e.target.blur(); update(); };
+  numField('ap', 'ap', .05, 20); numField('ae', 'ae', .05, () => S().D); numField('len', 'L', 1, 5000);
+  numField('maxp', 'maxP', .5, 100);
+  $('maxn').onchange = e => { const v = num(e.target.value); if(isFinite(v)){ S().maxN = clamp(Math.round(v), 100, 40000); S().n = Math.min(S().n, S().maxN); if(task) $('tasktext').innerHTML = task.txt + ` Maskinen går opp til ${fmt(S().maxN)} o/min.`; } e.target.blur(); update(); };
+  $('nrange').oninput = e => { S().n = +e.target.value; update(); };
+  $('ntext').onchange = e => { const v = num(e.target.value); if(isFinite(v)) S().n = clamp(Math.round(v), 10, S().maxN); e.target.blur(); update(); };
+  $('frange').oninput = e => { S().f = +e.target.value; update(); };
+  $('ftext').onchange = e => { const v = num(e.target.value); if(isFinite(v)) S().f = clamp(v, .002, 2); e.target.blur(); update(); };
+  document.querySelectorAll('input[type=text]').forEach(i => i.addEventListener('keydown', e => { if(e.key === 'Enter') i.dispatchEvent(new Event('change')); }));
+  RADII.forEach(r => { const b = document.createElement('button'); b.type = 'button'; b.dataset.re = r; b.textContent = fmt(r,1); b.onclick = () => { st.dreiing.re = r; update(); }; $('retabs').append(b); });
+  RA_REQ.forEach(([v, n]) => $('ratarget').append(new Option(`Ra ${fmt(v,1)} µm (${n})`, v)));
+  $('ratarget').onchange = e => { st.dreiing.raT = +e.target.value; update(); };
+  $('usefmax').onclick = () => { const s = st.dreiing; s.f = Math.floor(fMaxFor(s.raT, s.re)*1000)/1000; update(); };
+  $('checkbtn').onclick = check;
+  $('newbtn').onclick = newTask;
+
+  // ---------- Animasjon ----------
+  const cv = $('cv'), ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const sim = {phase:0, prog:0, chips:[], c:null, dirty:true, last:0, spawn:0};
+  const TIME = 4; // animasjonen går fire ganger fortere enn virkeligheten
+  function tok(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  function chipColor(){
+    const m = mat(), R = sim.c.R, rv = sim.c.vc / R.vcHi, t = tool();
+    if(m.chip === 'alu') return rv > 1.6 ? '#9aa0a5' : '#d9dee2';
+    if(m.chip === 'brass') return '#d8ae4a';
+    if(m.chip === 'cast') return rv > 1.3 ? '#ff7a2a' : '#4a4d50';
+    const hot = m.chip === 'stainless' ? .85 : 1;
+    if(rv > 1.3) return '#ff6a1f';
+    if(rv > 1.0*hot) return '#3d5fb4';
+    if(rv < .6) return '#8c9196';
+    return t.hm ? '#b07d34' : '#a9a28f';
+  }
+  function resize(){
+    const r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+    cv.width = Math.round(r.width*d); cv.height = Math.round(r.height*d);
+    ctx.setTransform(d,0,0,d,0,0); sim.dirty = true;
+  }
+  addEventListener('resize', resize);
+
+  function drawLathe(W, H, dt){
+    const s = S(), c = sim.c, m = mat(), t = tool();
+    const ink = tok('--ink'), muted = tok('--muted');
+    const cy = H*0.5, x0 = 70, xE = W - 24;
+    const rpx = 12 + (s.D - 5)/195*(H*0.3 - 12), ppm = rpx/(s.D/2);
+    const apx = clamp(s.ap*ppm, 1.5, rpx*.6), rc = rpx - apx;
+    const span = xE - x0 - 26;
+    const tx = xE - sim.prog*span;
+    // chuck
+    ctx.fillStyle = '#4a5157'; ctx.fillRect(8, cy - H*0.36, x0-8, H*0.72);
+    ctx.fillStyle = '#5f676e'; ctx.fillRect(x0-18, cy - rpx - 16, 18, 14); ctx.fillRect(x0-18, cy + rpx + 2, 18, 14);
+    // emne
+    const cyl = (xa, xb, r) => {
+      const g = ctx.createLinearGradient(0, cy-r, 0, cy+r);
+      g.addColorStop(0, 'rgba(0,0,0,.25)'); g.addColorStop(.35, 'rgba(255,255,255,.35)'); g.addColorStop(1, 'rgba(0,0,0,.35)');
+      ctx.fillStyle = m.col; ctx.fillRect(xa, cy-r, xb-xa, 2*r);
+      ctx.fillStyle = g; ctx.fillRect(xa, cy-r, xb-xa, 2*r);
+      ctx.strokeStyle = 'rgba(0,0,0,.18)'; ctx.lineWidth = 1;
+      for(let k=0;k<6;k++){
+        const a = sim.phase + k*Math.PI/3;
+        if(Math.sin(a) <= 0) continue;
+        const y = cy - r*Math.cos(a);
+        ctx.beginPath(); ctx.moveTo(xa, y); ctx.lineTo(xb, y); ctx.stroke();
+      }
+    };
+    cyl(x0, tx, rpx);
+    cyl(tx, xE, rc);
+    // verktøy
+    const tipY = cy - rc;
+    const rv = c.vc / c.R.vcHi;
+    ctx.fillStyle = '#3b4247'; ctx.fillRect(tx+4, tipY - 78, 30, 62);
+    ctx.fillStyle = t.hm ? '#c9a640' : '#cfd3d6';
+    ctx.beginPath(); ctx.moveTo(tx, tipY); ctx.lineTo(tx+26, tipY-10); ctx.lineTo(tx+34, tipY-24); ctx.lineTo(tx+8, tipY-16); ctx.closePath(); ctx.fill();
+    if(rv > 1.3){
+      ctx.fillStyle = `rgba(255,${t.hm?140:80},40,${t.hm?.45:.75})`;
+      ctx.beginPath(); ctx.arc(tx+4, tipY-4, t.hm ? 8 : 12, 0, 7); ctx.fill();
+    }
+    // overflate-ruhet på dreid del (vises som riller ved stor mating)
+    if(s.f*ppm > 2){
+      ctx.strokeStyle = 'rgba(0,0,0,.25)';
+      for(let x = tx + s.f*ppm; x < xE; x += s.f*ppm){ ctx.beginPath(); ctx.moveTo(x, cy-rc); ctx.lineTo(x, cy+rc); ctx.stroke(); }
+    }
+    return {tipX: tx, tipY, dirX: 1, dirY: -1, ppm, span};
+  }
+  function drawMill(W, H){
+    const s = S(), m = mat(), t = tool(), c = sim.c;
+    const top = H*0.12, bot = H*0.88, cy = H*0.5;
+    const rp = clamp(t.kind === 'plan' ? 10 + s.D*0.45 : 8 + s.D*1.3, 8, H*0.34), ppm = rp/(s.D/2);
+    const xa = 30, xb = W - 30, span = xb - xa + 2*rp;
+    const cx = xa - rp + sim.prog*span;
+    ctx.fillStyle = m.col; ctx.fillRect(xa, top, xb-xa, bot-top);
+    ctx.fillStyle = 'rgba(0,0,0,.12)'; ctx.fillRect(xa, top, xb-xa, 4);
+    // frest spor
+    const w = t.kind === 'plan' ? Math.min(2*rp, s.ae*ppm) : Math.min(2*rp, s.ae*ppm);
+    ctx.fillStyle = 'rgba(0,0,0,.22)';
+    const sx = Math.max(xa, xa), ex = clamp(cx, xa, xb);
+    if(ex > sx) ctx.fillRect(sx, cy - w/2, ex - sx, w);
+    if(ex > sx && s.f*ppm*s.z > 1.5){
+      ctx.strokeStyle = 'rgba(0,0,0,.25)';
+      for(let x = ex - s.f*s.z*ppm; x > sx; x -= s.f*s.z*ppm){ ctx.beginPath(); ctx.arc(x, cy, rp, -0.9, 0.9); ctx.stroke(); }
+    }
+    // fres
+    ctx.save(); ctx.translate(cx, cy);
+    ctx.fillStyle = t.kind === 'plan' ? '#3b4247' : t.hm ? '#6a7075' : '#c7cbcf';
+    ctx.beginPath(); ctx.arc(0,0,rp,0,7); ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.lineWidth = 1.5; ctx.stroke();
+    for(let k=0;k<s.z;k++){
+      const a = sim.phase + k*2*Math.PI/s.z;
+      if(t.kind === 'plan'){
+        ctx.save(); ctx.rotate(a); ctx.fillStyle = '#c9a640'; ctx.fillRect(rp-9, -4, 8, 8); ctx.restore();
+      } else {
+        ctx.strokeStyle = 'rgba(0,0,0,.45)'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(0,0); ctx.quadraticCurveTo(Math.cos(a+.5)*rp*.6, Math.sin(a+.5)*rp*.6, Math.cos(a)*rp, Math.sin(a)*rp); ctx.stroke();
+      }
+    }
+    if(c.vc / c.R.vcHi > 1.3){ ctx.fillStyle = 'rgba(255,110,40,.35)'; ctx.beginPath(); ctx.arc(0,0,rp+4,0,7); ctx.fill(); }
+    ctx.restore();
+    return {tipX: cx + rp*.7, tipY: cy - rp*.7, dirX: 1, dirY: -1, ppm, span, mill:true, cx, cy, rp, inWork: cx > xa && cx - rp < xb};
+  }
+  function frame(ts){
+    const dt = Math.min(.05, (ts - (sim.last || ts))/1000); sim.last = ts;
+    const still = reduce.matches;
+    if(still && !sim.dirty){ requestAnimationFrame(frame); return; }
+    sim.dirty = false;
+    const r = cv.getBoundingClientRect(), W = r.width, H = r.height;
+    if(!sim.c || !W){ requestAnimationFrame(frame); return; }
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = tok('--bench'); ctx.fillRect(0,0,W,H);
+    const s = S(), c = sim.c;
+    const okN = s.n <= s.maxN;
+    const omega = okN ? Math.min(s.n, 5000)/5000*14 : 0;
+    if(!still) sim.phase += omega*dt;
+    const g = st.proc === 'dreiing' ? drawLathe(W, H, dt) : drawMill(W, H);
+    if(!still && okN){
+      sim.prog += c.vf/60*g.ppm*TIME*dt/g.span;
+      if(sim.prog >= 1) sim.prog = 0;
+      // spon
+      const working = st.proc === 'dreiing' || g.inWork;
+      if(working){
+        sim.spawn += dt*clamp(c.vf/40, 4, 40);
+        const col = chipColor(), m = mat();
+        while(sim.spawn > 1){
+          sim.spawn--;
+          let x = g.tipX, y = g.tipY, vx = 30 + Math.random()*70, vy = -60 - Math.random()*90;
+          if(g.mill){ const a = Math.random()*Math.PI*2; x = g.cx + Math.cos(a)*g.rp; y = g.cy + Math.sin(a)*g.rp; vx = -Math.sin(a)*90 + 20; vy = Math.cos(a)*90; }
+          sim.chips.push({x, y, vx, vy, life: 1.2, col, kind: m.chip, rot: Math.random()*6});
+        }
+      }
+    }
+    // tegn spon
+    ctx.lineCap = 'round';
+    sim.chips = sim.chips.filter(p => p.life > 0 && p.y < H + 20);
+    sim.chips.forEach(p => {
+      if(!still){ p.life -= dt; p.x += p.vx*dt; p.y += p.vy*dt; if(st.proc === 'dreiing') p.vy += 260*dt; p.rot += dt*6; }
+      ctx.globalAlpha = clamp(p.life, 0, 1);
+      if(p.kind === 'cast' || p.kind === 'brass'){ ctx.fillStyle = p.col; ctx.fillRect(p.x, p.y, 2.5, 2.5); }
+      else if(p.col === '#ff6a1f' || p.col === '#ff7a2a'){ ctx.strokeStyle = p.col; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.vx*.04, p.y - p.vy*.04); ctx.stroke(); }
+      else { ctx.strokeStyle = p.col; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(p.x, p.y, 4, p.rot, p.rot + 3.6); ctx.stroke(); }
+    });
+    ctx.globalAlpha = 1;
+    // tekst
+    ctx.fillStyle = tok('--ink'); ctx.font = '600 14px Barlow, sans-serif'; ctx.textBaseline = 'top';
+    const lbl = [`n = ${fmt(s.n)} o/min`, `vf = ${fmt(c.vf)} mm/min`];
+    const box = st.proc === 'dreiing' ? [W - 170, H - 48] : [12, 8];
+    if(true){ ctx.fillStyle = tok('--bench'); ctx.globalAlpha = .8; ctx.fillRect(box[0]-4, box[1]-2, 160, 40); ctx.globalAlpha = 1; ctx.fillStyle = tok('--ink'); }
+    lbl.forEach((l, i) => ctx.fillText(l, box[0], box[1] + i*18));
+    ctx.fillStyle = tok('--muted'); ctx.font = '500 12px Barlow, sans-serif'; ctx.textBaseline = 'bottom';
+    ctx.fillText(okN ? (still ? 'Animasjon av (redusert bevegelse)' : 'Ikke i skala. Matingen går 4× fortere.') : 'Maskinen står: turtallet er over maks.', 12, H - 8);
+    requestAnimationFrame(frame);
+  }
+
+  // ---------- Start ----------
+  fillMat(); fillTools(); update(); resize(); requestAnimationFrame(frame);
+  if(document.fonts) document.fonts.ready.then(() => { sim.dirty = true; });
+})();
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

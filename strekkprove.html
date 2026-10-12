@@ -1,0 +1,599 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1160px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-soft:var(--lk-orange-soft);--accent-ink:var(--lk-orange);--f-display:var(--lk-font);--f-body:var(--lk-font);--f-mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+body{padding:0!important}.wrap{padding:20px 16px 40px}</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Strekkprøve</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Materiallære</div>
+      <h1>Strekkprøve</h1>
+      <p class="lk-lead">Dra en prøvestav til den ryker, og se hvordan spenning–tøyningskurven bygger seg opp.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg et materiale.</span></li><li><span>Trykk <b>Start</b> og se kurven bygge seg opp.</span></li><li><span>Les flytegrense, strekkfasthet R<sub>m</sub> og bruddforlengelse A i prøveloggen.</span></li><li><span>Kjør flere materialer og sammenlign kurvene.</span></li></ol>
+      <a class="lk-hb" href="https://verkstedhandboka.vercel.app/#materialer" target="_blank" rel="noopener">Les mer i Verkstedhåndboka: Emne 7 Materialer ↗</a>
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Strekkprøvesimulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: testmaskin-panel – rigg (prøvestav) til venstre, kurve til høyre, avlesning under; stables på mobil */
+:root{
+  --bg:#eceff3; --panel:#ffffff; --plot:#f7f9fb; --ink:#17202a; --muted:#5b6878; --line:#d2d9e1;
+  --accent:#d98200; --accent-ink:#6b4100; --accent-soft:#fdf1dc;
+  --grip:#56616e; --grip-dark:#3a434d; --metal-a:#c9d0d8; --metal-b:#8d98a5; --mark:#1b2530;
+  --c-s235:#2b6cb0; --c-s355:#7c3aed; --c-c45:#be123c; --c-316:#0f766e; --c-6082:#0e7490; --c-cu:#c2410c; --c-ms:#a16207; --c-gjl:#475569;
+  --f-display:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10151b; --panel:#18202a; --plot:#141b23; --ink:#e5eaf0; --muted:#94a2b1; --line:#2b3745;
+  --accent:#f2a33a; --accent-ink:#ffd59a; --accent-soft:#2e2414;
+  --grip:#4a5562; --grip-dark:#2c343e; --metal-a:#b4bec9; --metal-b:#6f7b88; --mark:#10151b;
+  --c-s235:#63a4ff; --c-s355:#a78bfa; --c-c45:#fb7185; --c-316:#2dd4bf; --c-6082:#22d3ee; --c-cu:#fb923c; --c-ms:#eab308; --c-gjl:#a5b2c2;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10151b; --panel:#18202a; --plot:#141b23; --ink:#e5eaf0; --muted:#94a2b1; --line:#2b3745;
+  --accent:#f2a33a; --accent-ink:#ffd59a; --accent-soft:#2e2414;
+  --grip:#4a5562; --grip-dark:#2c343e; --metal-a:#b4bec9; --metal-b:#6f7b88; --mark:#10151b;
+  --c-s235:#63a4ff; --c-s355:#a78bfa; --c-c45:#fb7185; --c-316:#2dd4bf; --c-6082:#22d3ee; --c-cu:#fb923c; --c-ms:#eab308; --c-gjl:#a5b2c2;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--f-body);padding-inline:16px;padding-block:20px 40px}
+.wrap{max-width:1160px;margin:0 auto;display:grid;gap:18px}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;margin:0;text-wrap:balance;letter-spacing:.01em}
+h1{font-size:clamp(1.8rem,4vw,2.5rem);line-height:1.05}
+h2{font-size:1.35rem}
+h3{font-size:1.08rem}
+.eyebrow{font:600 .75rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:8px 24px}
+header p{margin:6px 0 0;color:var(--muted);max-width:60ch}
+.std{font:500 .78rem var(--f-mono);color:var(--muted);border:1px solid var(--line);padding:6px 10px;border-radius:6px;background:var(--panel)}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px}
+
+/* materialvalg */
+.mats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.mat{all:unset;cursor:pointer;display:grid;gap:2px;padding:9px 12px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);position:relative}
+.mat .nm{font:700 1rem/1.2 var(--f-display)}
+.mat .gr{font-size:.82rem;color:var(--muted);line-height:1.25}
+.mat .sw{position:absolute;top:12px;right:12px;width:10px;height:10px;border-radius:50%;background:var(--sw)}
+.mat:hover{border-color:var(--muted)}
+.mat:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mat[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
+
+/* maskin */
+.machine{display:grid;grid-template-columns:230px minmax(0,1fr);gap:0}
+.rig{border-right:1px solid var(--line);position:relative;min-width:0}
+.rig canvas{display:block;width:100%;height:440px}
+.chartbox{min-width:0;display:grid;grid-template-rows:auto 1fr}
+.chartbar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;padding:12px 14px 4px}
+.chartbox canvas{display:block;width:100%;height:400px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.seg button{all:unset;cursor:pointer;padding:5px 11px;font-size:.85rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* avlesning */
+.readout{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line)}
+.ro{padding:10px 14px;border-right:1px solid var(--line);min-width:0}
+.ro:last-child{border-right:0}
+.ro .k{font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.ro .v{font:500 1.35rem/1.3 var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ro .v small{font-size:.75rem;color:var(--muted);margin-left:3px}
+.phase-pill{display:inline-block;font:600 .85rem/1 var(--f-body);padding:6px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent-ink);border:1px solid var(--accent);white-space:nowrap}
+
+.controls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
+.btn{all:unset;cursor:pointer;font:600 .95rem var(--f-body);padding:9px 18px;border-radius:7px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#1d1200;min-width:90px;text-align:center}
+.btn:hover{filter:brightness(1.05)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+label.sel{display:flex;gap:6px;align-items:center;font-size:.9rem;color:var(--muted)}
+select{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:5px 8px}
+
+.explain{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px}
+.card{padding:16px 18px;display:grid;gap:8px;align-content:start}
+.card p{margin:0;max-width:65ch}
+.phase-text{font-size:1.05rem}
+.vals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;margin-top:4px}
+.vals div{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding-bottom:3px}
+.vals span:last-child{font:500 .92rem var(--f-mono);font-variant-numeric:tabular-nums}
+.note{font-size:.82rem;color:var(--muted)}
+
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:.92rem}
+th,td{text-align:right;padding:8px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em}
+td{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:.86rem}
+td:first-child{font-family:var(--f-body);font-weight:600;font-size:.92rem}
+td .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;vertical-align:0}
+.logbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px 6px}
+.empty{padding:6px 18px 16px;color:var(--muted)}
+
+.terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.term{padding:14px 16px;display:grid;gap:4px;align-content:start}
+.term .f{font:500 .9rem var(--f-mono);color:var(--accent-ink)}
+.term p{margin:0;font-size:.95rem}
+
+@media (max-width:820px){
+  .machine{grid-template-columns:1fr}
+  .rig{border-right:0;border-bottom:1px solid var(--line)}
+  .rig canvas{height:300px}
+  .chartbox canvas{height:300px}
+  .readout{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ro{border-bottom:1px solid var(--line)}
+  .ro:nth-child(2n){border-right:0}
+  .ro.ph{grid-column:1/-1;border-bottom:0}
+  .explain{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">VG2 Industriteknologi · Materiallære</div>
+      <h1>Strekkprøvesimulator</h1>
+      <p>Velg et materiale og dra prøvestaven til den ryker. Se hvordan kurven bygger seg opp, og hva som skjer i materialet underveis.</p>
+    </div>
+    <div class="std">Rund proporsjonalstav · L₀ = 5·d₀ · etter NS-EN ISO 6892-1</div>
+  </header>
+
+  <section aria-label="Velg materiale">
+    <div class="mats" id="mats"></div>
+  </section>
+
+  <section class="panel">
+    <div class="machine">
+      <div class="rig"><canvas id="rig" aria-label="Prøvestav i strekkmaskin"></canvas></div>
+      <div class="chartbox">
+        <div class="chartbar">
+          <h3>Spenning–tøyning</h3>
+          <div class="seg" role="group" aria-label="Utsnitt">
+            <button id="zFull" aria-pressed="true">Hele kurven</button>
+            <button id="zEl" aria-pressed="false">Starten (0–2 %)</button>
+          </div>
+        </div>
+        <canvas id="chart" aria-label="Spenning-tøyningsdiagram"></canvas>
+      </div>
+    </div>
+    <div class="readout">
+      <div class="ro"><div class="k">Kraft F</div><div class="v" id="rF">0,0<small>kN</small></div></div>
+      <div class="ro"><div class="k">Spenning σ</div><div class="v" id="rS">0<small>MPa</small></div></div>
+      <div class="ro"><div class="k">Forlengelse ΔL</div><div class="v" id="rL">0,00<small>mm</small></div></div>
+      <div class="ro"><div class="k">Tøyning ε</div><div class="v" id="rE">0,00<small>%</small></div></div>
+      <div class="ro ph"><div class="k">Fase</div><div class="v"><span class="phase-pill" id="rP">Klar</span></div></div>
+    </div>
+    <div class="controls">
+      <button class="btn primary" id="go">Start</button>
+      <button class="btn" id="reset">Ny prøve</button>
+      <label class="sel" for="dia">Diameter d₀
+        <select id="dia"><option value="6">6 mm</option><option value="8">8 mm</option><option value="10" selected>10 mm</option><option value="12">12 mm</option></select>
+      </label>
+      <label class="sel" for="spd">Hastighet
+        <select id="spd"><option value="0.5">Sakte</option><option value="1" selected>Normal</option><option value="2">Rask</option><option value="4">Veldig rask</option></select>
+      </label>
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="panel card">
+      <div class="eyebrow">Hva skjer nå?</div>
+      <h2 id="phTitle">Klar til prøving</h2>
+      <p class="phase-text" id="phText"></p>
+    </div>
+    <div class="panel card">
+      <div class="eyebrow" id="mGroup"></div>
+      <h2 id="mName"></h2>
+      <p id="mDesc"></p>
+      <div class="vals" id="mVals"></div>
+      <p class="note">Veiledende verdier. Ekte prøver varierer med leveringstilstand og dimensjon.</p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="logbar"><h2>Prøvelogg</h2><button class="btn" id="clear">Tøm logg</button></div>
+    <div class="tablewrap" id="logwrap">
+      <table>
+        <thead><tr><th>Materiale</th><th>d₀ (mm)</th><th>Flytegrense (MPa)</th><th>R<sub>m</sub> (MPa)</th><th>F<sub>maks</sub> (kN)</th><th>A (%)</th><th>Z (%)</th><th>E (GPa)</th></tr></thead>
+        <tbody id="log"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="logEmpty">Ingen prøver ennå. Kjør en prøve, så havner resultatet her. Kurvene blir liggende i diagrammet så du kan sammenligne.</div>
+  </section>
+
+  <section>
+    <h2 style="margin-bottom:10px">Begreper</h2>
+    <div class="terms">
+      <div class="panel term"><h3>Spenning σ</h3><div class="f">σ = F / S₀  [MPa = N/mm²]</div><p>Kraft delt på tverrsnittsareal. Gjør at tykke og tynne staver kan sammenlignes.</p></div>
+      <div class="panel term"><h3>Tøyning ε</h3><div class="f">ε = ΔL / L₀ · 100 %</div><p>Hvor mye staven har blitt lengre, i forhold til den opprinnelige målelengden.</p></div>
+      <div class="panel term"><h3>E-modul</h3><div class="f">E = σ / ε  [GPa]</div><p>Stivheten. Bratt linje i starten betyr stivt materiale. Stål er tre ganger så stivt som aluminium.</p></div>
+      <div class="panel term"><h3>Flytegrense R<sub>e</sub> / R<sub>p0,2</sub></h3><div class="f">ReH, ReL eller Rp0,2  [MPa]</div><p>Spenningen der materialet begynner å bli varig deformert. Dette er tallet konstruktører regner med.</p></div>
+      <div class="panel term"><h3>Strekkfasthet R<sub>m</sub></h3><div class="f">Rm = Fmaks / S₀  [MPa]</div><p>Høyeste spenning staven tåler. Toppen av kurven.</p></div>
+      <div class="panel term"><h3>Bruddforlengelse A</h3><div class="f">A = (Lu − L₀) / L₀ · 100 %</div><p>Varig forlengelse etter brudd. Høy A betyr seigt materiale som varsler før det ryker.</p></div>
+      <div class="panel term"><h3>Kontraksjon Z</h3><div class="f">Z = (S₀ − Su) / S₀ · 100 %</div><p>Hvor mye tverrsnittet har krympet i bruddet. Måles på bruddstedet.</p></div>
+      <div class="panel term"><h3>Seig eller sprø?</h3><div class="f">seig: A &gt; 5 %   sprø: A &lt; 1 %</div><p>Seige materialer strekker seg og midjer før brudd. Sprø materialer ryker plutselig med flat bruddflate.</p></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+// ---------- Materialdata (veiledende verdier) ----------
+// E i GPa, spenninger i MPa, tøyninger som brøk. yp = tydelig flytegrense (ReH/ReL).
+const MATS=[
+ {id:'s235',name:'S235JR',group:'Konstruksjonsstål',E:210,Re:235,Rm:400,eu:.18,eL:.02,A:.26,Z:60,ff:.72,yp:true,
+  desc:'Det vanligste stålet i bjelker, plater og sveiste konstruksjoner. Seigt, billig og lett å sveise.'},
+ {id:'s355',name:'S355J2',group:'Konstruksjonsstål, høyfast',E:210,Re:355,Rm:510,eu:.15,eL:.017,A:.22,Z:55,ff:.74,yp:true,
+  desc:'Sterkere konstruksjonsstål. Brukes der man vil spare vekt, f.eks. i kraner, broer og offshore.'},
+ {id:'c45',name:'C45',group:'Maskinstål, normalisert',E:210,Re:305,Rm:600,eu:.10,eL:.012,A:.16,Z:40,ff:.8,yp:true,
+  desc:'Karbonstål for aksler, bolter og maskindeler. Kan herdes. Sterkere, men mindre seigt enn S235.'},
+ {id:'316',name:'316L',group:'Rustfritt stål (1.4404)',E:200,Rp:220,Rm:520,eu:.38,A:.45,Z:65,ff:.72,
+  desc:'Syrefast rustfritt for næringsmiddel, marine og kjemisk industri. Lav flytegrense, men herder kraftig og er svært seigt.'},
+ {id:'6082',name:'EN AW-6082 T6',group:'Aluminium, utherdet',E:70,Rp:260,Rm:310,eu:.06,A:.10,Z:30,ff:.86,
+  desc:'Vanlig konstruksjonsaluminium for profiler og fresedeler. Lett og sterkt, men bare en tredjedel av stivheten til stål.'},
+ {id:'cu',name:'Cu-ETP',group:'Kobber, glødet',E:115,Rp:70,Rm:230,eu:.32,A:.40,Z:70,ff:.58,
+  desc:'Rent kobber for strømskinner og ledere. Bløtt og svært formbart, leder strøm og varme godt.'},
+ {id:'ms',name:'CuZn39Pb3',group:'Messing, automatmessing',E:96,Rp:250,Rm:430,eu:.09,A:.12,Z:25,ff:.86,
+  desc:'Lettskåret messing for dreide deler, fittings og ventiler. Blyet gir korte spon i dreiebenken.'},
+ {id:'gjl',name:'EN-GJL-250',group:'Gråstøpejern',E:110,Rm:250,ef:.006,Z:0,brittle:true,
+  desc:'Brukes i maskinstativ, motorblokker og bremseskiver. Demper vibrasjoner godt, men er sprøtt i strekk.'}
+];
+
+const $=id=>document.getElementById(id);
+const fmt=(v,d)=>v.toLocaleString('nb-NO',{minimumFractionDigits:d,maximumFractionDigits:d});
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+// ---------- Kurvemodell ----------
+const XMAX=0.5, YMAX=700;
+function buildCurve(m){
+  const E=m.E*1000, P=[];
+  const add=(e,s)=>P.push({e,s});
+  let eu, efrac, sf, ey, reh=null, rel=null;
+  if(m.brittle){
+    const k=E*m.ef/m.Rm;
+    for(let i=0;i<=240;i++){const e=m.ef*i/240;add(e,m.Rm*(1-Math.pow(1-e/m.ef,k)));}
+    eu=efrac=m.ef; sf=m.Rm; ey=m.ef;
+  } else {
+    if(m.yp){
+      reh=m.Re*1.08; rel=m.Re; ey=reh/E;
+      for(let i=0;i<=40;i++)add(ey*i/40,reh*i/40);
+      const e2=ey+0.0012;
+      for(let i=0;i<=60;i++){const e=e2+(m.eL-e2)*i/60;add(e,m.Re*(1+0.012*Math.sin(i*1.9)*Math.cos(i*0.7)));}
+      const p=2.4;
+      for(let i=1;i<=220;i++){const t=i/220;add(m.eL+(m.eu-m.eL)*t,m.Re+(m.Rm-m.Re)*(1-Math.pow(1-t,p)));}
+    } else {
+      // Ramberg–Osgood: ε = σ/E + 0,002·(σ/Rp0,2)^n  → gir Rp0,2 nøyaktig
+      const n=Math.log((m.eu-m.Rm/E)/0.002)/Math.log(m.Rm/m.Rp);
+      for(let i=0;i<=500;i++){const s=m.Rm*i/500;add(s/E+0.002*Math.pow(s/m.Rp,n),s);}
+      ey=m.Rp/E;
+    }
+    eu=m.eu; sf=m.ff*m.Rm; efrac=m.A+sf/E;
+    for(let i=1;i<=160;i++){const t=i/160;add(eu+(efrac-eu)*t,m.Rm-(m.Rm-sf)*Math.pow(t,1.8));}
+  }
+  let L=0;P[0].L=0;
+  for(let i=1;i<P.length;i++){const dx=(P[i].e-P[i-1].e)/XMAX,dy=(P[i].s-P[i-1].s)/YMAX;L+=Math.hypot(dx,dy);P[i].L=L;}
+  return {P,total:L,eu,efrac,sf,ey,reh,rel,E};
+}
+function at(c,u){
+  const P=c.P;if(u<=0)return P[0];if(u>=c.total)return P[P.length-1];
+  let lo=0,hi=P.length-1;while(hi-lo>1){const mid=(lo+hi)>>1;if(P[mid].L<u)lo=mid;else hi=mid;}
+  const a=P[lo],b=P[hi],t=(u-a.L)/(b.L-a.L||1);
+  return {e:a.e+(b.e-a.e)*t,s:a.s+(b.s-a.s)*t,L:u,i:lo};
+}
+
+// ---------- Tilstand ----------
+const S={m:MATS[0],c:null,d0:10,speed:1,zoom:false,u:0,running:false,broken:false,history:[],last:0};
+S.c=buildCurve(S.m);
+
+// ---------- Faser ----------
+const PH={
+  idle:['Klar','Klar til prøving','Velg materiale og trykk Start. Maskinen trekker prøvestaven med jevn hastighet og måler kraft og forlengelse hele veien.'],
+  el:['Elastisk','Elastisk område','Atomene trekkes litt fra hverandre, men alt går tilbake hvis du slipper. Spenning og tøyning øker i takt, derfor blir det en rett linje. Hvor bratt linjen er, er E-modulen.'],
+  elB:['Elastisk','Nesten bare elastisk','Gråstøpejern har ingen tydelig flytegrense. Grafittlamellene inne i jernet virker som små sprekker, så kurven bøyer svakt av helt fra starten.'],
+  flyYP:['Flytning','Flytning','Stålet gir plutselig etter: kraften faller litt og står nesten stille mens staven blir lengre. Bånd av flytning (Lüders-bånd) vandrer langs staven. Her leser vi av øvre og nedre flytegrense, ReH og ReL.'],
+  flyRO:['Plastisk','Varig deformasjon starter','Materialet har ingen skarp flytegrense. Derfor bruker vi Rp0,2: spenningen som gir 0,2 % varig forlengelse. Velg «Starten» for å se hjelpelinjen.'],
+  fast:['Fastning','Fastning (deformasjonsherding)','Staven blir varig lengre og samtidig sterkere, fordi krystallene låser seg mer og mer. Hele den slanke delen blir jevnt tynnere. Kraften fortsetter å stige mot toppen, Rm.'],
+  neck:['Innsnevring','Innsnevring (midjing)','Etter toppen Rm samler all deformasjonen seg på ett sted. Tverrsnittet der krymper raskt, så kraften maskinen må bruke faller, selv om materialet i midjen fortsatt er sterkt.'],
+  brD:['Brudd','Seigt brudd','Staven ryker i midjen med kopp-og-kjegle-brudd. Når kraften slippes fjærer den elastiske delen tilbake. Den varige forlengelsen som er igjen er bruddforlengelsen A.'],
+  brB:['Brudd','Sprøtt brudd','Støpejernet ryker plutselig, uten midje og nesten uten forlengelse. Bruddflaten er flat og grå. Derfor brukes støpejern helst der det belastes i trykk, ikke strekk.']
+};
+function phaseOf(p){
+  const m=S.m,c=S.c;
+  if(S.broken)return m.brittle?'brB':'brD';
+  if(S.u<=0)return 'idle';
+  if(m.brittle)return 'elB';
+  if(m.yp){if(p.e<=c.ey)return 'el';if(p.e<m.eL)return 'flyYP';}
+  else{const ep=p.e-p.s/c.E;if(ep<0.0004)return 'el';if(ep<0.004&&p.e<c.eu)return 'flyRO';}
+  return p.e<c.eu?'fast':'neck';
+}
+
+// ---------- UI: materialer ----------
+const matsEl=$('mats');
+MATS.forEach(m=>{
+  const b=document.createElement('button');b.className='mat';b.id='mat-'+m.id;
+  b.style.setProperty('--sw',`var(--c-${m.id})`);
+  b.innerHTML=`<span class="sw"></span><span class="nm">${m.name}</span><span class="gr">${m.group}</span>`;
+  b.onclick=()=>selectMat(m);matsEl.appendChild(b);
+});
+function selectMat(m){
+  S.m=m;S.c=buildCurve(m);resetTest();
+  MATS.forEach(x=>$('mat-'+x.id).setAttribute('aria-pressed',x===m));
+  $('mGroup').textContent=m.group;$('mName').textContent=m.name;$('mDesc').textContent=m.desc;
+  const ys=m.brittle?['Flytegrense','ingen']:m.yp?['ReH (min.)',m.Re+' MPa']:['Rp0,2',m.Rp+' MPa'];
+  const A=m.brittle?'< 1 %':Math.round(m.A*100)+' %';
+  $('mVals').innerHTML=[['E-modul',m.E+' GPa'],ys,['Rm',m.Rm+' MPa'],['A',A]].map(([k,v])=>`<div><span>${k}</span><span>${v}</span></div>`).join('');
+}
+
+// ---------- Kontroller ----------
+$('go').onclick=()=>{
+  if(S.broken){resetTest();}
+  S.running=!S.running;S.last=performance.now();updBtn();if(S.running)requestAnimationFrame(loop);
+};
+$('reset').onclick=resetTest;
+$('dia').onchange=e=>{S.d0=+e.target.value;readout();drawRig();};
+$('spd').onchange=e=>S.speed=+e.target.value;
+$('zFull').onclick=()=>setZoom(false);$('zEl').onclick=()=>setZoom(true);
+function setZoom(z){S.zoom=z;$('zFull').setAttribute('aria-pressed',!z);$('zEl').setAttribute('aria-pressed',z);drawChart();}
+$('clear').onclick=()=>{S.history=[];renderLog();drawChart();};
+function updBtn(){$('go').textContent=S.broken?'Ny start':S.running?'Pause':(S.u>0?'Fortsett':'Start');}
+function resetTest(){S.u=0;S.running=false;S.broken=false;updBtn();readout();drawAll();}
+
+// ---------- Animasjon ----------
+function loop(t){
+  if(!S.running)return;
+  const dt=Math.min(0.05,(t-S.last)/1000);S.last=t;
+  const dur=Math.max(5,S.c.total*13);           // sekunder ved normal fart
+  S.u+=dt*S.speed*S.c.total/dur;
+  if(S.u>=S.c.total){S.u=S.c.total;S.running=false;S.broken=true;finish();}
+  readout();drawAll();updBtn();
+  if(S.running)requestAnimationFrame(loop);
+}
+function finish(){
+  const m=S.m,c=S.c,S0=Math.PI*S.d0*S.d0/4;
+  S.history=S.history.filter(h=>h.m!==m);
+  S.history.push({m,c,d0:S.d0,
+    yield:m.brittle?null:(m.yp?{label:'ReH',v:c.reh,v2:c.rel}:{label:'Rp0,2',v:m.Rp}),
+    Rm:m.Rm,F:m.Rm*S0/1000,A:m.brittle?(c.efrac-m.Rm/c.E)*100:m.A*100,Z:m.Z,E:m.E});
+  renderLog();
+}
+
+// ---------- Avlesning ----------
+function readout(){
+  const p=at(S.c,S.u),S0=Math.PI*S.d0*S.d0/4,L0=5*S.d0;
+  const s=S.broken?0:p.s;
+  const e=S.broken?S.c.efrac-S.c.sf/S.c.E:p.e;   // etter brudd: varig forlengelse
+  $('rF').innerHTML=fmt(s*S0/1000,1)+'<small>kN</small>';
+  $('rS').innerHTML=fmt(s,0)+'<small>MPa</small>';
+  $('rL').innerHTML=fmt(e*L0,2)+'<small>mm</small>';
+  $('rE').innerHTML=fmt(e*100,2)+'<small>%</small>';
+  const ph=PH[phaseOf(p)];$('rP').textContent=ph[0];$('phTitle').textContent=ph[1];$('phText').textContent=ph[2];
+}
+
+function renderLog(){
+  $('log').innerHTML=S.history.map(h=>`<tr><td><span class="dot" style="background:var(--c-${h.m.id})"></span>${h.m.name}</td>
+    <td>${h.d0}</td><td>${h.yield?(h.yield.v2?`ReH ${Math.round(h.yield.v)} / ReL ${Math.round(h.yield.v2)}`:`Rp0,2 ${h.yield.v}`):'–'}</td>
+    <td>${h.Rm}</td><td>${fmt(h.F,1)}</td><td>${fmt(h.A,h.A<2?1:0)}</td><td>${h.Z?h.Z:'≈ 0'}</td><td>${h.E}</td></tr>`).join('');
+  $('logEmpty').hidden=S.history.length>0;$('logwrap').hidden=S.history.length===0;
+}
+
+// ---------- Canvas ----------
+function fit(cv){
+  const r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;
+  const w=Math.round(r.width*d),h=Math.round(r.height*d);
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}
+  const ctx=cv.getContext('2d');ctx.setTransform(d,0,0,d,0,0);return {ctx,W:r.width,H:r.height};
+}
+
+function drawChart(){
+  const {ctx,W,H}=fit($('chart'));
+  const pl=56,pr=16,pt=14,pb=40,w=W-pl-pr,h=H-pt-pb;
+  const xm=S.zoom?0.02:XMAX, ym=YMAX;
+  const X=e=>pl+e/xm*w, Y=s=>pt+h-s/ym*h;
+  const ink=css('--ink'),muted=css('--muted'),line=css('--line'),plot=css('--plot');
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=plot;ctx.fillRect(pl,pt,w,h);
+  ctx.font='12px '+css('--f-mono');ctx.lineWidth=1;
+  const xs=S.zoom?0.0025:0.05;
+  for(let v=0;v<=xm+1e-9;v+=xs){const x=X(v);ctx.strokeStyle=line;ctx.beginPath();ctx.moveTo(x,pt);ctx.lineTo(x,pt+h);ctx.stroke();
+    if(!S.zoom||Math.round(v*10000)%50===0){ctx.fillStyle=muted;ctx.textAlign='center';ctx.fillText(fmt(v*100,S.zoom?1:0),x,pt+h+16);}}
+  for(let v=0;v<=ym;v+=100){const y=Y(v);ctx.strokeStyle=line;ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+w,y);ctx.stroke();
+    ctx.fillStyle=muted;ctx.textAlign='right';ctx.fillText(v,pl-8,y+4);}
+  ctx.fillStyle=muted;ctx.font='600 12px '+css('--f-body');ctx.textAlign='center';
+  ctx.fillText('Tøyning ε (%)',pl+w/2,H-6);
+  ctx.save();ctx.translate(14,pt+h/2);ctx.rotate(-Math.PI/2);ctx.fillText('Spenning σ (MPa)',0,0);ctx.restore();
+
+  ctx.save();ctx.beginPath();ctx.rect(pl,pt,w,h);ctx.clip();
+  const path=(c,uMax)=>{ctx.beginPath();ctx.moveTo(X(0),Y(0));for(const p of c.P){if(p.L>uMax)break;ctx.lineTo(X(p.e),Y(p.s));}const q=at(c,uMax);ctx.lineTo(X(q.e),Y(q.s));};
+  // tidligere prøver
+  ctx.lineJoin='round';
+  S.history.forEach(hh=>{if(hh.m===S.m&&S.u>0)return;
+    const col=css('--c-'+hh.m.id);ctx.globalAlpha=.45;ctx.strokeStyle=col;ctx.lineWidth=1.6;path(hh.c,hh.c.total);ctx.stroke();ctx.globalAlpha=1;});
+  // nåværende
+  const col=css('--c-'+S.m.id);
+  if(S.u>0){
+    ctx.strokeStyle=col;ctx.lineWidth=2.6;path(S.c,S.u);ctx.stroke();
+    const q=at(S.c,S.u);
+    if(S.broken){ctx.setLineDash([4,4]);ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(X(q.e),Y(q.s));ctx.lineTo(X(q.e),Y(0));ctx.stroke();ctx.setLineDash([]);}
+    else{ctx.fillStyle=col;ctx.beginPath();ctx.arc(X(q.e),Y(q.s),5,0,7);ctx.fill();}
+  }
+  // Rp0,2 hjelpelinje i zoom
+  if(S.zoom&&!S.m.yp&&!S.m.brittle&&S.u>0){
+    const E=S.c.E;ctx.strokeStyle=muted;ctx.setLineDash([5,4]);ctx.lineWidth=1.2;
+    ctx.beginPath();ctx.moveTo(X(0.002),Y(0));ctx.lineTo(X(0.002+S.m.Rm/E),Y(S.m.Rm));ctx.stroke();ctx.setLineDash([]);
+  }
+  ctx.restore();
+
+  // etiketter på tidligere kurver
+  ctx.font='600 12px '+css('--f-body');ctx.textAlign='left';
+  S.history.forEach(hh=>{if(hh.m===S.m&&S.u>0)return;
+    let pk=hh.c.P.reduce((a,b)=>b.s>a.s?b:a);if(S.zoom){const p=at(hh.c,hh.c.total);pk=hh.c.P.find(q=>q.e>0.016)||p;}
+    if(X(pk.e)<pl+w-10){ctx.fillStyle=css('--c-'+hh.m.id);ctx.fillText(hh.m.name,Math.min(X(pk.e)+4,pl+w-80),Y(pk.s)-6);}});
+
+  // markører etter brudd
+  if(S.broken){
+    const marks=[];const c=S.c,m=S.m;
+    if(!m.brittle){
+      if(m.yp){const p=c.P.find(q=>Math.abs(q.s-c.reh)<.01);marks.push([p.e,p.s,'ReH '+Math.round(c.reh)]);}
+      else{const p=c.P.find(q=>q.s>=m.Rp);marks.push([p.e,p.s,'Rp0,2 '+m.Rp]);}
+    }
+    const pk=c.P.reduce((a,b)=>b.s>a.s?b:a);if(!S.zoom||pk.e<xm)marks.push([pk.e,pk.s,'Rm '+m.Rm]);
+    ctx.font='500 12px '+css('--f-mono');
+    marks.forEach(([e,s,t],i)=>{const x=X(Math.min(e,xm)),y=Y(s);if(e>xm)return;
+      ctx.fillStyle=css('--panel');ctx.strokeStyle=ink;ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,5,0,7);ctx.fill();ctx.stroke();
+      const tw=ctx.measureText(t).width+12;let tx=x+8,ty=y-24-(i&&marks.length>1&&Math.abs(marks[0][1]-s)<60?0:0);
+      if(tx+tw>pl+w)tx=x-tw-8;if(ty<pt)ty=y+8;
+      ctx.fillStyle=css('--panel');ctx.strokeStyle=line;ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(tx,ty,tw,20,4);ctx.fill();ctx.stroke();
+      ctx.fillStyle=ink;ctx.textAlign='left';ctx.fillText(t,tx+6,ty+14);});
+  }
+}
+
+function drawRig(){
+  const {ctx,W,H}=fit($('rig'));
+  ctx.clearRect(0,0,W,H);
+  const m=S.m,c=S.c,p=at(c,S.u);
+  // etter brudd fjærer den elastiske delen tilbake: lengden blir Lu = L0·(1+A)
+  const e=S.broken?c.efrac-c.sf/c.E:p.e, eN=p.e;
+  const gripH=Math.min(64,H*.15),sh=12,margin=22;
+  const avail=H-2*gripH-2*sh-2*margin-18;
+  const Lc=6, k=avail/(Lc*1.5);              // px per d0 (lengde i d0-enheter)
+  const w0=Math.min(k,W*.16);                  // diameter i px
+  const cx=W/2;
+  const bottomY=H-margin-gripH;                // overkant nedre bakke
+  // lengdefordeling
+  const euse=Math.min(e,c.eu);
+  const len=Lc*k*(1+e);
+  const yBot=bottomY-sh, yTop=yBot-len;
+  const gap=S.broken?(m.brittle?6:12):0;
+  const topGripY=yTop-sh-gap;                  // underkant øvre bakke
+  const metalA=css('--metal-a'),metalB=css('--metal-b'),grip=css('--grip'),gd=css('--grip-dark'),mark=css('--mark'),muted=css('--muted'),acc=css('--accent');
+
+  // traverse-pil
+  ctx.fillStyle=muted;ctx.font='600 11px '+css('--f-body');ctx.textAlign='center';
+  // bakker
+  const drawGrip=(y0,y1)=>{const gw=w0*3.2;ctx.fillStyle=grip;ctx.fillRect(cx-gw/2,y0,gw,y1-y0);
+    ctx.fillStyle=gd;ctx.fillRect(cx-gw/2,y0,gw,4);ctx.fillRect(cx-gw/2,y1-4,gw,4);
+    ctx.strokeStyle=gd;ctx.lineWidth=1;for(let yy=y0+9;yy<y1-6;yy+=6){ctx.beginPath();ctx.moveTo(cx-w0*.95,yy);ctx.lineTo(cx+w0*.95,yy);ctx.stroke();}};
+  // hode-geometri
+  const headW=w0*1.6;
+  const grad=ctx.createLinearGradient(cx-headW/2,0,cx+headW/2,0);grad.addColorStop(0,metalB);grad.addColorStop(.35,metalA);grad.addColorStop(1,metalB);
+  // profil for parallell del
+  const N=80,mid=(yTop+yBot)/2;
+  const s=c.efrac>c.eu?Math.min(1,Math.max(0,(eN-c.eu)/(c.efrac-c.eu))):0;
+  const depth=m.brittle?0:(1-Math.sqrt(1-m.Z/100))*Math.pow(s,1.5);
+  const hwU=(w0/2)/Math.sqrt(1+euse);
+  const hw=y=>hwU*(1-depth*Math.exp(-Math.pow((y-mid)/(len*.07+4),2)));
+  const headLen=gripH-6;
+  // bruddflate: seigt = kopp og kjegle, sprøtt = flatt og ru
+  const off=x=>{const r=(x-cx)/Math.max(1,hw(mid));
+    if(m.brittle)return Math.sin(x*1.7)*0.8+Math.sin(x*.6)*0.6;
+    return 4*(1-Math.min(1,Math.abs(r)));};
+
+  // tegner én sammenhengende del mellom yA (topp) og yB (bunn).
+  // ende = 'head' (hode i bakken) eller 'break' (bruddflate)
+  function piece(yA,yB,topEnd,botEnd){
+    const ys=[];for(let i=0;i<=N;i++)ys.push(yA+(yB-yA)*i/N);
+    ctx.fillStyle=grad;ctx.beginPath();
+    if(topEnd==='head'){
+      ctx.moveTo(cx-headW/2,yA-sh-headLen);ctx.lineTo(cx+headW/2,yA-sh-headLen);ctx.lineTo(cx+headW/2,yA-sh);
+      ctx.quadraticCurveTo(cx+hw(yA),yA-sh*.2,cx+hw(yA),yA);
+    } else {
+      const h=hw(yA);ctx.moveTo(cx-h,yA+off(cx-h));
+      for(let x=cx-h;x<=cx+h;x+=1)ctx.lineTo(x,yA+off(x));
+      ctx.lineTo(cx+h,yA+off(cx+h));
+    }
+    ys.forEach(y=>ctx.lineTo(cx+hw(y),y));
+    if(botEnd==='head'){
+      ctx.quadraticCurveTo(cx+hw(yB),yB+sh*.8,cx+headW/2,yB+sh);
+      ctx.lineTo(cx+headW/2,yB+sh+headLen);ctx.lineTo(cx-headW/2,yB+sh+headLen);ctx.lineTo(cx-headW/2,yB+sh);
+      ctx.quadraticCurveTo(cx-hw(yB),yB+sh*.8,cx-hw(yB),yB);
+    } else {
+      const h=hw(yB);for(let x=cx+h;x>=cx-h;x-=1)ctx.lineTo(x,yB+off(x));
+    }
+    for(let i=N;i>=0;i--)ctx.lineTo(cx-hw(ys[i]),ys[i]);
+    if(topEnd==='head')ctx.quadraticCurveTo(cx-hw(yA),yA-sh*.2,cx-headW/2,yA-sh);
+    ctx.closePath();ctx.fill();
+    ctx.strokeStyle=metalB;ctx.lineWidth=1;ctx.stroke();
+  }
+  if(!S.broken){piece(yTop,yBot,'head','head');}
+  else{
+    piece(mid,yBot,'break','head');                       // nedre del står fast
+    ctx.save();ctx.translate(0,-gap);piece(yTop,mid,'head','break');ctx.restore(); // øvre del følger traversen
+  }
+
+  // målemerker (L0 = 5·d0, sentrert om bruddet/midjen)
+  const L0px=5*k*(1+e), u1=mid-L0px/2, m2=mid+L0px/2, m1=u1-gap;
+  ctx.strokeStyle=mark;ctx.lineWidth=2;
+  [[m1,u1],[m2,m2]].forEach(([y,yu])=>{const hwv=hw(yu);ctx.beginPath();ctx.moveTo(cx-hwv,y);ctx.lineTo(cx-hwv+5,y);ctx.moveTo(cx+hwv,y);ctx.lineTo(cx+hwv-5,y);ctx.stroke();});
+  // målestrek
+  const dx=cx+w0*1.9;ctx.strokeStyle=acc;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(dx,m1);ctx.lineTo(dx,m2);ctx.moveTo(dx-4,m1);ctx.lineTo(dx+4,m1);ctx.moveTo(dx-4,m2);ctx.lineTo(dx+4,m2);ctx.stroke();
+  ctx.save();ctx.translate(dx+12,(m1+m2)/2);ctx.rotate(-Math.PI/2);ctx.fillStyle=css('--accent-ink');ctx.font='500 11px '+css('--f-mono');ctx.textAlign='center';
+  const L0=5*S.d0;ctx.fillText(S.broken?`Lu = ${fmt(L0*(1+e),1)} mm`:S.u>0?`L = ${fmt(L0*(1+e),1)} mm`:`L₀ = ${L0} mm`,0,0);ctx.restore();
+
+  drawGrip(bottomY,bottomY+gripH);
+  drawGrip(topGripY-gripH,topGripY);
+  // tekst
+  ctx.fillStyle=muted;ctx.font='600 11px '+css('--f-body');ctx.textAlign='center';
+  ctx.fillText('↑ trekkes opp',cx,Math.max(12,topGripY-gripH-6));
+  ctx.fillText('fast',cx,Math.min(H-4,bottomY+gripH+14));
+  ctx.textAlign='left';ctx.font='500 11px '+css('--f-mono');ctx.fillText('Ø'+S.d0+' mm',8,H-8);
+}
+
+function drawAll(){drawChart();drawRig();}
+
+new ResizeObserver(drawAll).observe($('chart'));
+new ResizeObserver(drawAll).observe($('rig'));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',drawAll);
+new MutationObserver(drawAll).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+if(document.fonts)document.fonts.ready.then(drawAll);
+
+selectMat(MATS[0]);renderLog();
+})();
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

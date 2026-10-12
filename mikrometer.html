@@ -1,0 +1,621 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1040px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Mikrometer</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Måleteknikk</div>
+      <h1>Mikrometer</h1>
+      <p class="lk-lead">Les av et utvendig mikrometer. Hver strek på trommelen er 0,01 mm.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Les hele millimeter på den øvre skalaen på hylsen.</span></li><li><span>Ser du en strek på den nedre skalaen etter den? Legg til 0,50 mm.</span></li><li><span>Les trommelstreken som står på linje med lengdestreken. Hver strek er 0,01 mm.</span></li><li><span>Legg sammen. Øv i <b>Les av</b> og <b>Still inn</b>.</span></li></ol>
+      
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Mikrometersimulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: verkstedtavle. Lupe og målestokktegning øverst, kontroller og avlesning i to kolonner under, stables på mobil. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c;
+  --steel-hi:#f4f6f7; --steel-mid:#c3cbd0; --steel-lo:#8b979e; --mark:#141a1e;
+  --frame:#5d6f7c; --frame-hi:#8fa1ad; --plate:#15191c; --work:#b98a3e; --onframe:#e9eff2;
+  --display:"Barlow Condensed", "Arial Narrow", sans-serif;
+  --body:"Barlow", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Consolas", monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69;
+  --steel-hi:#e9edef; --steel-mid:#b3bcc2; --steel-lo:#76838b; --mark:#111619;
+  --frame:#647884; --frame-hi:#93a6b2; --plate:#0d1012; --work:#c9a05a; --onframe:#eef3f6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69;
+  --steel-hi:#e9edef; --steel-mid:#b3bcc2; --steel-lo:#76838b; --mark:#111619;
+  --frame:#647884; --frame-hi:#93a6b2; --plate:#0d1012; --work:#c9a05a; --onframe:#eef3f6; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px 20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0;letter-spacing:.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.switches{display:flex;flex-wrap:wrap;gap:8px}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px}
+.tabs button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:7px;cursor:pointer;font-variant-numeric:tabular-nums}
+.tabs button[aria-pressed="true"],.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.tabs.range button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.tabs button:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.stage-head.mid{border-top:1px solid var(--line)}
+.label{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:14px;color:var(--muted)}
+canvas{display:block;width:100%;touch-action:none}
+#lupe{height:300px;cursor:ns-resize}
+#oversikt{height:300px;cursor:ns-resize}
+.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}#lupe{height:270px}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:600 15px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 12px;border-radius:8px;cursor:pointer;font-variant-numeric:tabular-nums}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.readout{display:grid;gap:6px;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.readout .r{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:4px;font-size:15px}
+.readout .r span:first-child{font-family:var(--body);color:var(--muted)}
+.readout .sum{font-size:28px;font-weight:700;border:0;padding-top:6px}
+.readout .sum span:first-child{font-family:var(--display);font-size:20px;color:var(--ink);font-weight:600;align-self:center}
+.hidden-val{filter:blur(7px);user-select:none}
+.task{font-family:var(--display);font-size:26px;font-weight:600;line-height:1.2}
+.task b{font-family:var(--mono);color:var(--accent)}
+.answer{display:flex;gap:8px;flex-wrap:wrap}
+.answer input{font:700 22px var(--mono);width:9ch;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.fb{padding:10px 12px;border-radius:8px;font-size:15px;border:1px solid var(--line)}
+.fb.ok{border-color:var(--ok);color:var(--ok)}
+.fb.bad{border-color:var(--bad);color:var(--bad)}
+.fb .why{display:block;color:var(--ink);margin-top:4px}
+.score{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.howto ol{margin:0;padding-left:20px;display:grid;gap:6px}
+.howto p{margin:0;color:var(--muted);font-size:15px}
+.chk{display:flex;gap:8px;align-items:center;font-size:15px;cursor:pointer}
+.chk input{accent-color:var(--accent);width:18px;height:18px}
+.hint{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1 id="title">Mikrometer 0–25 mm</h1>
+      <p class="sub">Utvendig mikrometer, stigning 0,5 mm, trommel med 50 delestreker. Oppløsning 0,01 mm.</p>
+    </div>
+    <div class="switches">
+      <div class="tabs range" role="group" aria-label="Måleområde">
+        <button id="rng0" data-range="0" aria-pressed="true">0–25 mm</button>
+        <button id="rng1" data-range="1" aria-pressed="false">25–50 mm</button>
+      </div>
+      <div class="tabs modes" role="tablist" aria-label="Modus">
+        <button role="tab" id="tab-utforsk" aria-selected="true" data-mode="utforsk">Utforsk</button>
+        <button role="tab" id="tab-lesav" aria-selected="false" data-mode="lesav">Les av</button>
+        <button role="tab" id="tab-stillinn" aria-selected="false" data-mode="stillinn">Still inn</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="stage" aria-label="Mikrometer">
+    <div class="stage-head"><span class="label">Lupe: hylse og trommel</span><span id="draghint">Dra opp/ned på trommelen for å dreie</span></div>
+    <canvas id="lupe" aria-label="Forstørret skala på hylse og trommel"></canvas>
+    <div class="stage-head mid"><span class="label">Hele mikrometeret i målestokk</span><span id="scaletxt"></span></div>
+    <canvas id="oversikt" aria-label="Hele mikrometeret i riktig målestokk"></canvas>
+  </section>
+
+  <div class="grid">
+    <section class="card" id="ctrlcard">
+      <span class="label">Drei trommelen</span>
+      <div class="row" id="stepbtns">
+        <button class="btn" data-step="-50">−0,50</button>
+        <button class="btn" data-step="-10">−0,10</button>
+        <button class="btn" data-step="-1">−0,01</button>
+        <button class="btn" data-step="1">+0,01</button>
+        <button class="btn" data-step="10">+0,10</button>
+        <button class="btn" data-step="50">+0,50</button>
+      </div>
+      <label class="hint" for="grov">Grovinnstilling (hurtigdrei)</label>
+      <input type="range" id="grov" min="0" max="2500" step="1" value="578">
+      <label class="chk" id="showwrap"><input type="checkbox" id="vis" checked> Vis avlesningen</label>
+      <div class="readout" id="readout">
+        <div class="r"><span>Hylse, øvre skala (hele mm)</span><span id="r-mm">5,00</span></div>
+        <div class="r"><span>Hylse, nedre skala (halv mm)</span><span id="r-half">0,50</span></div>
+        <div class="r"><span>Trommel (× 0,01 mm)</span><span id="r-thim">0,28</span></div>
+        <div class="r sum"><span>Mål</span><span id="r-sum">5,78 mm</span></div>
+      </div>
+    </section>
+
+    <section class="card" id="taskcard" hidden>
+      <span class="label" id="tasklabel">Oppgave</span>
+      <div class="task" id="tasktext"></div>
+      <form class="answer" id="ansform" autocomplete="off">
+        <input id="ans" inputmode="decimal" placeholder="0,00" aria-label="Din avlesning i mm">
+        <button class="btn primary" type="submit" id="checkbtn">Sjekk</button>
+        <button class="btn" type="button" id="newbtn">Ny oppgave</button>
+      </form>
+      <div id="fb" class="fb" hidden></div>
+      <div class="score" id="score">0 av 0 riktige</div>
+    </section>
+
+    <section class="card howto">
+      <span class="label">Slik leser du av</span>
+      <ol>
+        <li>Les hele millimeter på hylsens <b>øvre</b> skala: siste synlige strek til venstre for trommelkanten.</li>
+        <li>Se om en strek på hylsens <b>nedre</b> skala er synlig etter den. Da legger du til 0,50 mm.</li>
+        <li>Les trommelstreken som står på linje med lengdestreken på hylsen. Hver strek er 0,01 mm.</li>
+        <li id="example">Legg sammen. Eksempel: 5 + 0,50 + 0,28 = 5,78 mm.</li>
+      </ol>
+      <p>Én hel omdreining av trommelen flytter spindelen 0,5 mm. Derfor trenger du den nedre skalaen for å vite om du er i første eller andre halvdel av millimeteren.</p>
+      <p id="rangenote" hidden>På et 25–50 mm mikrometer starter hylseskalaen på 25. Når trommelen står på null og streken 25 er synlig, er avstanden mellom ambolt og spindel 25,00 mm. Mikrometeret kontrolleres mot en 25 mm innstillingsbit.</p>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const MAX = 2500;               // spindelvandring i hundredeler
+  // Mål i mm, tatt fra malen (spindel Ø6,35 som referanse)
+  const G = {
+    spR:3.175,                 // spindel Ø6,35
+    anR:2.9, anLen:3.8,        // ambolt
+    hubLen:18.2, hubTop:-9.2, hubBot:13,   // lagerhus med lås
+    slR:8.2,                   // hylse
+    zero:3.9,                  // nullstrek fra lagerhuset
+    edgeR:8.4, thR:9.8, bevel:1.5, band:6.5, // skråkant og gradert bånd på trommelen
+    body:23, knurl:26, knR:10,              // trommelkropp og riflet hylse
+    neckR:5.2, neckLen:5.8, raR:5.9, raLen:13 // skralle
+  };
+  const RANGES = [
+    {off:0,  name:'0–25 mm',  outer:{cx:13.5, cy:16.7, r:32},   inner:{cx:13.5, cy:18.7, r:17.3}},
+    {off:25, name:'25–50 mm', outer:{cx:26,   cy:16.7, r:44.5}, inner:{cx:26,   cy:18.7, r:29.8}},
+  ];
+  const ARM = {x0:-13.8, x1:-3.8, top:-4.4};
+  const THLEN = G.band + G.body + G.knurl;
+  // Flate gråtoner som i malen
+  const K = {frame:'#8b8d8f', frameEdge:'#77797b', steel:'#cfd2d4', steelEdge:'#a9adb0', sleeve:'#dfe1e2', band:'#d6d8d9',
+             body:'#8f9193', bodyLo:'#7f8183', knurl:'#9b9d9f', knLine:'#87898b', ratchet:'#a6a8aa', text:'#2b2d2f', ink:'#1d1f21'};
+  let rng = 0;
+  let n = 578, anim = 578;
+  let mode = 'utforsk';
+  let target = null;
+  let score = {ok:0, tot:0};
+  let answered = false;
+
+  const $ = id => document.getElementById(id);
+  const lupe = $('lupe'), over = $('oversikt');
+  const lc = lupe.getContext('2d'), oc = over.getContext('2d');
+  const fmt = v => v.toFixed(2).replace('.', ',');
+  const OFF = () => RANGES[rng].off*100;   // hundredeler
+  let C = {};
+  function readTokens(){
+    const s = getComputedStyle(document.documentElement);
+    ['bg','panel','ink','muted','line','accent','work']
+      .forEach(k => C[k] = s.getPropertyValue('--'+k).trim());
+  }
+  function fit(cv, ctx, cssH){
+    if(cssH) cv.style.height = cssH+'px';
+    const r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+    cv.width = Math.round(r.width*d); cv.height = Math.round(r.height*d);
+    ctx.setTransform(d,0,0,d,0,0);
+    return {W:r.width, H:r.height};
+  }
+  // flat sylinder med svak skygge nederst, som i malen
+  function flat(ctx, x, y0, w, h, col, lo){
+    ctx.fillStyle = col; ctx.fillRect(x, y0, w, h);
+    ctx.fillStyle = lo || 'rgba(0,0,0,.10)'; ctx.fillRect(x, y0 + h*0.78, w, h*0.22);
+  }
+  const mono = 'JetBrains Mono, ui-monospace, monospace';
+
+  // ---------- Lupe ----------
+  let L = {}, OV = {R:50};
+  function drawLupe(){
+    const {W,H} = fit(lupe, lc);
+    const v = anim/100, off = RANGES[rng].off;
+    const ppm = H/21;
+    const cy = H*0.5;
+    const xe = Math.round(W - Math.max(9.5*ppm, W*0.36));   // trommelkant
+    const R = G.thR*ppm, sr = G.slR*ppm;
+    L = {R};
+    lc.clearRect(0,0,W,H);
+
+    const xz = xe - v*ppm;                  // nullstrek
+    const xh = xz - G.zero*ppm;             // slutt på lagerhuset
+    if(xh > 0){
+      const top = Math.max(0, cy + G.hubTop*ppm), bot = Math.min(H, cy + G.hubBot*ppm);
+      lc.fillStyle = K.frame; lc.fillRect(0, top, xh, bot-top);
+    }
+    const sx0 = Math.max(0, xh);
+    flat(lc, sx0, cy-sr, xe+4-sx0, sr*2, K.sleeve, 'rgba(0,0,0,.07)');
+    lc.strokeStyle = K.ink; lc.lineWidth = 1.4;
+    lc.beginPath(); lc.moveTo(Math.max(sx0, xz-0.4*ppm), cy); lc.lineTo(xe, cy); lc.stroke();
+    lc.fillStyle = K.ink; lc.textAlign='center'; lc.textBaseline='bottom';
+    lc.font = `700 ${Math.round(1.6*ppm)}px ${mono}`;
+    for(let m=0;m<=25;m++){
+      const x = xz + m*ppm;
+      if(x <= xe+0.5 && x > -10){
+        const len = (m%5===0 ? 1.6 : 1.1)*ppm;
+        lc.lineWidth = 1.5;
+        lc.beginPath(); lc.moveTo(x,cy); lc.lineTo(x,cy-len); lc.stroke();
+        if(m%5===0) lc.fillText(String(m+off), x, cy-len-0.2*ppm);
+      }
+      const xh2 = xz + (m+0.5)*ppm;
+      if(m<25 && xh2 <= xe+0.5 && xh2 > -10){
+        lc.beginPath(); lc.moveTo(xh2,cy); lc.lineTo(xh2,cy+1.1*ppm); lc.stroke();
+      }
+    }
+    // trommel: skråkant, lyst gradert bånd, mørkere kropp
+    const xb = xe + G.bevel*ppm, xband = xe + G.band*ppm;
+    lc.fillStyle = K.band;
+    lc.beginPath(); lc.moveTo(xe,cy-G.edgeR*ppm); lc.lineTo(xb,cy-R); lc.lineTo(xband,cy-R); lc.lineTo(xband,cy+R); lc.lineTo(xb,cy+R); lc.lineTo(xe,cy+G.edgeR*ppm); lc.closePath(); lc.fill();
+    lc.fillStyle = 'rgba(0,0,0,.07)'; lc.fillRect(xe, cy+R*0.56, xband-xe, R*0.44);
+    if(xband < W){ flat(lc, xband, cy-R, W-xband, 2*R, K.body, K.bodyLo); }
+    lc.strokeStyle = K.steelEdge; lc.lineWidth = 1;
+    lc.beginPath(); lc.moveTo(xb,cy-R); lc.lineTo(xb,cy+R); lc.stroke();
+    const t = anim % 50;
+    lc.textAlign='left'; lc.textBaseline='middle';
+    const fs = Math.round(1.5*ppm);
+    for(let k=0;k<50;k++){
+      const a = (k - t)/50*2*Math.PI;
+      const c = Math.cos(a); if(c<=0.05) continue;
+      const y = cy - R*Math.sin(a);
+      const major = k%5===0;
+      lc.globalAlpha = Math.min(1, c*1.3);
+      lc.strokeStyle = K.ink; lc.lineWidth = major?1.7:1.2;
+      lc.beginPath(); lc.moveTo(xe+1,y); lc.lineTo(xe+(major?2.6:1.8)*ppm,y); lc.stroke();
+      if(major){
+        lc.save(); lc.translate(xe+3.1*ppm,y); lc.scale(1,c);
+        lc.fillStyle=K.ink; lc.font=`700 ${fs}px ${mono}`;
+        lc.fillText(String(k),0,0); lc.restore();
+      }
+    }
+    lc.globalAlpha=1;
+    lc.strokeStyle = C.accent; lc.lineWidth=1; lc.setLineDash([4,4]);
+    lc.beginPath(); lc.moveTo(xe-1.5*ppm,cy); lc.lineTo(xe+6*ppm,cy); lc.stroke(); lc.setLineDash([]);
+  }
+
+  // ---------- Hele mikrometeret i målestokk ----------
+  function geom(r){
+    const R0 = RANGES[r];
+    const hubL = R0.off + 30.8, hubE = hubL + G.hubLen;
+    const xmin = R0.outer.cx - R0.outer.r;
+    const xmax = hubE + G.zero + 25 + THLEN + G.neckLen + G.raLen;
+    return {R0, hubL, hubE, xmin, xmax, ymin:G.hubTop, ymax:R0.outer.cy + R0.outer.r};
+  }
+  function drawOver(){
+    const W = over.getBoundingClientRect().width;
+    const big = geom(1), cur = geom(rng);
+    const p = Math.min((W-32)/(big.xmax-big.xmin), 5);
+    const topPad = 44, botPad = 10;
+    const Hc = Math.round((big.ymax - big.ymin)*p + topPad + botPad);
+    const {H} = fit(over, oc, Hc);
+    oc.clearRect(0,0,W,H);
+    const v = anim/100, {R0, hubL, hubE} = cur;
+    const ox = (W - (cur.xmax - cur.xmin)*p)/2 - cur.xmin*p;
+    const oy = topPad - big.ymin*p;
+    const X = x => ox + x*p, Y = y => oy + y*p;
+    OV.R = G.thR*p;
+    $('scaletxt').textContent = 'Begge måleområdene i samme målestokk';
+
+    // bøyle: venstre arm + lagerhus + nedre halvsirkel, minus U-åpning
+    const O = R0.outer, I = R0.inner;
+    const hubR = Math.min(O.cx + O.r + 3.5, hubE);
+    oc.fillStyle = K.frame;
+    oc.beginPath();
+    oc.moveTo(X(ARM.x0), Y(O.cy - 9));
+    oc.lineTo(X(ARM.x0), Y(ARM.top+1.2)); oc.quadraticCurveTo(X(ARM.x0), Y(ARM.top), X(ARM.x0+1.2), Y(ARM.top));
+    oc.lineTo(X(ARM.x1), Y(ARM.top)); oc.lineTo(X(ARM.x1), Y(I.cy));
+    oc.arc(X(I.cx), Y(I.cy), I.r*p, Math.PI, 0, true);
+    oc.lineTo(X(hubL), Y(G.hubTop+1.2)); oc.quadraticCurveTo(X(hubL), Y(G.hubTop), X(hubL+1.2), Y(G.hubTop));
+    oc.lineTo(X(hubE), Y(G.hubTop)); oc.lineTo(X(hubE), Y(G.hubBot));
+    oc.quadraticCurveTo(X(hubE), Y(O.cy-2), X(O.cx+O.r), Y(O.cy));
+    oc.arc(X(O.cx), Y(O.cy), O.r*p, 0, Math.PI, false);
+    // liten innsving ved venstre arm, som i malen
+    oc.quadraticCurveTo(X(O.cx-O.r), Y(O.cy-6), X(ARM.x0), Y(O.cy - 9));
+    oc.closePath(); oc.fill();
+    oc.strokeStyle = K.frameEdge; oc.lineWidth = 1; oc.stroke();
+    // tekst på bøylen
+    const fsz = Math.max(8, 2.6*p);
+    oc.fillStyle = K.text; oc.font = `500 ${fsz}px Barlow, sans-serif`; oc.textAlign='center'; oc.textBaseline='middle';
+    oc.fillText(`${R0.name}  0,01 mm`, X(O.cx), Y((I.cy+I.r + O.cy+O.r)/2));
+
+    // arbeidsstykke
+    const gap = R0.off + v;
+    if(mode==='lesav' && gap > 0.3){
+      oc.fillStyle = C.work; oc.fillRect(X(0), Y(-7), gap*p, 14*p);
+    }
+    // ambolt og spindel
+    oc.strokeStyle = K.steelEdge; oc.lineWidth = 1;
+    oc.fillStyle = K.steel;
+    oc.fillRect(X(-G.anLen), Y(-G.anR), G.anLen*p, 2*G.anR*p); oc.strokeRect(X(-G.anLen), Y(-G.anR), G.anLen*p, 2*G.anR*p);
+    oc.fillRect(X(gap), Y(-G.spR), (hubL-gap)*p, 2*G.spR*p); oc.strokeRect(X(gap), Y(-G.spR), (hubL-gap)*p, 2*G.spR*p);
+    // lås: skrue med spor og liten spak
+    const lx = hubL + G.hubLen*0.53, lr = 4.6;
+    oc.fillStyle = '#5a5c5e';
+    oc.save(); oc.translate(X(lx), Y(0)); oc.rotate(Math.PI/4);
+    oc.fillRect(0, -1.1*p, (lr+3)*p, 2.2*p); oc.restore();
+    oc.beginPath(); oc.arc(X(lx), Y(0), lr*p, 0, 7); oc.fillStyle = '#e4e6e7'; oc.fill();
+    oc.lineWidth = Math.max(1.5, .7*p); oc.strokeStyle = '#5a5c5e'; oc.stroke();
+    oc.beginPath(); oc.arc(X(lx), Y(0), (lr-1.3)*p, 0, 7); oc.fillStyle = '#c9cbcd'; oc.fill();
+    oc.strokeStyle = '#4a4c4e'; oc.lineWidth = Math.max(1.5, .9*p);
+    oc.beginPath(); oc.moveTo(X(lx-2.3), Y(2.3)); oc.lineTo(X(lx+2.3), Y(-2.3)); oc.stroke();
+    // hylse med skala
+    const te = hubE + G.zero + v;
+    oc.fillStyle = K.sleeve; oc.fillRect(X(hubE), Y(-G.slR), (te-hubE+1)*p, 2*G.slR*p);
+    oc.fillStyle = 'rgba(0,0,0,.07)'; oc.fillRect(X(hubE), Y(G.slR*0.56), (te-hubE+1)*p, G.slR*0.44*p);
+    oc.strokeStyle = K.ink; oc.lineWidth = 1;
+    oc.beginPath(); oc.moveTo(X(hubE+G.zero-0.5), Y(0)); oc.lineTo(X(te), Y(0)); oc.stroke();
+    if(p >= 2.2){
+      oc.fillStyle = K.ink; oc.font = `600 ${Math.max(7,1.6*p)}px Barlow, sans-serif`; oc.textAlign='center'; oc.textBaseline='bottom';
+      for(let m=0; m<=25 && hubE+G.zero+m <= te; m++){
+        const x = hubE+G.zero+m;
+        oc.beginPath(); oc.moveTo(X(x), Y(0)); oc.lineTo(X(x), Y(m%5?-1:-1.6)); oc.stroke();
+        if(m<25 && x+0.5 <= te){ oc.beginPath(); oc.moveTo(X(x+0.5), Y(0)); oc.lineTo(X(x+0.5), Y(1)); oc.stroke(); }
+        if(m%5===0 && p>=2.6) oc.fillText(String(m+R0.off), X(x), Y(-1.9));
+      }
+    }
+    // trommel: skråkant + lyst gradert bånd
+    const xb = te + G.bevel, xband = te + G.band;
+    oc.fillStyle = K.band;
+    oc.beginPath(); oc.moveTo(X(te),Y(-G.edgeR)); oc.lineTo(X(xb),Y(-G.thR)); oc.lineTo(X(xband),Y(-G.thR));
+    oc.lineTo(X(xband),Y(G.thR)); oc.lineTo(X(xb),Y(G.thR)); oc.lineTo(X(te),Y(G.edgeR)); oc.closePath(); oc.fill();
+    oc.fillStyle = 'rgba(0,0,0,.08)'; oc.fillRect(X(te), Y(G.thR*0.56), G.band*p, G.thR*0.44*p);
+    oc.strokeStyle = K.steelEdge; oc.beginPath(); oc.moveTo(X(xb),Y(-G.thR)); oc.lineTo(X(xb),Y(G.thR)); oc.stroke();
+    if(p >= 2.2){
+      const t = anim % 50;
+      oc.strokeStyle = K.ink; oc.fillStyle = K.ink; oc.textAlign='left'; oc.textBaseline='middle';
+      for(let k=0;k<50;k++){
+        const a = (k - t)/50*2*Math.PI, c = Math.cos(a); if(c<=0.1) continue;
+        const y = -G.thR*Math.sin(a), major = k%5===0;
+        oc.globalAlpha = Math.min(1, c*1.4); oc.lineWidth = major?1.1:0.7;
+        oc.beginPath(); oc.moveTo(X(te+0.3), Y(y)); oc.lineTo(X(te+(major?2.4:1.6)), Y(y)); oc.stroke();
+        if(major && p>=2.6){
+          oc.save(); oc.translate(X(te+2.9), Y(y)); oc.scale(1,c);
+          oc.font = `600 ${Math.max(7,1.5*p)}px Barlow, sans-serif`; oc.fillText(String(k),0,0); oc.restore();
+        }
+      }
+      oc.globalAlpha = 1;
+    }
+    // trommelkropp
+    const xk = xband + G.body;
+    flat(oc, X(xband), Y(-G.thR), G.body*p, 2*G.thR*p, K.body, K.bodyLo);
+    // riflet hylse (litt større)
+    flat(oc, X(xk), Y(-G.knR), G.knurl*p, 2*G.knR*p, K.knurl, 'rgba(0,0,0,.12)');
+    oc.strokeStyle = K.knLine; oc.lineWidth = 1;
+    for(let x = xk+0.8; x < xk+G.knurl; x += 1.1){ oc.beginPath(); oc.moveTo(X(x), Y(-G.knR+0.6)); oc.lineTo(X(x), Y(G.knR-0.6)); oc.stroke(); }
+    oc.strokeStyle = K.bodyLo; oc.strokeRect(X(xk), Y(-G.knR), G.knurl*p, 2*G.knR*p);
+    // skralle
+    const xc = xk + G.knurl;
+    flat(oc, X(xc), Y(-G.neckR), G.neckLen*p, 2*G.neckR*p, K.ratchet);
+    const xr = xc + G.neckLen;
+    flat(oc, X(xr), Y(-G.raR), G.raLen*p, 2*G.raR*p, K.ratchet);
+    oc.strokeStyle = 'rgba(0,0,0,.18)';
+    for(let x = xr+1; x < xr+G.raLen; x += 1.3){ oc.beginPath(); oc.moveTo(X(x), Y(-G.raR+0.5)); oc.lineTo(X(x), Y(G.raR-0.5)); oc.stroke(); }
+    // lupe-markering
+    oc.strokeStyle=C.accent; oc.lineWidth=1.5; oc.setLineDash([3,3]);
+    oc.strokeRect(X(te-6), Y(-G.thR)-2, 12*p, 2*G.thR*p+4); oc.setLineDash([]);
+    // etiketter med strek ned til delen
+    oc.font=`600 ${W<500?11:12}px Barlow, sans-serif`; oc.textAlign='center'; oc.textBaseline='bottom';
+    const labels = [[-G.anLen/2,'ambolt',-G.anR],[(Math.max(gap,0)+hubL)/2,'spindel',-G.spR],[lx,'lås',-lr],[(hubE+te)/2,'hylse',-G.slR],[te+G.band+G.body/2,'trommel',-G.thR],[xr+G.raLen/2,'skralle',-G.raR]];
+    const rows = [Y(G.hubTop)-6, Y(G.hubTop)-22], lastR = [-1e9,-1e9];
+    labels.forEach(([x,s,ty])=>{
+      const px = X(x), w = oc.measureText(s).width;
+      if(px-w/2 < 2 || px+w/2 > W-2) return;
+      const r = px-w/2 >= lastR[0]+6 ? 0 : (px-w/2 >= lastR[1]+6 ? 1 : -1);
+      if(r<0) return;
+      oc.fillStyle=C.muted; oc.fillText(s, px, rows[r]); lastR[r] = px+w/2;
+      oc.strokeStyle=C.muted; oc.globalAlpha=.6; oc.lineWidth=1;
+      oc.beginPath(); oc.moveTo(px, rows[r]+2); oc.lineTo(px, Y(ty)-2); oc.stroke(); oc.globalAlpha=1;
+    });
+  }
+
+  // ---------- Avlesning ----------
+  function parts(h){
+    const mm = Math.floor(h/100), rest = h%100, half = rest>=50?50:0, thim = rest-half;
+    return {mm, half, thim};
+  }
+  function updateReadout(){
+    const total = OFF() + n;
+    const p = parts(total);
+    $('r-mm').textContent = fmt(p.mm);
+    $('r-half').textContent = fmt(p.half/100);
+    $('r-thim').textContent = fmt(p.thim/100);
+    $('r-sum').textContent = fmt(total/100)+' mm';
+    $('grov').value = n;
+    const hide = !$('vis').checked || mode==='lesav' && !answered;
+    $('readout').querySelectorAll('.r span:last-child').forEach(e=>e.classList.toggle('hidden-val', hide));
+  }
+  function setN(v){
+    n = Math.max(0, Math.min(MAX, Math.round(v)));
+    updateReadout(); kick();
+  }
+
+  let raf = null;
+  function kick(){ if(!raf) raf = requestAnimationFrame(tick); }
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tick(){
+    raf = null;
+    const d = n - anim;
+    if(reduce || Math.abs(d) < 0.02) anim = n; else anim += d*0.25;
+    drawLupe(); drawOver();
+    if(anim !== n) kick();
+  }
+
+  // ---------- Interaksjon ----------
+  const locked = () => mode==='lesav';
+  let drag = null;
+  [[lupe,()=>L.R],[over,()=>OV.R]].forEach(([cv,getR])=>{
+  cv.addEventListener('pointerdown', e=>{
+    if(locked()) return;
+    drag = {y:e.clientY, start:n, R:getR()}; cv.setPointerCapture(e.pointerId);
+  });
+  cv.addEventListener('pointermove', e=>{
+    if(!drag) return;
+    const dy = e.clientY - drag.y;
+    const dn = dy / drag.R * 50/(2*Math.PI);
+    n = Math.max(0, Math.min(MAX, Math.round(drag.start + dn)));
+    anim = n; updateReadout(); kick();
+  });
+  ['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,()=>drag=null));
+  cv.addEventListener('wheel', e=>{
+    if(locked()) return;
+    e.preventDefault(); setN(n + (e.deltaY<0?1:-1)*(e.shiftKey?10:1));
+  }, {passive:false});
+  });
+  $('stepbtns').addEventListener('click', e=>{
+    const b = e.target.closest('[data-step]'); if(!b || locked()) return;
+    setN(n + Number(b.dataset.step));
+  });
+  $('grov').addEventListener('input', e=>{ n = Number(e.target.value); updateReadout(); kick(); });
+  $('vis').addEventListener('change', updateReadout);
+
+  // ---------- Måleområde ----------
+  function setRange(r){
+    rng = r;
+    document.querySelectorAll('[data-range]').forEach(b=>b.setAttribute('aria-pressed', String(Number(b.dataset.range)===r)));
+    $('title').textContent = 'Mikrometer ' + RANGES[r].name;
+    $('rangenote').hidden = r===0;
+    $('example').textContent = r===0 ? 'Legg sammen. Eksempel: 5 + 0,50 + 0,28 = 5,78 mm.' : 'Legg sammen. Eksempel: 30 + 0,50 + 0,28 = 30,78 mm.';
+    $('ans').placeholder = r===0 ? '0,00' : '25,00';
+    if(mode!=='utforsk') newTask(); else { updateReadout(); kick(); }
+  }
+  document.querySelector('.range').addEventListener('click', e=>{
+    const b = e.target.closest('[data-range]'); if(b) setRange(Number(b.dataset.range));
+  });
+
+  // ---------- Moduser ----------
+  function setMode(m){
+    mode = m;
+    document.querySelectorAll('.modes button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.mode===m)));
+    $('taskcard').hidden = m==='utforsk';
+    $('showwrap').hidden = m!=='utforsk';
+    const lock = locked();
+    document.querySelectorAll('#stepbtns button, #grov').forEach(b=>b.disabled = lock);
+    $('draghint').textContent = lock ? 'Mikrometeret er låst. Les av målet på emnet.' : 'Dra opp/ned på trommelen for å dreie';
+    lupe.style.cursor = over.style.cursor = lock ? 'default' : 'ns-resize';
+    if(m!=='utforsk') newTask(); else { $('vis').checked = true; updateReadout(); kick(); }
+  }
+  document.querySelector('.modes').addEventListener('click', e=>{
+    const b = e.target.closest('[data-mode]'); if(b) setMode(b.dataset.mode);
+  });
+  function rnd(){ return Math.floor(Math.random()*2350)+50; }
+  function newTask(){
+    answered = false; $('fb').hidden = true; $('ans').value='';
+    $('checkbtn').disabled = false;
+    target = rnd();
+    if(mode==='lesav'){
+      $('tasklabel').textContent = 'Les av';
+      $('tasktext').textContent = 'Hva viser mikrometeret?';
+      $('ans').hidden = false;
+      setN(target);
+      setTimeout(()=>$('ans').focus({preventScroll:true}),0);
+    } else {
+      $('tasklabel').textContent = 'Still inn';
+      $('tasktext').innerHTML = 'Still mikrometeret til <b>'+fmt((OFF()+target)/100)+' mm</b>';
+      $('ans').hidden = true;
+      $('vis').checked = false;
+      setN(Math.floor(Math.random()*2500));
+    }
+    updateReadout();
+  }
+  function explain(h){
+    const p = parts(h);
+    return `${p.mm} mm + ${fmt(p.half/100)} mm + ${fmt(p.thim/100)} mm = ${fmt(h/100)} mm`;
+  }
+  $('newbtn').addEventListener('click', newTask);
+  $('ansform').addEventListener('submit', e=>{
+    e.preventDefault();
+    if(answered) { newTask(); return; }
+    const fb = $('fb');
+    const want = OFF() + target;
+    let got;
+    if(mode==='lesav'){
+      const raw = $('ans').value.trim().replace(',', '.');
+      if(raw==='' || isNaN(Number(raw))){ fb.hidden=false; fb.className='fb bad'; fb.textContent='Skriv inn målet i millimeter, for eksempel ' + (rng?'31,36':'7,36') + '.'; return; }
+      got = Math.round(Number(raw)*100);
+    } else got = OFF() + n;
+    const ok = got === want;
+    score.tot++; if(ok) score.ok++;
+    answered = true; updateReadout();
+    fb.hidden=false; fb.className = 'fb ' + (ok?'ok':'bad');
+    const msg = ok ? 'Riktig!' : (mode==='lesav' ? `Ikke helt. Du svarte ${fmt(got/100)} mm.` : `Ikke helt. Du stilte inn ${fmt(got/100)} mm.`);
+    const diff = got - want;
+    let tip = '';
+    if(!ok){
+      if(rng===1 && mode==='lesav' && Math.abs(diff)===2500) tip = diff<0 ? ' Husk at skalaen starter på 25 mm.' : ' Du har lagt til 25 mm to ganger. Tallene på hylsa viser allerede 25–50.';
+      else if(Math.abs(diff)===50) tip = diff>0 ? ' Du har tatt med en halv millimeter for mye. Sjekk om den nedre streken faktisk er synlig.' : ' Du har glemt halvmillimeteren på den nedre skalaen.';
+      else if(Math.abs(diff)%100===0) tip = ' Sjekk de hele millimeterne på den øvre skalaen.';
+      else if(Math.abs(diff)<=2) tip = ' Nesten. Se nøye på hvilken trommelstrek som ligger på lengdestreken.';
+    }
+    fb.innerHTML = '';
+    fb.append(msg + tip);
+    const why = document.createElement('span'); why.className='why'; why.textContent = 'Riktig mål: ' + explain(want);
+    fb.append(why);
+    $('score').textContent = `${score.ok} av ${score.tot} riktige`;
+    $('checkbtn').disabled = true;
+  });
+
+  // ---------- Oppstart ----------
+  function redraw(){ readTokens(); drawLupe(); drawOver(); }
+  window.addEventListener('resize', redraw);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', redraw);
+  new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  if(document.fonts) document.fonts.ready.then(redraw);
+  readTokens(); updateReadout(); redraw();
+})();
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

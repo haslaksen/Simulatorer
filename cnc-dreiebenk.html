@@ -1,0 +1,1262 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1200px}
+html,body{background:var(--lk-bg)!important}</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>CNC-dreiebenk</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Maskinering · CNC</div>
+      <h1>CNC-dreiebenk</h1>
+      <p class="lk-lead">Øv på betjeningspanelet til en Mazak QT Nexus 250. Oppgavene står på skjermen til venstre.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Slipp nødstoppen og trykk <b>RESET</b>.</span></li><li><span>Velg <b>HOME</b> og nullpunktkjør X og Z.</span></li><li><span>Velg <b>MDI</b>, skriv G97 S800 M3, lukk døren og trykk <b>CYCLE START</b>.</span></li><li><span>Følg resten av oppgavene på skjermen.</span></li></ol>
+      <a class="lk-hb" href="https://verkstedhandboka.vercel.app/#m3-cnc" target="_blank" rel="noopener">Les mer i Verkstedhåndboka: 3.15 CNC-koder ↗</a>
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Mazak Nexus 250 Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: maskinens betjeningspanel – skjerm til venstre (øverst på mobil), betjeningsplater til høyre som på maskinen. Bevisst ett tema: maskinens egne farger. */
+:root{
+  --ground:#16181a; --ground-ink:#d9dad6; --ground-dim:#8d9196;
+  --bezel:#c6c9c7; --frame:#2b2d30;
+  --plate:#25282a; --plate-hi:#303437; --plate-ink:#a3a8ad;
+  --key:#ebe9e1; --key-lo:#d3d0c6; --key-edge:#8d8a81; --key-ink:#1d1d1b;
+  --accent:#d2452b; --led:#46d86f; --led-off:#3a453d;
+  --scr:#f6f8fc; --scr-ink:#0e1d45; --scr-dim:#5f6c88; --scr-line:#cdd6e8; --scr-hi:#dfe8fb;
+  --title1:#1d4cc2; --title2:#4b88f3; --status:#f2de6b; --status-ink:#2e2a10;
+  --go:#1f9c4d; --stop:#c8261d; --yellow:#f2c300; --alarm:#c0261d; --alarm-bg:#fde7e4; --ok:#1b7f3f;
+  --insert:#d9a31b; --holder:#4a4f57; --chuck:#7b8189; --chuck-d:#5f656d; --stock:#b8c1cb; --stock-lo:#d6dce3;
+  --f-label:"Barlow Condensed","Arial Narrow",sans-serif;
+  --f-body:"Barlow",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ground-ink);font-family:var(--f-body);font-size:14px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,.knob:focus-visible,.wheel:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:16px;padding-block:16px 28px;display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:980px){.wrap{grid-template-columns:minmax(0,1.3fr) minmax(370px,1fr);align-items:start}}
+.col{display:grid;gap:12px;min-width:0}
+
+/* Skjermramme */
+.bezel{background:var(--frame);border-radius:10px;padding:10px 12px 12px;border-left:5px solid var(--accent);border-right:5px solid var(--accent);min-width:0}
+.brand{font-family:var(--f-label);font-weight:700;letter-spacing:.12em;font-size:13px;color:var(--accent);display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.brand span:last-child{color:var(--ground-dim);font-weight:600}
+.screen{background:var(--scr);color:var(--scr-ink);border-radius:3px;overflow:hidden;font-family:var(--f-mono);font-size:11.5px;border:2px solid #0b0c0d}
+.titlebar{background:linear-gradient(180deg,var(--title2),var(--title1));color:#fff;font-family:var(--f-label);font-weight:600;letter-spacing:.08em;padding:3px 8px;display:flex;justify-content:space-between;font-size:13px}
+.page{padding:8px;min-height:150px}
+.ro{display:grid;gap:8px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:560px){.ro{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}}
+table.axes{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+.axes th{font-weight:500;color:var(--scr-dim);text-align:right;font-size:10.5px;padding:0 4px 3px;border-bottom:1px solid var(--scr-line)}
+.axes td{text-align:right;padding:2px 4px;white-space:nowrap}
+.axes td.a{text-align:left;font-weight:600;width:1%}
+.axes td.pos{font-size:14px;font-weight:600}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--alarm);margin-right:5px;vertical-align:1px}
+.dot.on{background:var(--ok)}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;align-content:start}
+.info div{display:flex;justify-content:space-between;gap:6px;border-bottom:1px dotted var(--scr-line);padding:1px 0;min-width:0}
+.info .wide{grid-column:1/-1}
+.info .k{color:var(--scr-dim);font-size:10.5px;flex:none}
+.info span:last-child{text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.loads{display:grid;gap:3px;grid-column:1/-1;grid-template-columns:repeat(3,1fr);column-gap:10px}
+.lb{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--scr-dim)}
+.lb i{flex:1;height:7px;background:var(--scr-hi);position:relative;border:1px solid var(--scr-line)}
+.lb i b{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#2a62d8 0 60%,#e2b100 60% 85%,#d6372a 85%);width:0}
+canvas#cv{display:block;width:100%;height:230px;border-top:1px solid var(--scr-line);background:var(--scr)}
+@media (min-width:980px){canvas#cv{height:300px}}
+.msg{min-height:22px;padding:3px 8px;font-size:11.5px;border-top:1px solid var(--scr-line);background:var(--scr-hi)}
+.msg.al{background:var(--alarm-bg);color:var(--alarm);font-weight:600}
+.status{background:var(--status);color:var(--status-ink);display:flex;flex-wrap:wrap;gap:4px 12px;padding:3px 8px;font-size:11px;font-variant-numeric:tabular-nums}
+.status b{font-weight:600}
+.status .r{margin-left:auto}
+.softkeys{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;padding:4px;background:#d9dee8}
+.softkeys button{background:linear-gradient(#fdfdfd,#dfe3ea);border:1px solid #8f98a8;border-radius:2px;font-family:var(--f-label);font-weight:600;font-size:12px;letter-spacing:.04em;padding:7px 2px;color:var(--scr-ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.softkeys button.on{background:linear-gradient(#cfe0ff,#9fbcf2);border-color:var(--title1)}
+.redbar{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding:8px 14px 0}
+.redbar i{height:7px;border-radius:3px;background:var(--accent);opacity:.85}
+
+/* Programside */
+.plist{max-height:250px;overflow:auto;border:1px solid var(--scr-line);background:#fff}
+.plist div{padding:1px 6px;white-space:pre;font-size:11.5px}
+.plist div.cur{background:#1d4cc2;color:#fff}
+.plist div.c{color:var(--scr-dim)}
+.ptools{display:flex;gap:6px;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap}
+.ptools button,.mini{background:linear-gradient(#fff,#e1e5ec);border:1px solid #8f98a8;border-radius:2px;padding:4px 10px;font-family:var(--f-label);font-weight:600;font-size:12px;color:var(--scr-ink)}
+textarea.code{width:100%;font-family:var(--f-mono);font-size:12px;color:var(--scr-ink);background:#fff;border:1px solid var(--scr-line);padding:6px;resize:vertical;color-scheme:light}
+#prog{height:250px}
+#mdi{height:110px}
+.note{color:var(--scr-dim);font-size:10.5px;margin-top:6px;line-height:1.45;font-family:var(--f-body);font-size:12px}
+.note code{font-family:var(--f-mono);font-size:11px;color:var(--scr-ink)}
+.alist div{padding:3px 6px;border-bottom:1px solid var(--scr-line);display:flex;gap:8px}
+.alist div b{color:var(--alarm);flex:none}
+.alist .old b{color:var(--scr-dim)}
+.alist time{margin-left:auto;color:var(--scr-dim);flex:none}
+.tasks{font-family:var(--f-body);font-size:13px;display:grid;gap:6px}
+.tasks .t{display:grid;grid-template-columns:26px 1fr;gap:6px;padding:6px;border:1px solid var(--scr-line);background:#fff}
+.tasks .t.done{background:#e9f6ee;border-color:#a7d8b8}
+.tasks .n{width:22px;height:22px;border-radius:50%;border:2px solid var(--scr-dim);display:grid;place-items:center;font-family:var(--f-mono);font-size:11px;font-weight:600;color:var(--scr-dim)}
+.tasks .done .n{background:var(--ok);border-color:var(--ok);color:#fff}
+.tasks h4{margin:0 0 2px;font-size:13.5px;font-weight:600}
+.tasks p{margin:0;color:#3a4766;line-height:1.4}
+.tasks .prog{font-family:var(--f-label);font-weight:600;letter-spacing:.06em;color:var(--scr-dim)}
+
+/* Betjeningsplater */
+.plate{background:var(--plate);border-radius:8px;padding:12px;display:grid;gap:10px;border:1px solid #121315}
+.plate-h{font-family:var(--f-label);font-weight:600;letter-spacing:.14em;font-size:12px;color:var(--plate-ink)}
+.keygrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:8px}
+.key{font-family:var(--f-label);font-weight:600;font-size:13px;letter-spacing:.04em;background:linear-gradient(var(--key),var(--key-lo));color:var(--key-ink);border:1px solid var(--key-edge);border-bottom-width:3px;border-radius:6px;min-height:46px;padding:4px 6px;line-height:1.05;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.key:active,.key.held{transform:translateY(1px);border-bottom-width:2px;background:linear-gradient(var(--key-lo),var(--key))}
+.key .led{display:block;width:16px;height:4px;border-radius:2px;background:var(--led-off);margin:0 auto 5px}
+.key.on .led{background:var(--led);box-shadow:0 0 6px var(--led)}
+.key.reset{background:linear-gradient(#f3f1ea,#d7d3c8)}
+.key.reset span{display:block;font-size:14px}
+.key.sm{min-height:38px;min-width:42px}
+.row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-around}
+.kn{display:grid;justify-items:center;gap:6px}
+.kv{font-family:var(--f-label);font-weight:600;font-size:12px;letter-spacing:.08em;color:var(--plate-ink);text-align:center}
+.kv b{color:var(--ground-ink);font-size:14px;margin-left:3px}
+.knob{width:74px;height:74px;border-radius:50%;position:relative;cursor:pointer;touch-action:manipulation;background:radial-gradient(circle at 40% 32%,#e3e5e6,#9a9ea1 55%,#5b5f62);box-shadow:0 0 0 4px #1b1d1f,0 3px 6px rgba(0,0,0,.5);user-select:none}
+.knob .ptr{position:absolute;left:calc(50% - 4px);top:6px;width:8px;height:31px;border-radius:4px;background:var(--yellow);transform-origin:50% 31px;transform:rotate(var(--a,0deg));box-shadow:0 0 0 1px #6b5600;transition:transform .12s}
+.knob::after{content:"− | +";position:absolute;left:0;right:0;bottom:-2px;text-align:center;font-family:var(--f-label);font-size:10px;color:#333;letter-spacing:.1em;pointer-events:none}
+.spbtns{display:flex;align-items:center;gap:8px}
+.spbtns b{font-family:var(--f-mono);min-width:44px;text-align:center;color:var(--ground-ink)}
+.wheelbox{display:grid;justify-items:center;gap:8px}
+.wheel{width:150px;height:150px;border-radius:50%;position:relative;touch-action:none;cursor:grab;background:repeating-conic-gradient(from 0deg,#141618 0 1.8deg,#33373a 1.8deg 3.6deg);box-shadow:0 0 0 5px #0e0f10,0 4px 10px rgba(0,0,0,.6)}
+.wheel .hub{position:absolute;inset:16px;border-radius:50%;background:radial-gradient(circle at 42% 35%,#3c4044,#17191b 70%);transform:rotate(var(--rot,0deg))}
+.wheel .grip{position:absolute;width:26px;height:26px;border-radius:50%;left:calc(50% - 13px);top:8px;background:radial-gradient(circle at 40% 35%,#55595d,#1a1c1e);box-shadow:0 0 0 2px #0b0c0d}
+.wheel .hub::after{content:"";position:absolute;left:calc(50% - 1px);bottom:10px;width:2px;height:12px;background:#c9ccce}
+.wbtns{display:flex;gap:8px}
+.jogwrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-around;align-items:center}
+.jogxz{display:grid;grid-template-areas:". xp ." "zm c zp" ". xm .";grid-template-columns:repeat(3,54px);gap:6px}
+.jogxz .c{grid-area:c;display:grid;place-items:center;color:var(--plate-ink);font-size:20px}
+.jog{min-height:46px;font-size:15px}
+.jogside{display:grid;gap:6px;grid-template-columns:repeat(2,54px)}
+.jogside .lbl{grid-column:1/-1;text-align:center;font-family:var(--f-label);font-size:11px;letter-spacing:.1em;color:var(--plate-ink)}
+.spin{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%}
+.spin .key.on{box-shadow:inset 0 0 0 2px var(--led)}
+.cycle{display:flex;justify-content:center;gap:34px}
+.big{width:68px;height:68px;border-radius:50%;border:4px solid #111;font-family:var(--f-label);font-size:26px;font-weight:700;color:#fff;box-shadow:0 3px 0 #000;touch-action:manipulation}
+.big:active{transform:translateY(2px);box-shadow:0 1px 0 #000}
+.big.hold{background:radial-gradient(circle at 40% 35%,#ef5148,var(--stop))}
+.big.start{background:radial-gradient(circle at 40% 35%,#3fd474,var(--go))}
+.big.lit{box-shadow:0 0 14px var(--led),0 3px 0 #000}
+.cyc{display:grid;justify-items:center;gap:5px;font-family:var(--f-label);font-weight:600;font-size:12px;letter-spacing:.1em;color:var(--plate-ink)}
+.safety{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-around}
+.estop{width:104px;height:104px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;border:none;padding:0;box-shadow:0 0 0 3px #1a1a1a}
+.estop i{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#ff5a4a,#b3140c 70%);box-shadow:0 6px 0 #6d0b06,0 8px 10px rgba(0,0,0,.5);transition:transform .1s,box-shadow .1s;display:grid;place-items:center;color:#fff;font-family:var(--f-label);font-weight:700;font-size:11px;letter-spacing:.08em}
+.estop.down i{transform:translateY(5px);box-shadow:0 1px 0 #6d0b06}
+.door{display:grid;gap:6px;justify-items:center}
+.door button{min-width:120px}
+.door .state{font-family:var(--f-mono);font-size:13px}
+.door .state.open{color:#ff8f7a}
+.door .state.closed{color:var(--led)}
+
+footer{grid-column:1/-1;display:grid;gap:10px;color:var(--ground-dim);font-size:13px;line-height:1.5}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ctrl .seg{display:inline-flex;border:1px solid #444a50;border-radius:6px;overflow:hidden}
+.ctrl .seg button{background:#22262a;border:0;padding:7px 12px;font-family:var(--f-label);font-weight:600;letter-spacing:.06em;color:var(--ground-ink)}
+.ctrl .seg button.on{background:#3a4148;color:var(--yellow)}
+.ctrl .plain{background:#22262a;border:1px solid #444a50;border-radius:6px;padding:7px 12px;font-family:var(--f-label);font-weight:600;letter-spacing:.06em;color:var(--ground-ink)}
+footer p{margin:0;max-width:75ch}
+/* Mazatrol */
+.cvwrap{position:relative}
+.cvbtn{position:absolute;top:6px;right:6px;background:linear-gradient(#fff,#e1e5ec);border:1px solid #8f98a8;border-radius:2px;padding:3px 8px;font-family:var(--f-label);font-weight:600;font-size:11px;letter-spacing:.05em;color:var(--scr-ink)}
+.cvbtn.on{background:linear-gradient(#cfe0ff,#9fbcf2);border-color:var(--title1)}
+.ptools .act{background:linear-gradient(#d9f2e1,#a9dcb9);border-color:var(--ok)}
+.mzintro{font-family:var(--f-body);font-size:12px;color:#3a4766;margin:0 0 8px;line-height:1.45}
+.mz{display:grid;gap:8px;max-height:420px;overflow:auto;padding-right:2px}
+.unit{border:1px solid var(--scr-line);background:#fff}
+.unit.cur{outline:2px solid var(--title1);outline-offset:-1px}
+.uh{display:flex;align-items:center;gap:8px;background:var(--scr-hi);padding:3px 6px;font-weight:600;flex-wrap:wrap}
+.uh .no{color:var(--scr-dim);font-weight:500}
+.uh .pt{color:var(--title1)}
+.uh .sp{margin-left:auto;display:flex;gap:4px}
+.uh .mini{padding:2px 7px;font-size:11px}
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:4px 6px;padding:6px}
+.f{display:grid;gap:1px;min-width:0}
+.f label{font-size:10px;color:var(--scr-dim)}
+.mz input,.mz select{font:inherit;font-size:12px;color:var(--scr-ink);background:#fbfcff;border:1px solid #b9c4dc;border-radius:2px;padding:3px 4px;width:100%;min-width:0;color-scheme:light}
+.mz input:disabled,.mz select:disabled{background:#eef1f6;color:#a2abbd}
+.mz input.bad{border-color:var(--alarm);background:var(--alarm-bg)}
+.sq,.seqh{display:grid;grid-template-columns:30px minmax(0,2.4fr) repeat(3,minmax(0,1fr));gap:4px;padding:2px 6px;align-items:center}
+.fr,.figh{display:grid;grid-template-columns:24px minmax(0,1.1fr) repeat(3,minmax(0,1fr)) minmax(0,1fr) 26px;gap:4px;padding:2px 6px;align-items:center}
+.seqh,.figh{font-size:10px;color:var(--scr-dim);border-top:1px dashed var(--scr-line);padding-top:4px}
+.tag{font-weight:600;font-size:11px}
+.fr .mini{padding:2px 0}
+.figadd{padding:4px 6px 6px}
+.endu{padding:4px 6px;color:var(--scr-dim);font-size:11px}
+.mzadd{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.mzerr{margin-top:8px;padding:6px 8px;font-family:var(--f-body);font-size:12px;line-height:1.4;border:1px solid var(--scr-line);background:#fff}
+.mzerr.bad{border-color:#e7a59d;background:var(--alarm-bg);color:var(--alarm)}
+.mzerr.ok{border-color:#a7d8b8;background:#e9f6ee;color:var(--ok)}
+#mzCode{max-height:220px;overflow:auto;background:#fff;border:1px solid var(--scr-line);padding:6px;margin:8px 0 0;font-size:11.5px}
+@media (prefers-reduced-motion:reduce){.knob .ptr,.estop i{transition:none}}
+</style>
+
+<div class="wrap">
+  <div class="col">
+    <section class="bezel" aria-label="Skjerm">
+      <div class="brand"><span>MATRIX NEXUS · QT NEXUS 250-II MSY</span><span>OPPLÆRINGSSIMULATOR</span></div>
+      <div class="screen">
+        <div class="titlebar"><span id="pageTitle">POSISJON</span><span id="modeTitle">JOG</span></div>
+
+        <div class="page" id="pg-pos">
+          <div class="ro">
+            <table class="axes" aria-label="Akseposisjoner">
+              <thead><tr><th style="text-align:left">AKSE</th><th>POSISJON</th><th>MASKIN</th><th>REST</th></tr></thead>
+              <tbody id="axbody"></tbody>
+            </table>
+            <div class="info">
+              <div><span class="k">PROG</span><span id="iProg">O1000</span></div>
+              <div><span class="k">BLOKK</span><span id="iBlk">–</span></div>
+              <div class="wide"><span class="k">AKTIV</span><span id="iCur">–</span></div>
+              <div class="wide"><span class="k">NESTE KOMMANDO</span><span id="iNext">–</span></div>
+              <div class="wide"><span class="k">MODAL</span><span id="iModal"></span></div>
+              <div><span class="k">VERKTØY</span><span id="iTool"></span></div>
+              <div><span class="k">KJØLEV.</span><span id="iCool"></span></div>
+              <div><span class="k">S PROG</span><span id="iS"></span></div>
+              <div><span class="k">S AKT.</span><span id="iRpm"></span></div>
+              <div class="wide"><span class="k">MATING</span><span id="iFeed"></span></div>
+            </div>
+            <div class="loads">
+              <div class="lb">S1<i><b id="lS"></b></i></div>
+              <div class="lb">X<i><b id="lX"></b></i></div>
+              <div class="lb">Z<i><b id="lZ"></b></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page" id="pg-prog" hidden>
+          <div class="ptools">
+            <span id="progHead">PROGRAM O1000 · EIA/ISO</span>
+            <span style="display:flex;gap:6px;flex-wrap:wrap"><button id="btnActEia">AKTIVER</button><button id="btnEdit">REDIGER</button><button id="btnDefault">EKSEMPEL</button></span>
+          </div>
+          <div class="plist" id="plist"></div>
+          <textarea class="code" id="prog" spellcheck="false" hidden aria-label="Programtekst"></textarea>
+          <p class="note">Støttet: <code>G0 G1 G2 G3</code> (med R), <code>G4</code>, <code>G28 U0 W0</code>, <code>G50 S</code>, <code>G96/G97</code>, <code>G98/G99</code>, <code>M0 M1 M3 M4 M5 M8 M9 M30</code>, <code>T0101–T0303</code>. X er diameter, U er inkrementell X.</p>
+        </div>
+
+        <div class="page" id="pg-maz" hidden>
+          <div class="ptools">
+            <span>MAZATROL · WNo 1001</span>
+            <span style="display:flex;gap:6px;flex-wrap:wrap"><button id="btnActMaz">AKTIVER</button><button id="mzCheck">BANESJEKK</button><button id="mzShow">VIS EIA</button><button id="mzReset">EKSEMPEL</button></span>
+          </div>
+          <p class="mzintro">I Mazatrol beskriver du ferdig form og skjæredata. Styringen regner ut verktøybanen selv: grovpasninger, profilpasning og finpasning. Programmet består av UNo 0 (felles data), maskineringsenheter og END.</p>
+          <div class="mz" id="mzUnits"></div>
+          <div class="mzadd">
+            <button class="mini" data-add="FACE">+ FACING</button>
+            <button class="mini" data-add="BAR">+ BAR OUT</button>
+            <button class="mini" data-add="GRV">+ T.GROOVE</button>
+          </div>
+          <div class="mzerr" id="mzMsg" hidden></div>
+          <pre id="mzCode" hidden></pre>
+        </div>
+
+        <div class="page" id="pg-mdi" hidden>
+          <div class="ptools"><span>MDI · MANUELL DATAINNGANG</span><button id="btnMdiClr">TØM</button></div>
+          <textarea class="code" id="mdi" spellcheck="false" aria-label="MDI-blokker">G97 S800 M3</textarea>
+          <p class="note">Skriv én eller flere blokker. Velg MDI-modus, lukk døren og trykk CYCLE START. Spindelen fortsetter å gå etter MDI til du stopper den (M5 eller STOPP).</p>
+        </div>
+
+        <div class="page" id="pg-alarm" hidden>
+          <div class="alist" id="alist"></div>
+          <p class="note">Rett årsaken, og trykk RESET for å kvittere alarmen.</p>
+        </div>
+
+        <div class="page" id="pg-task" hidden>
+          <div class="tasks" id="tasks"></div>
+        </div>
+
+        <div class="cvwrap"><canvas id="cv" aria-label="Grafisk visning av dreieoperasjonen i XZ-planet"></canvas><button class="cvbtn" id="btnZoom">ZOOM</button></div>
+        <div class="msg" id="msg">–</div>
+        <div class="status">
+          <span>HURTIG <b id="sRap">25%</b></span>
+          <span>MATING <b id="sFeed">100%</b></span>
+          <span>SPINDEL <b id="sSp">100%</b></span>
+          <span>DØR <b id="sDoor">LUKKET</b></span>
+          <span class="r" id="sClock"></span>
+        </div>
+        <div class="softkeys" id="softkeys">
+          <button data-page="pos" class="on">POSISJON</button>
+          <button data-page="prog">EIA</button>
+          <button data-page="maz">MAZATROL</button>
+          <button data-page="mdi">MDI</button>
+          <button data-page="alarm">ALARM</button>
+          <button data-page="task">OPPGAVER</button>
+        </div>
+      </div>
+      <div class="redbar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </section>
+  </div>
+
+  <div class="col">
+    <section class="plate" aria-label="Moduser">
+      <div class="plate-h">MODUS</div>
+      <div class="keygrid">
+        <button class="key reset" id="kReset"><span>RESET</span></button>
+        <button class="key mode" data-mode="MEM"><i class="led"></i>MEMORY</button>
+        <button class="key mode" data-mode="MDI"><i class="led"></i>MDI</button>
+        <button class="key mode" data-mode="JOG"><i class="led"></i>JOG</button>
+        <button class="key mode" data-mode="RAPID"><i class="led"></i>RAPID</button>
+        <button class="key mode" data-mode="HOME"><i class="led"></i>HOME</button>
+        <button class="key mode" data-mode="HANDLE" data-inc="1"><i class="led"></i>×1000</button>
+        <button class="key mode" data-mode="HANDLE" data-inc="0.1"><i class="led"></i>×100</button>
+        <button class="key mode" data-mode="HANDLE" data-inc="0.01"><i class="led"></i>×10</button>
+        <button class="key mode" data-mode="HANDLE" data-inc="0.001"><i class="led"></i>×1</button>
+        <button class="key" id="kSingle"><i class="led"></i>SINGLE</button>
+      </div>
+    </section>
+
+    <section class="plate" aria-label="Overstyring og håndhjul">
+      <div class="plate-h">OVERSTYRING</div>
+      <div class="row">
+        <div class="kn"><div class="knob" id="knRapid" tabindex="0" role="slider" aria-label="Hurtiggang-overstyring"><i class="ptr"></i></div><div class="kv">HURTIG<b id="vRapid"></b></div></div>
+        <div class="kn"><div class="knob" id="knFeed" tabindex="0" role="slider" aria-label="Mating-overstyring"><i class="ptr"></i></div><div class="kv">MATING<b id="vFeed"></b></div></div>
+        <div class="kn"><div class="kv">SPINDEL</div><div class="spbtns"><button class="key sm" id="spDn" aria-label="Spindeloverstyring ned">−</button><b id="vSpOv">100%</b><button class="key sm" id="spUp" aria-label="Spindeloverstyring opp">+</button></div></div>
+      </div>
+      <div class="plate-h">HÅNDHJUL</div>
+      <div class="row">
+        <div class="wheelbox">
+          <div class="wheel" id="wheel" tabindex="0" aria-label="Håndhjul – dra rundt for å kjøre aksen"><div class="hub" id="hub"><i class="grip"></i></div></div>
+          <div class="wbtns"><button class="key sm" id="wDn">− 1 puls</button><button class="key sm" id="wUp">+ 1 puls</button></div>
+        </div>
+        <div class="kn"><div class="knob" id="knAxis" tabindex="0" role="slider" aria-label="Aksevelger"><i class="ptr"></i></div><div class="kv">AKSE<b id="vAxis"></b></div><div class="kv">STEG<b id="vInc"></b></div></div>
+      </div>
+    </section>
+
+    <section class="plate" aria-label="Akser og spindel">
+      <div class="plate-h">AKSER · hold inne for å kjøre</div>
+      <div class="jogwrap">
+        <div class="jogxz">
+          <button class="key jog" data-jog="X+" style="grid-area:xp">X+</button>
+          <button class="key jog" data-jog="Z-" style="grid-area:zm">Z−</button>
+          <span class="c" aria-hidden="true">✥</span>
+          <button class="key jog" data-jog="Z+" style="grid-area:zp">Z+</button>
+          <button class="key jog" data-jog="X-" style="grid-area:xm">X−</button>
+        </div>
+        <div class="jogside">
+          <span class="lbl">Y · C · W (MOTSPINDEL)</span>
+          <button class="key jog" data-jog="Y+">Y+</button><button class="key jog" data-jog="Y-">Y−</button>
+          <button class="key jog" data-jog="C+">C+</button><button class="key jog" data-jog="C-">C−</button>
+          <button class="key jog" data-jog="W-">W−</button><button class="key jog" data-jog="W+">W+</button>
+        </div>
+      </div>
+      <div class="plate-h">SPINDEL OG KJØLEVÆSKE</div>
+      <div class="spin">
+        <button class="key" id="spF">F ↻<br><small>MED</small></button>
+        <button class="key" id="spStop">STOPP</button>
+        <button class="key" id="spR">R ↺<br><small>MOT</small></button>
+        <button class="key" id="kCool">KJØLE-<br>VÆSKE</button>
+      </div>
+      <div class="cycle">
+        <div class="cyc"><button class="big hold" id="kHold" aria-label="Matehold">O</button>MATEHOLD</div>
+        <div class="cyc"><button class="big start" id="kStart" aria-label="Cycle start">I</button>CYCLE START</div>
+      </div>
+    </section>
+
+    <section class="plate" aria-label="Sikkerhet">
+      <div class="safety">
+        <button class="estop down" id="kEstop" aria-label="Nødstopp"><i id="estopTxt">LÅST</i></button>
+        <div class="door"><span class="kv">MASKINDØR</span><span class="state closed" id="doorState">LUKKET</span><button class="key" id="kDoor">ÅPNE DØR</button></div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="ctrl">
+      <span>Simuleringsfart</span>
+      <span class="seg" id="simSeg"><button data-s="1" class="on">×1</button><button data-s="5">×5</button><button data-s="20">×20</button></span>
+      <button class="plain" id="btnStock">NYTT RÅEMNE Ø60</button>
+    </div>
+    <p>Råemnet er Ø60 stål, 80 mm utstikk fra chucken, med arbeidsstykkenullpunkt (WPC) på planflaten. Vandringslengder, hurtiggang (30 m/min) og maks turtall (4000 min⁻¹) er omtrentlige. Simulatoren viser prinsippene i betjeningen og er et uoffisielt undervisningsverktøy, ikke tilknyttet Yamazaki Mazak. Følg alltid maskinens egen bruksanvisning og verkstedets rutiner.</p>
+  </footer>
+</div>
+
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const OFF={X:376.6516,Y:0,Z:310.2711,C:0,W:0};
+const LIM={X:[-380,0],Y:[-50,50],Z:[-580,0],W:[-290,0]};
+const RAPID=30000, JOGF=1000, SPMAX=4000;
+const RAP=[['R0',0.5],['R1',1],['2',2],['10',10],['25',25],['50',50],['100',100]];
+const AXSEL=['OFF','X','Z','C','W','Y'];
+const Z0=-80,Z1=1,R0=30,RES=0.1,N=Math.round((Z1-Z0)/RES)+1;
+const TOOLS={1:{n:'T01 GROV 80°',w:0,L:7,k:0.21},2:{n:'T02 FIN 35°',w:0,L:10,k:0.3},3:{n:'T03 STIKK 3 mm',w:3}};
+const DEFAULT_PROG=`O1000 (AKSEL - STAAL O60)
+(T01 GROVSTAAL, T02 FINSTAAL)
+N10 G28 U0
+N20 G28 W0
+N30 T0101
+N40 G50 S2500
+N50 G96 S180 M3
+N60 G0 X64 Z0 M8
+N70 G1 X-1.6 F0.15
+N80 G0 Z2
+N90 X56.5
+N100 G1 Z-40 F0.25
+N110 X62
+N120 G0 Z2
+N130 X51
+N140 G1 Z-19.8
+N150 X57
+N160 G0 Z2
+N170 X46
+N180 G1 Z-19.8
+N190 X52
+N200 G0 Z2
+N210 X41
+N220 G1 Z-19.8
+N230 X47
+N240 G0 X200 Z100
+N250 T0202
+N260 G96 S220
+N270 G0 X38 Z2
+N280 G1 Z0 F0.1
+N290 X40 Z-1
+N300 Z-18
+N310 G2 X44 Z-20 R2
+N320 G1 X54
+N330 X56 Z-21
+N340 Z-40
+N350 X62
+N360 G0 X200 Z100 M9
+N370 M5
+N380 M30`;
+
+let stock=new Float32Array(N).fill(R0);
+const S={estop:true,alarms:[],log:[],mode:'JOG',inc:0.01,sel:1,
+  mach:{X:-151.6486,Y:0,Z:-285.5769,C:0,W:0},
+  ref:{X:false,Y:false,Z:false,C:false,W:false},refOrder:[],
+  sp:{dir:0,rpm:0,ov:100},cool:false,tool:1,rapIdx:4,feedOv:100,
+  doorOpen:false,single:false,run:null,hold:false,
+  modal:{mot:0,fm:99,css:97,maxS:SPMAX,F:0,S:0},
+  jog:null,homing:null,cut:0,actFeed:0,moving:{X:0,Z:0},load:{S:0,X:0,Z:0},
+  task:{reset:false,hand:false,prog:false,maz:false,maz45:false},done:[false,false,false,false,false,false,false],
+  active:'EIA',check:null,mzChecked:false,
+  sim:1,msg:'',msgT:0,page:'pos',zoomPart:false,trace:[],rest:null};
+const now=()=>new Date();
+S.alarms.push({code:'NØDSTOPP',txt:'Nødstopp er aktivert',t:now()});S.log.push(S.alarms[0]);
+
+let progText=DEFAULT_PROG;
+try{const s=localStorage.getItem('nexus-sim-prog');if(s)progText=s;}catch(e){}
+const saveProg=()=>{try{localStorage.setItem('nexus-sim-prog',progText);}catch(e){}};
+
+const w=ax=>S.mach[ax]+OFF[ax];
+const cur=()=>({X:w('X'),Y:w('Y'),Z:w('Z'),C:w('C'),W:w('W')});
+const pad=n=>String(n).padStart(2,'0');
+function say(t){S.msg=t;S.msgT=6;}
+function alarm(code,txt){
+  if(S.alarms.some(a=>a.txt===txt))return;
+  const a={code,txt,t:now()};S.alarms.push(a);S.log.unshift(a);if(S.log.length>40)S.log.pop();
+  S.jog=null;S.homing=null;S.run=null;S.hold=false;
+  if(/KOLLISJON|OVERBELAST|NØDSTOPP|DØR/.test(code)){S.sp.dir=0;S.cool=false;}
+  releaseJogKeys();
+}
+
+/* ---------- geometri og kollisjon ---------- */
+const chuckHit=(z,r)=>(z<-80&&z>=-100&&r<70)||(z<-100&&z>-150&&r<105);
+const subFace=()=>300+S.mach.W;
+function stockEnd(){for(let i=N-1;i>=0;i--)if(stock[i]>0.001)return Z0+i*RES;return Z0;}
+function engage(z,r,rapid){
+  const T=TOOLS[S.tool];let za,zb,k;
+  if(T.w){za=z-T.w;zb=z;k=0;}else{za=z;zb=z+T.L;k=T.k;}
+  const i0=Math.max(0,Math.ceil((za-Z0)/RES-1e-6)),i1=Math.min(N-1,Math.floor((zb-Z0)/RES+1e-6));
+  if(i0>i1)return true;
+  let depth=0;
+  for(let i=i0;i<=i1;i++){const lim=r+k*Math.max(0,Z0+i*RES-z);if(stock[i]>lim+1e-4)depth=Math.max(depth,stock[i]-Math.max(lim,0));}
+  if(depth<=5e-4)return true;
+  if(rapid){alarm('KOLLISJON','Hurtiggang (G0/RAPID) inn i materialet');return false;}
+  if(S.sp.rpm<20){alarm('KOLLISJON','Verktøyet traff materialet mens spindelen sto stille');return false;}
+  if(depth>8){alarm('OVERBELASTNING',`Skjæredybde ${depth.toFixed(1)} mm på radius – for mye i ett kutt`);return false;}
+  for(let i=i0;i<=i1;i++){const lim=Math.max(0,r+k*Math.max(0,Z0+i*RES-z));if(stock[i]>lim)stock[i]=lim;}
+  S.cut=Math.max(S.cut,depth);
+  return true;
+}
+function place(t,rapid){
+  for(const ax in t){
+    const m=t[ax]-OFF[ax],L=LIM[ax];
+    if(L&&(m<L[0]-1e-6||m>L[1]+1e-6)){alarm('SLAGLENGDE',`Akse ${ax}${m>L[1]?'+':'−'}: programvare-endebryter nådd`);return false;}
+    S.mach[ax]=ax==='C'?((m%360)+360)%360:m;
+  }
+  const z=w('Z'),r=w('X')/2;
+  if(chuckHit(z,r)){alarm('KOLLISJON','Verktøyet traff chucken');return false;}
+  const f=subFace();
+  if(z>f-0.5&&r<65){alarm('KOLLISJON','Verktøyet traff motspindelen');return false;}
+  if(f<stockEnd()+0.5){alarm('KOLLISJON','Motspindelen traff arbeidsstykket');return false;}
+  return engage(z,r,rapid);
+}
+const dist=(a,b)=>Math.hypot((b.X-a.X)/2,b.Z-a.Z,b.Y-a.Y,b.W-a.W,(b.C-a.C)*0.05);
+function travel(a,b,rapid){
+  const d=dist(a,b),n=Math.max(1,Math.ceil(d/0.05));
+  for(let k=1;k<=n;k++){
+    const f=k/n,p={};for(const ax in a)p[ax]=a[ax]+(b[ax]-a[ax])*f;
+    if(!place(p,rapid))return false;
+  }
+  S.moving.X+=Math.abs(b.X-a.X);S.moving.Z+=Math.abs(b.Z-a.Z);
+  addTrace(w('Z'),w('X')/2,rapid);
+  return true;
+}
+function addTrace(z,r,rapid){
+  const l=S.trace[S.trace.length-1];
+  if(l&&l.rapid===rapid&&Math.hypot(l.z-z,l.r-r)<0.3)return;
+  S.trace.push({z,r,rapid});if(S.trace.length>8000)S.trace.splice(0,1000);
+}
+
+/* ---------- NC-tolker ---------- */
+function parse(text){
+  const out=[];
+  text.split(/\r?\n/).forEach((raw,li)=>{
+    const s=raw.replace(/\(.*?\)/g,'').replace(/;.*$/,'').toUpperCase().trim();
+    if(!s||s==='%'||/^O\d+$/.test(s))return;
+    const re=/([A-Z])\s*([+-]?\d*\.?\d+)/g,words=[];let m;
+    while((m=re.exec(s)))words.push([m[1],parseFloat(m[2])]);
+    if(s.replace(re,'').trim())throw new Error(`Linje ${li+1}: kan ikke lese «${raw.trim()}»`);
+    out.push({li,raw:raw.trim(),words});
+  });
+  return out;
+}
+function loadBlock(b){
+  const q=S.run.q,v={},gs=[],ms=[];
+  for(const [L,val] of b.words){
+    if(L==='G')gs.push(Math.round(val*10)/10);
+    else if(L==='M')ms.push(val);
+    else if('XZUYCRFSTPWN'.includes(L))v[L]=val;
+    else throw new Error(`adresse ${L} støttes ikke i simulatoren`);
+  }
+  let dwell=false,home=false,g50=false;
+  for(const g of gs){
+    if(g===0||g===1||g===2||g===3)S.modal.mot=g;
+    else if(g===4)dwell=true;else if(g===28)home=true;else if(g===50)g50=true;
+    else if(g===96||g===97)S.modal.css=g;else if(g===98||g===99)S.modal.fm=g;
+    else if([18,21,40,54,80,90].includes(g)){}
+    else throw new Error(`G${g} støttes ikke`);
+  }
+  for(const m of ms)if(![0,1,2,3,4,5,8,9,30].includes(m))throw new Error(`M${m} støttes ikke`);
+  if(v.F!=null)S.modal.F=v.F;
+  if(v.S!=null){if(g50)S.modal.maxS=Math.min(v.S,SPMAX);else S.modal.S=v.S;}
+  if(v.T!=null)q.push({t:'tool',n:v.T>=100?Math.floor(v.T/100):v.T});
+  for(const m of ms){if(m===3||m===4)q.push({t:'spin',dir:m===3?1:-1});if(m===8)q.push({t:'cool',on:true});}
+  if(home){const ax=[];if(v.U!=null)ax.push('X');if(v.W!=null)ax.push('Z');if(!ax.length)ax.push('X','Z');ax.forEach(a=>q.push({t:'home',ax:a}));}
+  else if(dwell)q.push({t:'dwell',s:v.P!=null?v.P/1000:(v.X??v.U??0)});
+  else{
+    if(v.W!=null)throw new Error('W (motspindel) kan bare brukes med G28 i simulatoren');
+    if(['X','Z','U','Y','C'].some(k=>v[k]!=null))q.push({t:'move',v,mot:S.modal.mot});
+  }
+  for(const m of ms){if(m===5)q.push({t:'spin',dir:0});if(m===9)q.push({t:'cool',on:false});if(m===0||m===1)q.push({t:'pause'});if(m===30)q.push({t:'end'});}
+}
+function arcPts(a,b,R,cw){
+  const sz=a.Z,sr=a.X/2,ez=b.Z,er=b.X/2,dz=ez-sz,dr=er-sr,d=Math.hypot(dz,dr),rad=Math.abs(R);
+  if(d<1e-6)throw new Error('bue uten lengde');
+  if(rad<d/2-1e-3)throw new Error(`R${R} er for liten for buen`);
+  const h=Math.sqrt(Math.max(rad*rad-d*d/4,0)),mz=(sz+ez)/2,mr=(sr+er)/2;
+  let sg=cw?1:-1;if(R<0)sg=-sg;
+  const cz=mz+sg*h*dr/d,cr=mr-sg*h*dz/d;
+  const a0=Math.atan2(sr-cr,sz-cz),a1=Math.atan2(er-cr,ez-cz);
+  let sw=cw?a0-a1:a1-a0;while(sw<=0)sw+=2*Math.PI;while(sw>2*Math.PI)sw-=2*Math.PI;
+  const n=Math.max(8,Math.ceil(sw*rad/0.2)),pts=[];
+  for(let i=1;i<n;i++){const an=a0+(cw?-1:1)*sw*i/n,f=i/n;pts.push({X:2*(cr+rad*Math.sin(an)),Z:cz+rad*Math.cos(an),Y:a.Y+(b.Y-a.Y)*f,C:a.C+(b.C-a.C)*f,W:a.W});}
+  pts.push(b);return pts;
+}
+function targetRpm(){
+  if(!S.sp.dir)return 0;
+  const base=S.modal.css===96?1000*S.modal.S/(Math.PI*Math.max(Math.abs(w('X')),1)):S.modal.S;
+  return Math.min(base*S.sp.ov/100,S.modal.maxS,SPMAX);
+}
+function step(a,budget){
+  switch(a.t){
+  case 'tool':{
+    if(a.tm==null){
+      if(!TOOLS[a.n]){alarm('PROGRAMFEIL',`Verktøy T${pad(a.n)} finnes ikke i revolveren (T01–T03)`);return 0;}
+      if(w('Z')<stockEnd()+15&&w('X')/2<R0+15){alarm('KOLLISJON','Revolveren indekserte for nær arbeidsstykket – kjør til sikker posisjon før verktøyskift');return 0;}
+      a.tm=0.7;
+    }
+    a.tm-=budget;if(a.tm<=0){S.tool=a.n;a.done=true;return -a.tm;}return 0;}
+  case 'spin':{
+    S.sp.dir=a.dir;if(!a.dir){a.done=true;return budget;}
+    const tr=targetRpm();if(tr<1){alarm('PROGRAMFEIL','Spindelstart uten turtall – programmer S før M3/M4');return 0;}
+    if(Math.abs(S.sp.rpm-tr)<tr*0.02+1){a.done=true;return budget;}return 0;}
+  case 'cool':S.cool=a.on;a.done=true;return budget;
+  case 'dwell':if(a.tm==null)a.tm=a.s;a.tm-=budget;if(a.tm<=0){a.done=true;return -a.tm;}return 0;
+  case 'pause':S.run.paused=true;a.done=true;say('Programstopp (M0/M1) – trykk CYCLE START for å fortsette');return 0;
+  case 'end':finishRun(true);return 0;
+  case 'home':
+    if(!a.pts){a.pts=[Object.assign(cur(),{[a.ax]:OFF[a.ax]})];a.rapid=true;a.k=0;a.pos=cur();}
+    return walk(a,budget);
+  case 'move':{
+    if(!a.pts){
+      const c=cur(),t={...c},v=a.v;
+      if(v.X!=null)t.X=v.X;else if(v.U!=null)t.X=c.X+v.U;
+      if(v.Z!=null)t.Z=v.Z;if(v.Y!=null)t.Y=v.Y;if(v.C!=null)t.C=v.C;
+      a.rapid=a.mot===0;
+      if(a.mot>=2){if(v.R==null)throw new Error('G2/G3 krever R i simulatoren');a.pts=arcPts(c,t,v.R,a.mot===2);}
+      else a.pts=[t];
+      a.k=0;a.pos=c;
+    }
+    return walk(a,budget);}
+  }
+  a.done=true;return budget;
+}
+function walk(a,budget){
+  let sp;
+  if(a.rapid)sp=RAPID*RAP[S.rapIdx][1]/100;
+  else{
+    if(!S.modal.F)throw new Error('mating F er ikke programmert');
+    if(S.modal.fm===98)sp=S.modal.F;
+    else{if(S.sp.rpm<1){alarm('SPINDEL','Mating pr. omdreining (G99) med stoppet spindel – start spindelen med M3/M4 først');return 0;}sp=S.modal.F*S.sp.rpm;}
+    sp=Math.min(sp*S.feedOv/100,RAPID);
+  }
+  S.actFeed=sp;
+  const end=a.pts[a.pts.length-1];
+  S.rest={X:end.X-w('X'),Y:end.Y-w('Y'),Z:end.Z-w('Z'),C:0,W:0};
+  if(sp<=0)return 0;
+  let d=sp/60*budget;
+  while(d>1e-9){
+    const tg=a.pts[a.k],L=dist(a.pos,tg);
+    if(L<=d){
+      if(!travel(a.pos,tg,a.rapid))return 0;
+      a.pos=tg;d-=L;a.k++;
+      if(a.k>=a.pts.length){
+        a.done=true;S.rest=null;
+        if(a.ax){S.ref[a.ax]=true;if(!S.refOrder.includes(a.ax))S.refOrder.push(a.ax);}
+        return d/(sp/60);
+      }
+    }else{
+      const f=d/L,p={};for(const ax in a.pos)p[ax]=a.pos[ax]+(tg[ax]-a.pos[ax])*f;
+      if(!travel(a.pos,p,a.rapid))return 0;a.pos=p;d=0;
+    }
+  }
+  return 0;
+}
+function finishRun(m30){
+  const R=S.run,src=R&&R.src;S.run=null;S.rest=null;
+  if(m30){
+    S.sp.dir=0;S.cool=false;
+    if(src==='MEM'&&S.mode==='MEM'){
+      if(R.kind==='MAZ'){if(R.checked){S.task.maz=true;if(Math.abs(2*stock[Math.round((-10-Z0)/RES)]-45)<0.06)S.task.maz45=true;}}
+      else S.task.prog=true;
+    }
+    say('Programslutt M30 – programmet er tilbakestilt');
+  }
+  else say(src==='MDI'?'MDI ferdig':'Programmet sluttet uten M30');
+}
+function runTick(dt){
+  const R=S.run;if(!R||R.paused||S.hold||S.alarms.length)return;
+  let budget=dt,guard=0;
+  try{
+    while(budget>0&&S.run&&!S.run.paused&&guard++<200){
+      if(!R.cur){
+        if(!R.q.length){
+          if(R.loaded){R.loaded=false;R.idx++;if(S.single&&R.idx<R.blocks.length){R.paused=true;say('SINGLE BLOCK – trykk CYCLE START for neste blokk');return;}}
+          if(R.idx>=R.blocks.length){finishRun(false);return;}
+          const b=R.blocks[R.idx];
+          try{loadBlock(b);}catch(e){alarm('PROGRAMFEIL',`Linje ${b.li+1}: ${e.message}`);return;}
+          R.loaded=true;continue;
+        }
+        R.cur=R.q.shift();
+      }
+      budget=step(R.cur,budget);
+      if(!S.run)return;
+      if(R.cur&&R.cur.done)R.cur=null;
+    }
+  }catch(e){const b=R.blocks[R.idx];alarm('PROGRAMFEIL',`Linje ${b?b.li+1:'?'}: ${e.message}`);}
+}
+
+/* ---------- betjening ---------- */
+const manualModes=['JOG','RAPID','HOME','HANDLE'];
+function blocked(){if(S.estop){say('Nødstopp er aktiv – slipp den og trykk RESET');return true;}if(S.alarms.length){say('Alarm aktiv – rett feilen og trykk RESET');return true;}return false;}
+function setMode(m,inc){
+  if(S.run){say('Program er aktivt – trykk RESET før du bytter modus');return;}
+  S.mode=m;if(inc)S.inc=inc;S.jog=null;S.homing=null;
+  if(m==='MDI')showPage('mdi');else if(m==='MEM')showPage(S.active==='MAZ'?'maz':'prog');
+  renderKeys();
+}
+function cycleStart(){
+  if(blocked())return;
+  if(S.doorOpen){say('Lukk døren før CYCLE START');return;}
+  if(S.mode!=='MEM'&&S.mode!=='MDI'){say('CYCLE START virker bare i MEMORY eller MDI');return;}
+  if(S.run){if(S.run.paused||S.hold){S.run.paused=false;S.hold=false;say('Fortsetter');}return;}
+  if(!S.ref.X||!S.ref.Z){alarm('NULLPUNKT','X og Z er ikke nullpunktkjørt – bruk HOME først');return;}
+  let text,kind='EIA',map=null;
+  if(S.mode==='MDI')text=$('mdi').value;
+  else if(S.active==='MAZ'){
+    try{map=mzCompile(MZ).lines;}catch(e){alarm('MAZATROL',e.message);return;}
+    text=map.map(l=>l.t).join('\n');kind='MAZ';
+  }else text=progText;
+  let blocks;try{blocks=parse(text);}catch(e){alarm('PROGRAMFEIL',e.message);return;}
+  if(!blocks.length){say('Programmet er tomt');return;}
+  S.run={src:S.mode==='MDI'?'MDI':'MEM',kind,map,checked:S.mzChecked,blocks,idx:0,q:[],cur:null,loaded:false,paused:false};
+  say(S.mode==='MDI'?'MDI startet':kind==='MAZ'?(S.mzChecked?'Mazatrol WNo 1001 startet':'Mazatrol WNo 1001 startet uten banesjekk'):'Program O1000 startet');
+}
+function feedHold(){if(S.run&&!S.hold){S.hold=true;say('MATEHOLD – aksene står. Trykk CYCLE START for å fortsette');}else if(!S.run)say('Ingen program kjører');}
+function reset(){
+  if(S.estop){say('Slipp nødstoppen først');return;}
+  S.alarms=[];S.run=null;S.hold=false;S.jog=null;S.homing=null;S.sp.dir=0;S.cool=false;S.rest=null;
+  S.task.reset=true;say('RESET utført');
+}
+function toggleEstop(){
+  if(!S.estop){S.estop=true;S.sp.rpm=0;alarm('NØDSTOPP','Nødstopp er aktivert');}
+  else{S.estop=false;say('Nødstopp sluppet – trykk RESET');}
+}
+function toggleDoor(){
+  S.doorOpen=!S.doorOpen;
+  if(S.doorOpen&&(S.run&&!S.run.paused&&!S.hold||S.sp.rpm>0)){alarm('DØR','Døren ble åpnet under drift – spindel og akser stoppet');}
+  else say(S.doorOpen?'Døren er åpen':'Døren er lukket');
+}
+function manSpin(dir){
+  if(dir&&blocked())return;
+  if(S.run){say('Program kjører – spindelen styres av programmet');return;}
+  if(dir&&S.doorOpen){say('Lukk døren før spindelstart');return;}
+  if(dir&&!manualModes.includes(S.mode)){say('Manuell spindelstart virker i JOG, RAPID, HOME og håndhjulsmodus');return;}
+  if(dir&&S.modal.S<=0){S.modal.S=500;S.modal.css=97;say('Ingen S programmert – starter med 500 min⁻¹');}
+  S.sp.dir=dir;
+}
+function jogStart(ax,dir){
+  if(blocked())return false;
+  if(S.run){say('Program er aktivt – trykk RESET først');return false;}
+  if(S.mode==='HOME'){
+    if(ax==='Z'&&!S.ref.X)say('Tips: kjør X hjem først, så revolveren går klar av arbeidsstykket');
+    S.homing=ax;return true;
+  }
+  if(S.mode==='JOG'||S.mode==='RAPID'){S.jog={ax,dir};return true;}
+  say('Velg JOG, RAPID eller HOME for å bruke aksetastene. I håndhjulsmodus bruker du hjulet.');return false;
+}
+function manualTick(dt){
+  if(S.jog){
+    const {ax,dir}=S.jog;let sp=S.mode==='RAPID'?RAPID*RAP[S.rapIdx][1]/100:JOGF*S.feedOv/100;
+    if(ax==='C')sp*=0.36;
+    S.actFeed=sp;const d=sp/60*dt*dir;
+    if(d){const c=cur(),t={...c};t[ax]+=d;if(!travel(c,t,S.mode==='RAPID'))S.jog=null;}
+  }
+  if(S.homing){
+    const ax=S.homing,sp=RAPID*RAP[S.rapIdx][1]/100/60*dt,m=S.mach[ax];
+    let nm;if(ax==='C'){const d=m>180?360-m:-m;nm=Math.abs(d)<=sp*20?0:m+Math.sign(d)*sp*20;}
+    else nm=Math.abs(m)<=sp?0:m-Math.sign(m)*sp;
+    const c=cur(),t={...c};t[ax]=nm+OFF[ax];
+    if(ax==='C'&&nm===0)t.C=0;
+    if(travel(c,t,true)&&nm===0){S.ref[ax]=true;if(!S.refOrder.includes(ax))S.refOrder.push(ax);S.homing=null;say(`${ax} er nullpunktkjørt`);}
+  }
+}
+function pulse(n){
+  if(S.mode!=='HANDLE'){say('Velg håndhjulsmodus (×1000, ×100, ×10 eller ×1) først');return;}
+  const ax=AXSEL[S.sel];if(ax==='OFF'){say('Velg akse på aksevelgeren');return;}
+  if(blocked()||S.run)return;
+  const c=cur(),t={...c};t[ax]=Math.round((c[ax]+n*S.inc)*1e4)/1e4;
+  S.task.hand=true;travel(c,t,false);
+}
+
+/* ---------- UI ---------- */
+const axbody=$('axbody'),rows={};
+['X','Y','Z','C','W'].forEach(ax=>{
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td class="a"><i class="dot"></i>${ax}</td><td class="pos"></td><td></td><td></td>`;
+  axbody.appendChild(tr);rows[ax]=tr.children;
+});
+function showPage(p){
+  S.page=p;
+  for(const id of ['pos','prog','maz','mdi','alarm','task'])$('pg-'+id).hidden=id!==p;
+  document.querySelectorAll('#softkeys [data-page]').forEach(b=>b.classList.toggle('on',b.dataset.page===p));
+  $('pageTitle').textContent={pos:'POSISJON',prog:'PROGRAM · EIA/ISO',maz:'PROGRAM · MAZATROL',mdi:'MDI',alarm:'ALARM',task:'OPPGAVER'}[p];
+  if(p==='prog')renderProg(true);if(p==='maz'){renderMz();lastU=null;}if(p==='alarm')renderAlarm();if(p==='task')renderTasks();
+  renderActive();
+}
+const modeName=()=>S.mode==='HANDLE'?`HÅNDHJUL ×${{1:1000,0.1:100,0.01:10,0.001:1}[S.inc]}`:{MEM:'MEMORY',MDI:'MDI',JOG:'JOG',RAPID:'RAPID',HOME:'HOME'}[S.mode];
+function renderKeys(){
+  document.querySelectorAll('.key.mode').forEach(b=>{
+    const on=b.dataset.mode===S.mode&&(!b.dataset.inc||+b.dataset.inc===S.inc);
+    b.classList.toggle('on',on);
+  });
+  $('kSingle').classList.toggle('on',S.single);
+  $('modeTitle').textContent=modeName();
+}
+function knobAngle(i,n,span){return -span/2+span*i/(n-1);}
+function renderKnobs(){
+  $('knRapid').style.setProperty('--a',knobAngle(S.rapIdx,RAP.length,270)+'deg');
+  $('vRapid').textContent=RAP[S.rapIdx][0]+(S.rapIdx>1?'%':'');
+  $('knFeed').style.setProperty('--a',knobAngle(S.feedOv/10,21,270)+'deg');
+  $('vFeed').textContent=S.feedOv+'%';
+  $('knAxis').style.setProperty('--a',knobAngle(S.sel,AXSEL.length,200)+'deg');
+  $('vAxis').textContent=AXSEL[S.sel];
+  $('vInc').textContent=(S.sel===3?S.inc+'°':S.inc+' mm');
+  $('vSpOv').textContent=S.sp.ov+'%';
+}
+let editing=false,lastHL=-2;
+function renderProg(force){
+  $('plist').hidden=editing;$('prog').hidden=!editing;
+  $('btnEdit').textContent=editing?'FERDIG':'REDIGER';
+  if(editing)return;
+  const hl=S.run&&S.run.src==='MEM'&&S.run.blocks[S.run.idx]?S.run.blocks[S.run.idx].li:-1;
+  if(!force&&hl===lastHL)return;lastHL=hl;
+  const pl=$('plist');pl.innerHTML='';
+  progText.split(/\r?\n/).forEach((l,i)=>{const d=document.createElement('div');d.textContent=l||' ';if(i===hl)d.className='cur';else if(/^\s*\(/.test(l))d.className='c';pl.appendChild(d);});
+  const c=pl.querySelector('.cur');if(c)c.scrollIntoView({block:'nearest'});
+}
+function renderAlarm(){
+  const el=$('alist');el.innerHTML='';
+  if(!S.log.length){el.innerHTML='<div>Ingen alarmer.</div>';return;}
+  S.log.forEach(a=>{const d=document.createElement('div');if(!S.alarms.includes(a))d.className='old';
+    d.innerHTML=`<b></b><span></span><time></time>`;d.children[0].textContent=a.code;d.children[1].textContent=a.txt;d.children[2].textContent=a.t.toLocaleTimeString('nb-NO');el.appendChild(d);});
+}
+const TASKS=[
+  ['Klargjør maskinen','Trykk på nødstoppen for å slippe den. Trykk deretter RESET for å kvittere alarmen.'],
+  ['Nullpunktkjør X og Z','Velg HOME. Trykk en X-tast og vent til X står, trykk så en Z-tast. X går først, så revolveren kommer klar av arbeidsstykket før den kjører langs Z.'],
+  ['Posisjoner med håndhjulet','Velg ×1000, ×100, ×10 eller ×1. Sett aksevelgeren på X eller Z, og vri hjulet til POSISJON viser X 70.000 og Z 2.000. Bruk grovt steg langt unna og fint steg nær målet.'],
+  ['Start spindelen i MDI','Velg MDI og skriv G97 S800 M3. Lukk døren og trykk CYCLE START. Spindelen skal gå 800 min⁻¹ med 100 % spindeloverstyring.'],
+  ['Kjør program O1000','Åpne EIA og sjekk at O1000 er aktivt. Velg MEMORY, sett hurtiggang til 25 % og slå på SINGLE for de første blokkene. Hold hånden ved MATEHOLD. Kjør programmet helt til M30.'],
+  ['Kjør Mazatrol-programmet','Åpne MAZATROL og trykk AKTIVER. Les gjennom enhetene og trykk BANESJEKK. Den grå banen viser hva styringen har regnet ut. Sett inn nytt råemne, velg MEMORY og kjør til M30.'],
+  ['Lag din egen kontur','Endre BAR-enheten så den lille diameteren blir Ø45: SPT-X 43, FIG 1 Ø45 Z−1, FIG 2 Ø45, buen (FIG 3) til Ø49 og FIG 4 fra Ø49. Kjør BANESJEKK, sett inn nytt råemne og kjør. Simulatoren måler diameteren ved Z−10.'],
+];
+function checkTasks(){
+  const c=[
+    S.task.reset&&!S.estop&&!S.alarms.length,
+    S.ref.X&&S.ref.Z&&S.refOrder.indexOf('X')<S.refOrder.indexOf('Z'),
+    S.task.hand&&S.mode==='HANDLE'&&Math.abs(w('X')-70)<0.0015&&Math.abs(w('Z')-2)<0.0015,
+    S.sp.dir===1&&S.modal.css===97&&S.sp.ov===100&&Math.round(S.sp.rpm)===800,
+    S.task.prog,S.task.maz,S.task.maz45];
+  let ch=false;c.forEach((v,i)=>{if(v&&!S.done[i]){S.done[i]=true;ch=true;say(`Oppgave ${i+1} fullført ✓`);}});
+  if(ch&&S.page==='task')renderTasks();
+  if(!S.done[1]&&S.ref.X&&S.ref.Z&&S.refOrder.indexOf('Z')<S.refOrder.indexOf('X')&&!S.warnedOrder){S.warnedOrder=true;say('Z ble kjørt hjem før X. Gjør RESET og prøv igjen med X først for å få oppgave 2.');S.ref.X=S.ref.Z=false;S.refOrder=[];}
+}
+function renderTasks(){
+  const el=$('tasks');const n=S.done.filter(Boolean).length;
+  el.innerHTML=`<div class="prog">${n} AV ${TASKS.length} FULLFØRT</div>`;
+  TASKS.forEach(([t,d],i)=>{const x=document.createElement('div');x.className='t'+(S.done[i]?' done':'');x.innerHTML=`<span class="n">${S.done[i]?'✓':i+1}</span><div><h4></h4><p></p></div>`;x.querySelector('h4').textContent=t;x.querySelector('p').textContent=d;el.appendChild(x);});
+}
+function renderScreen(){
+  const rest=S.rest||{};
+  ['X','Y','Z','C','W'].forEach(ax=>{
+    const r=rows[ax];r[0].firstChild.classList.toggle('on',S.ref[ax]||ax==='C');
+    r[1].textContent=w(ax).toFixed(3);r[2].textContent=S.mach[ax].toFixed(4);
+    r[3].textContent=rest[ax]!=null?rest[ax].toFixed(3):'0.';
+  });
+  const R=S.run;
+  $('iProg').textContent=R?(R.src==='MDI'?'MDI':R.kind==='MAZ'?'WNo 1001':'O1000'):(S.active==='MAZ'?'WNo 1001':'O1000');
+  const b=R&&R.blocks[R.idx];
+  $('iBlk').textContent=b?(b.words.find(x=>x[0]==='N')?'N'+b.words.find(x=>x[0]==='N')[1]:'L'+(b.li+1)):'–';
+  $('iCur').textContent=b?b.raw:'–';
+  $('iNext').textContent=R&&R.blocks[R.idx+1]?R.blocks[R.idx+1].raw:'–';
+  const m=S.modal;
+  $('iModal').textContent=`G0${m.mot} G${m.css} G${m.fm} G50 S${m.maxS}`;
+  $('iTool').textContent=TOOLS[S.tool].n;
+  $('iCool').textContent=S.cool?'PÅ':'AV';
+  $('iS').textContent=m.css===96?`${m.S} m/min`:`${m.S} min⁻¹`;
+  $('iRpm').textContent=`${Math.round(S.sp.rpm)} ${S.sp.dir<0?'↺':S.sp.dir>0?'↻':''}`;
+  $('iFeed').textContent=`F${m.F} ${m.fm===99?'mm/omdr':'mm/min'} · ${Math.round(S.actFeed)} mm/min`;
+  $('lS').style.width=Math.min(100,S.load.S)+'%';$('lX').style.width=Math.min(100,S.load.X)+'%';$('lZ').style.width=Math.min(100,S.load.Z)+'%';
+  $('sRap').textContent=RAP[S.rapIdx][0]+(S.rapIdx>1?'%':'');$('sFeed').textContent=S.feedOv+'%';$('sSp').textContent=S.sp.ov+'%';
+  $('sDoor').textContent=S.doorOpen?'ÅPEN':'LUKKET';
+  $('sClock').textContent=now().toLocaleString('nb-NO',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const msg=$('msg');
+  if(S.alarms.length){const a=S.alarms[S.alarms.length-1];msg.textContent=`ALARM · ${a.code} · ${a.txt}`;msg.className='msg al';}
+  else{msg.textContent=S.msgT>0?S.msg:(S.run?(S.hold?'MATEHOLD':S.run.paused?'Venter på CYCLE START':'Program kjører'):'Klar');msg.className='msg';}
+  $('modeTitle').textContent=modeName();
+  $('kEstop').classList.toggle('down',S.estop);$('estopTxt').textContent=S.estop?'LÅST':'';
+  $('doorState').textContent=S.doorOpen?'ÅPEN':'LUKKET';$('doorState').className='state '+(S.doorOpen?'open':'closed');
+  $('kDoor').textContent=S.doorOpen?'LUKK DØR':'ÅPNE DØR';
+  $('spF').classList.toggle('on',S.sp.dir===1);$('spR').classList.toggle('on',S.sp.dir===-1);$('kCool').classList.toggle('on',S.cool);
+  $('kStart').classList.toggle('lit',!!(S.run&&!S.run.paused&&!S.hold));
+  if(S.page==='prog')renderProg(false);
+  if(S.page==='maz'){
+    const b2=R&&R.kind==='MAZ'&&R.blocks[R.idx];const u=b2?String(R.map[b2.li].u):'';
+    if(u!==lastU){lastU=u;document.querySelectorAll('#mzUnits .unit').forEach(el=>el.classList.toggle('cur',el.dataset.u===u));
+      const c=document.querySelector('#mzUnits .unit.cur');if(c)c.scrollIntoView({block:'nearest'});}
+  }
+}
+
+/* ---------- grafikk ---------- */
+const cv=$('cv'),ctx=cv.getContext('2d');let view={z0:-130,z1:60,r0:-40,r1:85},spinPh=0;
+function fitView(dt){
+  let z0=-125,z1=40,r0=-38,r1=78;
+  if(!S.zoomPart){const z=w('Z'),r=w('X')/2;z0=Math.min(z0,z-25);z1=Math.max(z1,z+45);r1=Math.max(r1,r+45);const f=subFace();if(f<z1+20)z1=Math.max(z1,f+70);}
+  const k=1-Math.exp(-dt*5);view.z0+=(z0-view.z0)*k;view.z1+=(z1-view.z1)*k;view.r0+=(r0-view.r0)*k;view.r1+=(r1-view.r1)*k;
+}
+function draw(){
+  const dpr=window.devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;
+  if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);}
+  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#f6f8fc';ctx.fillRect(0,0,W,H);
+  const zr=view.z1-view.z0,rr=view.r1-view.r0,s=Math.min(W/zr,H/rr),ox=(W-zr*s)/2,oy=(H-rr*s)/2;
+  const X=z=>ox+(z-view.z0)*s,Y=r=>H-oy-(r-view.r0)*s;
+  // rutenett
+  const g=s>3?10:s>1?50:100;ctx.strokeStyle='#e3e9f4';ctx.lineWidth=1;ctx.beginPath();
+  for(let z=Math.ceil(view.z0/g)*g;z<view.z1;z+=g){ctx.moveTo(X(z),0);ctx.lineTo(X(z),H);}
+  for(let r=Math.ceil(view.r0/g)*g;r<view.r1;r+=g){ctx.moveTo(0,Y(r));ctx.lineTo(W,Y(r));}
+  ctx.stroke();
+  // chuck
+  const rect=(z0,z1,r0,r1,f)=>{ctx.fillStyle=f;ctx.fillRect(X(z0),Y(r1),(z1-z0)*s,(r1-r0)*s);};
+  rect(-150,-100,-105,105,'#5f656d');rect(-100,-80,30,70,'#7b8189');rect(-100,-80,-70,-30,'#7b8189');
+  // råemne
+  const prof=(sign,fill)=>{ctx.beginPath();ctx.moveTo(X(Z0),Y(0));for(let i=0;i<N;i++)ctx.lineTo(X(Z0+i*RES),Y(sign*stock[i]));ctx.lineTo(X(Z1),Y(0));ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle='#4b5563';ctx.lineWidth=1;ctx.stroke();};
+  prof(-1,'#d6dce3');prof(1,'#b8c1cb');
+  // senterlinje
+  ctx.setLineDash([8,4,2,4]);ctx.strokeStyle='#7a869c';ctx.beginPath();ctx.moveTo(0,Y(0));ctx.lineTo(W,Y(0));ctx.stroke();ctx.setLineDash([]);
+  // banesjekk
+  if(S.check){ctx.lineWidth=1.2;for(const g2 of S.check){ctx.strokeStyle=g2.rapid?'#e8a49c':'#9bb0dc';ctx.setLineDash(g2.rapid?[3,3]:[]);ctx.beginPath();ctx.moveTo(X(g2.a.z),Y(g2.a.r));ctx.lineTo(X(g2.b.z),Y(g2.b.r));ctx.stroke();}ctx.setLineDash([]);}
+  // spindelindikator
+  if(S.sp.rpm>1){ctx.save();ctx.translate(X(-125),Y(85));const rad=Math.max(6,8*s/2);ctx.strokeStyle='#1d4cc2';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,rad,spinPh,spinPh+Math.PI*1.4);ctx.stroke();ctx.restore();}
+  // motspindel
+  const f=subFace();if(X(f)<W+10){rect(f,f+130,-95,95,'#5f656d');rect(f,f+8,-60,60,'#7b8189');}
+  // bane
+  for(let i=1;i<S.trace.length;i++){const a=S.trace[i-1],b=S.trace[i];ctx.strokeStyle=b.rapid?'#d6372a':'#1d4cc2';ctx.lineWidth=b.rapid?1:1.4;ctx.setLineDash(b.rapid?[4,3]:[]);ctx.beginPath();ctx.moveTo(X(a.z),Y(a.r));ctx.lineTo(X(b.z),Y(b.r));ctx.stroke();}
+  ctx.setLineDash([]);
+  // verktøy
+  const z=w('Z'),r=w('X')/2,P=(dz,dr)=>[X(z+dz),Y(r+dr)];
+  const poly=(pts,fill,stroke)=>{ctx.beginPath();pts.forEach((p,i)=>{const q=P(p[0],p[1]);i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]);});ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();};
+  if(S.tool===1){poly([[2,5],[16,5],[16,40],[2,40]],'#4a4f57','#2a2d31');poly([[0,0],[7,1.5],[9,8],[1.5,6]],'#d9a31b','#6b4d00');}
+  else if(S.tool===2){poly([[4,4],[16,4],[16,40],[4,40]],'#4a4f57','#2a2d31');poly([[0,0],[10,3],[11,6],[3,5]],'#d9a31b','#6b4d00');}
+  else{poly([[-3,9],[1,9],[1,40],[-3,40]],'#4a4f57','#2a2d31');poly([[-3,0],[0,0],[0,9],[-3,9]],'#d9a31b','#6b4d00');}
+  if(S.cool){ctx.fillStyle='#3f8fe0';for(let i=0;i<10;i++){const a=Math.random(),q=P(3+a*10,4+Math.random()*14);ctx.beginPath();ctx.arc(q[0],q[1],1.6,0,7);ctx.fill();}}
+  ctx.strokeStyle='#c0261d';ctx.lineWidth=1;const tp=P(0,0);ctx.beginPath();ctx.moveTo(tp[0]-5,tp[1]);ctx.lineTo(tp[0]+5,tp[1]);ctx.moveTo(tp[0],tp[1]-5);ctx.lineTo(tp[0],tp[1]+5);ctx.stroke();
+  // akseretning
+  ctx.fillStyle='#0e1d45';ctx.strokeStyle='#0e1d45';ctx.lineWidth=1.5;ctx.font='600 11px "IBM Plex Mono",monospace';
+  ctx.beginPath();ctx.moveTo(12,H-12);ctx.lineTo(42,H-12);ctx.moveTo(12,H-12);ctx.lineTo(12,H-42);ctx.stroke();
+  ctx.fillText('Z+',46,H-8);ctx.fillText('X+',5,H-46);
+  ctx.fillText(`${S.zoomPart?'ZOOM: DEL':'ZOOM: AUTO'} · ${TOOLS[S.tool].n}`,8,14);
+}
+
+/* ---------- hendelser ---------- */
+document.querySelectorAll('.key.mode').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode,b.dataset.inc?+b.dataset.inc:null)));
+$('kSingle').onclick=()=>{S.single=!S.single;renderKeys();};
+$('kReset').onclick=reset;$('kStart').onclick=cycleStart;$('kHold').onclick=feedHold;
+$('kEstop').onclick=toggleEstop;$('kDoor').onclick=toggleDoor;
+$('spF').onclick=()=>manSpin(1);$('spR').onclick=()=>manSpin(-1);$('spStop').onclick=()=>{if(S.run){say('Program kjører – bruk MATEHOLD eller RESET');return;}manSpin(0);};
+$('kCool').onclick=()=>{if(S.run){say('Kjølevæske styres av programmet (M8/M9)');return;}if(blocked())return;S.cool=!S.cool;};
+$('spDn').onclick=()=>{S.sp.ov=Math.max(50,S.sp.ov-10);renderKnobs();};
+$('spUp').onclick=()=>{S.sp.ov=Math.min(150,S.sp.ov+10);renderKnobs();};
+function knob(el,get,set,n){
+  const turn=d=>{set(Math.max(0,Math.min(n-1,get()+d)));renderKnobs();};
+  el.addEventListener('click',e=>{const r=el.getBoundingClientRect();turn(e.clientX<r.left+r.width/2?-1:1);});
+  el.addEventListener('wheel',e=>{e.preventDefault();turn(e.deltaY>0?-1:1);},{passive:false});
+  el.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowDown'){turn(-1);e.preventDefault();}if(e.key==='ArrowRight'||e.key==='ArrowUp'){turn(1);e.preventDefault();}});
+}
+knob($('knRapid'),()=>S.rapIdx,v=>S.rapIdx=v,RAP.length);
+knob($('knFeed'),()=>S.feedOv/10,v=>S.feedOv=v*10,21);
+knob($('knAxis'),()=>S.sel,v=>S.sel=v,AXSEL.length);
+// jogtaster
+function releaseJogKeys(){document.querySelectorAll('.jog.held').forEach(b=>b.classList.remove('held'));}
+document.querySelectorAll('.jog').forEach(b=>{
+  const ax=b.dataset.jog[0],dir=b.dataset.jog[1]==='+'?1:-1;
+  b.addEventListener('pointerdown',e=>{e.preventDefault();try{b.setPointerCapture(e.pointerId);}catch(_){}if(jogStart(ax,dir))b.classList.add('held');});
+  const up=()=>{b.classList.remove('held');if(S.jog&&S.jog.ax===ax)S.jog=null;};
+  b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',up);
+  b.addEventListener('contextmenu',e=>e.preventDefault());
+});
+// håndhjul
+let wheelRot=0,wheelAcc=0,dragA=null;
+const wheel=$('wheel'),hub=$('hub');
+function wheelPulses(deg){wheelRot+=deg;hub.style.setProperty('--rot',wheelRot+'deg');wheelAcc+=deg;const n=Math.trunc(wheelAcc/3.6);if(n){wheelAcc-=n*3.6;pulse(n);}}
+const ang=e=>{const r=wheel.getBoundingClientRect();return Math.atan2(e.clientY-(r.top+r.height/2),e.clientX-(r.left+r.width/2))*180/Math.PI;};
+wheel.addEventListener('pointerdown',e=>{dragA=ang(e);wheel.setPointerCapture(e.pointerId);});
+wheel.addEventListener('pointermove',e=>{if(dragA==null)return;const a=ang(e);let d=a-dragA;if(d>180)d-=360;if(d<-180)d+=360;dragA=a;wheelPulses(d);});
+['pointerup','pointercancel'].forEach(t=>wheel.addEventListener(t,()=>dragA=null));
+wheel.addEventListener('wheel',e=>{e.preventDefault();wheelPulses(e.deltaY>0?-3.6:3.6);},{passive:false});
+wheel.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowUp'){wheelPulses(3.6);e.preventDefault();}if(e.key==='ArrowLeft'||e.key==='ArrowDown'){wheelPulses(-3.6);e.preventDefault();}});
+$('wDn').onclick=()=>wheelPulses(-3.6);$('wUp').onclick=()=>wheelPulses(3.6);
+// sider
+document.querySelectorAll('#softkeys [data-page]').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+$('btnZoom').onclick=()=>{S.zoomPart=!S.zoomPart;$('btnZoom').classList.toggle('on',S.zoomPart);};
+$('prog').value=progText;
+$('btnEdit').onclick=()=>{if(S.run){say('Kan ikke redigere mens programmet kjører');return;}editing=!editing;if(!editing){progText=$('prog').value;saveProg();}renderProg(true);};
+$('prog').addEventListener('input',()=>{progText=$('prog').value;saveProg();});
+$('btnDefault').onclick=()=>{if(S.run)return;progText=DEFAULT_PROG;$('prog').value=progText;saveProg();renderProg(true);say('Eksempelprogram O1000 lastet');};
+$('btnMdiClr').onclick=()=>{$('mdi').value='';$('mdi').focus();};
+document.querySelectorAll('#simSeg button').forEach(b=>b.onclick=()=>{S.sim=+b.dataset.s;document.querySelectorAll('#simSeg button').forEach(x=>x.classList.toggle('on',x===b));});
+$('btnStock').onclick=()=>{if(S.run||S.sp.rpm>0){say('Stopp spindel og program før du bytter råemne');return;}if(w('Z')<5&&w('X')/2<R0+2){say('Kjør verktøyet unna før du setter inn nytt råemne');return;}stock.fill(R0);S.trace=[];say('Nytt råemne Ø60 satt inn');};
+
+/* ---------- MAZATROL dialogprogrammering ---------- */
+const MATS={S45C:{n:'S45C (stål)',fc:[180,0.15,1],r:[180,0.25,2.5],f:[220,0.1],g:[100,0.05]},
+  AL:{n:'AL (aluminium)',fc:[400,0.2,1.5],r:[400,0.3,3],f:[500,0.12],g:[250,0.08]},
+  SUS304:{n:'SUS304 (rustfritt)',fc:[120,0.12,0.8],r:[120,0.2,1.5],f:[150,0.08],g:[70,0.04]}};
+const TOOLOPT=[[0,'—'],[1,'GENERAL OUT A · T01'],[2,'GENERAL OUT B · T02'],[3,'GROOVE OUT 3.0 · T03']];
+const TOOLNAME={1:'GENERAL OUT A (T01)',2:'GENERAL OUT B (T02)',3:'GROOVE OUT 3.0 (T03)'};
+const MZ_DEFAULT={common:{mat:'S45C',od:60,id:0,len:80,wf:1,rpm:2500},units:[
+  {type:'FACE',cx:60,cz:1,fx:-1.6,fz:0,finz:0,r:{t:1,v:180,f:0.15,d:1},fn:{t:0,v:220,f:0.1}},
+  {type:'BAR',cx:60,cz:0,finx:0.4,finz:0.1,sx:38,sz:0,r:{t:1,v:180,f:0.25,d:2.5},fn:{t:2,v:220,f:0.1},figs:[
+    {p:'LIN',x:40,z:-1,r:0,d:'CW'},{p:'LIN',x:40,z:-18,r:0,d:'CW'},{p:'ARC',x:44,z:-20,r:2,d:'CW'},{p:'LIN',x:54,z:-20,r:0,d:'CW'},
+    {p:'LIN',x:56,z:-21,r:0,d:'CW'},{p:'LIN',x:56,z:-40,r:0,d:'CW'},{p:'LIN',x:62,z:-40,r:0,d:'CW'}]},
+  {type:'GRV',sx:56,bx:50,sz:-30,w:3,r:{t:3,v:100,f:0.05}}]};
+const clone=o=>JSON.parse(JSON.stringify(o));
+let MZ=clone(MZ_DEFAULT);
+try{const s=localStorage.getItem('nexus-sim-mz');if(s)MZ=JSON.parse(s);}catch(e){}
+const saveMz=()=>{try{localStorage.setItem('nexus-sim-mz',JSON.stringify(MZ));}catch(e){}};
+const nf=n=>{let s=(+n).toFixed(3).replace(/\.?0+$/,'');return s==='-0'||s===''?'0':s;};
+const UNAME={FACE:'FACING',BAR:'BAR',GRV:'T.GROOVE'};
+
+function mzCompile(m){
+  const c=m.common,L=[],warn=[];let tool=0;
+  const add=(t,u)=>L.push({t,u});
+  const chk=(ok,msg)=>{if(!ok)throw new Error(msg);};
+  const num=(v,what)=>{chk(typeof v==='number'&&isFinite(v),`${what}: ugyldig tall`);return v;};
+  ['od','len','wf','rpm'].forEach(k=>num(c[k],`UNo 0 ${k.toUpperCase()}`));
+  chk(m.units.length,'Programmet har ingen maskineringsenheter');
+  if(c.od!==60)warn.push(`OD-MAX er ${nf(c.od)}, men råemnet i maskinen er Ø60.`);
+  if(c.wf!==1)warn.push(`WORK FACE er ${nf(c.wf)}, men råemnet i maskinen har 1 mm planpåslag.`);
+  if(c.rpm>SPMAX)warn.push(`Maks turtall ${nf(c.rpm)} er over spindelens grense (${SPMAX}).`);
+  add('(WNo 1001 - generert fra MAZATROL)','C');add('G28 U0','C');add('G28 W0','C');add(`G50 S${nf(Math.min(c.rpm,SPMAX))}`,'C');
+  const tc=(s,i,ok)=>{
+    chk(s.t,`UNo ${i+1}: verktøy mangler`);
+    chk(ok.includes(s.t),`UNo ${i+1}: ${TOOLNAME[s.t]} passer ikke i ${UNAME[m.units[i].type]}-enheten`);
+    num(s.v,`UNo ${i+1} C-SP`);num(s.f,`UNo ${i+1} FR`);chk(s.v>0&&s.f>0,`UNo ${i+1}: C-SP og FR må være større enn 0`);
+    add('G0 X200',i);add('G0 Z100',i);
+    if(s.t!==tool){add(`T${pad(s.t)}${pad(s.t)}`,i);tool=s.t;}
+    add(`G96 S${nf(s.v)} M3`,i);add('M8',i);
+  };
+  m.units.forEach((u,i)=>{
+    const U=`UNo ${i+1}`;
+    if(u.type==='FACE'){
+      ['cx','cz','fx','fz','finz'].forEach(k=>num(u[k],`${U} ${k.toUpperCase()}`));
+      chk(u.r.t||u.fn.t,`${U}: FACING trenger minst ett verktøy`);
+      chk(u.cz>u.fz,`${U}: CPT-Z må være større enn FPT-Z`);
+      const xo=u.cx+4,zt=u.fz+(u.fn.t?u.finz:0);
+      const pass=(z,f)=>{add(`G0 X${nf(xo)}`,i);add(`G0 Z${nf(z)}`,i);add(`G1 X${nf(u.fx)} F${nf(f)}`,i);add(`G0 Z${nf(z+1)}`,i);add(`G0 X${nf(xo)}`,i);};
+      if(u.r.t){tc(u.r,i,[1,2]);num(u.r.d,`${U} CUT`);chk(u.r.d>0,`${U}: CUT må være større enn 0`);
+        let z=u.cz;while(z>zt+1e-6){z=Math.max(zt,z-u.r.d);pass(z,u.r.f);}}
+      if(u.fn.t){tc(u.fn,i,[1,2]);pass(u.fz,u.fn.f);}
+    }else if(u.type==='BAR'){
+      ['cx','cz','finx','finz','sx','sz'].forEach(k=>num(u[k],`${U} ${k.toUpperCase()}`));
+      chk(u.figs.length,`${U}: konturen har ingen FIG-rader`);
+      chk(u.r.t||u.fn.t,`${U}: BAR trenger minst ett verktøy`);
+      chk(u.sx>=0&&u.sx<u.cx,`${U}: SPT-X må ligge mellom 0 og CPT-X`);
+      const pts=[{X:u.sx,Z:u.sz,Y:0,C:0,W:0}],segs=[];
+      u.figs.forEach((f,k)=>{
+        const F=`${U} FIG ${k+1}`;num(f.x,`${F} FPT-X`);num(f.z,`${F} FPT-Z`);
+        const a=pts[pts.length-1],b={X:f.x,Z:f.z,Y:0,C:0,W:0};
+        if(f.p==='ARC'){num(f.r,`${F} R`);chk(f.r>0,`${F}: ARC trenger R større enn 0`);
+          let sp;try{sp=arcPts(a,b,f.r,f.d!=='CCW');}catch(e){throw new Error(`${F}: ${e.message}`);}
+          sp.forEach(q=>pts.push(q));}
+        else pts.push(b);
+        segs.push({p:f.p,r:f.r,d:f.d,b});
+      });
+      for(let k=1;k<pts.length;k++){
+        chk(pts[k].Z<=pts[k-1].Z+1e-6,`${U}: konturen må gå i −Z-retning, fra planflaten mot chucken`);
+        chk(pts[k].X>=pts[k-1].X-1e-6,`${U}: diameteren blir mindre langs konturen (bakkant). BAR kan ikke grovdreie det – bruk T.GROOVE eller endre formen`);
+      }
+      const R=u.cx/2,zs=u.cz+2,off=pts.map(p=>({r:p.X/2+u.finx/2,z:p.Z+u.finz})),rMin=Math.min(...off.map(p=>p.r));
+      const zEnd=rL=>{if(off[0].r>=rL-1e-6)return null;
+        for(let k=1;k<off.length;k++)if(off[k].r>=rL-1e-6){const a=off[k-1],b=off[k],t=(rL-a.r)/(b.r-a.r);return a.z+(b.z-a.z)*t;}
+        return off[off.length-1].z;};
+      const contour=(dx,dz)=>segs.forEach(s=>{const x=nf(s.b.X+dx),z=nf(s.b.Z+dz);
+        add(s.p==='ARC'?`G${s.d==='CCW'?3:2} X${x} Z${z} R${nf(s.r)}`:`G1 X${x} Z${z}`,i);});
+      if(u.r.t){
+        tc(u.r,i,[1,2]);num(u.r.d,`${U} CUT`);chk(u.r.d>0,`${U}: CUT må være større enn 0`);
+        add(`G0 X${nf(u.cx+2)}`,i);add(`G0 Z${nf(zs)}`,i);
+        for(let rL=R-u.r.d;rL>rMin+0.05;rL-=u.r.d){
+          const ze=zEnd(rL);if(ze==null)continue;
+          add(`G0 X${nf(2*rL)}`,i);add(`G1 Z${nf(ze)} F${nf(u.r.f)}`,i);add(`G1 X${nf(2*rL+1)}`,i);add(`G0 Z${nf(zs)}`,i);
+        }
+        add(`G0 X${nf(2*off[0].r)}`,i);add(`G1 Z${nf(off[0].z)} F${nf(u.r.f)}`,i);contour(u.finx,u.finz);
+        if(off[off.length-1].r<R+1)add(`G1 X${nf(u.cx+2)}`,i);
+      }
+      if(u.fn.t){
+        tc(u.fn,i,[1,2]);
+        add(`G0 X${nf(u.sx)}`,i);add(`G0 Z${nf(zs)}`,i);add(`G1 Z${nf(u.sz)} F${nf(u.fn.f)}`,i);contour(0,0);
+        if(pts[pts.length-1].X<u.cx+2)add(`G1 X${nf(u.cx+2)}`,i);
+      }
+    }else if(u.type==='GRV'){
+      ['sx','bx','sz','w'].forEach(k=>num(u[k],`${U} ${k.toUpperCase()}`));
+      chk(u.bx<u.sx,`${U}: BTM-X må være mindre enn SPT-X`);
+      chk(u.bx>=0,`${U}: BTM-X kan ikke være negativ`);
+      chk(u.w>=3-1e-6,`${U}: WID må være minst 3 mm (bredden på stikkstålet)`);
+      tc(u.r,i,[3]);
+      const xo=Math.max(u.sx+4,c.od+2),zl=u.sz-(u.w-3),zz=[];
+      for(let z=u.sz;z>zl+1e-6;z-=2.5)zz.push(z);zz.push(zl);
+      add(`G0 X${nf(xo)}`,i);
+      zz.forEach(z=>{add(`G0 Z${nf(z)}`,i);add(`G1 X${nf(u.bx)} F${nf(u.r.f)}`,i);add('G4 P200',i);add(`G0 X${nf(xo)}`,i);});
+    }
+  });
+  add('G0 X200','E');add('G0 Z100','E');add('M9','E');add('M5','E');add('M30','E');
+  return {lines:L,warn};
+}
+
+function predict(text){
+  const blocks=parse(text),segs=[],errs=[];let p={X:OFF.X,Z:OFF.Z,Y:0,C:0,W:0},mot=0,len=0,tl=S.tool;
+  const st=Float32Array.from(stock);
+  const hitAt=(z,r)=>chuckHit(z,r)?'chucken':(z>=Z0&&z<=Z1&&st[Math.round((z-Z0)/RES)]>0.01&&r<st[Math.round((z-Z0)/RES)]-0.01)?'materialet':null;
+  const cutAt=(z,r)=>{const T=TOOLS[tl]||TOOLS[1];let za,zb,k;if(T.w){za=z-T.w;zb=z;k=0;}else{za=z;zb=z+T.L;k=T.k;}
+    const i0=Math.max(0,Math.ceil((za-Z0)/RES-1e-6)),i1=Math.min(N-1,Math.floor((zb-Z0)/RES+1e-6));
+    for(let i=i0;i<=i1;i++){const lim=Math.max(0,r+k*Math.max(0,Z0+i*RES-z));if(st[i]>lim)st[i]=lim;}};
+  const push=(a,b,rapid)=>{
+    segs.push({a:{z:a.Z,r:a.X/2},b:{z:b.Z,r:b.X/2},rapid});
+    const d=Math.hypot((b.X-a.X)/2,b.Z-a.Z);len+=d;
+    if(!rapid){const n=Math.max(1,Math.ceil(d/0.05));for(let k=1;k<=n;k++)cutAt(a.Z+(b.Z-a.Z)*k/n,(a.X+(b.X-a.X)*k/n)/2);}
+    if(rapid&&errs.length<3){const n=Math.max(1,Math.ceil(d/0.5));
+      for(let k=1;k<=n;k++){const z=a.Z+(b.Z-a.Z)*k/n,r=(a.X+(b.X-a.X)*k/n)/2,h=hitAt(z,r);
+        if(h){errs.push(`Hurtiggang gjennom ${h} ved X${nf(2*r)} Z${nf(z)}`);break;}}}
+  };
+  for(const b of blocks){
+    const v={};let g28=false,g4=false;
+    for(const [L,val] of b.words){if(L==='G'){if(val<=3)mot=val;if(val===28)g28=true;if(val===4)g4=true;}else v[L]=val;}
+    if(v.T!=null)tl=v.T>=100?Math.floor(v.T/100):v.T;
+    if(g28){const t={...p};if(v.U!=null||v.W==null)t.X=OFF.X;if(v.W!=null||v.U==null)t.Z=OFF.Z;push(p,t,true);p=t;continue;}
+    if(g4||(v.X==null&&v.Z==null&&v.U==null))continue;
+    const t={...p};if(v.X!=null)t.X=v.X;else if(v.U!=null)t.X=p.X+v.U;if(v.Z!=null)t.Z=v.Z;
+    if(mot>=2){let q=p;arcPts(p,t,v.R,mot===2).forEach(pt=>{push(q,pt,false);q=pt;});}
+    else push(p,t,mot===0);
+    p=t;
+  }
+  return {segs,errs,len};
+}
+
+function mzMsg(html,cls){const el=$('mzMsg');el.hidden=!html;el.className='mzerr'+(cls?' '+cls:'');el.innerHTML=html||'';}
+const esc=s=>String(s).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+const inp=(p,v,lab,dis)=>`<input data-p="${p}" value="${dis?'':esc(v)}" aria-label="${lab}" inputmode="decimal" spellcheck="false"${dis?' disabled':''}>`;
+const sel=(p,v,opts,lab,dis)=>`<select data-p="${p}" aria-label="${lab}"${dis?' disabled':''}>${opts.map(([k,t])=>`<option value="${k}"${String(k)===String(v)?' selected':''}>${t}</option>`).join('')}</select>`;
+const fld=(lab,p,v,opts)=>`<div class="f"><label>${lab}</label>${opts?sel(p,v,opts,lab):inp(p,v,lab)}</div>`;
+function seqRow(tag,P,s,cut){return `<div class="sq"><span class="tag">${tag}</span>${sel(P+'.t',s.t,TOOLOPT,tag+' verktøy')}${inp(P+'.v',s.v,tag+' C-SP')}${inp(P+'.f',s.f,tag+' FR')}${cut?inp(P+'.d',s.d,tag+' CUT'):'<span></span>'}</div>`;}
+function renderMz(){
+  const c=MZ.common;let h=`<div class="unit" data-u="C"><div class="uh"><span class="no">UNo 0</span><span>FELLES</span><span class="pt">COMMON</span></div><div class="fg">
+    ${fld('MAT','common.mat',c.mat,Object.entries(MATS).map(([k,v])=>[k,k]))}${fld('OD-MAX','common.od',c.od)}${fld('ID-MIN','common.id',c.id)}
+    ${fld('LENGTH','common.len',c.len)}${fld('WORK FACE','common.wf',c.wf)}${fld('RPM (G50)','common.rpm',c.rpm)}</div></div>`;
+  MZ.units.forEach((u,i)=>{
+    const P='units.'+i;
+    h+=`<div class="unit" data-u="${i}"><div class="uh"><span class="no">UNo ${i+1}</span><span>${UNAME[u.type]}</span><span class="pt">${u.type==='FACE'?'FACE':'OUT'}</span><span class="sp">
+      <button class="mini" data-act="auto" data-i="${i}" title="Skjæredata fra materialtabellen">AUTO</button><button class="mini" data-act="up" data-i="${i}" aria-label="Flytt enheten opp">▲</button><button class="mini" data-act="del" data-i="${i}" aria-label="Slett enheten">✕</button></span></div>`;
+    if(u.type==='FACE')h+=`<div class="fg">${fld('CPT-X',P+'.cx',u.cx)}${fld('CPT-Z',P+'.cz',u.cz)}${fld('FPT-X',P+'.fx',u.fx)}${fld('FPT-Z',P+'.fz',u.fz)}${fld('FIN-Z',P+'.finz',u.finz)}</div>`;
+    if(u.type==='BAR')h+=`<div class="fg">${fld('CPT-X',P+'.cx',u.cx)}${fld('CPT-Z',P+'.cz',u.cz)}${fld('FIN-X',P+'.finx',u.finx)}${fld('FIN-Z',P+'.finz',u.finz)}${fld('SPT-X',P+'.sx',u.sx)}${fld('SPT-Z',P+'.sz',u.sz)}</div>`;
+    if(u.type==='GRV')h+=`<div class="fg">${fld('SPT-X',P+'.sx',u.sx)}${fld('BTM-X',P+'.bx',u.bx)}${fld('SPT-Z',P+'.sz',u.sz)}${fld('WID',P+'.w',u.w)}</div>`;
+    h+=`<div class="seqh"><span>SNo</span><span>TOOL</span><span>C-SP m/min</span><span>FR mm/o</span><span>${u.type==='GRV'?'':'CUT mm'}</span></div>`;
+    h+=seqRow('R1',P+'.r',u.r,u.type!=='GRV');
+    if(u.fn)h+=seqRow('F1',P+'.fn',u.fn,false);
+    if(u.type==='BAR'){
+      h+=`<div class="figh"><span>FIG</span><span>PTN</span><span>FPT-X</span><span>FPT-Z</span><span>R</span><span>RETN.</span><span></span></div>`;
+      u.figs.forEach((f,k)=>{const Q=`${P}.figs.${k}`,arc=f.p==='ARC';
+        h+=`<div class="fr"><span class="tag">${k+1}</span>${sel(Q+'.p',f.p,[['LIN','LIN'],['TPR','TPR'],['ARC','ARC']],'FIG '+(k+1)+' form')}${inp(Q+'.x',f.x,'FIG '+(k+1)+' FPT-X')}${inp(Q+'.z',f.z,'FIG '+(k+1)+' FPT-Z')}${inp(Q+'.r',f.r,'FIG '+(k+1)+' R',!arc)}${sel(Q+'.d',f.d,[['CW','CW'],['CCW','CCW']],'FIG '+(k+1)+' retning',!arc)}<button class="mini" data-act="delfig" data-i="${i}" data-k="${k}" aria-label="Slett FIG ${k+1}">✕</button></div>`;});
+      h+=`<div class="figadd"><button class="mini" data-act="addfig" data-i="${i}">+ FIG</button></div>`;
+    }
+    h+='</div>';
+  });
+  h+=`<div class="unit" data-u="E"><div class="uh"><span class="no">UNo ${MZ.units.length+1}</span><span>END</span></div><div class="endu">CONTI 0 · WORK No 1001 · M30</div></div>`;
+  $('mzUnits').innerHTML=h;
+}
+function getP(path){const ks=path.split('.');let o=MZ;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];return [o,ks[ks.length-1]];}
+const STR=['mat','p','d'];
+function mzEdited(){S.mzChecked=false;saveMz();if(!$('mzCode').hidden)showEia();}
+$('mzUnits').addEventListener('input',e=>{
+  const el=e.target;if(!el.dataset.p)return;const [o,k]=getP(el.dataset.p);
+  if(STR.includes(k)){o[k]=el.value;}
+  else{const v=parseFloat(el.value.replace(',','.'));const bad=!isFinite(v)||el.value.trim()==='';el.classList.toggle('bad',bad);if(bad)return;o[k]=v;}
+  mzEdited();
+  if(k==='p'&&el.tagName==='SELECT')renderMz();
+});
+$('mzUnits').addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  if(S.run&&S.run.kind==='MAZ'){say('Programmet kjører – trykk RESET før du endrer enhetene');return;}
+  const i=+b.dataset.i,u=MZ.units[i],act=b.dataset.act;
+  if(act==='del')MZ.units.splice(i,1);
+  else if(act==='up'&&i>0)[MZ.units[i-1],MZ.units[i]]=[MZ.units[i],MZ.units[i-1]];
+  else if(act==='addfig'){const l=u.figs[u.figs.length-1]||{x:u.sx,z:u.sz};u.figs.push({p:'LIN',x:l.x,z:l.z-5,r:0,d:'CW'});}
+  else if(act==='delfig')u.figs.splice(+b.dataset.k,1);
+  else if(act==='auto'){autoCond(u);say(`UNo ${i+1}: skjæredata hentet for ${MATS[MZ.common.mat].n}`);}
+  mzEdited();renderMz();lastU=null;
+});
+function autoCond(u){
+  const M=MATS[MZ.common.mat]||MATS.S45C;
+  if(u.type==='FACE'){[u.r.v,u.r.f,u.r.d]=M.fc;[u.fn.v,u.fn.f]=M.f;}
+  if(u.type==='BAR'){[u.r.v,u.r.f,u.r.d]=M.r;[u.fn.v,u.fn.f]=M.f;}
+  if(u.type==='GRV'){[u.r.v,u.r.f]=M.g;}
+}
+document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{
+  if(S.run&&S.run.kind==='MAZ'){say('Programmet kjører – trykk RESET først');return;}
+  const c=MZ.common,t=b.dataset.add;let u;
+  if(t==='FACE')u={type:'FACE',cx:c.od,cz:c.wf,fx:-1.6,fz:0,finz:0,r:{t:1,v:0,f:0,d:0},fn:{t:0,v:0,f:0}};
+  if(t==='BAR')u={type:'BAR',cx:c.od,cz:0,finx:0.4,finz:0.1,sx:c.od-10,sz:0,r:{t:1,v:0,f:0,d:0},fn:{t:2,v:0,f:0},
+    figs:[{p:'LIN',x:c.od-10,z:-20,r:0,d:'CW'},{p:'LIN',x:c.od+2,z:-20,r:0,d:'CW'}]};
+  if(t==='GRV')u={type:'GRV',sx:c.od,bx:c.od-6,sz:-20,w:3,r:{t:3,v:0,f:0}};
+  autoCond(u);MZ.units.push(u);mzEdited();renderMz();
+  const el=$('mzUnits');el.scrollTop=el.scrollHeight;
+});
+function showEia(){
+  try{const g=mzCompile(MZ);$('mzCode').textContent=g.lines.map(l=>l.t).join('\n');}
+  catch(e){$('mzCode').textContent='Kan ikke generere kode:\n'+e.message;}
+}
+$('mzShow').onclick=()=>{const pre=$('mzCode');pre.hidden=!pre.hidden;$('mzShow').textContent=pre.hidden?'VIS EIA':'SKJUL EIA';if(!pre.hidden)showEia();};
+$('mzReset').onclick=()=>{if(S.run&&S.run.kind==='MAZ')return;MZ=clone(MZ_DEFAULT);mzEdited();renderMz();mzMsg('');say('Eksempelprogram WNo 1001 lastet');};
+$('mzCheck').onclick=()=>{
+  let g;try{g=mzCompile(MZ);}catch(e){S.check=null;mzMsg(`<b>BANESJEKK STOPPET</b><br>${esc(e.message)}`,'bad');say('Banesjekk fant en feil i programmet');return;}
+  let p;try{p=predict(g.lines.map(l=>l.t).join('\n'));}catch(e){mzMsg(`<b>BANESJEKK STOPPET</b><br>${esc(e.message)}`,'bad');return;}
+  S.check=p.segs;S.zoomPart=true;$('btnZoom').classList.add('on');
+  const w2=g.warn.concat(p.errs);
+  if(p.errs.length){S.mzChecked=false;mzMsg(`<b>BANESJEKK: KONTROLLER BANEN</b><br>${w2.map(esc).join('<br>')}`,'bad');say('Banesjekk: hurtiggang treffer noe');}
+  else{S.mzChecked=true;mzMsg(`<b>BANESJEKK OK</b> · ${g.lines.length} blokker · banelengde ${Math.round(p.len)} mm${w2.length?'<br>'+w2.map(esc).join('<br>'):''}`,w2.length?'':'ok');say('Banesjekk OK – grå bane vises på grafikken');}
+};
+let lastU=null;
+function renderActive(){
+  const a=S.active;
+  $('btnActEia').textContent=a==='EIA'?'AKTIV ✓':'AKTIVER';$('btnActEia').classList.toggle('act',a==='EIA');
+  $('btnActMaz').textContent=a==='MAZ'?'AKTIV ✓':'AKTIVER';$('btnActMaz').classList.toggle('act',a==='MAZ');
+}
+const activate=k=>{if(S.run){say('Trykk RESET før du bytter aktivt program');return;}S.active=k;renderActive();say(k==='MAZ'?'WNo 1001 (MAZATROL) er aktivt program':'O1000 (EIA/ISO) er aktivt program');};
+$('btnActEia').onclick=()=>activate('EIA');$('btnActMaz').onclick=()=>activate('MAZ');
+
+/* ---------- hovedløkke ---------- */
+let last=performance.now(),uiT=0;
+function frame(t){
+  const rdt=Math.min(0.05,(t-last)/1000);last=t;const dt=rdt*S.sim;
+  S.cut=0;S.moving={X:0,Z:0};S.actFeed=0;
+  // spindel rampe
+  const tr=S.estop?0:targetRpm();const acc=4000*dt;
+  S.sp.rpm=Math.abs(tr-S.sp.rpm)<=acc?tr:S.sp.rpm+Math.sign(tr-S.sp.rpm)*acc;
+  if(!S.sp.dir&&S.sp.rpm<1)S.sp.rpm=0;
+  spinPh+=(S.sp.dir||1)*S.sp.rpm/60*2*Math.PI*rdt*0.05;
+  if(!S.estop&&!S.alarms.length){
+    const sub=Math.max(1,Math.ceil(dt/0.02));
+    for(let i=0;i<sub;i++){runTick(dt/sub);manualTick(dt/sub);}
+  }
+  const k=1-Math.exp(-rdt*6);
+  S.load.S+=((S.cut>0?Math.min(100,15+S.cut*25*(S.sp.rpm/1500+0.5)):S.sp.rpm>0?4:0)-S.load.S)*k;
+  S.load.X+=((S.moving.X>0?(S.cut?30:10):0)-S.load.X)*k;S.load.Z+=((S.moving.Z>0?(S.cut?35:10):0)-S.load.Z)*k;
+  if(S.msgT>0)S.msgT-=rdt;
+  checkTasks();fitView(rdt);draw();
+  uiT+=rdt;if(uiT>0.06){uiT=0;renderScreen();}
+  requestAnimationFrame(frame);
+}
+renderKeys();renderKnobs();renderScreen();showPage('task');
+say('Start med oppgavene: slipp nødstoppen og trykk RESET');
+requestAnimationFrame(frame);
+})();
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

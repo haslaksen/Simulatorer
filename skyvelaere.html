@@ -1,0 +1,436 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1000px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--fg:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--chip:var(--lk-steel-soft);--lens:var(--lk-orange);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header{display:none!important}
+svg .lbl,svg .vlbl{font-family:"Barlow Condensed","Arial Narrow",sans-serif}</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Skyvelære</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Måleteknikk</div>
+      <h1>Skyvelære</h1>
+      <p class="lk-lead">Les av en skyvelære med nonius. Start med 0,1 mm nonius. Når du får det til, prøver du 0,05 og 0,02.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Les hele millimeter på hovedskalaen, til venstre for nullstreken på noniusen.</span></li><li><span>Finn den ene noniusstreken som står i flukt med en strek på hovedskalaen. Bruk lupen.</span></li><li><span>Gang nummeret på streken med oppløsningen, og legg det til.</span></li><li><span>Skriv svaret og trykk <b>Sjekk</b>.</span></li></ol>
+      
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Skyvelære-simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one-column workbench — caliper overview, loupe on the vernier, then task panel and reading guide */
+:root{
+  --bg:#e8ecef; --panel:#f8fafb; --fg:#172026; --muted:#56636c; --line:#cdd5da;
+  --accent:#c4401c; --accent-ink:#ffffff; --ok:#1d7446; --bad:#b0281f; --chip:#dde3e7;
+  --steel-hi:#f2f4f6; --steel:#c4ccd2; --steel-lo:#8f9aa1; --edge:#5f6b72; --plate:#e3e7ea;
+  --ink:#101418; --work:#c79b6b; --work-lo:#7d5737; --lens:#c4401c;
+  --display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12171a; --panel:#1a2125; --fg:#e3e8eb; --muted:#94a1a9; --line:#2b353b; --chip:#253036;
+  --accent:#ff6b3d; --accent-ink:#1b0c05; --ok:#4fc58b; --bad:#ff7d73;
+  --steel-hi:#dfe4e7; --steel:#acb5bb; --steel-lo:#78848b; --edge:#4b565c; --plate:#cfd5d9;
+  --ink:#0e1215; --work:#b88a5b; --work-lo:#6e4b2e; --lens:#ff6b3d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12171a; --panel:#1a2125; --fg:#e3e8eb; --muted:#94a1a9; --line:#2b353b; --chip:#253036;
+  --accent:#ff6b3d; --accent-ink:#1b0c05; --ok:#4fc58b; --bad:#ff7d73;
+  --steel-hi:#dfe4e7; --steel:#acb5bb; --steel-lo:#78848b; --edge:#4b565c; --plate:#cfd5d9;
+  --ink:#0e1215; --work:#b88a5b; --work-lo:#6e4b2e; --lens:#ff6b3d; color-scheme:dark}
+
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:flex;flex-direction:column;gap:18px}
+header{display:flex;flex-direction:column;gap:4px}
+.eyebrow{margin:0;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(34px,6vw,48px);line-height:1;letter-spacing:.01em;text-wrap:balance}
+.lede{margin:4px 0 0;max-width:62ch;color:var(--muted)}
+h2{margin:0;font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:.01em}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+.group{display:flex;align-items:center;gap:8px}
+.group > span{font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.seg{display:inline-flex;background:var(--chip);border-radius:8px;padding:3px;gap:2px}
+.seg button{font:500 14px var(--body);color:var(--fg);background:transparent;border:0;border-radius:6px;padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--panel);box-shadow:0 1px 2px rgb(0 0 0 / .15)}
+.seg button.num{font-family:var(--mono)}
+
+.bench{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+#overview{width:100%;height:auto;display:block;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+#overview.drag{cursor:ew-resize}
+#overview:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+.loupe-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
+.loupe-head .t{font-family:var(--display);font-weight:600;font-size:19px}
+.loupe-head .hint{font-size:13px;color:var(--muted)}
+.zoom{display:flex;align-items:center;gap:6px}
+.zoom output{font-family:var(--mono);font-size:13px;min-width:3ch;text-align:center}
+.iconbtn{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:600 18px var(--mono);cursor:pointer;line-height:1}
+#loupeBox{border-radius:8px;overflow:hidden;border:1px solid var(--line);background:var(--bg);cursor:grab;touch-action:pan-y}
+#loupeBox:active{cursor:grabbing}
+#loupe{display:block;user-select:none;-webkit-user-select:none}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.task{margin:0;font-weight:500}
+.task b{font-family:var(--mono);font-weight:600}
+form{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.field{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding-right:10px}
+.field input{font:500 20px var(--mono);width:8ch;border:0;background:transparent;color:var(--fg);padding:8px 10px;outline:none}
+.field:focus-within{border-color:var(--accent)}
+.field span{font-family:var(--mono);color:var(--muted)}
+.btn{font:600 14px var(--body);border-radius:8px;padding:10px 16px;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:focus-visible,.seg button:focus-visible,.iconbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.score{margin-left:auto;font-family:var(--mono);font-size:13px;color:var(--muted)}
+#feedback:empty{display:none}
+.msg{margin:0;font-weight:500}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+.calc{margin:8px 0 0;display:grid;gap:4px;max-width:420px;font-variant-numeric:tabular-nums}
+.calc div{display:flex;justify-content:space-between;gap:16px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.calc dt{color:var(--muted)} .calc dd{margin:0;font-family:var(--mono)}
+.calc .sum{border-bottom:0;border-top:2px solid var(--fg)}
+.calc .sum dt{color:var(--fg);font-weight:600} .calc .sum dd{font-weight:600;color:var(--accent)}
+
+.readout{display:flex;align-items:baseline;gap:8px;font-family:var(--mono)}
+.readout strong{font-size:34px;font-weight:600;font-variant-numeric:tabular-nums}
+.readout span{color:var(--muted)}
+.check{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--accent)}
+
+.howto{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:start}
+.howto ol{margin:10px 0 0;padding-left:1.3em;display:flex;flex-direction:column;gap:8px;max-width:62ch}
+.howto li::marker{font-family:var(--mono);color:var(--accent)}
+.howto p{margin:10px 0 0;color:var(--muted);max-width:62ch}
+.tbl{overflow-x:auto;margin-top:10px}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 10px 6px 0;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td{font-family:var(--mono)}
+@media (max-width:720px){.howto{grid-template-columns:minmax(0,1fr)}.score{margin-left:0;width:100%}}
+
+/* SVG */
+.tk{stroke:var(--ink);stroke-width:1;vector-effect:non-scaling-stroke}
+.edge{stroke:var(--edge);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+.plate{fill:var(--plate)}
+.lbl{fill:var(--ink);font-family:var(--display);font-weight:600}
+.vlbl{fill:var(--ink);font-family:var(--display);font-weight:500}
+.small{fill:var(--ink);font-family:var(--mono)}
+.hl{stroke:var(--accent);stroke-width:3;vector-effect:non-scaling-stroke}
+.hlm{fill:var(--accent)}
+.lens{fill:none;stroke:var(--lens);stroke-width:1.5;stroke-dasharray:4 3;vector-effect:non-scaling-stroke}
+.wk{stroke:var(--work-lo);stroke-width:1;vector-effect:non-scaling-stroke}
+.knurl{stroke:var(--steel-lo);stroke-width:1;vector-effect:non-scaling-stroke}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<main class="wrap">
+  <header>
+    <p class="eyebrow">VG2 Industriteknologi · Måleteknikk</p>
+    <h1>Skyvelære-simulator</h1>
+    <p class="lede">Les av skyvelære med nonius. Finn hele millimeter på hovedskalaen, finn noniusstreken som flukter, og legg sammen.</p>
+  </header>
+
+  <div class="toolbar">
+    <div class="group"><span>Modus</span>
+      <div class="seg" id="modeSeg">
+        <button type="button" data-mode="practice" aria-pressed="true">Øving</button>
+        <button type="button" data-mode="free" aria-pressed="false">Fri bruk</button>
+      </div>
+    </div>
+    <div class="group"><span>Nonius</span>
+      <div class="seg" id="resSeg">
+        <button type="button" class="num" data-res="10" aria-pressed="true">0,1</button>
+        <button type="button" class="num" data-res="5" aria-pressed="false">0,05</button>
+        <button type="button" class="num" data-res="2" aria-pressed="false">0,02</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="bench" aria-label="Skyvelære">
+    <svg id="overview" tabindex="0" role="img" aria-label="Skyvelære, oversikt"></svg>
+    <div class="loupe-head">
+      <div><div class="t">Lupe</div><div class="hint">Dra sidelengs i lupen for å flytte den langs noniusen.</div></div>
+      <div class="zoom">
+        <button type="button" class="iconbtn" id="zOut" aria-label="Zoom ut">−</button>
+        <output id="zVal">1×</output>
+        <button type="button" class="iconbtn" id="zIn" aria-label="Zoom inn">+</button>
+      </div>
+    </div>
+    <div id="loupeBox"><svg id="loupe" role="img" aria-label="Forstørret nonius"></svg></div>
+  </section>
+
+  <section class="panel" id="practice">
+    <p class="task" id="taskText">Oppgave 1. Hva viser skyvelæren?</p>
+    <form id="ansForm" autocomplete="off">
+      <label class="field"><input id="ans" inputmode="decimal" placeholder="0,00" aria-label="Din avlesning i mm"><span>mm</span></label>
+      <button class="btn primary" type="submit">Sjekk</button>
+    </form>
+    <div id="feedback" role="status"></div>
+    <div class="row">
+      <button class="btn" type="button" id="newTask">Ny oppgave</button>
+      <button class="btn" type="button" id="showKey">Vis fasit</button>
+      <span class="score" id="score">Riktig på første forsøk: 0 av 0</span>
+    </div>
+  </section>
+
+  <section class="panel" id="free" hidden>
+    <div class="row" id="steps"></div>
+    <label class="check"><input type="checkbox" id="showFree" checked> Vis avlesning og fluktende strek</label>
+    <div class="readout" id="readout"></div>
+    <div id="freeCalc"></div>
+  </section>
+
+  <section class="panel howto">
+    <div>
+      <h2>Slik leser du av</h2>
+      <ol>
+        <li>Les hovedskalaen ved nullstreken på noniusen. Siste hele millimeter til venstre for nullstreken er heltallet.</li>
+        <li>Finn den ene noniusstreken som står i flukt med en strek på hovedskalaen.</li>
+        <li>Gang nummeret på den streken med oppløsningen (f.eks. 17 × 0,02 = 0,34 mm) og legg det til heltallet.</li>
+      </ol>
+      <p>Tallene på hovedskalaen er centimeter: 1 betyr 10 mm, 2 betyr 20 mm. Tallene på noniusen er tideler: 3 betyr 0,3 mm.</p>
+    </div>
+    <div>
+      <h2>Noniustyper</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Oppløsning</th><th>Delinger</th><th>Lengde</th></tr></thead>
+        <tbody>
+          <tr><td>0,1 mm</td><td>10</td><td>19 mm</td></tr>
+          <tr><td>0,05 mm</td><td>20</td><td>39 mm</td></tr>
+          <tr><td>0,02 mm</td><td>50</td><td>49 mm</td></tr>
+        </tbody>
+      </table></div>
+      <p>Med 0,02 mm nonius ender svaret alltid på et partall: 23,34 kan stemme, 23,35 kan ikke.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+const RES={10:{n:10,L:19,k:2,dec:1},5:{n:20,L:39,k:2,dec:2},2:{n:50,L:49,k:1,dec:2}};
+const MAX=200, ZOOMS=[1,2,4,8];
+const S={mode:'practice',res:10,v:0,z:1,off:null,showKey:false,showFree:true,task:0,right:0,tries:0,answered:false};
+const $=id=>document.getElementById(id);
+const ov=$('overview'), lp=$('loupe'), box=$('loupeBox');
+
+const c=()=>RES[S.res];
+const rs=()=>(S.res/100).toFixed(2).replace('.',',').replace(/0$/,'');
+const fmt=v=>(v/100).toFixed(c().dec).replace('.',',');
+const maxV=()=>Math.floor((MAX-c().L-3)*100/S.res)*S.res;
+function decomp(v){const m=Math.floor(v/100),rest=v-m*100,i=rest/S.res;return{m,rest,i,hit:m+i*c().k};}
+const showing=()=>S.mode==='practice'?S.showKey:S.showFree;
+if(S.off===null) S.off=c().L/2;
+
+function defs(p){return `<defs>
+<linearGradient id="${p}st" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--steel-hi)"/><stop offset=".55" style="stop-color:var(--steel)"/><stop offset="1" style="stop-color:var(--steel-lo)"/></linearGradient>
+<linearGradient id="${p}wk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--work)"/><stop offset="1" style="stop-color:var(--work-lo)"/></linearGradient>
+</defs>`;}
+
+function caliper(p,o){
+  const C=c(),x=S.v/100,s=C.L/C.n,d=decomp(S.v);
+  let g=defs(p);
+  if(S.mode==='practice'&&x>0) g+=`<rect class="wk" x="0" y="36" width="${x}" height="22" fill="url(#${p}wk)"/>`;
+  g+=`<rect class="edge" x="-18" y="0" width="${MAX+30}" height="18" rx="1" fill="url(#${p}st)"/>`;
+  g+=`<path class="edge" d="M-18 18 H0 V60 L-5 74 L-12 74 L-18 46 Z" fill="url(#${p}st)"/>`;
+  g+=`<text class="small" x="-15" y="8" font-size="2.6">mm</text>`;
+  for(let i=0;i<=MAX;i++){
+    const len=i%10===0?4.4:i%5===0?3.2:2.2;
+    g+=`<line class="tk" x1="${i}" y1="10.5" x2="${i}" y2="${10.5-len}"/>`;
+    if(i%10===0) g+=`<text class="lbl" x="${i}" y="5.3" font-size="3.6" text-anchor="middle">${i/10}</text>`;
+  }
+  // slider
+  g+=`<rect class="edge" x="${x-3}" y="-2.5" width="${C.L+11}" height="3" rx="1" fill="url(#${p}st)"/>`;
+  g+=`<path class="edge" d="M${x} 20 V60 L${x+5} 74 L${x+12} 74 L${x+18} 46 V20 Z" fill="url(#${p}st)"/>`;
+  g+=`<rect class="edge" x="${x-3}" y="10.5" width="${C.L+11}" height="18.5" rx="1.5" fill="url(#${p}st)"/>`;
+  g+=`<rect class="plate" x="${x-1.2}" y="10.5" width="${C.L+3.4}" height="8.4"/>`;
+  g+=`<text class="small" x="${x+C.L+3.2}" y="23.5" font-size="1.7" text-anchor="end">${rs()} mm</text>`;
+  g+=`<circle class="edge" cx="${x+9}" cy="31.5" r="3.6" fill="url(#${p}st)"/>`;
+  for(let a=-3;a<=3;a++) g+=`<line class="knurl" x1="${x+9+a}" y1="${31.5-Math.sqrt(12.9-a*a)*.9}" x2="${x+9+a}" y2="${31.5+Math.sqrt(12.9-a*a)*.9}"/>`;
+  for(let j=0;j<=C.n;j++){
+    const px=x+j*s,lab=(j*S.res)%10===0,len=j===0?3.6:lab?3.0:2.0;
+    g+=`<line class="tk" x1="${px}" y1="10.5" x2="${px}" y2="${10.5+len}"/>`;
+    if(lab) g+=`<text class="vlbl" x="${px}" y="17" font-size="2.3" text-anchor="middle">${j*S.res/10}</text>`;
+  }
+  if(showing()){
+    const hx=d.hit, vx=x+d.i*s;
+    g+=`<line class="hl" x1="${hx}" y1="10.5" x2="${hx}" y2="6"/><line class="hl" x1="${vx}" y1="10.5" x2="${vx}" y2="14.2"/>`;
+    g+=`<path class="hlm" d="M${hx-0.8} 1.2 H${hx+0.8} L${hx} 2.4 Z"/>`;
+  }
+  return g;
+}
+
+function loupeGeom(){
+  // Fit so the full height from main-scale numbers to vernier numbers (SPAN mm) shows at 1x on every nonius type
+  const SPAN=18.2, cap=Math.max(170,Math.min(280,window.innerHeight*.38));
+  const W=box.clientWidth||600, fit=Math.min(W/(c().L+12),cap/SPAN), ppm=fit*S.z;
+  const H=Math.min(SPAN*ppm,Math.max(cap,window.innerHeight*.6));
+  const w=W/ppm,h=H/ppm,cx=S.v/100+S.off;
+  const y0=h>=SPAN?0.3:Math.max(0.3,Math.min(11.5-h/2,18.5-h));
+  return{W,H,w,h,x0:cx-w/2,y0,ppm};
+}
+
+function render(){
+  ov.setAttribute('viewBox',`-22 -6 ${MAX+34} 86`);
+  const L=loupeGeom();
+  ov.innerHTML=caliper('o')+`<rect class="lens" x="${L.x0}" y="${L.y0}" width="${L.w}" height="${L.h}" rx=".6"/>`;
+  ov.classList.toggle('drag',S.mode==='free');
+  lp.setAttribute('width',L.W); lp.setAttribute('height',L.H);
+  lp.setAttribute('viewBox',`${L.x0} ${L.y0} ${L.w} ${L.h}`);
+  lp.innerHTML=caliper('l');
+  $('zVal').textContent=S.z+'×';
+  if(S.mode==='free'){
+    $('readout').innerHTML=S.showFree?`<strong>${fmt(S.v)}</strong><span>mm</span>`:`<strong>?</strong><span>mm</span>`;
+    $('freeCalc').innerHTML=S.showFree?calc():'';
+  }
+}
+
+function calc(){
+  const d=decomp(S.v);
+  return `<dl class="calc"><div><dt>Hovedskala</dt><dd>${d.m} mm</dd></div>
+<div><dt>Nonius: strek ${d.i} × ${rs()}</dt><dd>${(d.rest/100).toFixed(c().dec).replace('.',',')} mm</dd></div>
+<div class="sum"><dt>Avlesning</dt><dd>${fmt(S.v)} mm</dd></div></dl>`;
+}
+
+function score(){ $('score').textContent=`Riktig på første forsøk: ${S.right} av ${S.tries}`; }
+
+function newTask(){
+  const lo=Math.ceil(300/S.res), hi=Math.floor(12000/S.res);
+  let v; do{v=(lo+Math.floor(Math.random()*(hi-lo+1)))*S.res;}while(v===S.v);
+  S.v=v; S.task++; S.answered=false; S.showKey=false; S.off=c().L/2;
+  $('taskText').innerHTML=`Oppgave ${S.task}. Klossen står mellom målekjeftene. Hva viser skyvelæren? <b>(${rs()} mm nonius)</b>`;
+  $('ans').value=''; $('feedback').innerHTML=''; render();
+}
+
+function check(e){
+  e.preventDefault();
+  const raw=$('ans').value.trim().replace(/\s|mm/gi,'').replace(',','.');
+  const val=parseFloat(raw), fb=$('feedback');
+  if(raw===''||isNaN(val)){fb.innerHTML=`<p class="msg bad">Skriv inn avlesningen som et tall, for eksempel ${fmt(2334-2334%S.res)}.</p>`;return;}
+  const u=Math.round(val*100), ok=u===S.v;
+  if(!S.answered){S.tries++; if(ok)S.right++; S.answered=true; score();}
+  if(ok){S.showKey=true;fb.innerHTML=`<p class="msg ok">Riktig! Skyvelæren viser ${fmt(S.v)} mm.</p>`+calc();render();return;}
+  const d=decomp(S.v); let hint;
+  if(Math.floor(u/100)!==d.m) hint='Sjekk hele millimeter. Se på hovedskalaen rett til venstre for nullstreken på noniusen. Husk at tallene der er centimeter.';
+  else if(u%S.res!==0) hint=`Hele millimeter stemmer, men med ${rs()} mm nonius må desimalene gå opp i ${rs()}.`;
+  else hint='Hele millimeter stemmer. Sjekk desimalene: finn noniusstreken som flukter best med en strek på hovedskalaen. Zoom inn i lupen.';
+  fb.innerHTML=`<p class="msg bad">Ikke riktig ennå. ${hint}</p>`;
+}
+
+function showKey(){
+  if(!S.answered){S.tries++;S.answered=true;score();}
+  S.showKey=true; $('feedback').innerHTML=`<p class="msg">Fasit: ${fmt(S.v)} mm. Den markerte streken på noniusen flukter med hovedskalaen.</p>`+calc(); render();
+}
+
+function setV(v){S.v=Math.max(0,Math.min(maxV(),Math.round(v/S.res)*S.res));render();}
+
+function buildSteps(){
+  const st=[[-100,'−1 mm'],[-S.res,'−'+rs()],[S.res,'+'+rs()],[100,'+1 mm']];
+  $('steps').innerHTML=st.map(([d,t])=>`<button class="btn" type="button" data-d="${d}">${t}</button>`).join('')+`<button class="btn" type="button" data-d="zero">Lukk til 0</button>`;
+}
+$('steps').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;b.dataset.d==='zero'?setV(0):setV(S.v+Number(b.dataset.d));});
+
+function setMode(m){
+  S.mode=m;
+  document.querySelectorAll('#modeSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));
+  $('practice').hidden=m!=='practice'; $('free').hidden=m!=='free';
+  if(m==='practice') newTask(); else {buildSteps();render();}
+}
+function setRes(r){
+  S.res=r; S.off=c().L/2;
+  document.querySelectorAll('#resSeg button').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.res)===r));
+  if(S.mode==='practice') newTask(); else {buildSteps(); setV(S.v);}
+}
+$('modeSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setMode(b.dataset.mode);});
+$('resSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setRes(Number(b.dataset.res));});
+$('ansForm').addEventListener('submit',check);
+$('newTask').addEventListener('click',newTask);
+$('showKey').addEventListener('click',showKey);
+$('showFree').addEventListener('change',e=>{S.showFree=e.target.checked;render();});
+$('zIn').addEventListener('click',()=>{S.z=ZOOMS[Math.min(ZOOMS.length-1,ZOOMS.indexOf(S.z)+1)];render();});
+$('zOut').addEventListener('click',()=>{S.z=ZOOMS[Math.max(0,ZOOMS.indexOf(S.z)-1)];render();});
+
+// Drag slider in overview (free mode)
+function svgX(svg,e){const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse()).x;}
+let drag=null;
+ov.addEventListener('pointerdown',e=>{
+  if(S.mode!=='free')return;
+  const px=svgX(ov,e),x=S.v/100;
+  drag={grab:(px>=x-4&&px<=x+c().L+10)?px-x:0,startY:e.clientY,startX:e.clientX,active:e.pointerType==='mouse'};
+  if(drag.active){ov.setPointerCapture(e.pointerId);setV((px-drag.grab)*100);}
+});
+ov.addEventListener('pointermove',e=>{
+  if(!drag)return;
+  if(!drag.active){ if(Math.abs(e.clientX-drag.startX)>6&&Math.abs(e.clientX-drag.startX)>Math.abs(e.clientY-drag.startY)){drag.active=true;try{ov.setPointerCapture(e.pointerId);}catch(_){}} else return; }
+  e.preventDefault(); setV((svgX(ov,e)-drag.grab)*100);
+});
+const endDrag=()=>{drag=null;};
+ov.addEventListener('pointerup',endDrag); ov.addEventListener('pointercancel',endDrag);
+ov.addEventListener('keydown',e=>{
+  if(S.mode!=='free')return;
+  const st=e.shiftKey?100:S.res;
+  if(e.key==='ArrowRight'){e.preventDefault();setV(S.v+st);}
+  if(e.key==='ArrowLeft'){e.preventDefault();setV(S.v-st);}
+});
+
+// Pan loupe
+let pan=null;
+box.addEventListener('pointerdown',e=>{pan={x:e.clientX,y:e.clientY,off:S.off,active:e.pointerType==='mouse'};if(pan.active)box.setPointerCapture(e.pointerId);});
+box.addEventListener('pointermove',e=>{
+  if(!pan)return;
+  const dx=e.clientX-pan.x;
+  if(!pan.active){ if(Math.abs(dx)>6&&Math.abs(dx)>Math.abs(e.clientY-pan.y)){pan.active=true;try{box.setPointerCapture(e.pointerId);}catch(_){}} else return; }
+  const L=loupeGeom();
+  S.off=Math.max(-12,Math.min(c().L+14,pan.off-dx/L.ppm)); render();
+});
+const endPan=()=>{pan=null;};
+box.addEventListener('pointerup',endPan); box.addEventListener('pointercancel',endPan);
+
+if('ResizeObserver' in window) new ResizeObserver(()=>render()).observe(box);
+else window.addEventListener('resize',render);
+
+score(); newTask();
+})();
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('main.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

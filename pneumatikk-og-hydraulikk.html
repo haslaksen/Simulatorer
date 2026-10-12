@@ -1,0 +1,1096 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pneumatikk og hydraulikk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: koblingsbrett øverst med komponentpalett, oppgave/valgt komponent/målinger i kort under. Samme verkstedstil som multimeter-simulatoren. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c; --warn:#a86a00;
+  --pnp:#1f6fd1; --hyp:#d0342c; --ret:#2f7fd6; --box:#ffffff; --grid:#c9d2d8;
+  --display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Barlow","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --pnp:#5aa2ff; --hyp:#ff6b5e; --ret:#6aa8ff; --box:#20282d; --grid:#2c363c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --pnp:#5aa2ff; --hyp:#ff6b5e; --ret:#6aa8ff; --box:#20282d; --grid:#2c363c; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px 20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0;letter-spacing:.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.tabs button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:7px;cursor:pointer}
+.tabs button[aria-selected="true"],.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted);flex-wrap:wrap}
+.label{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:14px;color:var(--muted)}
+.palette{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.palette button{font:600 13px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:5px 9px;border-radius:7px;cursor:pointer}
+.palette button:hover{border-color:var(--accent)}
+.palette .pt{font-family:var(--display);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:13px;color:var(--muted);align-self:center;margin-right:4px}
+#ws{display:block;width:100%;height:auto;touch-action:pinch-zoom;user-select:none;-webkit-user-select:none;--p:var(--pnp)}
+#ws.hy{--p:var(--hyp)}
+#ws .gd{fill:var(--grid)}
+#ws .s{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+#ws .f{fill:var(--ink)}
+#ws .bx{fill:var(--box);stroke:var(--ink);stroke-width:1.6}
+#ws .dash{stroke-dasharray:5 4}
+#ws .thin{stroke-width:1}
+#ws .cP,#ws .cH{stroke:var(--p)} #ws .fP,#ws .fH{fill:var(--p)}
+#ws .cT{stroke:var(--ret)} #ws .fT{fill:var(--ret)}
+#ws .cL{stroke:var(--warn)} #ws .fL{fill:var(--warn)}
+#ws .chP,#ws .chH{fill:var(--p);opacity:.2} #ws .chT{fill:var(--ret);opacity:.14} #ws .chL{fill:var(--warn);opacity:.15} #ws .ch{fill:transparent}
+#ws .lb{font:700 16px var(--display);fill:var(--ink)}
+#ws .pl{font:600 9.5px var(--body);fill:var(--muted)}
+#ws .sm{font:600 12px var(--body);fill:var(--muted)}
+#ws .rd{font:700 15px var(--mono);fill:var(--ink)}
+#ws .hit{fill:transparent;cursor:grab}
+#ws .act{fill:transparent;cursor:pointer}
+#ws .selbox{fill:var(--accent);fill-opacity:.07;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:6 4;cursor:grab}
+#ws .hose{fill:none;stroke-linejoin:round;stroke-linecap:round}
+#ws .h0{stroke:var(--muted);stroke-width:2}
+#ws .hP{stroke:var(--p);stroke-width:3.4}
+#ws .hT{stroke:var(--ret);stroke-width:2.8}
+#ws .hH{stroke:var(--p);stroke-width:2.6;stroke-dasharray:8 5}
+#ws .hL{stroke:var(--warn);stroke-width:3;stroke-dasharray:3 4}
+#ws .hsel{stroke:var(--accent);stroke-width:10;opacity:.35}
+#ws .hhit{stroke:transparent;stroke-width:14;fill:none;cursor:pointer}
+#ws .port{fill:var(--box);stroke:var(--ink);stroke-width:1.4}
+#ws .port.cn{fill:var(--ink)}
+#ws .port.cnP,#ws .port.cnH{fill:var(--p);stroke:var(--p)}
+#ws .port.cnT{fill:var(--ret);stroke:var(--ret)}
+#ws .port.pend{fill:var(--accent);stroke:var(--accent)}
+#ws .phit{fill:transparent;cursor:crosshair}
+#ws .phit:hover{fill:var(--accent);fill-opacity:.25}
+#ws .pendring{fill:none;stroke:var(--accent);stroke-width:2.5}
+#ws .burst{fill:var(--bad)}
+.notes{display:grid;gap:6px;padding:10px 14px;border-top:1px solid var(--line);min-height:46px;align-content:center}
+.note{font-size:15px;padding-left:12px;border-left:4px solid var(--line)}
+.note.bad{border-color:var(--bad);color:var(--bad);font-weight:600}
+.note.warn{border-color:var(--warn)}
+.note.info{border-color:var(--muted);color:var(--muted)}
+.note.ok{border-color:var(--ok)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.card h3{margin:0;font-family:var(--display);font-size:22px;line-height:1.15;font-weight:600}
+.card p{margin:0}
+.muted{color:var(--muted)}
+select,.answer input{font:600 16px var(--body);padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:600 15px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:8px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.danger{border-color:var(--bad);color:var(--bad)}
+.btn.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.checks li{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.checks li .m{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:700;margin-top:1px}
+.checks li.ok .m{background:var(--ok);border-color:var(--ok);color:#fff}
+.checks li.ok{color:var(--ok)}
+.done{padding:10px 12px;border-radius:8px;border:1px solid var(--ok);color:var(--ok);font-weight:600}
+.hintbox{padding:10px 12px;border-radius:8px;background:var(--bg);font-size:15px}
+.answer{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.answer input{font:700 20px var(--mono);width:8ch}
+.fb{font-size:15px}
+.fb.ok{color:var(--ok);font-weight:600}
+.fb.bad{color:var(--bad)}
+.field{display:grid;gap:4px}
+.field>span{font-size:14px;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.meas{display:grid;gap:14px;font-variant-numeric:tabular-nums}
+.mc{display:grid;gap:2px}
+.mh{font-family:var(--display);font-weight:700;font-size:19px}
+.mh span{font-family:var(--body);font-weight:500;font-size:14px;color:var(--muted)}
+.r{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:3px;font-size:15px}
+.r span:first-child{color:var(--muted)}
+.r span:last-child{font-family:var(--mono);font-size:14px;text-align:right}
+.calc{font-family:var(--mono);font-size:13px;padding:6px 8px;background:var(--bg);border-radius:6px;margin-top:4px}
+.howto ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.legend{display:grid;gap:6px;font-size:14px}
+.legend div{display:flex;align-items:center;gap:10px}
+.legend svg{flex:none}
+kbd{font:600 12px var(--mono);border:1px solid var(--line);border-radius:4px;padding:0 4px;background:var(--bg)}
+</style>
+<!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1200px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head>
+<body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Pneumatikk og hydraulikk</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Pneumatikk</div>
+      <h1>Pneumatikk og hydraulikk</h1>
+      <p class="lk-lead">Koble ventiler og sylindre med slanger, og se hva som skjer. Symbolene følger ISO 1219.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg en oppgave.</span></li><li><span>Dra komponentene du trenger inn på koblingsbrettet.</span></li><li><span>Koble slanger: klikk på en port, og så på porten slangen skal til.</span></li><li><span>Trykk på knappen eller hendelen, og se sylinderen gå.</span></li></ol>
+      <a class="lk-hb" href="https://verkstedhandboka.vercel.app/#h8-symboler" target="_blank" rel="noopener">Les mer i Verkstedhåndboka: 8.2 Symboler ↗</a>
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Pneumatikk og hydraulikk</h1>
+      <p class="sub">Koble ventiler og sylindre med slanger, og se hva som skjer. Symbolene følger ISO 1219.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Fagområde" id="domtabs">
+      <button role="tab" aria-selected="true" data-dom="pn">Pneumatikk</button>
+      <button role="tab" aria-selected="false" data-dom="hy">Hydraulikk</button>
+    </div>
+  </header>
+
+  <section class="stage" aria-label="Koblingsbrett">
+    <div class="stage-head"><span class="label">Koblingsbrett</span><span id="hint"></span></div>
+    <div class="palette" id="palette"></div>
+    <svg id="ws" viewBox="0 0 1000 600" role="img" aria-label="Koblingsskjema"></svg>
+    <div class="notes" id="notes" aria-live="polite"></div>
+  </section>
+
+  <div class="grid">
+    <section class="card" id="taskcard">
+      <span class="label">Oppgave</span>
+      <select id="tasksel" aria-label="Velg oppgave"></select>
+      <p id="taskdesc"></p>
+      <ul class="checks" id="checks"></ul>
+      <form class="answer" id="ansform" autocomplete="off" hidden>
+        <input id="ans" inputmode="decimal" placeholder="0,0" aria-label="Svar i kN"><span>kN</span>
+        <button class="btn primary" type="submit">Sjekk</button>
+      </form>
+      <div class="fb" id="ansfb" hidden></div>
+      <div class="done" id="done" hidden>Bra! Oppgaven er løst.</div>
+      <div class="row">
+        <button class="btn" type="button" id="hintbtn">Vis hint</button>
+        <button class="btn" type="button" id="resetbtn">Start på nytt</button>
+      </div>
+      <div class="hintbox" id="hinttext" hidden></div>
+    </section>
+
+    <section class="card" id="selcard">
+      <span class="label">Valgt komponent</span>
+      <div id="selbody" style="display:grid;gap:12px"></div>
+    </section>
+
+    <section class="card">
+      <span class="label">Målinger</span>
+      <div class="meas" id="meas"></div>
+    </section>
+
+    <section class="card howto">
+      <span class="label">Slik bruker du simulatoren</span>
+      <ul>
+        <li><b>Slange:</b> klikk på en port (den lille ringen), og så på porten slangen skal til. Flere slanger kan gå fra samme port (T-kobling). <kbd>Esc</kbd> avbryter.</li>
+        <li><b>Flytt:</b> dra i komponenten. <b>Fjern:</b> klikk på komponenten eller slangen og trykk <kbd>Delete</kbd>.</li>
+        <li><b>Betjen:</b> hold inne trykknappen med musa eller fingeren. Klikk på hendelen for å legge den om. Shift-klikk låser en trykknapp inne.</li>
+        <li><b>Porter:</b> 1 = trykk, 2 og 4 = arbeidsporter, 3 og 5 = utluft, 12 og 14 = styreporter. Hydraulikk: P = pumpe, T = tank, A og B = arbeidsporter.</li>
+      </ul>
+      <div class="legend">
+        <div><svg width="44" height="10"><line x1="2" y1="5" x2="42" y2="5" stroke="var(--pnp)" stroke-width="3.4"/></svg>Trykkluft (6 bar)</div>
+        <div><svg width="44" height="10"><line x1="2" y1="5" x2="42" y2="5" stroke="var(--hyp)" stroke-width="3.4"/></svg>Hydraulisk trykk fra pumpa</div>
+        <div><svg width="44" height="10"><line x1="2" y1="5" x2="42" y2="5" stroke="var(--ret)" stroke-width="2.8"/></svg>Retur til tank</div>
+        <div><svg width="44" height="10"><line x1="2" y1="5" x2="42" y2="5" stroke="var(--pnp)" stroke-width="2.6" stroke-dasharray="8 5"/></svg>Innestengt trykk</div>
+        <div><svg width="44" height="10"><line x1="2" y1="5" x2="42" y2="5" stroke="var(--muted)" stroke-width="2"/></svg>Uten trykk (avluftet)</div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const fmt = (v, d=1) => (Math.round(v*10**d)/10**d).toFixed(d).replace('.', ',').replace('-', '−');
+const VW = 1000, VH = 600, BW = 36, ST = 14;
+const PN_P = 6, Q_PUMP = 8;           // bar, l/min
+const CYL = {pn:{d:32, dr:12, stroke:100, text:'Ø32/12 mm, slag 100 mm'}, hy:{d:40, dr:22, stroke:200, text:'Ø40/22 mm, slag 200 mm'}};
+const area = d => Math.PI*d*d/4;      // mm²
+const A1 = dm => area(CYL[dm].d), A2 = dm => area(CYL[dm].d) - area(CYL[dm].dr);
+
+// ---------- Tegnehjelp ----------
+function arrow(x1, y1, x2, y2, k){
+  const a = Math.atan2(y2-y1, x2-x1), h = 6.5, w = 3.4;
+  const bx = x2 - h*Math.cos(a), by = y2 - h*Math.sin(a);
+  return `<line x1="${x1}" y1="${y1}" x2="${bx}" y2="${by}" class="s c${k}"/><polygon points="${x2},${y2} ${bx+w*Math.sin(a)},${by-w*Math.cos(a)} ${bx-w*Math.sin(a)},${by+w*Math.cos(a)}" class="f f${k}"/>`;
+}
+const zig = (x0, x1, y, amp, n) => { let d = `M${x0} ${y}`; const st = (x1-x0)/(n+1); for(let i=1;i<=n;i++) d += ` L${x0+st*i} ${y+(i%2?-amp:amp)}`; return d + ` L${x1} ${y}`; };
+const lbl = (c, x=0, y=10) => `<text x="${x}" y="${y}" class="lb">${c.label}</text>`;
+
+// ---------- Komponenttyper ----------
+const T = {};
+function valve(key, o){
+  const n = o.boxes.length, AL = 34, AR = 34 + (o.right==='pilot' ? BW : 0);
+  const W = AL + n*BW + AR, H = ST*2 + BW, hx = AL + o.home*BW;
+  const ports = [];
+  o.top.forEach(p => ports.push({id:p.id, x:hx+p.x, y:0, d:'u', px:p.x, e:'t'}));
+  o.bot.forEach(p => ports.push({id:p.id, x:hx+p.x, y:H, d:'d', px:p.x, e:'b', vent:!!p.vent}));
+  if(o.left==='pilot') ports.push({id:'14', x:0, y:ST+BW/2, d:'l', pilot:true});
+  if(o.right==='pilot') ports.push({id:'12', x:W, y:ST+BW/2, d:'r', pilot:true});
+  T[key] = Object.assign({}, o, {kind:'valve', W, H, AL, n, ports, init:()=>({s:o.home}), links:c => o.links[c.st.s] || [], draw:drawValve});
+}
+const P32 = {top:[{id:'2',x:12}], bot:[{id:'1',x:12},{id:'3',x:26,vent:true}], home:1,
+  boxes:[[['a','1','2'],['x','3']], [['a','2','3'],['x','1']]], links:[[['1','2']], [['2','3']]]};
+const P52 = {top:[{id:'4',x:9},{id:'2',x:27}], bot:[{id:'5',x:5,vent:true},{id:'1',x:18},{id:'3',x:31,vent:true}], home:1,
+  boxes:[[['a','1','4'],['a','2','3'],['x','5']], [['a','1','2'],['a','4','5'],['x','3']]], links:[[['1','4'],['2','3']], [['1','2'],['4','5']]]};
+const P43 = {top:[{id:'A',x:9},{id:'B',x:27}], bot:[{id:'P',x:9},{id:'T',x:27}], home:1, left:'lever', right:'detent', act:'three', pre:'V', dom:'hy'};
+const BOX43 = (mid) => [[['a','P','A'],['a','B','T']], mid, [['a','P','B'],['a','A','T']]];
+const pilotOn = p => p >= 2;
+
+valve('v32',  {...P32, name:'3/2-ventil med trykknapp', short:'3/2 knapp', left:'button', right:'spring', act:'button', pre:'S', dom:'pn',
+  info:'3/2-ventil: 3 porter og 2 stillinger. Normalt stengt, med trykknapp og fjærretur (monostabil). Port 1 = trykk, 2 = arbeidsport, 3 = utluft. Hold inne knappen, så går luften 1 → 2. Slipper du, luftes 2 ut gjennom 3.'});
+valve('v32l', {...P32, name:'3/2-ventil med hendel og lås', short:'3/2 hendel', left:'lever', right:'detent', act:'toggle', pre:'S', dom:'pn',
+  info:'3/2-ventil med hendel og lås (bistabil). Ventilen blir stående i stillingen du setter den i. Brukes ofte som start/stopp-bryter.'});
+valve('v32r', {...P32, name:'3/2-rulleventil', short:'3/2 rulle', left:'roller', right:'spring', act:'roller', pre:'B', dom:'pn',
+  info:'3/2-rulleventil (grensebryter). Sylinderen trykker inn rullen når den står i en endestilling. Velg nedenfor hvilken sylinder og hvilken endestilling som aktiverer den. Du kan også trykke på rullen for hånd.'});
+valve('v52k', {...P52, name:'5/2-ventil med trykknapp', short:'5/2 knapp', left:'button', right:'spring', act:'button', pre:'S', dom:'pn',
+  info:'5/2-ventil med trykknapp og fjærretur. Port 1 = trykk, 4 og 2 = arbeidsporter, 5 og 3 = utluft. I hvilestilling går 1 → 2 og 4 → 5. Når knappen holdes inne, går 1 → 4 og 2 → 3.'});
+valve('v52h', {...P52, name:'5/2-ventil med hendel og lås', short:'5/2 hendel', left:'lever', right:'detent', act:'toggle', pre:'S', dom:'pn',
+  info:'5/2-ventil med hendel og lås (bistabil). Port 1 = trykk, 4 og 2 = arbeidsporter, 5 og 3 = utluft. Klikk på hendelen for å legge den om. I hvilestilling går 1 → 2 og 4 → 5.'});
+valve('v52p', {...P52, name:'5/2-ventil, pilotstyrt med fjærretur', short:'5/2 pilot', left:'pilot', right:'spring', act:'pilot', pre:'V', dom:'pn',
+  pilot:(c, p) => pilotOn(p('14')) ? 0 : 1,
+  info:'5/2-ventil styrt med trykkluft (pilotstyrt) og fjærretur. Når styreporten 14 får trykk, går 1 → 4 og 2 → 3. Uten trykk på 14 skyver fjæra ventilen tilbake, og 1 → 2.'});
+valve('v52pp',{...P52, name:'5/2-impulsventil, pilotstyrt begge sider', short:'5/2 impuls', left:'pilot', right:'pilot', act:'pilot', pre:'V', dom:'pn',
+  pilot:(c, p) => { const a = pilotOn(p('14')), b = pilotOn(p('12')); return a && !b ? 0 : b && !a ? 1 : c.st.s; },
+  info:'5/2-impulsventil, pilotstyrt på begge sider. Trykk på 14 gir 1 → 4, trykk på 12 gir 1 → 2. Ventilen husker siste signal (bistabil), også når signalet forsvinner. Har begge styreportene trykk, blir den stående.'});
+valve('v43c', {...P43, name:'4/3-ventil, lukket midtstilling', short:'4/3 lukket midt',
+  boxes:BOX43([['x','P'],['x','T'],['x','A'],['x','B']]), links:[[['P','A'],['B','T']], [], [['P','B'],['A','T']]],
+  info:'4/3-ventil med hendel og lukket midtstilling. P = pumpe, T = tank, A og B = arbeidsporter. Venstre rute: P → A og B → T. Midten: alt er stengt, og sylinderen står låst. Høyre rute: P → B og A → T.'});
+valve('v43t', {...P43, name:'4/3-ventil, tandem-midtstilling', short:'4/3 tandem',
+  boxes:BOX43([['u','P','T'],['x','A'],['x','B']]), links:[[['P','A'],['B','T']], [['P','T']], [['P','B'],['A','T']]],
+  info:'4/3-ventil med tandem-midtstilling. Som lukket midtstilling, men i midten går P → T. Da går pumpa trykkløst til tank (avlastning), mens A og B er stengt og sylinderen står låst.'});
+
+T.src = {name:'Trykkluftforsyning', short:'Trykkluft', pre:'Z', dom:'pn', W:40, H:52,
+  ports:[{id:'1', x:20, y:0, d:'u', noOpen:true}], links:() => [], flags:() => ({'1':'src'}), init:() => ({}),
+  info:'Gir trykkluft med 6 bar fra kompressoren, gjennom filter, regulator og smører (FRL-enhet). Koble port 1 her til port 1 på ventilene.',
+  draw:(c, X) => `${lbl(c, 44, 30)}<text x="44" y="46" class="sm">6 bar</text>
+    <line x1="20" y1="0" x2="20" y2="16" class="s c${X.cls('1')}"/><circle cx="20" cy="30" r="14" class="s"/>
+    <polygon points="20,17 14.5,26 25.5,26" class="s"/>`};
+T.cyl1 = {name:'Enkeltvirkende sylinder', short:'Enkeltvirkende', pre:'A', dom:'pn', cyl:1, W:340, H:64,
+  ports:[{id:'A', x:16, y:64, d:'d'}], links:() => [], init:() => ({pos:0}),
+  info:'Enkeltvirkende sylinder med fjærretur. Trykk på port A skyver stempelet ut. Når A luftes ut, skyver fjæra stempelet tilbake. Fjæra spiser litt av kraften.',
+  draw:drawCyl};
+T.cyl2 = {name:'Dobbeltvirkende sylinder', short:'Dobbeltvirkende', pre:'A', dom:'both', cyl:2, W:340, H:64,
+  ports:[{id:'A', x:16, y:64, d:'d'}, {id:'B', x:154, y:64, d:'d'}], links:() => [], init:() => ({pos:0}),
+  info:'Dobbeltvirkende sylinder. Trykk på A (stempelsiden) skyver ut, trykk på B (stangsiden) trekker inn. Den andre siden må samtidig luftes ut eller gå til tank. Stangsiden har mindre areal, så sylinderen går fortere inn og har mindre kraft inn.',
+  draw:drawCyl};
+T.thr = {name:'Strupe-tilbakeslagsventil', short:'Strupe-tilbakeslag', pre:'R', dom:'both', W:50, H:80,
+  ports:[{id:'2', x:25, y:0, d:'u'}, {id:'1', x:25, y:80, d:'d'}], links:() => [['1','2']], init:() => ({}),
+  info:'Strupe-tilbakeslagsventil. Struper strømmen fra port 2 til 1, og slipper den fritt fra 1 til 2 gjennom tilbakeslagsventilen. Koble port 2 mot sylinderen, så strupes luften eller oljen som kommer ut av sylinderen (avluftstruping).',
+  draw:drawThr};
+T.or = {name:'Vekselventil (ELLER)', short:'Vekselventil (ELLER)', pre:'V', dom:'pn', W:60, H:46,
+  ports:[{id:'1a', x:0, y:22, d:'l'}, {id:'1b', x:60, y:22, d:'r'}, {id:'2', x:30, y:0, d:'u'}],
+  links:c => [['2', c.st.s==='a' ? '1a' : '1b']], init:() => ({s:'a'}),
+  pilot:(c, p) => { const a = pilotOn(p('1a')), b = pilotOn(p('1b')); return a && !(c.st.s==='b' && b) ? 'a' : b ? 'b' : c.st.s; },
+  info:'Vekselventil (ELLER-ventil). Gir trykk ut på 2 når den ene ELLER den andre inngangen (1) har trykk. Kula stenger inngangen uten trykk, så luften ikke forsvinner ut gjennom utluften på den andre ventilen.',
+  draw:drawLogic};
+T.and = {name:'Totrykkventil (OG)', short:'Totrykkventil (OG)', pre:'V', dom:'pn', W:60, H:46,
+  ports:[{id:'1a', x:0, y:22, d:'l'}, {id:'1b', x:60, y:22, d:'r'}, {id:'2', x:30, y:0, d:'u'}],
+  links:c => [['2', c.st.s==='a' ? '1a' : '1b']], init:() => ({s:'a'}),
+  pilot:(c, p) => (pilotOn(p('1a')) && !pilotOn(p('1b'))) ? 'b' : 'a',
+  info:'Totrykkventil (OG-ventil). Gir trykk ut på 2 bare når begge inngangene (1) har trykk. Brukes blant annet til tohåndsbetjening, så operatøren må ha begge hendene på knappene.',
+  draw:drawLogic};
+T.gauge = {name:'Manometer', short:'Manometer', pre:'M', dom:'both', W:40, H:50,
+  ports:[{id:'M', x:20, y:50, d:'d'}], links:() => [], init:() => ({}),
+  info:'Manometer. Viser trykket i ledningen det er koblet til, i bar.',
+  draw:(c, X) => `${lbl(c, 40, 12)}<text x="40" y="32" class="rd">${fmt(X.p('M'))} bar</text>
+    <line x1="20" y1="36" x2="20" y2="50" class="s c${X.cls('M')}"/><circle cx="20" cy="22" r="14" class="s"/>${arrow(11, 31, 29, 13, '')}`};
+T.pump = {name:'Hydraulikkaggregat', short:'Pumpe', pre:'P', dom:'hy', W:110, H:110,
+  ports:[{id:'P', x:60, y:0, d:'u'}], links:() => [], flags:c => (c.st.on && !hy.burst) ? {P:'pump'} : {}, init:() => ({on:false}),
+  info:'Hydraulikkaggregat: elektromotor (M), pumpe og tank. Pumpa gir 8 l/min. Den er en fortrengningspumpe, så oljen må alltid ha et sted å gå. Ellers stiger trykket til noe sprekker. Klikk på motoren for å starte og stoppe.',
+  draw:drawPump};
+T.prv = {name:'Trykkbegrensningsventil', short:'Trykkbegrensning', pre:'V', dom:'hy', W:80, H:80,
+  ports:[{id:'P', x:32, y:0, d:'u'}, {id:'T', x:32, y:80, d:'d'}], links:() => [], init:() => ({open:false}),
+  info:'Trykkbegrensningsventil (sikkerhetsventil). Den åpner og slipper olje til tank når trykket når innstilt verdi, og beskytter pumpe, slanger og sylinder. Koble P til trykkledningen fra pumpa og T til tank.',
+  draw:drawPrv};
+T.tank = {name:'Tank', short:'Tank', pre:'T', dom:'hy', W:40, H:32,
+  ports:[{id:'T', x:20, y:0, d:'u'}], links:() => [], flags:() => ({T:'tank'}), init:() => ({}), nolabel:true,
+  info:'Tank. Returoljen går hit. Du kan bruke flere tanksymboler. De er samme tank.',
+  draw:(c, X) => `<line x1="20" y1="0" x2="20" y2="24" class="s c${X.cls('T')}"/><path d="M4 12 V30 H36 V12" class="s"/>`};
+
+const PAL = {pn:['src','v32','v32l','v32r','v52k','v52h','v52p','v52pp','or','and','thr','cyl1','cyl2','gauge'],
+             hy:['pump','prv','tank','v43c','v43t','thr','cyl2','gauge']};
+
+// ---------- Symboltegning ----------
+function actuator(kind, xe, side, c, X){
+  const m = BW/2, sg = side==='L' ? -1 : 1, xo = xe + sg*8;
+  const hous = `<rect x="${side==='L' ? xe-8 : xe}" y="${m-8}" width="8" height="16" class="s"/>`;
+  const on = c.st.s===0;
+  switch(kind){
+    case 'button': return hous + `<line x1="${xo}" y1="${m}" x2="${xo+sg*8}" y2="${m}" class="s"/>
+      <path d="M${xo+sg*8} ${m-7} A7 7 0 0 ${side==='L'?0:1} ${xo+sg*8} ${m+7} Z" class="s" style="${on?'fill:var(--accent);fill-opacity:.5':''}"/>`;
+    case 'spring': return `<path d="${zig(xe, xe+sg*28, m, 7, 6)}" class="s"/>`;
+    case 'lever': return hous + `<line x1="${xo}" y1="${m}" x2="${xo+sg*10}" y2="${m-16}" class="s"/><circle cx="${xo+sg*10}" cy="${m-16}" r="3.2" class="f"/>`;
+    case 'detent': return `<rect x="${side==='L' ? xe-10 : xe}" y="${m-6}" width="10" height="12" class="s"/>
+      <path d="M${xe+sg*3} ${m-6} l${sg*2.5} -4 l${sg*2.5} 4 M${xe+sg*3} ${m+6} l${sg*2.5} 4 l${sg*2.5} -4" class="s thin"/>`;
+    case 'pilot': {
+      const pid = side==='L' ? '14' : '12', k = X.cls(pid);
+      return hous + `<polygon points="${xo},${m-5} ${xo},${m+5} ${xe+sg*-1.5},${m}" class="s c${k}" style="${k?'fill:var(--p)':''}"/>`;
+    }
+    case 'roller': return hous + `<line x1="${xo}" y1="${m}" x2="${xo+sg*8}" y2="${m}" class="s"/><circle cx="${xo+sg*13}" cy="${m}" r="5" class="s" style="${on?'fill:var(--accent);fill-opacity:.5':''}"/>`;
+  }
+  return '';
+}
+function drawValve(c, X){
+  const t = T[c.type], s0 = c.st.s, off = t.AL + (t.home - s0)*BW;
+  const P = id => t.ports.find(p => p.id===id);
+  let s = '';
+  t.ports.forEach(p => {
+    const k = X.cls(p.id);
+    if(p.e==='t'){ s += `<line x1="${p.x}" y1="0" x2="${p.x}" y2="${ST}" class="s c${k}"/><text x="${p.x+3}" y="9" class="pl">${p.id}</text>`; }
+    if(p.e==='b'){
+      s += `<line x1="${p.x}" y1="${ST+BW}" x2="${p.x}" y2="${p.vent ? ST+BW+12 : t.H}" class="s c${k}"/><text x="${p.x+3}" y="${ST+BW+9}" class="pl">${p.id}</text>`;
+      if(p.vent) s += `<polygon points="${p.x},${ST+BW+12} ${p.x-4},${ST+BW+19} ${p.x+4},${ST+BW+19}" class="s"/>`;
+    }
+    if(p.pilot) s += `<text x="${p.x===0 ? 2 : p.x-14}" y="${p.y-5}" class="pl">${p.id}</text>`;
+  });
+  s += `<g transform="translate(${off},${ST})">`;
+  t.boxes.forEach((items, i) => {
+    const bx = i*BW, act = i===s0;
+    s += `<rect x="${bx}" y="0" width="${BW}" height="${BW}" class="bx"/>`;
+    const pp = id => { const p = P(id); return [bx + p.px, p.e==='t' ? 0 : BW]; };
+    items.forEach(it => {
+      const k = act ? X.cls(it[1]) : '';
+      if(it[0]==='a'){ const [x1,y1] = pp(it[1]), [x2,y2] = pp(it[2]); s += arrow(x1, y1 ? y1-2 : 2, x2, y2 ? y2-2 : 2, k); }
+      if(it[0]==='x'){ const [x,y] = pp(it[1]), yy = y ? y-9 : 9; s += `<line x1="${x}" y1="${y}" x2="${x}" y2="${yy}" class="s"/><line x1="${x-5}" y1="${yy}" x2="${x+5}" y2="${yy}" class="s"/>`; }
+      if(it[0]==='u'){ const [x1] = pp(it[1]), [x2] = pp(it[2]); s += `<path d="M${x1} ${BW} V${BW-11} H${x2} V${BW}" class="s c${k}"/>`; }
+    });
+  });
+  s += actuator(t.left, 0, 'L', c, X) + actuator(t.right, t.n*BW, 'R', c, X);
+  const actHit = t.act==='button' || t.act==='toggle' || t.act==='roller' || t.act==='three';
+  if(actHit){
+    s += `<rect x="-34" y="-6" width="36" height="${BW+12}" class="act" data-act="${c.id}:L"/>`;
+    if(t.act!=='button' && t.act!=='roller') s += `<rect x="${t.n*BW-2}" y="-6" width="36" height="${BW+12}" class="act" data-act="${c.id}:R"/>`;
+  }
+  s += '</g>';
+  if(t.left==='pilot') s += `<line x1="0" y1="${ST+BW/2}" x2="${off-14}" y2="${ST+BW/2}" class="s dash c${X.cls('14')}"/>`;
+  if(t.right==='pilot') s += `<line x1="${off+t.n*BW+14}" y1="${ST+BW/2}" x2="${t.W}" y2="${ST+BW/2}" class="s dash c${X.cls('12')}"/>`;
+  const lx = t.left==='pilot' ? 16 : 0;
+  s += `<text x="${lx}" y="10" class="lb">${c.label}${c.st.latch ? ' 🔒' : ''}</text>`;
+  if(t.act==='roller'){
+    const cy = comps.find(x => x.id===c.props.cyl);
+    s += `<text x="${t.W}" y="${t.H+2}" text-anchor="end" class="sm">${cy ? cy.label + ' ' + c.props.end : 'ikke tilknyttet'}</text>`;
+  }
+  return s;
+}
+function drawCyl(c, X){
+  const t = T[c.type], px = 8 + c.st.pos*140, kA = X.cls('A'), kB = t.cyl===2 ? X.cls('B') : '';
+  const yc = ST + BW/2;
+  let s = lbl(c, 0, 10);
+  s += `<rect x="3" y="${ST+2}" width="${Math.max(0, px-3)}" height="${BW-4}" class="ch${kA}"/>`;
+  if(t.cyl===2) s += `<rect x="${px+6}" y="${ST+2}" width="${Math.max(0, 167-px-6)}" height="${BW-4}" class="ch${kB}"/>`;
+  if(t.cyl===1) s += `<path d="${zig(px+6, 168, yc, BW/2-4, 7)}" class="s thin"/>`;
+  s += `<rect x="0" y="${ST}" width="170" height="${BW}" class="s"/>`;
+  s += `<rect x="${px+6}" y="${yc-4}" width="170" height="8" class="s" style="fill:var(--box)"/>`;
+  s += `<rect x="${px}" y="${ST+1.5}" width="6" height="${BW-3}" class="f"/>`;
+  s += `<rect x="${px+176}" y="${yc-9}" width="6" height="18" class="f"/>`;
+  s += `<line x1="16" y1="${ST+BW}" x2="16" y2="${t.H}" class="s c${kA}"/><text x="20" y="${t.H-2}" class="pl">A</text>`;
+  if(t.cyl===2) s += `<line x1="154" y1="${ST+BW}" x2="154" y2="${t.H}" class="s c${kB}"/><text x="158" y="${t.H-2}" class="pl">B</text>`;
+  else s += `<line x1="154" y1="${ST+BW}" x2="154" y2="${ST+BW+7}" class="s"/><polygon points="154,${ST+BW+7} 150,${ST+BW+13} 158,${ST+BW+13}" class="s"/>`;
+  comps.filter(r => r.type==='v32r' && r.props.cyl===c.id).forEach(r => {
+    const x = (r.props.end==='ute' ? 148 : 8) + 182;
+    s += `<line x1="${x}" y1="${ST-2}" x2="${x}" y2="${ST+6}" class="s"/><text x="${x}" y="${ST-4}" text-anchor="middle" class="sm">${r.label}</text>`;
+  });
+  if(dom==='hy') s += `<text x="${px+190}" y="${yc+5}" class="sm">${fmt(c.props.load, 1)} kN</text>`;
+  return s;
+}
+function drawThr(c, X){
+  const k = X.cls('1');
+  return `${lbl(c, 56, 12)}<text x="56" y="46" class="sm">${c.props.open} %</text>
+    <path d="M25 0 V14 M10 14 H40 M10 14 V66 M40 14 V66 M10 66 H40 M25 66 V80" class="s c${k}"/>
+    <path d="M3 30 Q10 40 3 50 M17 30 Q10 40 17 50" class="s"/>${arrow(0, 56, 21, 24, '')}
+    <path d="M33 33 L40 44 L47 33" class="s"/><circle cx="40" cy="35" r="4.5" class="s" style="fill:var(--box)"/>
+    <rect x="-3" y="20" width="56" height="40" class="s dash thin"/>`;
+}
+function drawLogic(c, X){
+  const isOr = c.type==='or', a = c.st.s==='a';
+  let s = `<line x1="0" y1="22" x2="8" y2="22" class="s c${X.cls('1a')}"/><line x1="52" y1="22" x2="60" y2="22" class="s c${X.cls('1b')}"/>
+    <line x1="30" y1="0" x2="30" y2="14" class="s c${X.cls('2')}"/><rect x="8" y="14" width="44" height="16" class="s"/>
+    <text x="3" y="17" class="pl">1</text><text x="53" y="17" class="pl">1</text><text x="33" y="9" class="pl">2</text>`;
+  if(isOr) s += `<path d="M14 15 V29 M46 15 V29" class="s thin"/><circle cx="${a ? 40 : 20}" cy="22" r="5.5" class="f"/>`;
+  else s += `<rect x="${a ? 17 : 27}" y="17" width="16" height="10" class="s" style="fill:var(--box)"/><path d="M14 15 V29 M46 15 V29" class="s thin"/>`;
+  return s + `<text x="30" y="44" text-anchor="middle" class="sm">${isOr ? 'ELLER' : 'OG'}</text>${lbl(c, 62, 10)}`;
+}
+function drawPump(c, X){
+  const k = X.cls('P'), on = c.st.on && !hy.burst;
+  return `${lbl(c, 84, 22)}<text x="84" y="38" class="sm">8 l/min</text>
+    <line x1="60" y1="0" x2="60" y2="24" class="s c${k}"/><circle cx="60" cy="40" r="16" class="s"/>
+    <polygon points="60,24.5 54.5,33 65.5,33" class="f"/>
+    <path d="M30 37.5 H44 M30 42.5 H44" class="s"/>
+    <g data-motor="${c.id}" style="cursor:pointer"><circle cx="18" cy="40" r="13" class="s" style="fill:${on ? 'var(--ok)' : 'var(--box)'};fill-opacity:${on ? .3 : 1}"/>
+    <text x="18" y="45.5" text-anchor="middle" class="lb" style="font-size:15px">M</text>
+    <text x="18" y="70" text-anchor="middle" class="sm" style="fill:${hy.burst ? 'var(--bad)' : on ? 'var(--ok)' : 'var(--muted)'}">${hy.burst ? 'SPRAKK' : on ? 'PÅ' : 'AV'}</text>
+    <rect x="0" y="22" width="36" height="54" class="act"/></g>
+    <line x1="60" y1="56" x2="60" y2="96" class="s"/><path d="M44 84 V102 H76 V84" class="s"/>`;
+}
+function drawPrv(c, X){
+  const kP = X.cls('P'), kT = X.cls('T'), open = c.st.open;
+  return `${lbl(c, 56, 10)}<text x="56" y="76" class="sm">${c.props.set} bar</text>
+    <line x1="32" y1="0" x2="32" y2="22" class="s c${kP}"/><line x1="32" y1="58" x2="32" y2="80" class="s c${kT}"/>
+    <rect x="14" y="22" width="36" height="36" class="bx"/>
+    ${arrow(open ? 32 : 40, 24, open ? 32 : 40, 56, open ? kP : '')}
+    <path d="${zig(50, 70, 40, 6, 5)}" class="s"/>${arrow(52, 52, 70, 28, '')}
+    <path d="M32 10 H6 V40 H14" class="s dash thin c${kP}"/>`;
+}
+
+// ---------- Tilstand ----------
+let comps = [], hoses = [], nid = 1, prevP = new Map();
+let dom = 'pn', task = null, ts = null, simT = 0;
+let sel = null, pending = null, drag = null, netInfo = null, notes = [];
+const held = new Map();
+const hy = {burst:false, deadT:0};
+const isHeld = id => [...held.values()].includes(id);
+const getC = id => comps.find(c => c.id===id);
+
+function newComp(type, x, y, label, props){
+  const t = T[type];
+  const c = {id:'c'+(nid++), type, x, y, label: label || nextLabel(t.pre), st:t.init(), props:{}};
+  if(type==='thr') c.props.open = 100;
+  if(type==='prv') c.props.set = 100;
+  if(t.cyl) c.props.load = 5;
+  if(type==='v32r'){ const cy = comps.find(k => T[k.type].cyl); c.props.cyl = cy ? cy.id : null; c.props.end = 'ute'; }
+  Object.assign(c.props, props || {});
+  comps.push(c);
+  return c;
+}
+function nextLabel(pre){
+  let i = 1; while(comps.some(c => c.label===pre+i)) i++;
+  return pre + i;
+}
+
+// ---------- Nettverk og simulering ----------
+function buildNets(){
+  const par = new Map(), adj = new Map();
+  const find = k => { let r = k; while(par.get(r)!==r) r = par.get(r); let x = k; while(par.get(x)!==r){ const n = par.get(x); par.set(x, r); x = n; } return r; };
+  const link = (a, b) => {
+    if(!par.has(a) || !par.has(b)) return;
+    const ra = find(a), rb = find(b); if(ra!==rb) par.set(ra, rb);
+    if(!adj.has(a)) adj.set(a, []); if(!adj.has(b)) adj.set(b, []);
+    adj.get(a).push(b); adj.get(b).push(a);
+  };
+  comps.forEach(c => T[c.type].ports.forEach(p => { const k = c.id+':'+p.id; par.set(k, k); }));
+  comps.forEach(c => T[c.type].links(c).forEach(([a, b]) => link(c.id+':'+a, c.id+':'+b)));
+  const hosed = new Set();
+  hoses.forEach(h => { link(h.a, h.b); hosed.add(h.a); hosed.add(h.b); });
+  const agg = new Map();
+  const g = r => { if(!agg.has(r)) agg.set(r, {src:0, atm:0, open:[], vent:[], tank:0, pump:0, prev:0, ports:[]}); return agg.get(r); };
+  comps.forEach(c => {
+    const t = T[c.type], fl = t.flags ? t.flags(c) : {};
+    t.ports.forEach(p => {
+      const k = c.id+':'+p.id, a = g(find(k)), f = fl[p.id];
+      a.ports.push(k);
+      if(f==='src') a.src = 1; if(f==='tank') a.tank = 1; if(f==='pump') a.pump = 1;
+      if(p.vent){ a.atm = 1; a.vent.push(c); }
+      else if(dom==='pn' && !hosed.has(k) && !p.noOpen) a.open.push([c, p]);
+      a.prev = Math.max(a.prev, prevP.get(k) || 0);
+    });
+  });
+  agg.forEach(a => {
+    if(dom==='pn'){
+      if(a.src){ if(a.atm || a.open.length){ a.k = 'L'; a.p = 0.4; } else { a.k = 'P'; a.p = PN_P; } }
+      else if(a.atm || a.open.length){ a.k = 'V'; a.p = 0; }
+      else { a.k = 'H'; a.p = a.prev; }
+    } else {
+      if(a.pump){ a.k = 'PUMP'; a.p = 0; }
+      else if(a.tank){ a.k = 'TANK'; a.p = 0; }
+      else { a.k = 'H'; a.p = a.prev; }
+    }
+  });
+  const net = k => agg.get(find(k));
+  return {find, agg, adj, hosed, net, p:(cid, pid) => net(cid+':'+pid).p};
+}
+function kcls(n){
+  if(!n) return '';
+  if(n.k==='P' || n.k==='PUMP') return 'P';
+  if(n.k==='TANK') return 'T';
+  if(n.k==='L') return 'L';
+  if(n.k==='H' && n.p > 0.5) return 'H';
+  return '';
+}
+
+function thrF(R, c, dir){
+  const t = T[c.type];
+  const inK = t.cyl===2 ? c.id+':'+(dir>0 ? 'A' : 'B') : (dir>0 ? c.id+':A' : null);
+  const outK = t.cyl===2 ? c.id+':'+(dir>0 ? 'B' : 'A') : (dir<0 ? c.id+':A' : null);
+  let f = 1, fin = false, fout = false;
+  const bfs = s => { const d = new Map([[s, 0]]), q = [s]; while(q.length){ const x = q.shift(); for(const y of (R.adj.get(x) || [])) if(!d.has(y)){ d.set(y, d.get(x)+1); q.push(y); } } return d; };
+  [[inK, true], [outK, false]].forEach(([k, isIn]) => {
+    if(!k) return;
+    const d = bfs(k);
+    comps.filter(r => r.type==='thr').forEach(r => {
+      const k1 = r.id+':1', k2 = r.id+':2';
+      if(!d.has(k1) || !d.has(k2)) return;
+      const near = d.get(k1) < d.get(k2) ? '1' : '2';
+      const throttled = isIn ? near==='1' : near==='2';
+      if(throttled && r.props.open < 100){ f *= Math.max(0.05, r.props.open/100); if(isIn) fin = true; else fout = true; }
+    });
+  });
+  return {f, fin, fout};
+}
+
+function solve(dt){
+  const N = [];
+  const note = (cl, t) => { if(!N.some(n => n[1]===t)) N.push([cl, t]); };
+  comps.forEach(c => {
+    const t = T[c.type];
+    if(t.act==='button') c.st.s = (isHeld(c.id) || c.st.latch) ? 0 : 1;
+    if(t.act==='roller'){
+      const cy = getC(c.props.cyl);
+      const on = cy && (c.props.end==='ute' ? cy.st.pos >= 0.985 : cy.st.pos <= 0.015);
+      c.st.s = (isHeld(c.id) || c.st.latch || on) ? 0 : 1;
+    }
+  });
+  let R;
+  for(let i = 0; i < 12; i++){
+    R = buildNets();
+    let ch = false;
+    comps.forEach(c => { const t = T[c.type]; if(t.pilot){ const v = t.pilot(c, pid => R.p(c.id, pid)); if(v!==c.st.s){ c.st.s = v; ch = true; } } });
+    if(!ch) break;
+  }
+  const K = (c, pid) => R.net(c.id+':'+pid);
+  const cyls = comps.filter(c => T[c.type].cyl);
+
+  // Hva vil sylindrene gjøre?
+  cyls.forEach(c => {
+    const t = T[c.type], a = K(c, 'A'), b = t.cyl===2 ? K(c, 'B') : null;
+    let dir = 0, slow = 1; c.st.stall = null; c.st.tf = null; c.st.moving = 0;
+    if(dom==='pn'){
+      const vent = n => n.k==='V' || n.k==='L';
+      if(t.cyl===2){
+        if(a.k==='P' && vent(b)) dir = 1;
+        else if(b.k==='P' && vent(a)) dir = -1;
+        else if(a.k==='P' && b.k==='P'){ dir = 1; slow = 0.3; if(c.st.pos < 1) note('warn', `${c.label}: Begge sider av stempelet har trykk. Sylinderen kryper ut fordi stempelsiden har størst areal.`); }
+      } else { if(a.k==='P') dir = 1; else if(vent(a)) dir = -1; }
+    } else {
+      if(t.cyl===2){
+        if(a.k==='PUMP' && b.k==='TANK') dir = 1;
+        else if(b.k==='PUMP' && a.k==='TANK') dir = -1;
+        else if(a.k==='PUMP' && b.k==='H' && c.st.pos < 1){ c.st.stall = 'lock'; note('warn', `${c.label} kan ikke gå ut: oljen på stangsiden (B) har ingen vei ut. Koble B til tank gjennom ventilen.`); }
+        else if(b.k==='PUMP' && a.k==='H' && c.st.pos > 0){ c.st.stall = 'lock'; note('warn', `${c.label} kan ikke gå inn: oljen på stempelsiden (A) har ingen vei ut. Koble A til tank gjennom ventilen.`); }
+      } else { if(a.k==='PUMP') dir = 1; else if(a.k==='TANK') dir = -1; }
+    }
+    if((dir > 0 && c.st.pos >= 1) || (dir < 0 && c.st.pos <= 0)) dir = 0;
+    c.st.want = dir; c.st.slow = slow;
+  });
+
+  // Hydraulikk: trykket i pumpeledningen
+  let dead = false;
+  if(dom==='hy'){
+    const pumps = comps.filter(c => c.type==='pump');
+    if(pumps.length && !pumps.some(p => p.st.on) && !hy.burst) note('info', 'Pumpa står. Klikk på motoren (M) for å starte den.');
+    const prvs = comps.filter(c => c.type==='prv');
+    prvs.forEach(v => v.st.open = false);
+    R.agg.forEach((a, r) => {
+      if(a.k!=='PUMP') return;
+      const here = prvs.filter(v => R.find(v.id+':P')===r);
+      const valid = here.filter(v => R.net(v.id+':T').k==='TANK');
+      here.filter(v => !valid.includes(v)).forEach(v => note('warn', `T-porten på ${v.label} er ikke koblet til tank. Da kan ventilen ikke slippe ut olje.`));
+      const set = valid.length ? Math.min(...valid.map(v => v.props.set)) : Infinity;
+      const dump = () => { valid.forEach(v => { if(v.props.set===set) v.st.open = true; }); note('info', `Oljen går over trykkbegrensningsventilen ved ${set} bar. Energien blir til varme i oljen.`); };
+      const deadhead = () => { dead = true; a.p = Math.min(400, 120 + hy.deadT*400); };
+      const cands = cyls.filter(c => c.st.want && R.find(c.id+':'+(c.st.want > 0 || T[c.type].cyl===1 ? 'A' : 'B'))===r && !(T[c.type].cyl===1 && c.st.want < 0));
+      if(a.tank){ a.p = 3; cands.forEach(c => c.st.want = 0); note('info', 'Oljen går rett tilbake til tank. Pumpa går nesten uten trykk (avlastet).'); return; }
+      if(cands.length){
+        cands.forEach(c => c.st.req = c.st.want > 0 ? c.props.load*1000/A1('hy')*10 : 5);
+        const best = cands.reduce((m, c) => c.st.req < m.st.req ? c : m);
+        cands.forEach(c => { if(c!==best) c.st.want = 0; });
+        if(best.st.req > set){
+          best.st.want = 0; best.st.stall = 'load'; a.p = set; dump();
+          note('warn', `${best.label} klarer ikke lasten på ${fmt(best.props.load)} kN. Det trengs ${Math.round(best.st.req)} bar, men trykkbegrensningsventilen åpner ved ${set} bar.`);
+        } else {
+          const tf = thrF(R, best, best.st.want); best.st.tf = tf;
+          if(tf.f < 1){
+            if(set < Infinity){ a.p = set; dump(); note('info', 'Strupingen holder igjen oljen. Overskuddet fra pumpa går over trykkbegrensningsventilen.'); }
+            else { best.st.want = 0; deadhead(); }
+          } else a.p = best.st.req;
+        }
+      } else if(set < Infinity){ a.p = set; dump(); }
+      else deadhead();
+    });
+    if(dead){
+      hy.deadT += dt;
+      note('bad', 'Trykket stiger! Pumpa er en fortrengningspumpe, og oljen har ingen vei ut. Uten trykkbegrensningsventil sprekker noe.');
+      if(hy.deadT > 0.9){ hy.burst = true; pumps.forEach(p => p.st.on = false); }
+    } else hy.deadT = 0;
+    if(hy.burst) note('bad', 'En slange sprakk fordi trykket ble for høyt, og pumpa stoppet. Monter en trykkbegrensningsventil med T til tank. Klikk på motoren for å starte igjen.');
+  }
+
+  // Bevegelse
+  cyls.forEach(c => {
+    const t = T[c.type], dir = c.st.want;
+    if(!dir){ c.st.mvDir = 0; return; }
+    const tf = c.st.tf || thrF(R, c, dir);
+    let base;
+    if(dom==='pn') base = t.cyl===1 ? (dir > 0 ? 0.8 : 0.9) : (dir > 0 ? 0.8 : 0.8*A2('pn')/A1('pn'));
+    else base = CYL.hy.stroke*(dir > 0 ? A1('hy') : A2('hy'))/(Q_PUMP*1e6/60);
+    const time = base/(tf.f*c.st.slow);
+    if(dir!==c.st.mvDir){ c.st.mvDir = dir; c.st.mvT = 0; c.st.mvOk = dir > 0 ? c.st.pos <= 0.02 : c.st.pos >= 0.98; c.st.mvOut = false; c.st.mvIn = false; }
+    c.st.mvT += dt; if(tf.fout) c.st.mvOut = true; if(tf.fin) c.st.mvIn = true;
+    c.st.pos = Math.min(1, Math.max(0, c.st.pos + dir*dt/time));
+    c.st.speed = CYL[dom].stroke/time; c.st.moving = dir;
+    if(dom==='pn' && t.cyl===2 && tf.fin && !tf.fout) note('info', `${c.label}: Du struper tilluften. For dobbeltvirkende sylindere gir avluftstruping jevnere fart.`);
+    if((dir > 0 && c.st.pos >= 1) || (dir < 0 && c.st.pos <= 0)){
+      if(c.st.mvOk){
+        if(dir > 0){ c.st.lastExt = c.st.mvT; c.st.extOut = c.st.mvOut; c.st.extAt = simT; }
+        else { c.st.lastRet = c.st.mvT; c.st.retAt = simT; }
+      }
+      c.st.mvDir = 0;
+    }
+  });
+
+  if(dom==='pn') R.agg.forEach(a => {
+    if(a.k!=='L') return;
+    if(a.open.length){ const [c, p] = a.open[0]; note('warn', `Luft blåser ut av port ${p.id.replace(/[ab]$/, '')} på ${c.label}, som ikke er koblet til noe.`); }
+    else if(a.vent.length) note('warn', `Trykkluften går rett ut gjennom utluften på ${a.vent[0].label}. Sjekk koblingene.`);
+  });
+  R.agg.forEach(a => a.ports.forEach(k => prevP.set(k, a.p)));
+  netInfo = R; notes = N;
+}
+
+// ---------- Tegning av brettet ----------
+const ws = $('ws');
+const DIR = {u:[0,-1], d:[0,1], l:[-1,0], r:[1,0]};
+function pinfo(k){
+  const [cid, pid] = k.split(':'), c = getC(cid); if(!c) return null;
+  const p = T[c.type].ports.find(q => q.id===pid); if(!p) return null;
+  return {x:c.x+p.x, y:c.y+p.y, d:p.d};
+}
+function hosePath(a, b){
+  const L = 14, s = [a.x+DIR[a.d][0]*L, a.y+DIR[a.d][1]*L], e = [b.x+DIR[b.d][0]*L, b.y+DIR[b.d][1]*L];
+  const av = a.d==='u' || a.d==='d', bv = b.d==='u' || b.d==='d';
+  let mid;
+  if(av && bv){ const my = (s[1]+e[1])/2; mid = `L${s[0]} ${my} L${e[0]} ${my}`; }
+  else if(!av && !bv){ const mx = (s[0]+e[0])/2; mid = `L${mx} ${s[1]} L${mx} ${e[1]}`; }
+  else if(av) mid = `L${s[0]} ${e[1]}`;
+  else mid = `L${e[0]} ${s[1]}`;
+  return `M${a.x} ${a.y} L${s[0]} ${s[1]} ${mid} L${e[0]} ${e[1]} L${b.x} ${b.y}`;
+}
+function render(){
+  const R = netInfo;
+  const kc = k => (R && R.net(k)) ? kcls(R.net(k)) : '';
+  ws.setAttribute('class', dom);
+  let s = `<defs><pattern id="gr" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" class="gd"/></pattern></defs>
+    <rect width="${VW}" height="${VH}" fill="url(#gr)" data-bg="1"/>`;
+  hoses.forEach(h => {
+    const a = pinfo(h.a), b = pinfo(h.b); if(!a || !b) return;
+    const d = hosePath(a, b), k = kc(h.a);
+    if(sel && sel.t==='hose' && sel.id===h.id) s += `<path d="${d}" class="hose hsel"/>`;
+    s += `<path d="${d}" class="hose h${k || '0'}"/>`;
+  });
+  hoses.forEach(h => { const a = pinfo(h.a), b = pinfo(h.b); if(a && b) s += `<path d="${hosePath(a, b)}" class="hhit" data-hose="${h.id}"/>`; });
+  comps.forEach(c => {
+    const t = T[c.type];
+    const X = {cls: pid => kc(c.id+':'+pid), p: pid => (R && R.net(c.id+':'+pid)) ? R.net(c.id+':'+pid).p : 0};
+    const isSel = sel && sel.t==='comp' && sel.id===c.id;
+    s += `<g transform="translate(${c.x},${c.y})" data-comp="${c.id}"><rect x="-6" y="-6" width="${t.W+12}" height="${t.H+12}" rx="6" class="${isSel ? 'selbox' : 'hit'}"/>${t.draw(c, X)}</g>`;
+  });
+  const hosed = R ? R.hosed : new Set();
+  comps.forEach(c => T[c.type].ports.forEach(p => {
+    if(p.vent) return;
+    const k = c.id+':'+p.id, x = c.x+p.x, y = c.y+p.y, cn = hosed.has(k);
+    s += `<circle cx="${x}" cy="${y}" r="4.5" class="port${cn ? ' cn cn'+kc(k) : ''}${pending===k ? ' pend' : ''}"/>`;
+    if(pending===k) s += `<circle cx="${x}" cy="${y}" r="10" class="pendring"/>`;
+    s += `<circle cx="${x}" cy="${y}" r="11" class="phit" data-port="${k}"/>`;
+  }));
+  ws.innerHTML = s;
+}
+
+// ---------- Interaksjon ----------
+function svgPt(e){
+  const pt = ws.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+  return pt.matrixTransform(ws.getScreenCTM().inverse());
+}
+function setHint(){
+  $('hint').textContent = pending ? 'Klikk på porten slangen skal gå til. Esc avbryter.' : 'Klikk på en port for å starte en slange. Dra komponentene for å flytte dem.';
+}
+ws.addEventListener('pointerdown', e => {
+  const el = e.target.closest('[data-port],[data-act],[data-motor],[data-hose],[data-comp]');
+  if(!el){ pending = null; select(null); setHint(); return; }
+  e.preventDefault();
+  if(el.dataset.port){
+    const k = el.dataset.port;
+    if(!pending) pending = k;
+    else if(pending===k) pending = null;
+    else {
+      if(pending.split(':')[0]!==k.split(':')[0] && !hoses.some(h => (h.a===pending && h.b===k) || (h.a===k && h.b===pending)))
+        hoses.push({id:'h'+(nid++), a:pending, b:k});
+      pending = null;
+    }
+    setHint(); return;
+  }
+  if(el.dataset.act){
+    const [cid, side] = el.dataset.act.split(':'), c = getC(cid), t = T[c.type];
+    if(t.act==='button' || t.act==='roller'){
+      if(e.shiftKey){ c.st.latch = !c.st.latch; }
+      else held.set(e.pointerId, cid);
+    } else if(t.act==='toggle') c.st.s = c.st.s===0 ? 1 : 0;
+    else if(t.act==='three') c.st.s = side==='L' ? (c.st.s===0 ? 1 : 0) : (c.st.s===2 ? 1 : 2);
+    select({t:'comp', id:cid});
+    return;
+  }
+  if(el.dataset.motor){
+    const c = getC(el.dataset.motor);
+    if(hy.burst){ hy.burst = false; hy.deadT = 0; c.st.on = true; }
+    else c.st.on = !c.st.on;
+    select({t:'comp', id:c.id});
+    return;
+  }
+  if(el.dataset.hose){ select({t:'hose', id:el.dataset.hose}); return; }
+  if(el.dataset.comp){
+    const c = getC(el.dataset.comp), p = svgPt(e);
+    drag = {id:c.id, sx:p.x, sy:p.y, ox:c.x, oy:c.y, moved:false, pid:e.pointerId};
+    select({t:'comp', id:c.id});
+  }
+});
+window.addEventListener('pointermove', e => {
+  if(!drag || e.pointerId!==drag.pid) return;
+  const p = svgPt(e), c = getC(drag.id); if(!c) return;
+  const dx = p.x - drag.sx, dy = p.y - drag.sy;
+  if(!drag.moved && Math.hypot(dx, dy) < 4) return;
+  drag.moved = true;
+  const t = T[c.type];
+  c.x = Math.max(0, Math.min(VW - t.W, Math.round((drag.ox + dx)/10)*10));
+  c.y = Math.max(0, Math.min(VH - t.H, Math.round((drag.oy + dy)/10)*10));
+});
+const release = e => { held.delete(e.pointerId); if(drag && drag.pid===e.pointerId) drag = null; };
+window.addEventListener('pointerup', release);
+window.addEventListener('pointercancel', release);
+window.addEventListener('blur', () => { held.clear(); drag = null; });
+window.addEventListener('keydown', e => {
+  if(e.target.closest('input,select,textarea')) return;
+  if(e.key==='Escape'){ pending = null; setHint(); }
+  if((e.key==='Delete' || e.key==='Backspace') && sel){ e.preventDefault(); removeSel(); }
+});
+function removeSel(){
+  if(!sel) return;
+  if(sel.t==='hose') hoses = hoses.filter(h => h.id!==sel.id);
+  else {
+    hoses = hoses.filter(h => !h.a.startsWith(sel.id+':') && !h.b.startsWith(sel.id+':'));
+    comps = comps.filter(c => c.id!==sel.id);
+    comps.forEach(c => { if(c.type==='v32r' && c.props.cyl===sel.id) c.props.cyl = null; });
+    [...held].forEach(([k, v]) => { if(v===sel.id) held.delete(k); });
+    if(pending && pending.startsWith(sel.id+':')) pending = null;
+  }
+  select(null);
+}
+
+// ---------- Panel: valgt komponent ----------
+let selSig = '';
+function select(s){ sel = s; selSig = ''; }
+function selSignature(){
+  if(!sel) return 'none';
+  if(sel.t==='hose') return 'h'+sel.id;
+  const c = getC(sel.id); if(!c) return 'gone';
+  return [c.id, c.st.s, c.st.latch, c.st.on, hy.burst, comps.filter(k => T[k.type].cyl).map(k => k.id+k.label).join()].join('|');
+}
+function renderSel(){
+  const sig = selSignature(); if(sig===selSig) return; selSig = sig;
+  const b = $('selbody'); b.innerHTML = '';
+  const add = html => { const d = document.createElement('div'); d.innerHTML = html; while(d.firstChild) b.append(d.firstChild); };
+  if(!sel || sig==='gone'){ if(sig==='gone') sel = null; add('<p class="muted">Klikk på en komponent eller en slange for å se hva den gjør og endre innstillinger.</p>'); return; }
+  if(sel.t==='hose'){
+    const h = hoses.find(x => x.id===sel.id); if(!h){ sel = null; selSig = ''; return renderSel(); }
+    const nm = k => { const [cid, pid] = k.split(':'); const c = getC(cid); return `port ${pid.replace(/[ab]$/, '')} på ${c.label}`; };
+    add(`<h3>Slange</h3><p>Fra ${nm(h.a)} til ${nm(h.b)}.</p><div class="row"><button class="btn danger" type="button" data-do="del">Fjern slangen</button></div>`);
+  } else {
+    const c = getC(sel.id), t = T[c.type];
+    add(`<h3>${c.label}: ${t.name}</h3><p>${t.info}</p>`);
+    if(t.act==='button' || t.act==='roller') add(`<div class="row"><button class="btn ${c.st.latch ? 'on' : ''}" type="button" data-do="latch">${c.st.latch ? 'Slipp knappen' : 'Lås ' + (t.act==='roller' ? 'rullen' : 'knappen') + ' inne'}</button></div>`);
+    if(t.act==='toggle') add(`<div class="row"><button class="btn" type="button" data-do="toggle">Legg om hendelen</button><span class="muted">Nå: ${c.st.s===0 ? 'omlagt' : 'hvilestilling'}</span></div>`);
+    if(t.act==='three') add(`<div class="tabs" role="group" aria-label="Hendelstilling">${['Venstre rute','Midtstilling','Høyre rute'].map((l, i) => `<button type="button" data-do="pos${i}" aria-pressed="${c.st.s===i}">${l}</button>`).join('')}</div>`);
+    if(c.type==='pump') add(`<div class="row"><button class="btn ${c.st.on && !hy.burst ? 'on' : 'primary'}" type="button" data-do="motor">${hy.burst ? 'Reparer og start pumpa' : c.st.on ? 'Stopp pumpa' : 'Start pumpa'}</button></div>`);
+    if(c.type==='thr') add(`<label class="field"><span>Åpning på struperen: <b data-v>${c.props.open} %</b></span><input type="range" min="5" max="100" step="5" value="${c.props.open}" data-prop="open" data-unit=" %"></label>`);
+    if(c.type==='prv') add(`<label class="field"><span>Åpningstrykk: <b data-v>${c.props.set} bar</b></span><input type="range" min="20" max="200" step="10" value="${c.props.set}" data-prop="set" data-unit=" bar"></label>`);
+    if(t.cyl && dom==='hy') add(`<label class="field"><span>Last som sylinderen skal skyve ut: <b data-v>${fmt(c.props.load)} kN</b></span><input type="range" min="0" max="20" step="0.5" value="${c.props.load}" data-prop="load" data-unit=" kN"></label>`);
+    if(c.type==='v32r'){
+      const cy = comps.filter(k => T[k.type].cyl);
+      add(`<div class="row"><label class="field"><span>Aktiveres av</span><select data-prop="cyl"><option value="">Ingen</option>${cy.map(k => `<option value="${k.id}" ${k.id===c.props.cyl ? 'selected' : ''}>${k.label}</option>`).join('')}</select></label>
+        <label class="field"><span>Når sylinderen står</span><select data-prop="end"><option value="ute" ${c.props.end==='ute' ? 'selected' : ''}>ute</option><option value="inne" ${c.props.end==='inne' ? 'selected' : ''}>inne</option></select></label></div>`);
+    }
+    add(`<div class="row"><button class="btn danger" type="button" data-do="del">Fjern komponenten</button></div>`);
+  }
+}
+$('selbody').addEventListener('click', e => {
+  const btn = e.target.closest('[data-do]'); if(!btn || !sel) return;
+  const c = sel.t==='comp' ? getC(sel.id) : null, d = btn.dataset.do;
+  if(d==='del') removeSel();
+  if(d==='latch') c.st.latch = !c.st.latch;
+  if(d==='toggle') c.st.s = c.st.s===0 ? 1 : 0;
+  if(d.startsWith('pos')) c.st.s = +d.slice(3);
+  if(d==='motor'){ if(hy.burst){ hy.burst = false; hy.deadT = 0; c.st.on = true; } else c.st.on = !c.st.on; }
+  selSig = '';
+});
+$('selbody').addEventListener('input', e => {
+  const el = e.target; if(!el.dataset.prop || !sel) return;
+  const c = getC(sel.id), k = el.dataset.prop;
+  if(el.type==='range'){ c.props[k] = +el.value; const v = el.closest('.field').querySelector('[data-v]'); if(v) v.textContent = (k==='load' ? fmt(+el.value) : el.value) + el.dataset.unit; }
+  else c.props[k] = el.value || null;
+});
+
+// ---------- Målinger ----------
+function relSet(){ const v = comps.filter(c => c.type==='prv'); return v.length ? Math.min(...v.map(c => c.props.set)) : null; }
+function renderMeas(){
+  if(!netInfo) return;
+  let h = '';
+  const hideCalc = task && task.ask && !(ts && ts.ok[1]);
+  comps.filter(c => T[c.type].cyl).forEach(c => {
+    const t = T[c.type], g = CYL[dom];
+    const pa = netInfo.net(c.id+':A').p, pb = t.cyl===2 ? netInfo.net(c.id+':B').p : null;
+    const mv = c.st.moving > 0 ? 'går ut' : c.st.moving < 0 ? 'går inn' : c.st.pos >= 0.98 ? 'står ute' : c.st.pos <= 0.02 ? 'står inne' : 'står stille';
+    const a1 = A1(dom), a2 = A2(dom);
+    const pm = dom==='pn' ? PN_P : relSet();
+    h += `<div class="mc"><div class="mh">${c.label} <span>${t.name.toLowerCase()}, ${g.text}</span></div>
+      <div class="r"><span>Stilling</span><span>${Math.round(c.st.pos*g.stroke)} mm, ${mv}</span></div>
+      <div class="r"><span>Trykk ${t.cyl===2 ? 'stempelside / stangside' : 'stempelside'}</span><span>${fmt(pa)}${pb!==null ? ' / ' + fmt(pb) : ''} bar</span></div>
+      <div class="r"><span>Fart</span><span>${c.st.moving ? Math.round(c.st.speed) + ' mm/s' : '–'}</span></div>
+      <div class="r"><span>Siste hele slag ut / inn</span><span>${c.st.lastExt ? fmt(c.st.lastExt, 2) + ' s' : '–'} / ${c.st.lastRet ? fmt(c.st.lastRet, 2) + ' s' : '–'}</span></div>`;
+    if(hideCalc) h += `<div class="calc">Kraften regner du ut selv i oppgaven.</div>`;
+    else if(pm!==null){
+      h += `<div class="calc">Kraft ut ved ${pm} bar: F = p · A = ${fmt(pm/10)} N/mm² · ${Math.round(a1)} mm² = ${Math.round(pm/10*a1)} N${t.cyl===1 ? ' minus fjærkraften' : ''}</div>`;
+      if(t.cyl===2) h += `<div class="calc">Kraft inn: F = ${fmt(pm/10)} N/mm² · ${Math.round(a2)} mm² = ${Math.round(pm/10*a2)} N</div>`;
+    }
+    h += `</div>`;
+  });
+  const gs = comps.filter(c => c.type==='gauge');
+  if(gs.length) h += `<div class="mc"><div class="mh">Manometer</div>${gs.map(c => `<div class="r"><span>${c.label}</span><span>${fmt(netInfo.net(c.id+':M').p)} bar</span></div>`).join('')}</div>`;
+  comps.filter(c => c.type==='pump').forEach(c => {
+    const n = netInfo.net(c.id+':P');
+    const st = hy.burst ? 'stoppet, slangebrudd' : !c.st.on ? 'av' : `${fmt(n.p, 0)} bar`;
+    h += `<div class="mc"><div class="mh">${c.label} <span>pumpe, 8 l/min</span></div><div class="r"><span>Trykk</span><span>${st}</span></div></div>`;
+  });
+  if(!h) h = '<p class="muted">Legg til en sylinder eller et manometer for å se målinger.</p>';
+  if($('meas').innerHTML!==h) $('meas').innerHTML = h;
+}
+let notesSig = '';
+function renderNotes(){
+  let list = notes.slice();
+  if(!list.length) list = [['info', dom==='pn' ? 'Ingen feil. Betjen ventilene og se hva som skjer.' : 'Ingen feil. Betjen ventilen og se hva som skjer.']];
+  const sig = JSON.stringify(list); if(sig===notesSig) return; notesSig = sig;
+  $('notes').innerHTML = '';
+  list.forEach(([c, t]) => { const d = document.createElement('div'); d.className = 'note ' + c; d.textContent = t; $('notes').append(d); });
+}
+
+// ---------- Oppgaver ----------
+const X = {
+  c: l => comps.find(c => c.label===l),
+  pos: l => { const c = X.c(l); return c && T[c.type].cyl ? c.st.pos : 0.5; },
+  pr: l => { const c = X.c(l); return !!c && T[c.type].act==='button' && c.st.s===0; },
+  s: l => { const c = X.c(l); return c ? c.st.s : null; },
+  g: l => { const c = X.c(l); return (c && netInfo && netInfo.net(c.id+':M')) || {k:'', p:0}; },
+};
+const HY_BASE = [
+  {t:'cyl2', k:'A1', x:360, y:30}, {t:'gauge', k:'M1', x:180, y:300},
+  {t:'tank', k:'T1', x:470, y:320}, {t:'pump', k:'P1', x:340, y:400},
+  {t:'prv', k:'V2', x:600, y:330}, {t:'tank', k:'T2', x:612, y:470},
+];
+const TASKS = [
+  {id:'p1', dom:'pn', title:'1. Enkeltvirkende sylinder',
+    desc:'Koble opp slik at sylinderen A1 går ut når du holder inne knappen på S1, og går tilbake når du slipper.',
+    hint:'Trykkluft (Z1) til port 1 på S1. Port 2 på S1 til port A på sylinderen. Port 3 er utluft og har lyddemper, den kobles ikke.',
+    comps:[{t:'cyl1', k:'A1', x:330, y:60}, {t:'v32', k:'S1', x:300, y:250}, {t:'src', k:'Z1', x:362, y:440}],
+    checks:['Sylinderen går ut når S1 holdes inne', 'Sylinderen går tilbake når S1 slippes'],
+    tick:ok => { const p = X.pos('A1'), s = X.pr('S1'); if(p >= .98 && s) ok(0); if(ts.ok[0] && p <= .02 && !s) ok(1); }},
+  {id:'p2', dom:'pn', title:'2. Dobbeltvirkende sylinder',
+    desc:'Sylinderen skal stå inne når hendelen på S1 er i hvilestilling, og gå ut når du legger om hendelen. Legg hendelen tilbake, så skal den gå inn igjen.',
+    hint:'Port 1 til trykkluft. Port 4 til stempelsiden (A) og port 2 til stangsiden (B). I hvilestilling går 1 → 2, så sylinderen holdes inne. Port 3 og 5 er utluft.',
+    comps:[{t:'cyl2', k:'A1', x:330, y:60}, {t:'v52h', k:'S1', x:330, y:250}, {t:'src', k:'Z1', x:398, y:440}],
+    checks:['Sylinderen går ut når hendelen er lagt om', 'Sylinderen går inn igjen i hvilestilling'],
+    tick:ok => { const p = X.pos('A1'); if(p >= .98 && X.s('S1')===0) ok(0); if(ts.ok[0] && p <= .02 && X.s('S1')===1) ok(1); }},
+  {id:'p3', dom:'pn', title:'3. Hastighetsregulering',
+    desc:'Sylinderen skal gå sakte ut (3 sekunder eller mer) og raskt inn (under 1,5 sekunder). Bruk strupe-tilbakeslagsventilen R1, og still åpningen i panelet når du har valgt den.',
+    hint:'Sett R1 mellom port 2 på ventilen og stangsiden (B) av sylinderen, med port 2 på R1 mot sylinderen. Når sylinderen går ut, presses luften ut av B og må gjennom struperen (avluftstruping). Når den går inn, går luften fritt gjennom tilbakeslagsventilen. Skru åpningen ned mot 20 %.',
+    comps:[{t:'cyl2', k:'A1', x:330, y:40}, {t:'thr', k:'R1', x:459, y:150}, {t:'v52h', k:'S1', x:330, y:300}, {t:'src', k:'Z1', x:398, y:470}],
+    checks:['Går ut på 3 sekunder eller mer', 'Går inn igjen på under 1,5 sekunder', 'Strupingen er på avluften (avluftstruping)'],
+    tick:ok => { const c = X.c('A1'); if(!c) return; const e = c.st.lastExt || 0;
+      if(e >= 3) ok(0); if(e >= 3 && c.st.extOut) ok(2);
+      if(e >= 3 && c.st.retAt > c.st.extAt && c.st.lastRet < 1.5) ok(1); }},
+  {id:'p4', dom:'pn', title:'4. ELLER-funksjon',
+    desc:'Sylinderen skal gå ut når S1 ELLER S2 trykkes. Tenk på en dør som kan åpnes fra to steder. Prøv gjerne først uten vekselventilen, med bare en T-kobling. Hva skjer?',
+    hint:'Begge 3/2-ventilene får trykkluft på port 1. Port 2 fra S1 går til den ene inngangen på vekselventilen V1, port 2 fra S2 til den andre. Utgangen 2 på V1 går til sylinderen. Uten vekselventil blåser luften ut gjennom utluften på ventilen som ikke er trykket.',
+    comps:[{t:'cyl1', k:'A1', x:400, y:40}, {t:'or', k:'V1', x:386, y:170}, {t:'v32', k:'S1', x:150, y:300}, {t:'v32', k:'S2', x:560, y:300}, {t:'src', k:'Z1', x:417, y:480}],
+    checks:['Sylinderen går ut med bare S1 trykket', 'Sylinderen går ut med bare S2 trykket'],
+    tick:ok => { const a = X.pr('S1'), b = X.pr('S2'), p = X.pos('A1'); if(p >= .98 && a && !b) ok(0); if(p >= .98 && b && !a) ok(1); }},
+  {id:'p5', dom:'pn', title:'5. OG-funksjon (tohåndsbetjening)',
+    desc:'Sylinderen skal bare gå ut når både S1 og S2 holdes inne samtidig. Hold knappene med to fingre på skjermen, eller lås den ene inne med Shift-klikk eller knappen i panelet.',
+    hint:'S1 og S2 får trykkluft på port 1. Port 2 fra hver av dem går til hver sin inngang på totrykkventilen V2. Utgangen 2 på V2 går til styreporten 14 på V1. V1 får trykkluft på 1 og styrer sylinderen: 4 til A og 2 til B.',
+    comps:[{t:'cyl2', k:'A1', x:420, y:20}, {t:'v52p', k:'V1', x:440, y:170}, {t:'and', k:'V2', x:280, y:250}, {t:'v32', k:'S1', x:100, y:380}, {t:'v32', k:'S2', x:330, y:380}, {t:'src', k:'Z1', x:600, y:480}],
+    checks:['Sylinderen går ut når S1 og S2 holdes inne', 'Den står inne når bare S1 holdes (i 1,5 s)', 'Den står inne når bare S2 holdes (i 1,5 s)'],
+    tick:(ok, dt) => { const a = X.pr('S1'), b = X.pr('S2'), p = X.pos('A1');
+      if(p >= .98 && a && b) ok(0);
+      ts.ta = (a && !b && p <= .02) ? (ts.ta || 0) + dt : 0; ts.tb = (b && !a && p <= .02) ? (ts.tb || 0) + dt : 0;
+      if(ts.ok[0] && ts.ta > 1.5) ok(1); if(ts.ok[0] && ts.tb > 1.5) ok(2); }},
+  {id:'p6', dom:'pn', title:'6. Automatisk frem og tilbake',
+    desc:'Når S1 slås på, skal sylinderen gå frem og tilbake helt av seg selv. Rulleventilen B1 merker at sylinderen er inne, og B2 merker at den er ute. Når S1 slås av, skal sylinderen stoppe inne.',
+    hint:'S1 port 2 til port 1 på B1. B1 port 2 til styreport 14 på V1. B2 får trykkluft på port 1, og port 2 går til styreport 12 på V1. V1 får trykkluft på 1, og 4 går til A, 2 til B. B1 er satt i serie med S1, så signalet for å gå ut kommer bare når S1 er på.',
+    comps:[{t:'cyl2', k:'A1', x:440, y:20}, {t:'v52pp', k:'V1', x:430, y:170}, {t:'v32r', k:'B1', x:130, y:300, props:{cyl:'A1', end:'inne'}}, {t:'v32r', k:'B2', x:700, y:300, props:{cyl:'A1', end:'ute'}}, {t:'v32l', k:'S1', x:130, y:440}, {t:'src', k:'Z1', x:500, y:520}],
+    checks:[() => `Går frem og tilbake av seg selv tre ganger (${Math.min(3, ts.cyc || 0)} av 3)`, 'Stopper inne når S1 slås av'],
+    tick:(ok, dt) => { const c = X.c('A1'); if(!c) return;
+      ts.cyc = ts.cyc || 0;
+      if(c.st.pos >= .98) ts.out = true;
+      if(ts.out && c.st.pos <= .02){ ts.cyc++; ts.out = false; }
+      if(ts.cyc >= 3) ok(0);
+      ts.rest = (ts.ok[0] && X.s('S1')===1 && c.st.pos <= .02) ? (ts.rest || 0) + dt : 0;
+      if(ts.rest > 2) ok(1); }},
+  {id:'h1', dom:'hy', title:'7. Hydraulisk grunnkrets',
+    desc:'Koble pumpe, trykkbegrensningsventil, 4/3-ventil og dobbeltvirkende sylinder. Start pumpa ved å klikke på motoren M. Bruk hendelen på V1 til å kjøre sylinderen ut, inn og stoppe den på halvveien.',
+    hint:'P på pumpa til P på V1 og P på trykkbegrensningsventilen V2. T på V1 til tanken T1, og T på V2 til tanken T2. A på V1 til stempelsiden (A) og B til stangsiden (B). Koble manometeret M1 på trykkledningen fra pumpa.',
+    comps:[...HY_BASE, {t:'v43c', k:'V1', x:340, y:200}],
+    checks:['Sylinderen går helt ut', 'Sylinderen går helt inn igjen', 'Sylinderen står stille på halvveien med ventilen i midtstilling', 'Manometeret viser åpningstrykket når sylinderen står i endestilling'],
+    tick:(ok, dt) => { const p = X.pos('A1'), v = X.s('V1');
+      if(p >= .98) ok(0); if(ts.ok[0] && p <= .02) ok(1);
+      ts.mid = (v===1 && p > .15 && p < .85) ? (ts.mid || 0) + dt : 0; if(ts.mid > 1) ok(2);
+      const g = X.g('M1'), set = relSet() || 100;
+      if(g.k==='PUMP' && g.p >= set-1 && (p >= .98 || p <= .02) && v!==1) ok(3); }},
+  {id:'h2', dom:'hy', title:'8. Avlastning i midtstilling',
+    desc:'Med lukket midtstilling går all oljen over trykkbegrensningsventilen når sylinderen står stille. Det blir varme og energitap. Her har V1 tandem-midtstilling, der P går rett til T. Koble opp og se hva manometeret viser i midtstilling.',
+    hint:'Koble som i oppgave 7. Når V1 står i midten, går oljen fra P rett til T, og pumpa jobber nesten uten trykk. Sylinderen står likevel låst fordi A og B er stengt.',
+    comps:[...HY_BASE, {t:'v43t', k:'V1', x:340, y:200}],
+    checks:['Trykket er under 10 bar med ventilen i midtstilling og pumpa på', 'Sylinderen går helt ut', 'Sylinderen går helt inn igjen'],
+    tick:(ok, dt) => { const p = X.pos('A1'), g = X.g('M1');
+      ts.lo = (X.s('V1')===1 && g.k==='PUMP' && g.p < 10) ? (ts.lo || 0) + dt : 0; if(ts.lo > 1) ok(0);
+      if(p >= .98) ok(1); if(ts.ok[1] && p <= .02) ok(2); }},
+  {id:'h3', dom:'hy', title:'9. Kraft og trykk',
+    desc:'Kretsen er koblet ferdig. Trykkbegrensningsventilen V2 er stilt på 100 bar, og sylinderen har stempeldiameter 40 mm. Velg sylinderen og øk lasten til den ikke klarer å gå ut. Regn så ut den største lasten den klarer med F = p · A.',
+    hint:'A = π · d² / 4 = π · 40² / 4 ≈ 1257 mm². 100 bar = 10 N/mm². F = 10 N/mm² · 1257 mm². Svaret skal i kN (1 kN = 1000 N).',
+    comps:[...HY_BASE, {t:'v43c', k:'V1', x:340, y:200}],
+    hoses:[['P1','P','V1','P'], ['P1','P','V2','P'], ['V2','T','T2','T'], ['V1','T','T1','T'], ['V1','A','A1','A'], ['V1','B','A1','B'], ['M1','M','P1','P']],
+    ask:true,
+    checks:['Sylinderen stopper fordi lasten er for stor', 'Riktig svar: største last ved 100 bar'],
+    tick:ok => { const c = X.c('A1'); if(c && c.st.stall==='load') ok(0); }},
+  {id:'fp', dom:'pn', title:'Fri bygging: pneumatikk', desc:'Bygg din egen krets. Legg til komponenter fra listen over brettet.', hint:'Start med trykkluft, en ventil og en sylinder. Klikk på en komponent for å lese hva den gjør.',
+    comps:[{t:'src', k:'Z1', x:460, y:520}], checks:[]},
+  {id:'fh', dom:'hy', title:'Fri bygging: hydraulikk', desc:'Bygg din egen krets. Legg til komponenter fra listen over brettet. Husk at pumpa alltid trenger en trykkbegrensningsventil.', hint:'Start med pumpe, trykkbegrensningsventil, tank, en 4/3-ventil og en sylinder.',
+    comps:[{t:'pump', k:'P1', x:440, y:470}, {t:'tank', k:'T1', x:640, y:540}], checks:[]},
+];
+
+function loadTask(id){
+  task = TASKS.find(t => t.id===id) || TASKS[0];
+  dom = task.dom;
+  comps = []; hoses = []; prevP = new Map(); held.clear(); pending = null; drag = null; sel = null; selSig = '';
+  hy.burst = false; hy.deadT = 0; simT = 0;
+  task.comps.forEach(d => newComp(d.t, d.x, d.y, d.k, d.props ? {...d.props} : null));
+  comps.forEach(c => { if(c.type==='v32r' && c.props.cyl && !getC(c.props.cyl)){ const cy = X.c(c.props.cyl); c.props.cyl = cy ? cy.id : null; } });
+  (task.hoses || []).forEach(([c1, p1, c2, p2]) => hoses.push({id:'h'+(nid++), a:X.c(c1).id+':'+p1, b:X.c(c2).id+':'+p2}));
+  ts = {ok:task.checks.map(() => false)};
+  document.querySelectorAll('#domtabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.dom===dom)));
+  buildTaskSelect();
+  $('taskdesc').textContent = task.desc;
+  $('hinttext').textContent = task.hint; $('hinttext').hidden = true; $('hintbtn').textContent = 'Vis hint';
+  $('ansform').hidden = !task.ask; $('ansfb').hidden = true; $('ans').value = '';
+  buildPalette(); setHint(); checkSig = ''; notesSig = '';
+}
+function buildTaskSelect(){
+  const s = $('tasksel'); s.innerHTML = '';
+  TASKS.filter(t => t.dom===dom).forEach(t => s.append(new Option(t.title, t.id)));
+  s.value = task.id;
+}
+function buildPalette(){
+  const p = $('palette'); p.innerHTML = '<span class="pt">Legg til</span>';
+  PAL[dom].forEach(k => { const b = document.createElement('button'); b.type = 'button'; b.textContent = T[k].short; b.title = T[k].name; b.dataset.add = k; p.append(b); });
+}
+$('palette').addEventListener('click', e => {
+  const k = e.target.dataset.add; if(!k) return;
+  const t = T[k];
+  const free = (x, y) => comps.every(c => { const u = T[c.type]; return x + t.W + 20 < c.x || c.x + u.W + 20 < x || y + t.H + 20 < c.y || c.y + u.H + 20 < y; });
+  let pos = null;
+  for(let y = 20; y <= VH - t.H && !pos; y += 20) for(let x = 20; x <= VW - t.W; x += 20) if(free(x, y)){ pos = [x, y]; break; }
+  pos = pos || [20, 20];
+  const c = newComp(k, pos[0], pos[1]);
+  select({t:'comp', id:c.id});
+});
+$('tasksel').addEventListener('change', e => loadTask(e.target.value));
+$('domtabs').addEventListener('click', e => { const d = e.target.dataset.dom; if(d && d!==dom) loadTask(TASKS.find(t => t.dom===d).id); });
+$('resetbtn').addEventListener('click', () => loadTask(task.id));
+$('hintbtn').addEventListener('click', () => { const h = $('hinttext'); h.hidden = !h.hidden; $('hintbtn').textContent = h.hidden ? 'Vis hint' : 'Skjul hint'; });
+$('ansform').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = parseFloat($('ans').value.replace(',', '.').replace(/\s/g, ''));
+  const right = 100/10*A1('hy')/1000;
+  const fb = $('ansfb'); fb.hidden = false;
+  if(isFinite(v) && Math.abs(v - right) <= 0.3){ ts.ok[1] = true; fb.className = 'fb ok'; fb.textContent = `Riktig! F = 10 N/mm² · ${Math.round(A1('hy'))} mm² = ${Math.round(right*1000)} N ≈ ${fmt(right)} kN.`; }
+  else { fb.className = 'fb bad'; fb.textContent = isFinite(v) ? 'Ikke helt. Regn ut arealet med A = π · d² / 4 og gjør om 100 bar til N/mm² (1 bar = 0,1 N/mm²).' : 'Skriv inn et tall i kN.'; }
+});
+let checkSig = '';
+function renderChecks(){
+  const items = task.checks.map((c, i) => [typeof c==='function' ? c() : c, ts.ok[i]]);
+  const all = items.length > 0 && items.every(i => i[1]);
+  const sig = JSON.stringify(items) + all; if(sig===checkSig) return; checkSig = sig;
+  $('checks').innerHTML = items.map(([t, o]) => `<li class="${o ? 'ok' : ''}"><span class="m">${o ? '✓' : ''}</span><span>${t}</span></li>`).join('');
+  $('done').hidden = !all;
+}
+
+// ---------- Hovedløkke ----------
+let last = performance.now(), uiT = 0;
+function frame(now){
+  const dt = Math.min(0.05, (now - last)/1000); last = now; simT += dt;
+  try{
+    solve(dt);
+    if(task.tick) task.tick(i => { ts.ok[i] = true; }, dt);
+    render();
+    if(now - uiT > 120){ uiT = now; renderNotes(); renderMeas(); renderChecks(); renderSel(); }
+  }catch(err){ console.error(err); }
+  requestAnimationFrame(frame);
+}
+window.__sim = {get comps(){ return comps; }, get hoses(){ return hoses; }, loadTask, X, held, hose:(a, b) => hoses.push({id:'h'+(nid++), a, b}), get notes(){ return notes; }, get ts(){ return ts; }, hy};
+loadTask('p1');
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>

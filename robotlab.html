@@ -1,0 +1,1099 @@
+<!doctype html><html lang="nb"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1200px}
+:root[data-theme]{--bg:var(--lk-bg);--surface:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--accent-soft:var(--lk-orange-soft);--f-display:var(--lk-font);--f-body:var(--lk-font);--f-mono:var(--lk-mono);}
+.shell > header .brand{display:none!important}
+</style><!--lk:head-slutt--></head><body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Robotlab</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Automasjon · logikk og styring</div>
+      <h1>Robotlab</h1>
+      <p class="lk-lead">Programmer en robot med blokker, og se hva den gjør. Blokkene blir til Arduino-kode.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg et oppdrag i menyen.</span></li><li><span>Bygg programmet med blokker.</span></li><li><span>Trykk <b>Last opp og kjør</b>.</span></li><li><span>Se hva roboten gjør, og rett programmet til det virker.</span></li></ol>
+      
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<title>Robotlab Intek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<script src="https://unpkg.com/blockly@11.2.1/blockly_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11.2.1/blocks_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11.2.1/msg/nb.js"></script>
+<style>
+/* Layout: verksted-IDE. Blokkeditor til venstre, simulator + måleinstrumenter til høyre; stables på mobil. */
+:root{
+  --bg:#e9eff0; --surface:#ffffff; --surface-2:#f3f7f7; --ink:#10282b; --muted:#587073; --line:#cbd8d9;
+  --accent:#00878f; --accent-ink:#ffffff; --accent-soft:#d3eeef;
+  --floor:#f7f9f6; --grid:#e1e8e4; --grid-major:#c9d5cf; --wall:#4d5d60; --wall-edge:#33403f;
+  --robot:#00878f; --robot-board:#0b5f65;
+  --ok:#23864a; --warn:#b7790a; --bad:#c23a2e;
+  --lcd-bg:#9fbf6b; --lcd-ink:#1f2d12;
+  --f-display:"Chakra Petch", "IBM Plex Sans", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0c1516; --surface:#132022; --surface-2:#18282a; --ink:#e2eded; --muted:#8ba3a5; --line:#253a3c;
+  --accent:#2ab4bb; --accent-ink:#04191a; --accent-soft:#163a3d;
+  --floor:#15201f; --grid:#1c2a29; --grid-major:#27393a; --wall:#6d8285; --wall-edge:#93a8aa;
+  --robot:#1ea3aa; --robot-board:#0b4f54;
+  --ok:#47c179; --warn:#e2a630; --bad:#ef6a5e;
+  --lcd-bg:#5f7d33; --lcd-ink:#e9f7c9; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0c1516; --surface:#132022; --surface-2:#18282a; --ink:#e2eded; --muted:#8ba3a5; --line:#253a3c;
+  --accent:#2ab4bb; --accent-ink:#04191a; --accent-soft:#163a3d;
+  --floor:#15201f; --grid:#1c2a29; --grid-major:#27393a; --wall:#6d8285; --wall-edge:#93a8aa;
+  --robot:#1ea3aa; --robot-board:#0b4f54;
+  --ok:#47c179; --warn:#e2a630; --bad:#ef6a5e;
+  --lcd-bg:#5f7d33; --lcd-ink:#e9f7c9; color-scheme:dark }
+
+html,body{height:100%}
+body{background:var(--bg); color:var(--ink); font-family:var(--f-body); font-size:14px; line-height:1.45}
+*{box-sizing:border-box}
+button,select{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.shell{display:flex; flex-direction:column; height:100%; padding-inline:16px; padding-block:10px 12px; gap:10px}
+header.top{display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px}
+.brand{display:flex; align-items:baseline; gap:10px; margin-right:auto}
+.brand b{font-family:var(--f-display); font-size:22px; letter-spacing:.06em; color:var(--accent)}
+.brand span{font-size:12px; color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
+.ctrls{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+select.mission{min-width:0; max-width:100%; padding:8px 10px; border-radius:8px; border:1px solid var(--line); background:var(--surface); font-weight:600}
+.btn{display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:8px; border:1px solid var(--line); background:var(--surface); cursor:pointer; font-weight:600; white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.run{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+.btn.run:hover{filter:brightness(1.08)}
+.btn.stop.live{background:var(--bad); color:#fff; border-color:var(--bad)}
+.btn svg{width:14px; height:14px}
+.toggle{display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); cursor:pointer; user-select:none}
+.toggle input{accent-color:var(--accent)}
+
+main.app{flex:1; min-height:0; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr); gap:12px}
+.pane{background:var(--surface); border:1px solid var(--line); border-radius:12px; min-width:0; min-height:0}
+.editor{display:flex; flex-direction:column; overflow:hidden}
+.tabs{display:flex; align-items:center; gap:2px; padding:6px 6px 0; border-bottom:1px solid var(--line); background:var(--surface-2)}
+.tab{padding:8px 14px; border:0; background:none; border-radius:8px 8px 0 0; cursor:pointer; color:var(--muted); font-weight:600; border-bottom:2px solid transparent}
+.tab[aria-selected="true"]{color:var(--ink); background:var(--surface); border-bottom-color:var(--accent)}
+.tabs .spacer{flex:1}
+.zb{padding:3px 10px;font-size:15px;margin-bottom:4px;line-height:1.2}
+.tabs .hint{font-size:12px; color:var(--muted); padding-right:8px}
+#blockly{flex:1; min-height:0; position:relative}
+.codewrap{flex:1; min-height:0; overflow:auto; position:relative}
+.codewrap pre{margin:0; padding:16px 18px; font-family:var(--f-mono); font-size:13px; line-height:1.6; white-space:pre; tab-size:2}
+.copy{position:absolute; top:10px; right:12px; font-size:12px; padding:6px 10px}
+.t-c{color:var(--muted); font-style:italic}.t-s{color:#b5651d}.t-k{color:var(--accent); font-weight:600}.t-n{color:#8a4fbf}.t-f{color:#2f6fb5}.t-p{color:#b03c6a}
+.loadfail{padding:24px; color:var(--bad)}
+
+.sim{display:flex; flex-direction:column; overflow:auto}
+.sim-head{padding:14px 16px 10px; border-bottom:1px solid var(--line); display:grid; gap:6px}
+.eyebrow{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:600}
+.sim-head h2{margin:0; font-family:var(--f-display); font-size:19px; letter-spacing:.02em; text-wrap:balance}
+.brief{margin:0; color:var(--ink); max-width:62ch}
+.goals{list-style:none; margin:4px 0 0; padding:0; display:grid; gap:4px}
+.goals li{display:flex; gap:8px; align-items:flex-start; font-size:13px}
+.goals .mk{flex:0 0 18px; height:18px; border-radius:50%; border:1.5px solid var(--line); display:grid; place-items:center; font-size:11px; font-weight:700; margin-top:1px}
+.goals li.done .mk{background:var(--ok); border-color:var(--ok); color:#fff}
+.goals li.fail .mk{background:var(--bad); border-color:var(--bad); color:#fff}
+.stage{position:relative; padding:12px 16px 0}
+canvas#cv{display:block; width:100%; border-radius:8px; border:1px solid var(--line); touch-action:none; background:var(--floor)}
+.banner{position:absolute; left:28px; right:28px; top:24px; padding:10px 14px; border-radius:8px; font-weight:600; display:flex; gap:10px; align-items:center; box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.banner.ok{background:var(--ok); color:#fff}.banner.bad{background:var(--bad); color:#fff}
+.statusline{display:flex; flex-wrap:wrap; gap:6px 14px; padding:8px 16px 0; font-family:var(--f-mono); font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums}
+.statusline .dot{display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--muted); margin-right:6px; vertical-align:1px}
+.statusline .live .dot{background:var(--ok); box-shadow:0 0 0 3px color-mix(in srgb, var(--ok) 25%, transparent)}
+
+.section{padding:14px 16px; border-top:1px solid var(--line); margin-top:12px; display:grid; gap:10px}
+.section + .section{margin-top:0}
+.section h3{margin:0; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.io{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px}
+.io-group{display:grid; gap:6px; align-content:start}
+.io-group .lbl{font-size:12px; color:var(--muted)}
+.row{display:flex; flex-wrap:wrap; gap:6px}
+.pbtn{width:44px; height:44px; border-radius:50%; border:2px solid var(--line); background:var(--surface-2); font-family:var(--f-mono); font-weight:600; cursor:pointer; user-select:none; touch-action:none}
+.pbtn.on{background:var(--accent); color:var(--accent-ink); border-color:var(--accent); transform:translateY(1px)}
+.sw{display:inline-flex; align-items:center; gap:6px; padding:6px 10px 6px 6px; border-radius:22px; border:1px solid var(--line); background:var(--surface-2); cursor:pointer; font-family:var(--f-mono); font-weight:600; font-size:13px}
+.sw i{width:30px; height:16px; border-radius:9px; background:var(--line); position:relative; transition:background .15s}
+.sw i::after{content:""; position:absolute; top:2px; left:2px; width:12px; height:12px; border-radius:50%; background:var(--surface); transition:left .15s}
+.sw.on i{background:var(--accent)}
+.sw.on i::after{left:16px}
+.forced{outline:2px dashed var(--warn); outline-offset:2px}
+.leds{display:flex; gap:14px; align-items:center}
+.led{display:grid; justify-items:center; gap:3px; font-size:11px; color:var(--muted)}
+.led i{width:22px; height:22px; border-radius:50%; border:2px solid var(--line); background:var(--surface-2)}
+.led.on.red i{background:#ff3b30; border-color:#ff3b30; box-shadow:0 0 12px #ff3b30}
+.led.on.yellow i{background:#ffc400; border-color:#ffc400; box-shadow:0 0 12px #ffc400}
+.led.on.green i{background:#2ee05a; border-color:#2ee05a; box-shadow:0 0 12px #2ee05a}
+.lcd{font-family:var(--f-mono); background:var(--lcd-bg); color:var(--lcd-ink); padding:8px 10px; border-radius:4px; min-height:36px; font-size:15px; letter-spacing:.06em; white-space:pre-wrap; word-break:break-all; box-shadow:inset 0 0 0 3px rgba(0,0,0,.18)}
+.buzz{font-family:var(--f-mono); font-size:12px; color:var(--muted)}
+.buzz.on{color:var(--warn); font-weight:600}
+
+.meters{display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px}
+.meter{border:1px solid var(--line); border-radius:8px; padding:8px 10px; display:grid; gap:2px; background:var(--surface-2)}
+.meter .k{font-size:11px; color:var(--muted); letter-spacing:.04em}
+.meter .v{font-family:var(--f-mono); font-size:16px; font-weight:600; font-variant-numeric:tabular-nums}
+.meter .bar{height:4px; border-radius:2px; background:var(--line); overflow:hidden}
+.meter .bar b{display:block; height:100%; background:var(--accent); width:0}
+.meter.hot .v{color:var(--bad)}
+.meter .v.t{color:var(--ok)}
+
+.tt-wrap{overflow-x:auto}
+table.tt{border-collapse:collapse; font-family:var(--f-mono); font-size:13px; font-variant-numeric:tabular-nums; min-width:100%}
+table.tt th,table.tt td{padding:5px 10px; border-bottom:1px solid var(--line); text-align:center}
+table.tt th{font-size:11px; color:var(--muted); font-weight:600; letter-spacing:.06em}
+table.tt td.sep,table.tt th.sep{border-left:2px solid var(--line)}
+table.tt tr.cur td{background:var(--accent-soft)}
+.res-ok{color:var(--ok); font-weight:700}.res-bad{color:var(--bad); font-weight:700}
+.tt-sum{font-weight:600}
+.ref{font-size:13px; color:var(--muted); max-width:62ch}
+.ref code{font-family:var(--f-mono); color:var(--ink); background:var(--surface-2); padding:1px 5px; border-radius:4px}
+
+.modal-back{position:fixed; inset:0; background:rgba(5,15,16,.45); display:grid; place-items:center; z-index:1000; padding:16px}
+.modal{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px; width:min(380px,100%); display:grid; gap:12px; box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.modal p{margin:0}
+.modal input{font:inherit; padding:8px 10px; border-radius:8px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink)}
+.modal .acts{display:flex; justify-content:flex-end; gap:8px}
+.toast{position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:var(--surface); padding:10px 16px; border-radius:8px; font-weight:500; z-index:999; max-width:calc(100% - 32px)}
+
+@media (max-width: 980px){
+  .shell{height:auto; min-height:100%}
+  main.app{grid-template-columns:minmax(0,1fr)}
+  .editor{height:max(440px, 64vh)}
+  .sim{overflow:visible}
+}
+@media (prefers-reduced-motion: reduce){ .sw i,.sw i::after{transition:none} }
+</style>
+
+<div class="shell">
+  <header class="top">
+    <div class="brand"><b>ROBOTLAB</b><span>VG2 Industriteknologi · logikk og styring</span></div>
+    <div class="ctrls">
+      <label class="sr" for="mission" hidden>Oppdrag</label>
+      <select id="mission" class="mission" aria-label="Velg oppdrag"></select>
+      <button id="runBtn" class="btn run" type="button" title="Last opp programmet og start (Arduino: reset)"><svg viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>Last opp og kjør</button>
+      <button id="stopBtn" class="btn stop" type="button"><svg viewBox="0 0 16 16"><rect x="3.5" y="3.5" width="9" height="9" rx="1" fill="currentColor"/></svg>Stopp</button>
+      <button id="resetBtn" class="btn" type="button" title="Sett roboten tilbake til start"><svg viewBox="0 0 16 16"><path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.5v3h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Tilbakestill</button>
+      <label class="toggle"><input id="slow" type="checkbox"> Sakte (vis blokk)</label>
+      <label class="toggle"><input id="sound" type="checkbox" checked> Lyd</label>
+    </div>
+  </header>
+
+  <main class="app">
+    <section class="pane editor" aria-label="Programeditor">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" id="tabBlocks" aria-selected="true" type="button">Blokker</button>
+        <button class="tab" role="tab" id="tabCode" aria-selected="false" type="button">Arduino-kode</button>
+        <span class="spacer"></span>
+        <button class="btn zb" id="zOut" type="button" aria-label="Zoom ut">−</button>
+        <button class="btn zb" id="zIn" type="button" aria-label="Zoom inn">+</button>
+        <button class="btn" id="loadStarter" type="button" style="padding:5px 10px;font-size:12px;margin-bottom:4px">Start på nytt</button>
+      </div>
+      <div id="blockly"></div>
+      <div class="codewrap" id="codeView" hidden>
+        <button class="btn copy" id="copyCode" type="button">Kopier</button>
+        <pre id="codePre"></pre>
+      </div>
+    </section>
+
+    <section class="pane sim" aria-label="Simulator">
+      <div class="sim-head">
+        <div class="eyebrow" id="mEyebrow">Robotoppdrag</div>
+        <h2 id="mTitle">Fri kjøring</h2>
+        <p class="brief" id="mBrief"></p>
+        <ul class="goals" id="mGoals"></ul>
+      </div>
+      <div class="stage">
+        <canvas id="cv" width="600" height="400" aria-label="Simuleringsbane"></canvas>
+        <div class="banner" id="banner" hidden></div>
+      </div>
+      <div class="statusline" id="status"></div>
+
+      <div class="section">
+        <h3>Inn- og utganger</h3>
+        <div class="io">
+          <div class="io-group"><span class="lbl">Knapper (hold inne)</span><div class="row" id="btnRow"></div></div>
+          <div class="io-group"><span class="lbl">Brytere (av/på)</span><div class="row" id="swRow"></div></div>
+          <div class="io-group"><span class="lbl">LED-er</span><div class="leds" id="ledRow"></div></div>
+          <div class="io-group"><span class="lbl">Display</span><div class="lcd" id="lcd"></div><span class="buzz" id="buzz">Summer: stille</span></div>
+        </div>
+      </div>
+
+      <div class="section" id="ttSection" hidden>
+        <h3>Sannhetstabell</h3>
+        <div class="row" style="align-items:center;gap:10px"><button class="btn run" id="ttBtn" type="button">Test sannhetstabellen</button><span class="tt-sum" id="ttSum"></span></div>
+        <div class="tt-wrap"><table class="tt" id="tt"></table></div>
+      </div>
+
+      <div class="section" id="meterSection">
+        <h3>Sensorer (live)</h3>
+        <div class="meters" id="meters"></div>
+      </div>
+
+      <div class="section">
+        <h3>Hurtigreferanse</h3>
+        <div class="ref" id="ref">
+          <p style="margin:0 0 6px"><code>oppsett()</code> kjøres én gang ved start. <code>løkke()</code> gjentas så lenge programmet kjører, akkurat som <code>setup()</code> og <code>loop()</code> på en Arduino.</p>
+          <p style="margin:0 0 6px">Logikk: <code>OG</code> = begge sanne · <code>ELLER</code> = minst én sann · <code>IKKE</code> snur verdien · <code>XOR</code> = nøyaktig én sann · <code>NAND</code>/<code>NOR</code> = IKKE OG / IKKE ELLER.</p>
+          <p style="margin:0">Motorfart er i prosent (−100 til 100). Roboten er 16 cm lang, toppfart 30 cm/s. Ultralydsensoren måler 2–200 cm.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+"use strict";
+/* ============================================================
+   KONSTANTER OG TILSTAND
+   ============================================================ */
+const ARENA = {w:300, h:200};
+const R_ROBOT = 10, WHEELBASE = 13, VMAX = 30, LINE_W = 2.4;
+const COL = {ard:'#00878f', mot:'#2f6fb5', sens:'#c27a12', out:'#c0392b', logic:'#6a4fb3', loop:'#3d8f4f', math:'#56658c', text:'#8a7037', vars:'#a14f7e'};
+const INPUTS = ['A','B','C','S1','S2','S3'];
+const LEDS = [['red','Rød'],['yellow','Gul'],['green','Grønn']];
+
+const io = {btn:{A:false,B:false,C:false}, sw:{S1:false,S2:false,S3:false}, led:{red:false,yellow:false,green:false},
+  display:'', toneF:0, toneUntil:0, override:null};
+const robot = {x:0,y:0,a:0, L:0, R:0, colliding:false, collisions:0, trail:[]};
+let S = {}; // sensorverdier
+let mission = null, world = null, M = null; // aktivt oppdrag, verden, oppdragssporing
+let run = null; // kjørende program
+let ws = null;  // Blockly workspace
+let startTime = 0;
+
+function inp(n){ if(io.override && n in io.override) return io.override[n]; return n[0]==='S' ? io.sw[n] : io.btn[n]; }
+
+/* ============================================================
+   VERDENER
+   ============================================================ */
+function catmull(pts, seg=10){
+  const out=[];
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[Math.max(0,i-1)], p1=pts[i], p2=pts[i+1], p3=pts[Math.min(pts.length-1,i+2)];
+    for(let t=0;t<seg;t++){ const u=t/seg, u2=u*u, u3=u2*u;
+      out.push([0.5*((2*p1[0])+(-p0[0]+p2[0])*u+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*u2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*u3),
+                0.5*((2*p1[1])+(-p0[1]+p2[1])*u+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*u2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*u3)]); }
+  }
+  out.push(pts[pts.length-1]); return out;
+}
+function ellipse(cx,cy,rx,ry,n=64){ const o=[]; for(let i=0;i<=n;i++){const t=i/n*Math.PI*2; o.push([cx+Math.cos(t)*rx, cy+Math.sin(t)*ry]);} return o; }
+
+const WORLDS = {
+  fri:{ start:{x:35,y:100,a:0}, ambient:55,
+    walls:[{x:140,y:85,w:26,h:26},{x:256,y:10,w:24,h:24},{x:95,y:0,w:10,h:45}],
+    zones:[{x:20,y:12,w:30,h:30,c:'rød'},{x:55,y:12,w:30,h:30,c:'grønn'},{x:120,y:12,w:30,h:30,c:'blå'},{x:155,y:12,w:30,h:30,c:'gul'}],
+    lines:[ellipse(232,128,40,52)], lamps:[{x:200,y:30,p:60}], heat:[{x:268,y:22}], dark:[{x:20,y:150,w:90,h:44}], goal:null },
+  hinder:{ start:{x:30,y:100,a:0}, ambient:55,
+    walls:[{x:115,y:38,w:18,h:124},{x:195,y:0,w:16,h:68},{x:195,y:132,w:16,h:68}],
+    zones:[], lines:[], lamps:[], heat:[], dark:[], goal:{x:250,y:82,w:36,h:36} },
+  linje:{ start:{x:24,y:165,a:0}, ambient:55, walls:[], zones:[],
+    lines:[catmull([[14,165],[60,165],[100,155],[125,120],[118,72],[146,38],[196,34],[232,58],[238,102],[260,138],[284,160]],14)],
+    lamps:[], heat:[], dark:[], goal:{x:262,y:146,w:34,h:34} },
+  farge:{ start:{x:25,y:100,a:0}, ambient:55,
+    walls:[{x:0,y:58,w:300,h:10},{x:0,y:132,w:300,h:10}],
+    zones:[{x:75,y:68,w:30,h:64,c:'grønn'},{x:145,y:68,w:30,h:64,c:'rød'},{x:205,y:68,w:30,h:64,c:'blå'}],
+    lines:[], lamps:[], heat:[], dark:[], goal:{x:255,y:82,w:36,h:36} },
+  mork:{ start:{x:25,y:100,a:0}, ambient:60,
+    walls:[{x:0,y:52,w:300,h:8},{x:0,y:140,w:300,h:8}],
+    zones:[], lines:[], lamps:[{x:40,y:30,p:25}], heat:[], dark:[{x:105,y:60,w:110,h:80}], goal:{x:255,y:82,w:36,h:36} },
+};
+
+/* ============================================================
+   OPPDRAG
+   ============================================================ */
+const MISSIONS = [
+  {id:'fri', kind:'robot', name:'Fri kjøring', eyebrow:'Sandkasse',
+   brief:'Utforsk alle sensorene. Kjør mot lampa og se lysnivået stige, kjør inn i den mørke sonen, over fargefeltene og nær varmekilden. Eksempelprogrammet unngår hindringer med ultralydsensoren.',
+   goals:[]},
+  {id:'hinder', kind:'robot', name:'Unngå hindringer', eyebrow:'Robotoppdrag 1',
+   brief:'Kjør fra start til det rutete målfeltet uten å treffe veggene. Bruk ultralydsensoren (avstand foran) og HVIS/ELLERS.',
+   goals:[{id:'goal',t:'Nå målfeltet'},{id:'nocol',t:'Ingen kollisjoner underveis'}]},
+  {id:'linje', kind:'robot', name:'Linjefølger', eyebrow:'Robotoppdrag 2',
+   brief:'Følg den svarte linja til målet. Linjesensorene sitter på hver side av linja: ser venstre sensor svart, må roboten svinge mot venstre.',
+   goals:[{id:'goal',t:'Nå målfeltet'},{id:'track',t:'Hold deg på linja hele veien (maks 12 cm unna)'}]},
+  {id:'farge', kind:'robot', name:'Fargestasjoner', eyebrow:'Robotoppdrag 3',
+   brief:'Kjør gjennom produksjonslinja. På rødt felt: stopp i minst 1,5 s med rød LED på. På blått felt: spill en tone. Grønt betyr bare kjør videre.',
+   goals:[{id:'red',t:'Stopp ≥ 1,5 s på rødt med rød LED på'},{id:'blue',t:'Spill en tone på blått felt'},{id:'goal',t:'Nå målfeltet'}]},
+  {id:'mork', kind:'robot', name:'Mørk tunnel', eyebrow:'Robotoppdrag 4',
+   brief:'Lag automatisk frontlys: gul LED skal lyse når lysnivået er under 30 %, og være av ellers. Kjør gjennom tunnelen til målet.',
+   goals:[{id:'on',t:'Frontlys på inne i tunnelen'},{id:'off',t:'Frontlys av utenfor tunnelen'},{id:'goal',t:'Nå målfeltet'}]},
+
+  {id:'og', kind:'logic', name:'OG-port', eyebrow:'Logikk 1',
+   brief:'Grønn LED skal lyse bare når både knapp A og knapp B er trykket inn. Hold knappene inne for å prøve, og trykk «Test sannhetstabellen» til slutt.',
+   inputs:['A','B'], outputs:['green'], formula:'Grønn = A OG B', f:v=>({green:v.A&&v.B})},
+  {id:'veksel', kind:'logic', name:'Trappelys (vekselkobling)', eyebrow:'Logikk 2',
+   brief:'To brytere, nede (S1) og oppe (S2) i trappa, styrer samme lampe. Hver bryter skal kunne skifte lampa uansett hvordan den andre står. Lampa er gul LED.',
+   inputs:['S1','S2'], outputs:['yellow'], formula:'Gul = S1 XOR S2', f:v=>({yellow:v.S1!==v.S2})},
+  {id:'adder', kind:'logic', name:'Halvadderer', eyebrow:'Logikk 3',
+   brief:'Legg sammen to bit: S1 + S2. Gul LED er summen (sifferet), grønn LED er mente (1 + 1 = 10 i totallssystemet).',
+   inputs:['S1','S2'], outputs:['yellow','green'], formula:'Gul = S1 XOR S2 · Grønn = S1 OG S2', f:v=>({yellow:v.S1!==v.S2, green:v.S1&&v.S2})},
+  {id:'alarm', kind:'logic', name:'Innbruddsalarm', eyebrow:'Logikk 4',
+   brief:'S1 = alarmen er slått på. S2 = døra er åpen. S3 = vinduet er åpent. Sirenen (rød LED) skal gå når alarmen er på og døra eller vinduet åpnes.',
+   inputs:['S1','S2','S3'], outputs:['red'], formula:'Rød = S1 OG (S2 ELLER S3)', f:v=>({red:v.S1&&(v.S2||v.S3)})},
+  {id:'tohand', kind:'logic', name:'Tohåndsbetjening', eyebrow:'Logikk 5',
+   brief:'En hydraulisk presse skal bare gå når operatøren holder inne begge startknappene A og B, og nødstoppen (S1) ikke er aktivert. Grønn LED = pressa går. Rød LED skal lyse når nødstoppen er aktivert.',
+   inputs:['A','B','S1'], outputs:['green','red'], formula:'Grønn = A OG B OG IKKE S1 · Rød = S1', f:v=>({green:v.A&&v.B&&!v.S1, red:v.S1})},
+];
+
+/* ============================================================
+   BLOKKER
+   ============================================================ */
+function defineBlocks(){
+  const st = {previousStatement:null, nextStatement:null};
+  Blockly.defineBlocksWithJsonArray([
+    {type:'ard_main', message0:'PROGRAM', message1:'oppsett() – én gang %1', args1:[{type:'input_statement',name:'SETUP'}],
+     message2:'løkke() – gjentas %1', args2:[{type:'input_statement',name:'LOOP'}], colour:COL.ard, hat:'cap',
+     tooltip:'Som setup() og loop() på Arduino. Oppsett kjøres én gang, løkke gjentas for alltid.'},
+    {type:'ard_wait', message0:'vent %1 sekunder', args0:[{type:'input_value',name:'SEC',check:'Number'}], inputsInline:true, colour:COL.ard, ...st, tooltip:'delay() – programmet står stille, men motorene fortsetter.'},
+    {type:'ard_wait_until', message0:'vent til %1', args0:[{type:'input_value',name:'COND',check:'Boolean'}], colour:COL.ard, ...st},
+    {type:'ard_millis', message0:'sekunder siden start', output:'Number', colour:COL.ard},
+
+    {type:'motor_drive', message0:'kjør %1 med fart %2 %', args0:[{type:'field_dropdown',name:'DIR',options:[['fram','1'],['bak','-1']]},{type:'input_value',name:'SPEED',check:'Number'}], inputsInline:true, colour:COL.mot, ...st},
+    {type:'motor_turn', message0:'snu %1 med fart %2 %', args0:[{type:'field_dropdown',name:'DIR',options:[['venstre','L'],['høyre','R']]},{type:'input_value',name:'SPEED',check:'Number'}], inputsInline:true, colour:COL.mot, ...st, tooltip:'Snur på stedet: hjulene går hver sin vei.'},
+    {type:'motor_set', message0:'motorer V %1 H %2', args0:[{type:'input_value',name:'L',check:'Number'},{type:'input_value',name:'R',check:'Number'}], inputsInline:true, colour:COL.mot, ...st, tooltip:'Fart for venstre og høyre hjul, −100 til 100. Ulik fart gir sving.'},
+    {type:'motor_drive_time', message0:'kjør %1 i %2 s med fart %3 %', args0:[{type:'field_dropdown',name:'DIR',options:[['fram','1'],['bak','-1']]},{type:'input_value',name:'SEC',check:'Number'},{type:'input_value',name:'SPEED',check:'Number'}], inputsInline:true, colour:COL.mot, ...st},
+    {type:'motor_stop', message0:'stopp motorene', colour:COL.mot, ...st},
+
+    {type:'sens_distance', message0:'avstand foran (cm)', output:'Number', colour:COL.sens, tooltip:'Ultralydsensor HC-SR04. 2–200 cm.'},
+    {type:'sens_line', message0:'linjesensor %1 ser svart', args0:[{type:'field_dropdown',name:'SIDE',options:[['venstre','L'],['høyre','R']]}], output:'Boolean', colour:COL.sens},
+    {type:'sens_bump', message0:'støtsensor trykket', output:'Boolean', colour:COL.sens},
+    {type:'sens_light', message0:'lysnivå (%)', output:'Number', colour:COL.sens, tooltip:'Lysmåler (LDR). 0 = helt mørkt, 100 = sterkt lys.'},
+    {type:'sens_color', message0:'fargesensor ser %1', args0:[{type:'field_dropdown',name:'C',options:[['rødt','rød'],['grønt','grønn'],['blått','blå'],['gult','gul'],['hvitt gulv','hvit']]}], output:'Boolean', colour:COL.sens},
+    {type:'sens_temp', message0:'temperatur (°C)', output:'Number', colour:COL.sens},
+    {type:'sens_button', message0:'knapp %1 trykket', args0:[{type:'field_dropdown',name:'B',options:[['A','A'],['B','B'],['C','C']]}], output:'Boolean', colour:COL.sens},
+    {type:'sens_switch', message0:'bryter %1 er PÅ', args0:[{type:'field_dropdown',name:'S',options:[['S1','S1'],['S2','S2'],['S3','S3']]}], output:'Boolean', colour:COL.sens},
+
+    {type:'out_led', message0:'LED %1 %2', args0:[{type:'field_dropdown',name:'C',options:[['rød','red'],['gul','yellow'],['grønn','green']]},{type:'field_dropdown',name:'ON',options:[['PÅ','1'],['AV','0']]}], colour:COL.out, ...st},
+    {type:'out_led_set', message0:'sett LED %1 til %2', args0:[{type:'field_dropdown',name:'C',options:[['grønn','green'],['gul','yellow'],['rød','red']]},{type:'input_value',name:'VAL',check:'Boolean'}], inputsInline:true, colour:COL.out, ...st, tooltip:'LED-en lyser når verdien er sann. Perfekt for logikkoppgaver.'},
+    {type:'out_tone', message0:'spill tone %1 Hz i %2 s', args0:[{type:'input_value',name:'F',check:'Number'},{type:'input_value',name:'SEC',check:'Number'}], inputsInline:true, colour:COL.out, ...st},
+    {type:'out_display', message0:'vis på display %1', args0:[{type:'input_value',name:'VAL'}], inputsInline:true, colour:COL.out, ...st},
+    {type:'out_all_off', message0:'slå av alle LED', colour:COL.out, ...st},
+
+    {type:'logic_gate', message0:'%1 %2 %3', args0:[{type:'input_value',name:'A',check:'Boolean'},{type:'field_dropdown',name:'G',options:[['OG','AND'],['ELLER','OR'],['XOR','XOR'],['NAND','NAND'],['NOR','NOR'],['XNOR','XNOR']]},{type:'input_value',name:'B',check:'Boolean'}], inputsInline:true, output:'Boolean', colour:COL.logic,
+     tooltip:'Logikkport. XOR: nøyaktig én sann. NAND: ikke begge. NOR: ingen. XNOR: like.'},
+  ]);
+}
+
+const num = v => ({kind:'block', type:'math_number', fields:{NUM:v}});
+const sh = v => ({shadow:{type:'math_number', fields:{NUM:v}}});
+const TOOLBOX = {kind:'categoryToolbox', contents:[
+  {kind:'category', name:'Arduino', colour:COL.ard, contents:[
+    {kind:'block',type:'ard_main'}, {kind:'block',type:'ard_wait',inputs:{SEC:sh(1)}}, {kind:'block',type:'ard_wait_until'}, {kind:'block',type:'ard_millis'}]},
+  {kind:'category', name:'Motor', colour:COL.mot, contents:[
+    {kind:'block',type:'motor_drive',inputs:{SPEED:sh(60)}}, {kind:'block',type:'motor_turn',inputs:{SPEED:sh(40)}},
+    {kind:'block',type:'motor_set',inputs:{L:sh(50),R:sh(30)}}, {kind:'block',type:'motor_drive_time',inputs:{SEC:sh(1),SPEED:sh(60)}}, {kind:'block',type:'motor_stop'}]},
+  {kind:'category', name:'Sensorer', colour:COL.sens, contents:[
+    {kind:'block',type:'sens_distance'}, {kind:'block',type:'sens_line'}, {kind:'block',type:'sens_bump'}, {kind:'block',type:'sens_light'},
+    {kind:'block',type:'sens_color'}, {kind:'block',type:'sens_temp'}, {kind:'block',type:'sens_button'}, {kind:'block',type:'sens_switch'}]},
+  {kind:'category', name:'Utganger', colour:COL.out, contents:[
+    {kind:'block',type:'out_led'}, {kind:'block',type:'out_led_set'}, {kind:'block',type:'out_all_off'},
+    {kind:'block',type:'out_tone',inputs:{F:sh(880),SEC:sh(0.3)}}, {kind:'block',type:'out_display',inputs:{VAL:{shadow:{type:'text',fields:{TEXT:'Hei!'}}}}}]},
+  {kind:'category', name:'Logikk', colour:COL.logic, contents:[
+    {kind:'block',type:'controls_if'}, {kind:'block',type:'controls_if',extraState:{hasElse:true}},
+    {kind:'block',type:'logic_compare'}, {kind:'block',type:'logic_operation'}, {kind:'block',type:'logic_negation'},
+    {kind:'block',type:'logic_gate',fields:{G:'XOR'}}, {kind:'block',type:'logic_boolean'}]},
+  {kind:'category', name:'Løkker', colour:COL.loop, contents:[
+    {kind:'block',type:'controls_repeat_ext',inputs:{TIMES:sh(4)}}, {kind:'block',type:'controls_whileUntil'}, {kind:'block',type:'controls_flow_statements'}]},
+  {kind:'category', name:'Matte', colour:COL.math, contents:[
+    num(0), {kind:'block',type:'math_arithmetic',inputs:{A:sh(1),B:sh(1)}}, {kind:'block',type:'math_random_int',inputs:{FROM:sh(1),TO:sh(10)}}]},
+  {kind:'category', name:'Tekst', colour:COL.text, contents:[ {kind:'block',type:'text'}, {kind:'block',type:'text_join'} ]},
+  {kind:'category', name:'Variabler', colour:COL.vars, custom:'VARIABLE'},
+]};
+
+/* Startprogrammer (Blockly XML) */
+const X = s => `<xml xmlns="https://developers.google.com/blockly/xml">${s}</xml>`;
+const N = v => `<shadow type="math_number"><field name="NUM">${v}</field></shadow>`;
+const STARTERS = {
+  fri: X(`<block type="ard_main" x="24" y="24">
+    <statement name="SETUP"><block type="out_display"><value name="VAL"><shadow type="text"><field name="TEXT">Klar!</field></shadow></value></block></statement>
+    <statement name="LOOP"><block type="controls_if"><mutation else="1"></mutation>
+      <value name="IF0"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="sens_distance"></block></value><value name="B"><block type="math_number"><field name="NUM">25</field></block></value></block></value>
+      <statement name="DO0"><block type="out_led"><field name="C">red</field><field name="ON">1</field>
+        <next><block type="motor_turn"><field name="DIR">R</field><value name="SPEED">${N(50)}</value>
+        <next><block type="ard_wait"><value name="SEC">${N(0.4)}</value></block></next></block></next></block></statement>
+      <statement name="ELSE"><block type="out_led"><field name="C">red</field><field name="ON">0</field>
+        <next><block type="motor_drive"><field name="DIR">1</field><value name="SPEED">${N(60)}</value></block></next></block></statement>
+      <next><block type="out_display"><value name="VAL"><block type="sens_distance"></block></value></block></next>
+    </block></statement></block>`),
+  hinder: X(`<block type="ard_main" x="24" y="24"><statement name="LOOP"><block type="motor_drive"><field name="DIR">1</field><value name="SPEED">${N(50)}</value></block></statement></block>`),
+  linje: X(`<block type="ard_main" x="24" y="24"><statement name="LOOP"><block type="controls_if"><mutation elseif="1" else="1"></mutation>
+      <value name="IF0"><block type="sens_line"><field name="SIDE">L</field></block></value>
+      <value name="IF1"><block type="sens_line"><field name="SIDE">R</field></block></value>
+      <statement name="ELSE"><block type="motor_drive"><field name="DIR">1</field><value name="SPEED">${N(40)}</value></block></statement>
+    </block></statement></block>`),
+  farge: X(`<block type="ard_main" x="24" y="24"><statement name="LOOP"><block type="motor_drive"><field name="DIR">1</field><value name="SPEED">${N(40)}</value></block></statement></block>`),
+  mork: X(`<block type="ard_main" x="24" y="24"><statement name="SETUP"><block type="motor_drive"><field name="DIR">1</field><value name="SPEED">${N(35)}</value></block></statement>
+    <statement name="LOOP"><block type="out_display"><value name="VAL"><block type="sens_light"></block></value></block></statement></block>`),
+  og: X(`<block type="ard_main" x="24" y="24"><statement name="LOOP"><block type="out_led_set"><field name="C">green</field></block></statement></block>`),
+};
+const EMPTY_MAIN = X(`<block type="ard_main" x="24" y="24"></block>`);
+
+/* ============================================================
+   BLOCKLY-OPPSETT
+   ============================================================ */
+function cssVar(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function isDark(){ const t=document.documentElement.getAttribute('data-theme'); if(t) return t==='dark'; return matchMedia('(prefers-color-scheme: dark)').matches; }
+function makeTheme(){
+  const d=isDark();
+  return Blockly.Theme.defineTheme('robotlab-'+(d?'dark':'light')+'-'+Date.now(), {
+    base: Blockly.Themes.Classic,
+    blockStyles:{ logic_blocks:{colourPrimary:COL.logic}, loop_blocks:{colourPrimary:COL.loop}, math_blocks:{colourPrimary:COL.math},
+      text_blocks:{colourPrimary:COL.text}, variable_blocks:{colourPrimary:COL.vars}, procedure_blocks:{colourPrimary:COL.vars}},
+    componentStyles:{ workspaceBackgroundColour:cssVar('--floor'), toolboxBackgroundColour:cssVar('--surface-2'), toolboxForegroundColour:cssVar('--ink'),
+      flyoutBackgroundColour:cssVar('--surface'), flyoutForegroundColour:cssVar('--ink'), flyoutOpacity:0.97, scrollbarColour:cssVar('--line'),
+      insertionMarkerColour:cssVar('--accent'), insertionMarkerOpacity:0.4, cursorColour:cssVar('--accent') },
+    fontStyle:{family:'"IBM Plex Sans", system-ui, sans-serif', weight:'600', size:11},
+  });
+}
+
+function setupDialogs(){
+  Blockly.dialog.setPrompt((msg, def, cb)=>modal(msg, true, def).then(v=>cb(v)));
+  Blockly.dialog.setConfirm((msg, cb)=>modal(msg, false).then(v=>cb(v!==null)));
+  Blockly.dialog.setAlert((msg, cb)=>{ toast(msg); cb && cb(); });
+}
+function modal(msg, withInput, def=''){
+  return new Promise(res=>{
+    const back=document.createElement('div'); back.className='modal-back';
+    back.innerHTML=`<div class="modal" role="dialog" aria-modal="true"><p></p>${withInput?'<input id="mdlIn" type="text">':''}<div class="acts"><button class="btn" data-a="0" type="button">Avbryt</button><button class="btn run" data-a="1" type="button">OK</button></div></div>`;
+    back.querySelector('p').textContent=msg;
+    const input=back.querySelector('input'); if(input) input.value=def||'';
+    const done=v=>{ back.remove(); res(v); };
+    back.addEventListener('click',e=>{ const a=e.target.closest('[data-a]'); if(a) done(a.dataset.a==='1' ? (input?input.value:'') : null); if(e.target===back) done(null); });
+    back.addEventListener('keydown',e=>{ if(e.key==='Enter') done(input?input.value:''); if(e.key==='Escape') done(null); });
+    document.body.appendChild(back); (input||back.querySelector('[data-a="1"]')).focus();
+  });
+}
+let toastT=0;
+function toast(msg){ let t=document.querySelector('.toast'); if(!t){t=document.createElement('div'); t.className='toast'; t.setAttribute('role','status'); document.body.appendChild(t);} t.textContent=msg; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>t.hidden=true, 3200); }
+
+function initBlockly(){
+  defineBlocks(); setupDialogs();
+  ws = Blockly.inject('blockly', {
+    toolbox:TOOLBOX, renderer:'zelos', theme:makeTheme(), trashcan:false, sounds:false,
+    grid:{spacing:24, length:2, colour:cssVar('--grid-major'), snap:false},
+    zoom:{controls:false, wheel:true, startScale:0.72, maxScale:1.6, minScale:0.35, scaleSpeed:1.15},
+    move:{scrollbars:true, drag:true, wheel:false},
+  });
+  new ResizeObserver(()=>Blockly.svgResize(ws)).observe(document.getElementById('blockly'));
+  let saveT=0;
+  ws.addChangeListener(e=>{
+    if(e.isUiEvent) return;
+    clearTimeout(saveT); saveT=setTimeout(()=>{ saveProgram(); if(!document.getElementById('codeView').hidden) renderCode(); }, 300);
+  });
+}
+function retheme(){ if(ws){ ws.setTheme(makeTheme()); } readColors(); }
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', retheme);
+new MutationObserver(retheme).observe(document.documentElement,{attributes:true, attributeFilter:['data-theme']});
+
+/* lagring per oppdrag (kun i denne nettleseren) */
+function saveProgram(){ if(!ws||!mission) return; try{ localStorage.setItem('robotlab:'+mission.id, JSON.stringify(Blockly.serialization.workspaces.save(ws))); }catch(e){} }
+function loadProgram(id, forceStarter){
+  ws.clear();
+  let loaded=false;
+  if(!forceStarter){ try{ const s=localStorage.getItem('robotlab:'+id); if(s){ Blockly.serialization.workspaces.load(JSON.parse(s), ws); loaded=true; } }catch(e){ ws.clear(); } }
+  if(!loaded){ Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(STARTERS[id]||EMPTY_MAIN), ws); }
+  ws.scrollCenter();
+  setTimeout(()=>{ const m=ws.getTopBlocks(true)[0]; if(m) ws.scroll(40 - m.getRelativeToSurfaceXY().x*ws.scale, 30 - m.getRelativeToSurfaceXY().y*ws.scale); },0);
+}
+
+/* ============================================================
+   TOLK (kjører blokkene trinn for trinn)
+   ============================================================ */
+const STOP = Symbol('stop');
+class BreakSig{} class ContinueSig{}
+const frame = () => new Promise(r=>requestAnimationFrame(()=>r()));
+async function sleep(r, ms){ const end=performance.now()+ms; while(performance.now()<end){ if(r.stopped) throw STOP; await new Promise(res=>setTimeout(res, Math.min(30, end-performance.now()))); } if(r.stopped) throw STOP; }
+const clampP = v => Math.max(-100, Math.min(100, Number(v)||0));
+
+async function startProgram(){
+  stopProgram(true);
+  resetWorld();
+  ensureAudio();
+  const main = ws.getTopBlocks(true).find(b=>b.type==='ard_main' && b.isEnabled());
+  if(!main){ toast('Programmet mangler PROGRAM-blokken (finnes under Arduino).'); return; }
+  const r = {stopped:false, vars:new Map(), ops:0};
+  run = r; startTime = performance.now(); setRunUI();
+  try{
+    await execChain(r, main.getInputTargetBlock('SETUP'));
+    while(!r.stopped){ await execChain(r, main.getInputTargetBlock('LOOP')); await frame(); if(r.stopped) throw STOP; }
+  }catch(e){
+    if(e!==STOP){ if(e instanceof BreakSig || e instanceof ContinueSig){ toast('«bryt ut» brukt utenfor en løkke.'); } else { console.error(e); toast('Programfeil: '+e.message); } }
+  }finally{
+    if(run===r){ run=null; robot.L=robot.R=0; setRunUI(); }
+    ws.highlightBlock(null);
+  }
+}
+function stopProgram(silent){ if(run){ run.stopped=true; run=null; } robot.L=robot.R=0; io.toneUntil=0; silenceAudio(); if(ws) ws.highlightBlock(null); setRunUI(); }
+
+async function step(r, b){
+  if(r.stopped) throw STOP;
+  if(document.getElementById('slow').checked){ ws.highlightBlock(b.id); await sleep(r, 380); }
+  else if(++r.ops % 400 === 0){ await frame(); if(r.stopped) throw STOP; }
+}
+async function execChain(r, b){ while(b){ if(b.isEnabled()){ await step(r,b); await execStmt(r,b); } b=b.getNextBlock(); } }
+async function loopBody(r, b){ try{ await execChain(r,b); }catch(e){ if(e instanceof ContinueSig) return 'c'; if(e instanceof BreakSig) return 'b'; throw e; } }
+
+async function execStmt(r, b){
+  const V = (n,d)=>val(r,b,n,d);
+  switch(b.type){
+    case 'ard_wait': await sleep(r, Math.max(0, Number(await V('SEC',0)))*1000); break;
+    case 'ard_wait_until': while(!(await V('COND',false))){ await frame(); if(r.stopped) throw STOP; } break;
+    case 'motor_drive': { const d=+b.getFieldValue('DIR'), s=clampP(await V('SPEED',0)); robot.L=robot.R=d*s; break; }
+    case 'motor_turn': { const s=clampP(await V('SPEED',0)); if(b.getFieldValue('DIR')==='L'){robot.L=-s;robot.R=s;} else {robot.L=s;robot.R=-s;} break; }
+    case 'motor_set': robot.L=clampP(await V('L',0)); robot.R=clampP(await V('R',0)); break;
+    case 'motor_drive_time': { const d=+b.getFieldValue('DIR'), t=Number(await V('SEC',0)), s=clampP(await V('SPEED',0)); robot.L=robot.R=d*s; await sleep(r, Math.max(0,t)*1000); robot.L=robot.R=0; break; }
+    case 'motor_stop': robot.L=robot.R=0; break;
+    case 'out_led': io.led[b.getFieldValue('C')] = b.getFieldValue('ON')==='1'; break;
+    case 'out_led_set': io.led[b.getFieldValue('C')] = !!(await V('VAL',false)); break;
+    case 'out_all_off': io.led.red=io.led.yellow=io.led.green=false; break;
+    case 'out_tone': playTone(Number(await V('F',440)), Number(await V('SEC',0.2))); break;
+    case 'out_display': io.display = fmt(await V('VAL','')); break;
+    case 'controls_if': {
+      for(let i=0; b.getInput('IF'+i); i++){ if(await V('IF'+i,false)){ await execChain(r, b.getInputTargetBlock('DO'+i)); return; } }
+      if(b.getInput('ELSE')) await execChain(r, b.getInputTargetBlock('ELSE'));
+      break; }
+    case 'controls_repeat_ext': { const n=Math.floor(Number(await V('TIMES',0))); for(let i=0;i<n;i++){ if((await loopBody(r,b.getInputTargetBlock('DO')))==='b') break; if(r.stopped) throw STOP; } break; }
+    case 'controls_whileUntil': { const until=b.getFieldValue('MODE')==='UNTIL';
+      while(true){ const c=!!(await V('BOOL',false)); if(until?c:!c) break; if((await loopBody(r,b.getInputTargetBlock('DO')))==='b') break; await frame(); if(r.stopped) throw STOP; } break; }
+    case 'controls_flow_statements': throw (b.getFieldValue('FLOW')==='BREAK' ? new BreakSig() : new ContinueSig());
+    case 'variables_set': r.vars.set(b.getFieldValue('VAR'), await V('VALUE',0)); break;
+    case 'math_change': { const id=b.getFieldValue('VAR'); r.vars.set(id, (Number(r.vars.get(id))||0) + Number(await V('DELTA',1))); break; }
+  }
+}
+async function val(r, parent, name, def){ const b=parent.getInputTargetBlock(name); if(!b||!b.isEnabled()) return def; return evalBlock(r,b); }
+async function evalBlock(r, b){
+  const V=(n,d)=>val(r,b,n,d);
+  switch(b.type){
+    case 'math_number': return Number(b.getFieldValue('NUM'));
+    case 'math_arithmetic': { const a=Number(await V('A',0)), c=Number(await V('B',0));
+      switch(b.getFieldValue('OP')){ case 'ADD':return a+c; case 'MINUS':return a-c; case 'MULTIPLY':return a*c; case 'DIVIDE':return c===0?0:a/c; case 'POWER':return Math.pow(a,c);} return 0; }
+    case 'math_random_int': { const a=Math.ceil(Number(await V('FROM',0))), c=Math.floor(Number(await V('TO',0))); const lo=Math.min(a,c), hi=Math.max(a,c); return lo+Math.floor(Math.random()*(hi-lo+1)); }
+    case 'logic_boolean': return b.getFieldValue('BOOL')==='TRUE';
+    case 'logic_negation': return !(await V('BOOL',false));
+    case 'logic_operation': { const and=b.getFieldValue('OP')==='AND'; const a=!!(await V('A',false)); if(and&&!a) return false; if(!and&&a) return true; return !!(await V('B',false)); }
+    case 'logic_compare': { const a=await V('A',0), c=await V('B',0);
+      switch(b.getFieldValue('OP')){ case 'EQ':return a==c; case 'NEQ':return a!=c; case 'LT':return a<c; case 'LTE':return a<=c; case 'GT':return a>c; case 'GTE':return a>=c; } return false; }
+    case 'logic_gate': { const a=!!(await V('A',false)), c=!!(await V('B',false));
+      switch(b.getFieldValue('G')){ case 'AND':return a&&c; case 'OR':return a||c; case 'XOR':return a!==c; case 'NAND':return !(a&&c); case 'NOR':return !(a||c); case 'XNOR':return a===c; } return false; }
+    case 'text': return b.getFieldValue('TEXT');
+    case 'text_join': { let s=''; for(const inpt of b.inputList){ if(inpt.name.startsWith('ADD')) s+=fmt(await V(inpt.name,'')); } return s; }
+    case 'variables_get': return r.vars.has(b.getFieldValue('VAR')) ? r.vars.get(b.getFieldValue('VAR')) : 0;
+    case 'ard_millis': return Math.round((performance.now()-startTime)/100)/10;
+    case 'sens_distance': return S.dist;
+    case 'sens_line': return b.getFieldValue('SIDE')==='L' ? S.lineL : S.lineR;
+    case 'sens_bump': return S.bump;
+    case 'sens_light': return S.light;
+    case 'sens_color': return S.color===b.getFieldValue('C');
+    case 'sens_temp': return S.temp;
+    case 'sens_button': return inp(b.getFieldValue('B'));
+    case 'sens_switch': return inp(b.getFieldValue('S'));
+  }
+  return 0;
+}
+function fmt(v){ if(typeof v==='boolean') return v?'SANN':'USANN'; if(typeof v==='number') return Number.isInteger(v)? String(v) : v.toFixed(1).replace('.',','); return String(v??''); }
+
+/* ============================================================
+   ARDUINO-KODE (lesbar oversettelse)
+   ============================================================ */
+function ident(name){ let s=name.toLowerCase().replace(/æ/g,'ae').replace(/ø/g,'o').replace(/å/g,'a').replace(/[^a-z0-9_]/g,'_'); if(/^\d/.test(s)) s='_'+s; return s||'v'; }
+function strip(x){ if(x[0]!=='(' || x[x.length-1]!==')') return x; let d=0; for(let i=0;i<x.length;i++){ if(x[i]==='(') d++; else if(x[i]===')'){ d--; if(d===0 && i<x.length-1) return x; } } return x.slice(1,-1); }
+const isNumLit = x => /^-?\d+(\.\d+)?$/.test(x);
+const neg = x => isNumLit(x) ? String(-Number(x)) : `-(${x})`;
+const LEDPIN = {red:'LED_ROD', yellow:'LED_GUL', green:'LED_GRONN'};
+const COLC = {'rød':'ROD','grønn':'GRONN','blå':'BLA','gul':'GUL','hvit':'HVIT'};
+function gExpr(b, name, def){ const t=b.getInputTargetBlock(name); return (t && t.isEnabled()) ? gVal(t) : def; }
+function gVal(b){
+  const E=(n,d)=>gExpr(b,n,d);
+  switch(b.type){
+    case 'math_number': return String(Number(b.getFieldValue('NUM')));
+    case 'math_arithmetic': { const op=b.getFieldValue('OP'); if(op==='POWER') return `pow(${E('A','0')}, ${E('B','0')})`; return `(${E('A','0')} ${{ADD:'+',MINUS:'-',MULTIPLY:'*',DIVIDE:'/'}[op]} ${E('B','0')})`; }
+    case 'math_random_int': return `random(${E('FROM','0')}, ${E('TO','0')} + 1)`;
+    case 'logic_boolean': return b.getFieldValue('BOOL')==='TRUE'?'true':'false';
+    case 'logic_negation': { const x=E('BOOL','false'); return /^[\w.]+(\(\))?$/.test(x)? `!${x}` : `!(${strip(x)})`; }
+    case 'logic_operation': return `(${E('A','false')} ${b.getFieldValue('OP')==='AND'?'&&':'||'} ${E('B','false')})`;
+    case 'logic_compare': return `(${E('A','0')} ${{EQ:'==',NEQ:'!=',LT:'<',LTE:'<=',GT:'>',GTE:'>='}[b.getFieldValue('OP')]} ${E('B','0')})`;
+    case 'logic_gate': { const a=E('A','false'), c=E('B','false');
+      return {AND:`(${a} && ${c})`, OR:`(${a} || ${c})`, XOR:`(${a} != ${c})`, NAND:`!(${a} && ${c})`, NOR:`!(${a} || ${c})`, XNOR:`(${a} == ${c})`}[b.getFieldValue('G')]; }
+    case 'text': return JSON.stringify(b.getFieldValue('TEXT'));
+    case 'text_join': { const parts=b.inputList.filter(i=>i.name.startsWith('ADD')).map(i=>`String(${gExpr(b,i.name,'""')})`); return parts.length? parts.join(' + ') : '""'; }
+    case 'variables_get': return ident(b.getField('VAR').getText());
+    case 'ard_millis': return '(millis() / 1000.0)';
+    case 'sens_distance': return 'avstandCm()';
+    case 'sens_line': return `(digitalRead(${b.getFieldValue('SIDE')==='L'?'LINJE_V':'LINJE_H'}) == HIGH)`;
+    case 'sens_bump': return '(digitalRead(STOTSENSOR) == LOW)';
+    case 'sens_light': return 'map(analogRead(LYSMALER), 0, 1023, 0, 100)';
+    case 'sens_color': return `(fargesensor() == ${COLC[b.getFieldValue('C')]})`;
+    case 'sens_temp': return 'temperaturC()';
+    case 'sens_button': return `(digitalRead(KNAPP_${b.getFieldValue('B')}) == HIGH)`;
+    case 'sens_switch': return `(digitalRead(BRYTER_${b.getFieldValue('S')}) == HIGH)`;
+  }
+  return '0';
+}
+function gChain(b, ind, depth){ let o=''; while(b){ if(b.isEnabled()) o+=gStmt(b,ind,depth); b=b.getNextBlock(); } return o; }
+function gStmt(b, ind, depth){
+  const P='  '.repeat(ind), E=(n,d)=>gExpr(b,n,d), C=(n)=>gChain(b.getInputTargetBlock(n), ind+1, depth);
+  const ms = x => isNumLit(x) ? String(Math.round(Number(x)*1000)) : `${x} * 1000`;
+  switch(b.type){
+    case 'ard_wait': return `${P}delay(${ms(E('SEC','0'))});\n`;
+    case 'ard_wait_until': return `${P}while (!${/^\(.*\)$/.test(E('COND','false'))?E('COND','false'):'('+E('COND','false')+')'}) { }  // vent\n`;
+    case 'motor_drive': { const s=E('SPEED','0'), v=b.getFieldValue('DIR')==='1'?s:neg(s); return `${P}motorer(${v}, ${v});\n`; }
+    case 'motor_turn': { const s=E('SPEED','0'); return b.getFieldValue('DIR')==='L' ? `${P}motorer(${neg(s)}, ${s});  // snu venstre\n` : `${P}motorer(${s}, ${neg(s)});  // snu høyre\n`; }
+    case 'motor_set': return `${P}motorer(${E('L','0')}, ${E('R','0')});\n`;
+    case 'motor_drive_time': { const s=E('SPEED','0'), v=b.getFieldValue('DIR')==='1'?s:neg(s); return `${P}motorer(${v}, ${v});\n${P}delay(${ms(E('SEC','0'))});\n${P}motorer(0, 0);\n`; }
+    case 'motor_stop': return `${P}motorer(0, 0);\n`;
+    case 'out_led': return `${P}digitalWrite(${LEDPIN[b.getFieldValue('C')]}, ${b.getFieldValue('ON')==='1'?'HIGH':'LOW'});\n`;
+    case 'out_led_set': return `${P}digitalWrite(${LEDPIN[b.getFieldValue('C')]}, ${E('VAL','false')} ? HIGH : LOW);\n`;
+    case 'out_all_off': return `${P}digitalWrite(LED_ROD, LOW);\n${P}digitalWrite(LED_GUL, LOW);\n${P}digitalWrite(LED_GRONN, LOW);\n`;
+    case 'out_tone': return `${P}tone(SUMMER, ${E('F','440')}, ${ms(E('SEC','0'))});\n`;
+    case 'out_display': return `${P}lcd.clear();\n${P}lcd.print(${E('VAL','""')});\n`;
+    case 'controls_if': { let o=''; for(let i=0;b.getInput('IF'+i);i++){ o+= (i===0?P+'if':' else if')+` (${strip(E('IF'+i,'false'))}) {\n${C('DO'+i)}${P}}`; }
+      if(b.getInput('ELSE')) o+=` else {\n${C('ELSE')}${P}}`; return o+'\n'; }
+    case 'controls_repeat_ext': { const v='ijkmn'[Math.min(depth,4)]; return `${P}for (int ${v} = 0; ${v} < ${E('TIMES','0')}; ${v}++) {\n${gChain(b.getInputTargetBlock('DO'),ind+1,depth+1)}${P}}\n`; }
+    case 'controls_whileUntil': { const c=strip(E('BOOL','false')); return `${P}while (${b.getFieldValue('MODE')==='UNTIL'?'!('+c+')':c}) {\n${C('DO')}${P}}\n`; }
+    case 'controls_flow_statements': return `${P}${b.getFieldValue('FLOW')==='BREAK'?'break':'continue'};\n`;
+    case 'variables_set': return `${P}${ident(b.getField('VAR').getText())} = ${E('VALUE','0')};\n`;
+    case 'math_change': return `${P}${ident(b.getField('VAR').getText())} += ${E('DELTA','1')};\n`;
+  }
+  return `${P}// (${b.type})\n`;
+}
+function genArduino(){
+  const tops=ws.getTopBlocks(true), main=tops.find(b=>b.type==='ard_main');
+  let o = `// Robotlab Intek – Arduino-kode generert fra blokkene\n#include "robotlab.h"   // motorer(), avstandCm(), fargesensor(), temperaturC(), lcd\n\n`+
+`// Pinnetilordning på robotkortet\n#define LINJE_V     2\n#define LINJE_H     3\n#define STOTSENSOR  4\n#define MOTOR_V     5   // PWM\n#define MOTOR_H     6   // PWM\n#define KNAPP_A     7\n#define KNAPP_B     8\n#define KNAPP_C     9\n#define BRYTER_S1  10\n#define BRYTER_S2  11\n#define BRYTER_S3  12\n#define SUMMER     13\n#define LED_ROD    A1\n#define LED_GUL    A2\n#define LED_GRONN  A3\n#define LYSMALER   A0\n\n`;
+  const vars = ws.getAllVariables();
+  if(vars.length){ o+='// Variabler\n'+vars.map(v=>`float ${ident(v.name)} = 0;`).join('\n')+'\n\n'; }
+  if(!main) return o+'// Legg inn PROGRAM-blokken fra kategorien Arduino.\n';
+  o += `void setup() {\n  robotlabInit();   // setter pinMode for alle pinner\n${gChain(main.getInputTargetBlock('SETUP'),1,0)}}\n\nvoid loop() {\n${gChain(main.getInputTargetBlock('LOOP'),1,0)}}\n`;
+  const loose = tops.filter(b=>b!==main).length;
+  if(loose) o += `\n// Merk: ${loose} blokk${loose>1?'er':''} ligger løst utenfor PROGRAM og kjøres ikke.\n`;
+  return o;
+}
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function highlight(src){
+  const re=/(\/\/[^\n]*)|("(?:[^"\\\n]|\\.)*")|(#\w+)|\b(void|if|else|while|for|int|float|break|continue|true|false|HIGH|LOW|String)\b|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)(?=\()/g;
+  let out='', last=0;
+  src.replace(re,(m,c,s,p,k,n,f,idx)=>{ out+=esc(src.slice(last,idx)); const cls=c?'t-c':s?'t-s':p?'t-p':k?'t-k':n?'t-n':'t-f'; out+=`<span class="${cls}">${esc(m)}</span>`; last=idx+m.length; return m; });
+  return out+esc(src.slice(last));
+}
+function renderCode(){ document.getElementById('codePre').innerHTML = highlight(genArduino()); }
+
+/* ============================================================
+   VERDEN, FYSIKK OG SENSORER
+   ============================================================ */
+function resetWorld(){
+  const st=world.start; Object.assign(robot,{x:st.x,y:st.y,a:st.a,L:0,R:0,colliding:false,collisions:0,trail:[[st.x,st.y]]});
+  io.led.red=io.led.yellow=io.led.green=false; io.display=''; io.toneUntil=0; io.override=null;
+  M = {done:{}, fail:{}, success:false, failed:null, t:0, redStop:0, inTunnel:false, tunnelSeen:false, noLight:0, lightOut:0, offLine:false};
+  document.getElementById('banner').hidden=true;
+  computeSensors(); renderGoals();
+}
+function inRect(x,y,r){ return x>=r.x && x<=r.x+r.w && y>=r.y && y<=r.y+r.h; }
+function solidAt(x,y){ if(x<0||y<0||x>ARENA.w||y>ARENA.h) return true; return world.walls.some(w=>inRect(x,y,w)); }
+function collides(x,y){
+  if(x<R_ROBOT||y<R_ROBOT||x>ARENA.w-R_ROBOT||y>ARENA.h-R_ROBOT) return true;
+  return world.walls.some(w=>{ const cx=Math.max(w.x,Math.min(x,w.x+w.w)), cy=Math.max(w.y,Math.min(y,w.y+w.h)); return (x-cx)**2+(y-cy)**2 < R_ROBOT*R_ROBOT; });
+}
+function segDist(px,py,ax,ay,bx,by){ const dx=bx-ax, dy=by-ay, l=dx*dx+dy*dy; let t=l?((px-ax)*dx+(py-ay)*dy)/l:0; t=Math.max(0,Math.min(1,t)); return Math.hypot(px-ax-t*dx, py-ay-t*dy); }
+function lineDist(x,y){ let d=1e9; for(const L of world.lines) for(let i=0;i<L.length-1;i++) d=Math.min(d, segDist(x,y,L[i][0],L[i][1],L[i+1][0],L[i+1][1])); return d; }
+function local(fx, ly){ const c=Math.cos(robot.a), s=Math.sin(robot.a); return [robot.x+c*fx - s*ly, robot.y+s*fx + c*ly]; }
+function ray(x,y,a){ const c=Math.cos(a), s=Math.sin(a); for(let d=0; d<=200; d+=0.5){ if(solidAt(x+c*d, y+s*d)) return d; } return 200; }
+function computeSensors(){
+  if(!mission || mission.kind!=='robot'){ S={dist:200,lineL:false,lineR:false,bump:false,light:55,color:'hvit',temp:21}; return; }
+  const [ux,uy]=local(8,0);
+  const d=Math.min(ray(ux,uy,robot.a), ray(ux,uy,robot.a-0.13), ray(ux,uy,robot.a+0.13));
+  const [lx,ly]=local(9,-2.6), [rx,ry]=local(9,2.6), [cx,cy]=local(3,0), [bx,by]=local(R_ROBOT+1.5,0);
+  const dark=world.dark.some(z=>inRect(robot.x,robot.y,z));
+  let light = dark ? 6 : world.ambient;
+  for(const l of world.lamps){ const dd=Math.hypot(robot.x-l.x, robot.y-l.y); light += l.p/(1+(dd/35)**2) * (dark?0.15:1); }
+  let temp = 21; for(const h of world.heat){ const dd=Math.hypot(robot.x-h.x, robot.y-h.y); temp += 74*Math.exp(-((dd/45)**2)); }
+  let color='hvit'; for(const z of world.zones) if(inRect(cx,cy,z)) color=z.c;
+  S = { dist: Math.max(2, Math.round(d)), lineL: lineDist(lx,ly)<=LINE_W/2, lineR: lineDist(rx,ry)<=LINE_W/2,
+        bump: solidAt(bx,by) || robot.colliding, light: Math.round(Math.max(0,Math.min(100,light))), color, temp: Math.round(temp*10)/10, dark,
+        hit: local(8 + d, 0), ux, uy };
+}
+function physics(dt){
+  if(mission.kind!=='robot') return;
+  const vl=robot.L/100*VMAX, vr=robot.R/100*VMAX, v=(vl+vr)/2, w=(vl-vr)/WHEELBASE;
+  const na = robot.a + w*dt, am=(robot.a+na)/2;
+  const nx = robot.x + Math.cos(am)*v*dt, ny = robot.y + Math.sin(am)*v*dt;
+  robot.a = na;
+  if(Math.abs(v)>0.01){
+    if(collides(nx,ny)){
+      if(!robot.colliding){ robot.collisions++; if(run) missionEvent('collision'); }
+      robot.colliding=true;
+      // gli langs veggen
+      if(!collides(nx,robot.y)) robot.x=nx; else if(!collides(robot.x,ny)) robot.y=ny;
+    } else { robot.x=nx; robot.y=ny; robot.colliding=false; }
+    const t=robot.trail[robot.trail.length-1];
+    if(Math.hypot(t[0]-robot.x,t[1]-robot.y)>1.5){ robot.trail.push([robot.x,robot.y]); if(robot.trail.length>1500) robot.trail.shift(); }
+  }
+}
+
+/* ============================================================
+   OPPDRAGSSJEKK
+   ============================================================ */
+function missionEvent(ev){ if(ev==='collision' && mission.id==='hinder'){ M.fail.nocol=true; renderGoals(); } }
+function missionTick(dt){
+  if(!run || mission.kind!=='robot' || M.success || M.failed) return;
+  M.t += dt;
+  const atGoal = world.goal && inRect(robot.x,robot.y,world.goal);
+  const id=mission.id; let changed=false;
+  const set=(k,v=true)=>{ if(!M.done[k]&&v){ M.done[k]=true; changed=true; } };
+  if(id==='hinder'){ if(atGoal){ set('goal'); if(!M.fail.nocol) set('nocol'); finish(!M.fail.nocol, M.fail.nocol?`Mål nådd, men med ${robot.collisions} kollisjon${robot.collisions>1?'er':''}. Prøv igjen uten.`:null); } }
+  if(id==='linje'){
+    if(!M.offLine && lineDist(robot.x,robot.y)>12){ M.offLine=true; M.fail.track=true; changed=true; finish(false,'Roboten mistet linja. Juster svingene og prøv igjen.'); }
+    if(atGoal){ set('goal'); set('track'); finish(true); }
+  }
+  if(id==='farge'){
+    const moving = Math.abs(robot.L)+Math.abs(robot.R) > 1;
+    if(S.color==='rød' && !moving && io.led.red){ M.redStop+=dt; if(M.redStop>=1.5) set('red'); }
+    if(S.color==='blå' && performance.now()<io.toneUntil) set('blue');
+    if(atGoal){ set('goal'); const ok=M.done.red&&M.done.blue; if(!M.done.red) M.fail.red=true; if(!M.done.blue) M.fail.blue=true; changed=true; finish(ok, ok?null:'Målet er nådd, men ikke alle stasjonene ble utført riktig.'); }
+  }
+  if(id==='mork'){
+    const inT = world.dark.some(z=>inRect(robot.x,robot.y,z));
+    if(inT){ M.tunnelSeen=true; if(!io.led.yellow) M.noLight+=dt; } else if(io.led.yellow) M.lightOut+=dt;
+    if(atGoal){ set('goal');
+      if(M.tunnelSeen && M.noLight<0.5) set('on'); else M.fail.on=true;
+      if(M.lightOut<0.8) set('off'); else M.fail.off=true;
+      changed=true; const ok=M.done.on&&M.done.off; finish(ok, ok?null:(M.fail.on?'Frontlyset var av for lenge inne i tunnelen.':'Frontlyset sto på utenfor tunnelen.')); }
+  }
+  if(changed) renderGoals();
+}
+function finish(ok, msg){
+  if(ok){ M.success=true; showBanner(true, `Oppdraget er fullført på ${M.t.toFixed(1).replace('.',',')} s.`); }
+  else { M.failed=true; showBanner(false, msg||'Ikke helt. Prøv igjen.'); }
+  renderGoals();
+}
+function showBanner(ok,msg){ const b=document.getElementById('banner'); b.className='banner '+(ok?'ok':'bad'); b.textContent=(ok?'✓ ':'✗ ')+msg; b.hidden=false; }
+
+/* ============================================================
+   SANNHETSTABELL
+   ============================================================ */
+let ttRunning=false;
+function buildTT(){
+  const sec=document.getElementById('ttSection'); sec.hidden = mission.kind!=='logic';
+  document.getElementById('ttSum').textContent='';
+  if(mission.kind!=='logic') return;
+  const ins=mission.inputs, outs=mission.outputs, nm=o=>LEDS.find(l=>l[0]===o)[1].toUpperCase();
+  let h='<thead><tr>'+ins.map(i=>`<th>${i}</th>`).join('')+outs.map((o,k)=>`<th class="${k===0?'sep':''}">${nm(o)} skal</th><th>${nm(o)} er</th>`).join('')+'<th class="sep">OK?</th></tr></thead><tbody>';
+  const n=ins.length;
+  for(let i=0;i<(1<<n);i++){ const v={}; ins.forEach((x,k)=>v[x]=!!(i>>(n-1-k)&1)); const e=mission.f(v);
+    h+=`<tr id="tt${i}">`+ins.map(x=>`<td>${v[x]?1:0}</td>`).join('')+outs.map((o,k)=>`<td class="${k===0?'sep':''}">${e[o]?1:0}</td><td data-o="${o}">–</td>`).join('')+`<td class="sep" data-r>–</td></tr>`; }
+  document.getElementById('tt').innerHTML=h+'</tbody>';
+}
+async function testTT(){
+  if(ttRunning) return; ttRunning=true;
+  const btn=document.getElementById('ttBtn'); btn.disabled=true;
+  if(!run){ startProgram(); await new Promise(r=>setTimeout(r,250)); }
+  if(!run){ ttRunning=false; btn.disabled=false; return; }
+  const ins=mission.inputs, n=ins.length; let okAll=0; buildTT();
+  try{
+    for(let i=0;i<(1<<n);i++){
+      if(!run) throw new Error('stoppet');
+      const v={}; ins.forEach((x,k)=>v[x]=!!(i>>(n-1-k)&1));
+      io.override=v; const tr=document.getElementById('tt'+i); tr.classList.add('cur');
+      await new Promise(r=>setTimeout(r,320));
+      const e=mission.f(v); let ok=true;
+      for(const o of mission.outputs){ const got=io.led[o]; tr.querySelector(`[data-o="${o}"]`).textContent=got?1:0; if(got!==e[o]) ok=false; }
+      const rc=tr.querySelector('[data-r]'); rc.textContent=ok?'✓':'✗'; rc.className='sep '+(ok?'res-ok':'res-bad'); if(ok) okAll++;
+      tr.classList.remove('cur');
+    }
+    const tot=1<<n, sum=document.getElementById('ttSum');
+    sum.textContent = okAll===tot ? `Alle ${tot} rader stemmer. Logikken er riktig!` : `${okAll} av ${tot} rader stemmer.`;
+    sum.className='tt-sum '+(okAll===tot?'res-ok':'res-bad');
+    if(okAll===tot){ M.done.tt=true; showBanner(true,'Sannhetstabellen stemmer. '+mission.formula); } else { M.fail.tt=true; M.done.tt=false; }
+    renderGoals();
+  }catch(e){ toast('Testen ble avbrutt fordi programmet stoppet.'); }
+  io.override=null; ttRunning=false; btn.disabled=false;
+}
+
+/* ============================================================
+   LYD
+   ============================================================ */
+let actx=null, osc=null, gain=null;
+function ensureAudio(){ try{ if(!actx){ actx=new (window.AudioContext||window.webkitAudioContext)(); osc=actx.createOscillator(); osc.type='square'; gain=actx.createGain(); gain.gain.value=0; osc.connect(gain).connect(actx.destination); osc.start(); } if(actx.state==='suspended') actx.resume(); }catch(e){} }
+function playTone(f, s){
+  f=Math.max(31,Math.min(5000,f||440)); s=Math.max(0.02,Math.min(10,s||0.2));
+  io.toneF=f; io.toneUntil=performance.now()+s*1000;
+  if(!actx||!document.getElementById('sound').checked) return;
+  const t=actx.currentTime; gain.gain.cancelScheduledValues(t); osc.frequency.setValueAtTime(f,t);
+  gain.gain.setValueAtTime(0.045,t); gain.gain.setValueAtTime(0.045,t+s); gain.gain.linearRampToValueAtTime(0,t+s+0.02);
+}
+function silenceAudio(){ if(actx&&gain){ const t=actx.currentTime; gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(0,t); } }
+
+/* ============================================================
+   TEGNING
+   ============================================================ */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let scale=2, dpr=1, P={};
+function readColors(){ for(const k of ['floor','grid','grid-major','wall','wall-edge','robot','robot-board','ink','muted','accent','line','surface','surface-2','ok','bad']) P[k]=cssVar('--'+k); }
+function resizeCanvas(){ const w=cv.clientWidth; dpr=window.devicePixelRatio||1; scale=w/ARENA.w; cv.style.height=(w*ARENA.h/ARENA.w)+'px'; cv.width=Math.round(w*dpr); cv.height=Math.round(w*ARENA.h/ARENA.w*dpr); }
+new ResizeObserver(resizeCanvas).observe(cv);
+const ZONEC={'rød':'#e5483d','grønn':'#36b45a','blå':'#3a7fe0','gul':'#f2c21b'};
+
+function draw(){
+  ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);
+  ctx.fillStyle=P.floor; ctx.fillRect(0,0,ARENA.w,ARENA.h);
+  if(mission.kind==='logic'){ drawLogic(); return; }
+  // rutenett
+  ctx.lineWidth=1/scale;
+  for(let x=10;x<ARENA.w;x+=10){ ctx.strokeStyle= x%50?P.grid:P['grid-major']; ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,ARENA.h); ctx.stroke(); }
+  for(let y=10;y<ARENA.h;y+=10){ ctx.strokeStyle= y%50?P.grid:P['grid-major']; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(ARENA.w,y); ctx.stroke(); }
+  // lys og varme
+  for(const l of world.lamps){ const g=ctx.createRadialGradient(l.x,l.y,0,l.x,l.y,55); g.addColorStop(0,'rgba(255,214,60,.55)'); g.addColorStop(1,'rgba(255,214,60,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(l.x,l.y,55,0,7); ctx.fill();
+    ctx.fillStyle='#ffd23c'; ctx.strokeStyle=P['wall-edge']; ctx.lineWidth=0.6; ctx.beginPath(); ctx.arc(l.x,l.y,4,0,7); ctx.fill(); ctx.stroke(); label('LAMPE', l.x, l.y+9); }
+  for(const h of world.heat){ const g=ctx.createRadialGradient(h.x,h.y,0,h.x,h.y,50); g.addColorStop(0,'rgba(235,70,40,.5)'); g.addColorStop(1,'rgba(235,70,40,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(h.x,h.y,50,0,7); ctx.fill(); }
+  // fargefelt
+  for(const z of world.zones){ ctx.globalAlpha=.75; ctx.fillStyle=ZONEC[z.c]; ctx.fillRect(z.x,z.y,z.w,z.h); ctx.globalAlpha=1; label(z.c.toUpperCase(), z.x+z.w/2, z.y+z.h/2+2, '#fff'); }
+  // linjer
+  ctx.strokeStyle='#121616'; ctx.lineWidth=LINE_W; ctx.lineJoin=ctx.lineCap='round';
+  for(const L of world.lines){ ctx.beginPath(); L.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.stroke(); }
+  // mål
+  if(world.goal){ const g=world.goal, q=6; ctx.save(); ctx.beginPath(); ctx.rect(g.x,g.y,g.w,g.h); ctx.clip();
+    for(let i=0;i*q<g.w;i++) for(let j=0;j*q<g.h;j++){ ctx.fillStyle=(i+j)%2?'#1b1f1f':'#f4f4f0'; ctx.fillRect(g.x+i*q,g.y+j*q,q,q); }
+    ctx.restore(); ctx.strokeStyle=P.accent; ctx.lineWidth=1.2; ctx.strokeRect(g.x,g.y,g.w,g.h); label('MÅL', g.x+g.w/2, g.y-3); }
+  // vegger
+  for(const w of world.walls){ ctx.fillStyle=P.wall; ctx.fillRect(w.x,w.y,w.w,w.h); ctx.strokeStyle=P['wall-edge']; ctx.lineWidth=0.6; ctx.strokeRect(w.x+.3,w.y+.3,w.w-.6,w.h-.6); }
+  for(const h of world.heat){ label('VARMEKILDE', h.x, h.y+18); }
+  // spor
+  if(robot.trail.length>1){ ctx.strokeStyle=P.accent; ctx.globalAlpha=.35; ctx.lineWidth=.8; ctx.beginPath(); robot.trail.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.lineTo(robot.x,robot.y); ctx.stroke(); ctx.globalAlpha=1; }
+  // ultralydstråle
+  if(S.hit){ ctx.setLineDash([2,2]); ctx.strokeStyle=P.accent; ctx.lineWidth=.6; ctx.beginPath(); ctx.moveTo(S.ux,S.uy); ctx.lineTo(S.hit[0],S.hit[1]); ctx.stroke(); ctx.setLineDash([]);
+    if(S.dist<200){ ctx.fillStyle=P.accent; ctx.beginPath(); ctx.arc(S.hit[0],S.hit[1],1.3,0,7); ctx.fill(); label(S.dist+' cm', S.hit[0], S.hit[1]-4, P.accent); } }
+  drawRobot();
+  // tunnel-tak over roboten
+  for(const z of world.dark){ ctx.fillStyle='rgba(8,14,16,.78)'; ctx.fillRect(z.x,z.y,z.w,z.h);
+    ctx.strokeStyle='rgba(255,196,0,.7)'; ctx.lineWidth=1; ctx.setLineDash([3,3]); ctx.strokeRect(z.x+.5,z.y+.5,z.w-1,z.h-1); ctx.setLineDash([]);
+    label(mission.id==='mork'?'TUNNEL':'MØRK SONE', z.x+z.w/2, z.y+8, '#ffd23c'); }
+  if(io.led.yellow){ ctx.save(); ctx.translate(robot.x,robot.y); ctx.rotate(robot.a); ctx.globalCompositeOperation='lighter';
+    const g=ctx.createLinearGradient(8,0,55,0); g.addColorStop(0,'rgba(255,220,90,.55)'); g.addColorStop(1,'rgba(255,220,90,0)'); ctx.fillStyle=g;
+    ctx.beginPath(); ctx.moveTo(8,-4); ctx.lineTo(55,-22); ctx.lineTo(55,22); ctx.lineTo(8,4); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  // målestokk
+  ctx.strokeStyle=P.muted; ctx.lineWidth=.8; ctx.beginPath(); ctx.moveTo(ARENA.w-58,ARENA.h-6); ctx.lineTo(ARENA.w-8,ARENA.h-6); ctx.moveTo(ARENA.w-58,ARENA.h-8); ctx.lineTo(ARENA.w-58,ARENA.h-4); ctx.moveTo(ARENA.w-8,ARENA.h-8); ctx.lineTo(ARENA.w-8,ARENA.h-4); ctx.stroke();
+  label('50 cm', ARENA.w-33, ARENA.h-9, P.muted);
+}
+function label(t,x,y,col){ ctx.font=`600 5.5px ${getFont()}`; ctx.textAlign='center'; ctx.fillStyle=col||P.ink; ctx.fillText(t,x,y); }
+let fontCache=''; function getFont(){ return fontCache || (fontCache='"IBM Plex Mono", monospace'); }
+function drawRobot(){
+  ctx.save(); ctx.translate(robot.x,robot.y); ctx.rotate(robot.a);
+  ctx.fillStyle='rgba(0,0,0,.12)'; ctx.beginPath(); ctx.arc(1,1.2,R_ROBOT,0,7); ctx.fill();
+  ctx.fillStyle='#1d2526'; ctx.fillRect(-5,-9.6,10,3.2); ctx.fillRect(-5,6.4,10,3.2);
+  ctx.fillStyle=P.robot; ctx.strokeStyle=P['robot-board']; ctx.lineWidth=.6;
+  ctx.beginPath(); ctx.roundRect(-8,-6.5,16.5,13,3); ctx.fill(); ctx.stroke();
+  ctx.fillStyle=P['robot-board']; ctx.fillRect(-6.5,-4.5,8,9);
+  ctx.fillStyle='rgba(255,255,255,.55)'; for(let i=0;i<6;i++) ctx.fillRect(-6+i*1.3,-4,.6,.6);
+  ctx.fillStyle='#c9d1d3'; ctx.strokeStyle='#5a6466'; ctx.lineWidth=.4;
+  for(const yy of [-2.6,2.6]){ ctx.beginPath(); ctx.arc(8.3,yy,1.7,0,7); ctx.fill(); ctx.stroke(); }
+  for(const [yy,on] of [[-2.6,S.lineL],[2.6,S.lineR]]){ ctx.fillStyle=on?'#ff3b30':'#3a4446'; ctx.fillRect(9.6,yy-.8,1.6,1.6); }
+  const lc={red:'#ff3b30',yellow:'#ffc400',green:'#2ee05a'};
+  [['red',-3],['yellow',0],['green',3]].forEach(([c,yy])=>{ if(io.led[c]){ ctx.shadowColor=lc[c]; ctx.shadowBlur=8*scale; } ctx.fillStyle=io.led[c]?lc[c]:'#2b3335'; ctx.beginPath(); ctx.arc(4,yy,1.1,0,7); ctx.fill(); ctx.shadowBlur=0; });
+  ctx.restore();
+}
+let hits=[];
+function drawLogic(){
+  hits=[];
+  const used=new Set(mission.inputs), usedOut=new Set(mission.outputs);
+  const box={x:118,y:48,w:74,h:104};
+  ctx.font=`600 7px ${getFont()}`;
+  INPUTS.forEach((n,i)=>{
+    const y=26+i*29, on=inp(n), u=used.has(n), forced=io.override && n in io.override;
+    ctx.globalAlpha=u?1:.25;
+    ctx.fillStyle=P.ink; ctx.textAlign='left'; ctx.font=`600 8px ${getFont()}`; ctx.fillText(n, 14, y+3);
+    if(n[0]==='S'){ ctx.fillStyle=on?P.accent:P.line; ctx.beginPath(); ctx.roundRect(40,y-6,24,12,6); ctx.fill(); ctx.fillStyle=P.surface; ctx.beginPath(); ctx.arc(on?58:46,y,4.4,0,7); ctx.fill(); hits.push({n,x:34,y:y-10,w:36,h:20}); }
+    else { ctx.fillStyle=P['wall-edge']; ctx.beginPath(); ctx.arc(52,y,8,0,7); ctx.fill(); ctx.fillStyle=on?P.accent:P['surface-2']; ctx.beginPath(); ctx.arc(52,y+(on?.8:0),6,0,7); ctx.fill(); hits.push({n,x:40,y:y-12,w:24,h:24}); }
+    if(forced){ ctx.strokeStyle='#e2a630'; ctx.setLineDash([2,2]); ctx.lineWidth=.8; ctx.strokeRect(34,y-12,36,24); ctx.setLineDash([]); }
+    ctx.fillStyle=P.muted; ctx.font=`500 6px ${getFont()}`; ctx.textAlign='left'; ctx.fillText(on?'1':'0', 72, y+2.5);
+    if(u){ ctx.strokeStyle=on?P.accent:P.line; ctx.lineWidth=on?1.6:1; ctx.beginPath(); ctx.moveTo(80,y); ctx.bezierCurveTo(100,y,100,box.y+20+i*13,box.x,box.y+20+i*13); ctx.stroke(); }
+    ctx.globalAlpha=1;
+  });
+  ctx.fillStyle=P.surface; ctx.strokeStyle=P.accent; ctx.lineWidth=1.2; ctx.setLineDash([4,3]); ctx.beginPath(); ctx.roundRect(box.x,box.y,box.w,box.h,6); ctx.fill(); ctx.stroke(); ctx.setLineDash([]);
+  ctx.textAlign='center'; ctx.fillStyle=P.accent; ctx.font=`700 8px ${getFont()}`; ctx.fillText('DITT', box.x+box.w/2, box.y+box.h/2-2); ctx.fillText('PROGRAM', box.x+box.w/2, box.y+box.h/2+9);
+  ctx.fillStyle=P.muted; ctx.font=`500 5.5px ${getFont()}`; ctx.fillText(run?'kjører':'stoppet', box.x+box.w/2, box.y+box.h-8);
+  const lc={red:'#ff3b30',yellow:'#ffc400',green:'#2ee05a'};
+  LEDS.forEach(([c,nm],i)=>{
+    const y=52+i*48, on=io.led[c], u=usedOut.has(c);
+    ctx.globalAlpha=u?1:.3;
+    ctx.strokeStyle=on?lc[c]:P.line; ctx.lineWidth=on?1.6:1; ctx.beginPath(); ctx.moveTo(box.x+box.w,box.y+30+i*22); ctx.bezierCurveTo(212,box.y+30+i*22,212,y,232,y); ctx.stroke();
+    if(on){ const g=ctx.createRadialGradient(245,y,4,245,y,26); g.addColorStop(0,lc[c]); g.addColorStop(1,'rgba(0,0,0,0)'); ctx.globalAlpha=(u?1:.3)*.55; ctx.fillStyle=g; ctx.beginPath(); ctx.arc(245,y,26,0,7); ctx.fill(); ctx.globalAlpha=u?1:.3; }
+    ctx.fillStyle=on?lc[c]:P['surface-2']; ctx.strokeStyle=P['wall-edge']; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(245,y,12,0,7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle=P.ink; ctx.textAlign='left'; ctx.font=`600 7px ${getFont()}`; ctx.fillText(nm.toUpperCase(), 262, y+2.5);
+    ctx.globalAlpha=1;
+  });
+  ctx.textAlign='center'; ctx.fillStyle=P.ink; ctx.font=`600 7px ${getFont()}`; ctx.fillText(mission.formula, ARENA.w/2, 192);
+}
+function cmFromEvent(e){ const r=cv.getBoundingClientRect(); return [(e.clientX-r.left)/scale, (e.clientY-r.top)/scale]; }
+let heldBtn=null;
+cv.addEventListener('pointerdown',e=>{
+  if(mission.kind!=='logic') return;
+  const [x,y]=cmFromEvent(e), h=hits.find(h=>x>=h.x&&x<=h.x+h.w&&y>=h.y&&y<=h.y+h.h); if(!h) return;
+  if(h.n[0]==='S'){ io.sw[h.n]=!io.sw[h.n]; } else { io.btn[h.n]=true; heldBtn=h.n; cv.setPointerCapture(e.pointerId); }
+  syncIO();
+});
+const release=()=>{ if(heldBtn){ io.btn[heldBtn]=false; heldBtn=null; syncIO(); } };
+cv.addEventListener('pointerup',release); cv.addEventListener('pointercancel',release);
+
+/* ============================================================
+   PANEL: KNAPPER, BRYTERE, LED, MÅLERE
+   ============================================================ */
+function buildIO(){
+  const br=document.getElementById('btnRow'), sr=document.getElementById('swRow'), lr=document.getElementById('ledRow');
+  ['A','B','C'].forEach(n=>{ const b=document.createElement('button'); b.type='button'; b.className='pbtn'; b.id='pb'+n; b.textContent=n; b.setAttribute('aria-label','Knapp '+n);
+    const down=e=>{ e.preventDefault(); io.btn[n]=true; try{b.setPointerCapture(e.pointerId);}catch(_){} syncIO(); }, up=()=>{ io.btn[n]=false; syncIO(); };
+    b.addEventListener('pointerdown',down); b.addEventListener('pointerup',up); b.addEventListener('pointercancel',up);
+    b.addEventListener('keydown',e=>{ if((e.key===' '||e.key==='Enter')&&!e.repeat){ e.preventDefault(); io.btn[n]=true; syncIO(); } });
+    b.addEventListener('keyup',e=>{ if(e.key===' '||e.key==='Enter'){ io.btn[n]=false; syncIO(); } });
+    br.appendChild(b); });
+  ['S1','S2','S3'].forEach(n=>{ const b=document.createElement('button'); b.type='button'; b.className='sw'; b.id='sw'+n; b.innerHTML=`<i></i>${n}`; b.setAttribute('aria-pressed','false');
+    b.addEventListener('click',()=>{ io.sw[n]=!io.sw[n]; syncIO(); }); sr.appendChild(b); });
+  LEDS.forEach(([c,nm])=>{ const d=document.createElement('div'); d.className='led '+c; d.id='led'+c; d.innerHTML=`<i></i>${nm}`; lr.appendChild(d); });
+}
+function syncIO(){
+  ['A','B','C'].forEach(n=>{ const el=document.getElementById('pb'+n); el.classList.toggle('on', inp(n)); el.classList.toggle('forced', !!(io.override&&n in io.override)); });
+  ['S1','S2','S3'].forEach(n=>{ const el=document.getElementById('sw'+n), on=inp(n); el.classList.toggle('on',on); el.setAttribute('aria-pressed',on); el.classList.toggle('forced', !!(io.override&&n in io.override)); });
+  LEDS.forEach(([c])=>document.getElementById('led'+c).classList.toggle('on', io.led[c]));
+  document.getElementById('lcd').textContent = io.display || ' ';
+  const bz=document.getElementById('buzz'), on=performance.now()<io.toneUntil; bz.classList.toggle('on',on); bz.textContent = on?`Summer: ${Math.round(io.toneF)} Hz`:'Summer: stille';
+}
+const METERS=[
+  ['dist','Avstand foran', v=>v+' cm', v=>1-v/200],
+  ['lineL','Linjesensor V', v=>v?'SVART':'hvit'], ['lineR','Linjesensor H', v=>v?'SVART':'hvit'],
+  ['bump','Støtsensor', v=>v?'TRYKKET':'fri'], ['light','Lysnivå', v=>v+' %', v=>v/100],
+  ['color','Fargesensor', v=>v], ['temp','Temperatur', v=>v.toFixed(1).replace('.',',')+' °C', v=>(v-15)/80],
+  ['motor','Motorer V / H', ()=>`${Math.round(robot.L)} / ${Math.round(robot.R)} %`],
+];
+function buildMeters(){ document.getElementById('meters').innerHTML = METERS.map(m=>`<div class="meter" id="m_${m[0]}"><span class="k">${m[1]}</span><span class="v"></span>${m[3]?'<span class="bar"><b></b></span>':''}</div>`).join(''); }
+function updateMeters(){
+  if(mission.kind!=='robot') return;
+  for(const m of METERS){ const el=document.getElementById('m_'+m[0]), v=S[m[0]];
+    const vv=el.querySelector('.v'); vv.textContent=m[2](v); vv.classList.toggle('t', v===true);
+    if(m[3]){ el.querySelector('.bar b').style.width=Math.max(0,Math.min(1,m[3](v)))*100+'%'; }
+    if(m[0]==='temp') el.classList.toggle('hot', v>60); }
+}
+function setRunUI(){
+  document.getElementById('stopBtn').classList.toggle('live', !!run);
+  updateStatus();
+}
+function updateStatus(){
+  if(!mission) return;
+  const t = run ? ((performance.now()-startTime)/1000).toFixed(1).replace('.',',') : '0,0';
+  let h = `<span class="${run?'live':''}"><span class="dot"></span>${run?'Kjører':'Stoppet'}</span><span>t = ${t} s</span>`;
+  if(mission.kind==='robot') h += `<span>x ${robot.x.toFixed(0)} · y ${robot.y.toFixed(0)} cm</span><span>Kollisjoner: ${robot.collisions}</span>`;
+  else h += `<span>Trykk på knapper og brytere i figuren eller panelet under</span>`;
+  document.getElementById('status').innerHTML=h;
+}
+function renderGoals(){
+  const ul=document.getElementById('mGoals');
+  const goals = mission.kind==='logic' ? [{id:'tt',t:'Alle rader i sannhetstabellen stemmer'}] : mission.goals;
+  ul.innerHTML = goals.map(g=>{ const d=M&&M.done[g.id], f=M&&M.fail[g.id]&&!d; return `<li class="${d?'done':f?'fail':''}"><span class="mk">${d?'✓':f?'✗':''}</span><span>${g.t}</span></li>`; }).join('');
+}
+
+/* ============================================================
+   OPPDRAGSVALG
+   ============================================================ */
+function buildMissionSelect(){
+  const sel=document.getElementById('mission');
+  sel.innerHTML = `<optgroup label="Robot">${MISSIONS.filter(m=>m.kind==='robot').map(m=>`<option value="${m.id}">${m.eyebrow}: ${m.name}</option>`).join('')}</optgroup>`+
+                  `<optgroup label="Logikk">${MISSIONS.filter(m=>m.kind==='logic').map(m=>`<option value="${m.id}">${m.eyebrow}: ${m.name}</option>`).join('')}</optgroup>`;
+  sel.addEventListener('change',()=>selectMission(sel.value));
+}
+function selectMission(id){
+  stopProgram(true);
+  if(mission && ws) saveProgram();
+  mission = MISSIONS.find(m=>m.id===id) || MISSIONS[0];
+  world = WORLDS[mission.id] || {start:{x:150,y:100,a:0}, ambient:55, walls:[], zones:[], lines:[], lamps:[], heat:[], dark:[], goal:null};
+  document.getElementById('mission').value=mission.id;
+  document.getElementById('mEyebrow').textContent=mission.eyebrow;
+  document.getElementById('mTitle').textContent=mission.name;
+  document.getElementById('mBrief').textContent=mission.brief;
+  document.getElementById('meterSection').hidden = mission.kind!=='robot';
+  io.btn.A=io.btn.B=io.btn.C=false; io.sw.S1=io.sw.S2=io.sw.S3=false;
+  resetWorld(); buildTT(); syncIO(); updateStatus();
+  if(ws){ loadProgram(mission.id); if(!document.getElementById('codeView').hidden) renderCode(); }
+  try{ history.replaceState(null,'','#'+mission.id); }catch(e){}
+}
+
+/* ============================================================
+   HOVEDSLØYFE
+   ============================================================ */
+let last=performance.now(), uiT=0;
+function loop(now){
+  const dt=Math.min(0.05,(now-last)/1000); last=now;
+  if(mission){
+    if(run) physics(dt);
+    computeSensors(); missionTick(dt);
+    draw();
+    uiT+=dt; if(uiT>0.1){ uiT=0; updateMeters(); syncIO(); updateStatus(); }
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ============================================================
+   OPPSTART
+   ============================================================ */
+readColors(); buildIO(); buildMeters(); buildMissionSelect();
+if(window.Blockly){
+  try{ initBlockly(); }catch(e){ console.error(e); document.getElementById('blockly').innerHTML='<p class="loadfail">Blokkeditoren kunne ikke starte. Last siden på nytt.</p>'; }
+} else {
+  document.getElementById('blockly').innerHTML='<p class="loadfail">Blokkeditoren (Blockly) ble ikke lastet. Sjekk nettforbindelsen og last siden på nytt.</p>';
+}
+const startId = (location.hash||'').slice(1);
+selectMission(MISSIONS.some(m=>m.id===startId)?startId:'fri');
+requestAnimationFrame(loop);
+
+document.getElementById('runBtn').addEventListener('click',()=>{ if(ws) startProgram(); });
+document.getElementById('stopBtn').addEventListener('click',()=>stopProgram());
+document.getElementById('resetBtn').addEventListener('click',()=>{ stopProgram(); resetWorld(); });
+document.getElementById('ttBtn').addEventListener('click',testTT);
+document.getElementById('loadStarter').addEventListener('click',async()=>{ const ok=await modal('Erstatte programmet med startprogrammet for dette oppdraget? Det du har laget nå blir slettet.', false); if(ok!==null){ stopProgram(); loadProgram(mission.id, true); saveProgram(); } });
+const tabB=document.getElementById('tabBlocks'), tabC=document.getElementById('tabCode');
+function showTab(code){ tabB.setAttribute('aria-selected',!code); tabC.setAttribute('aria-selected',code); document.getElementById('blockly').hidden=code; document.getElementById('codeView').hidden=!code; if(code) renderCode(); else if(ws) setTimeout(()=>Blockly.svgResize(ws),0); }
+document.getElementById('zIn').addEventListener('click',()=>ws&&ws.zoomCenter(1)); document.getElementById('zOut').addEventListener('click',()=>ws&&ws.zoomCenter(-1));
+tabB.addEventListener('click',()=>showTab(false)); tabC.addEventListener('click',()=>showTab(true));
+document.getElementById('copyCode').addEventListener('click',async()=>{ const txt=genArduino(); try{ await navigator.clipboard.writeText(txt); toast('Koden er kopiert.'); }catch(e){ const r=document.createRange(); r.selectNodeContents(document.getElementById('codePre')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast('Koden er markert. Kopier med Ctrl+C.'); } });
+document.getElementById('slow').addEventListener('change',()=>{ if(ws) ws.highlightBlock(null); });
+</script>
+
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.shell');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>
