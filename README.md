@@ -33,4 +33,4 @@ Simulatorene lenker til Verkstedhåndboka (`https://verkstedhandboka.vercel.app/
 
 ## Deploy
 
-Vercel: importer repoet, velg Framework Preset **Other**, la Build Command og Output Directory stå tomme.
+Vercel publiserer fra grenen `main`. Oppsett: importer repoet, velg Framework Preset **Other**, la Build Command og Output Directory stå tomme.
