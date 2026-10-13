@@ -1,6 +1,6 @@
 # Simulatorer
 
-Interaktive simulatorer for Industriteknologi. Hver simulator er én frittstående HTML-fil, og ser ut som leksjonene: samme toppstripe (A+ og lys/mørk), samme farger og skrift, og en kort «Slik gjør du» i fire steg før selve simulatoren.
+Interaktive simulatorer for Teknologi- og industrifag (Vg1 TIF og Vg2 Industriteknologi). Hver simulator er én frittstående HTML-fil, og ser ut som leksjonene: samme toppstripe (A+ og lys/mørk), samme farger og skrift, og en kort «Slik gjør du» i fire steg før selve simulatoren.
 
 | Emne | Simulatorer |
 |---|---|
