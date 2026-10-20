@@ -230,17 +230,20 @@ select,.answer input{font:600 16px var(--body);padding:8px 10px;border:1px solid
   // Strømmene er visere (styrke og vinkel) i retning mot lasten. N får det som blir til overs, PE ingenting.
   const fase3 = (i1, i2, i3) => [['L1', i1, 0], ['L2', i2, -120], ['L3', i3, 120]];
   const OBJ = [
-    {id:'led', name:'LED-lampe 9 W', src:'Stikkontakt 230 V', base:[['L', .04, 0]], draw:'lampe', w:26},
-    {id:'ovn', name:'Varmeovn 2000 W', src:'Stikkontakt 230 V', base:[['L', 8.70, 0]], draw:'ovn', w:26},
-    {id:'motor', name:'Elmotor 5,5 kW (3-fase)', src:'Kontakt 400 V', base:fase3(10.8, 10.8, 10.8), draw:'motor', w:32},
-    {id:'tavle', name:'Hovedkabel til verkstedet', lab:'Fordelingstavle', src:'Inntak 400 V', base:fase3(86.0, 74.0, 92.0), draw:'tavle', w:36},
+    // ret = lederen strømmen går tilbake i: N i TN-nett, L2 i to-fase IT-nett, ingen i 3-fase IT (fasene går i hverandre)
+    {id:'led', name:'LED-lampe 9 W (230 V TN)', lab:'LED-lampe 9 W', src:'230 V TN', base:[['L', .04, 0]], ret:'N', draw:'lampe', w:26},
+    {id:'ovn', name:'Varmeovn 2000 W (230 V TN)', lab:'Varmeovn 2000 W', src:'230 V TN', base:[['L', 8.70, 0]], ret:'N', draw:'ovn', w:26},
+    {id:'ovnit', name:'Varmeovn 2000 W (230 V IT)', lab:'Varmeovn 2000 W', src:'230 V IT', base:[['L1', 8.70, 0]], ret:'L2', draw:'ovn', w:26},
+    {id:'motor', name:'Elmotor 5,5 kW (400 V TN)', lab:'Elmotor 5,5 kW', src:'400 V TN', base:fase3(10.8, 10.8, 10.8), ret:'N', draw:'motor', w:32},
+    {id:'motorit', name:'Elmotor 5,5 kW (230 V IT)', lab:'Elmotor 5,5 kW', src:'230 V IT', base:fase3(18.6, 18.6, 18.6), ret:null, draw:'motor', w:30},
+    {id:'tavle', name:'Hovedkabel til verkstedet (400 V TN)', lab:'Fordelingstavle', src:'Inntak 400 V TN', base:fase3(86.0, 74.0, 92.0), ret:'N', draw:'tavle', w:36},
   ];
   const ledere = o => {
     const fs = o.cur.map(([k, I, a]) => ({k, I, a}));
     let x = 0, y = 0;
     fs.forEach(f => { x += f.I*Math.cos(f.a*Math.PI/180); y += f.I*Math.sin(f.a*Math.PI/180); });
     const In = Math.hypot(x, y), an = Math.atan2(-y, -x)*180/Math.PI;
-    return [...fs, {k:'N', I:In, a:an}, {k:'PE', I:0, a:0}];
+    return [...fs, ...(o.ret ? [{k:o.ret, I:In, a:an}] : []), {k:'PE', I:0, a:0}];
   };
   // Strømmen inne i tanga = summen av viserne for lederne tanga er rundt
   function iTang(o, tgt){
@@ -261,9 +264,11 @@ select,.answer input{font:600 16px var(--body);padding:8px 10px;border:1px solid
     if(o.id === 'tavle') return `<rect x="16" y="70" width="84" height="160" rx="8" fill="#ced4da" stroke="#6c757d" stroke-width="1.5"/>
       <rect x="28" y="84" width="60" height="30" rx="3" fill="#495057"/>${text(58,104,'kWh',{s:12,c:'',w:700}).replace('class=""','fill="#c9d8b6"')}
       ${[0,1,2].map(i=>`<rect x="${32+i*18}" y="130" width="12" height="34" rx="2" fill="#f8f9fa" stroke="#868e96"/>`).join('')}`;
-    if(o.cur.length === 3) return `<rect x="22" y="96" width="78" height="108" rx="10" fill="#e03131" stroke="#a51d1d" stroke-width="1.5"/>
-      <circle cx="61" cy="150" r="27" fill="#c92a2a" stroke="#fff" stroke-width="2"/>
-      ${[0,72,144,216,288].map(a=>`<circle cx="${61+15*Math.sin(a*Math.PI/180)}" cy="${150-15*Math.cos(a*Math.PI/180)}" r="3.5" fill="#fff"/>`).join('')}`;
+    // CEE-kontakt: rød for 400 V, blå for 230 V. Ett hull per leder.
+    if(o.cur.length === 3){ const it = !o.ret, n = it ? 4 : 5;
+      return `<rect x="22" y="96" width="78" height="108" rx="10" fill="${it?'#1c7ed6':'#e03131'}" stroke="${it?'#1864ab':'#a51d1d'}" stroke-width="1.5"/>
+      <circle cx="61" cy="150" r="27" fill="${it?'#1971c2':'#c92a2a'}" stroke="#fff" stroke-width="2"/>
+      ${Array.from({length:n}, (_, i) => i*360/n).map(a=>`<circle cx="${61+15*Math.sin(a*Math.PI/180)}" cy="${150-15*Math.cos(a*Math.PI/180)}" r="3.5" fill="#fff"/>`).join('')}`; }
     return `<rect x="22" y="100" width="78" height="100" rx="10" fill="#f8f9fa" stroke="#adb5bd" stroke-width="1.5"/>
       <circle cx="61" cy="150" r="28" fill="#e9ecef" stroke="#ced4da"/><rect x="74" y="134" width="40" height="32" rx="7" fill="#343a40"/>`;
   }
@@ -397,13 +402,15 @@ select,.answer input{font:600 16px var(--body);padding:8px 10px;border:1px solid
     if(st.rng === 'off') add('info', 'Tanga er av. Trykk på bryteren og velg <b>40 A~</b> eller <b>400 A~</b>.');
     if(!st.tgt) add('info', 'Trykk på <b>kabelen</b> eller på en <b>leder</b> for å sette tanga rundt.');
     else if(st.tgt === 'hel') add('warn', tre
-      ? 'Tanga er rundt hele kabelen. Strømmene i L1, L2, L3 og N blir til sammen 0, så tanga viser <b>0</b>. Legg den rundt én leder.'
-      : 'Tanga er rundt hele kabelen. Strømmen går fram i L og tilbake i N. Magnetfeltene opphever hverandre, så tanga viser <b>0</b>. Legg den rundt én leder.');
+      ? `Tanga er rundt hele kabelen. Strømmene i L1, L2, L3${o.ret ? ' og N' : ''} blir til sammen 0, så tanga viser <b>0</b>. Legg den rundt én leder.`
+      : `Tanga er rundt hele kabelen. Strømmen går fram i ${o.cur[0][0]} og tilbake i ${o.ret}. Magnetfeltene opphever hverandre, så tanga viser <b>0</b>. Legg den rundt én leder.`);
     else if(st.tgt === 'PE') add('info', 'PE (jord) fører ingen strøm når alt er i orden.');
     else if(st.tgt === 'N' && tre) add(I > 0.5 ? 'ok' : 'info', I > 0.5
       ? 'N fører strømmen som blir til overs fordi fasene er ulikt belastet.'
       : 'N fører nesten ingen strøm når de tre fasene er like belastet.');
     else if(st.tgt === 'N') add('ok', 'I N går den samme strømmen tilbake som går fram i L.');
+    else if(st.tgt === 'L2' && !tre) add('info', 'I IT-nettet er begge lederne faser. Strømmen som går fram i L1, går tilbake i L2.');
+    else if(tre && !o.ret && st.tgt !== 'PE') add('info', 'I 3-fase IT er det ingen N. Strømmen går fram og tilbake i de tre fasene.');
     if(st.rng !== 'off' && st.tgt){
       if(d.txt === 'OL') add('bad', '<b>OL</b>: strømmen er for stor for området. Velg <b>400 A~</b>.');
       else if(st.rng === '400' && I > 0 && I < 4) add('warn', 'Få sifre. Velg <b>40 A~</b> for en mer nøyaktig avlesning.');
@@ -430,7 +437,7 @@ select,.answer input{font:600 16px var(--body);padding:8px 10px;border:1px solid
     const ls = ledere(o);
     let q, ans, k;
     if(Math.random() < 0.25){ q = `Sett tanga rundt <b>hele kabelen</b> til ${liten(o.name)}. Hva viser den?`; ans = 0; k = 'hel'; }
-    else if(o.cur.length === 1){ q = `Hvor stor strøm trekker <b>${liten(o.name)}</b>?`; ans = ls[0].I; k = 'L'; }
+    else if(o.cur.length === 1){ q = `Hvor stor strøm trekker <b>${liten(o.name)}</b>?`; ans = ls[0].I; k = ls[0].k; }
     else { const cand = o.id === 'tavle' ? ['L1','L2','L3','N'] : ['L1','L2','L3'];
       k = cand[Math.floor(Math.random()*cand.length)]; ans = ls.find(l => l.k === k).I;
       q = `Hvor stor strøm går i <b>${k}</b> i kabelen til ${liten(o.name)}?`; }
