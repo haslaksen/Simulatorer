@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tangamperemeter</title>
+<style>
+/* Samme oppsett som multimeter.html: arbeidsbenk øverst, kontroller og avlesning i to kolonner under. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c; --warn:#a86a00;
+  --bench:#dfe5e8; --bench-line:#c4ced3;
+  --display:"Segoe UI", system-ui, sans-serif;
+  --body:"Segoe UI", system-ui, sans-serif;
+  --mono:ui-monospace, "Consolas", monospace;
+}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69; --warn:#f0b54a;
+  --bench:#232c31; --bench-line:#334047; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px 20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.tabs button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:7px;cursor:pointer}
+.tabs button[aria-selected="true"],.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);flex-wrap:wrap}
+.label{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:14px;color:var(--muted)}
+#bench{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none}
+#bench .benchbg{fill:var(--bench)}
+#bench .tx{fill:var(--ink)}
+#bench .txm{fill:var(--muted)}
+#bench .clamp{transition:transform .7s cubic-bezier(.5,0,.25,1)}
+#bench .hit{fill:transparent;stroke:var(--accent);stroke-width:3;stroke-dasharray:6 6;stroke-opacity:0;cursor:pointer}
+#bench .hit:hover,#bench.invite .hit{stroke-opacity:.9}
+#bench.invite .hit{animation:blink 1.6s ease-in-out infinite}
+#bench .hit.on{stroke-opacity:0!important;animation:none}
+#bench .dialhit{fill:transparent;cursor:pointer}
+@keyframes blink{50%{stroke-opacity:.25}}
+/* Strømmen vises som lyse streker som går fram og tilbake (vekselstrøm, sterkt forsinket) */
+#bench .flow{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-dasharray:4 24;animation:fl 2s ease-in-out infinite alternate}
+@keyframes fl{to{stroke-dashoffset:-112}}
+#bench .field{fill:none;stroke:var(--accent);stroke-width:2.5;opacity:0}
+#bench .field.on{animation:pulse 2s ease-in-out infinite}
+#bench .field.on.b{animation-delay:-1s}
+@keyframes pulse{0%,100%{opacity:0}50%{opacity:.9}}
+@media (prefers-reduced-motion:reduce){#bench .flow,#bench .field.on,#bench.invite .hit{animation:none}#bench .field.on{opacity:.8}#bench .clamp{transition:none}}
+.notes{display:grid;gap:6px;padding:10px 14px;border-top:1px solid var(--line);min-height:46px;align-content:center}
+.note{font-size:15px;padding-left:12px;border-left:4px solid var(--line)}
+.note.bad{border-color:var(--bad);color:var(--bad);font-weight:600}
+.note.warn{border-color:var(--warn)}
+.note.info{border-color:var(--muted);color:var(--muted)}
+.note.ok{border-color:var(--ok)}
+.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.field{display:grid;gap:6px}
+.field>span{font-size:14px;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+select,.answer input{font:600 16px var(--body);padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%}
+.btn{font:600 15px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.readout{display:grid;gap:6px;font-variant-numeric:tabular-nums}
+.readout .r{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:4px;font-size:15px}
+.readout .r span:first-child{color:var(--muted)}
+.readout .r span:last-child{font-family:var(--mono);text-align:right}
+.readout .sum{font-size:26px;font-weight:700;border:0;padding-top:6px}
+.readout .sum span:first-child{font-family:var(--display);font-size:20px;color:var(--ink);font-weight:600;align-self:center}
+.hidden-val{filter:blur(7px);user-select:none}
+.task{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.25}
+.task b{color:var(--accent)}
+.answer{display:flex;gap:8px;flex-wrap:wrap}
+.answer input{font:700 22px var(--mono);width:8ch}
+.fb{padding:10px 12px;border-radius:8px;font-size:15px;border:1px solid var(--line)}
+.fb.ok{border-color:var(--ok);color:var(--ok)}
+.fb.bad{border-color:var(--bad);color:var(--bad)}
+.fb .why{display:block;color:var(--ink);margin-top:4px}
+.score{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.howto ol{margin:0;padding-left:20px;display:grid;gap:6px}
+.howto p{margin:0;color:var(--muted);font-size:15px}
+.chk{display:flex;gap:8px;align-items:center;font-size:15px;cursor:pointer}
+.chk input{accent-color:var(--accent);width:18px;height:18px}
+</style>
+<!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1040px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head>
+<body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Tangamperemeter</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Elektro</div>
+      <h1>Tangamperemeter</h1>
+      <p class="lk-lead">Mål strøm uten å bryte kretsen. Legg tanga rundt én leder, og se hvorfor den viser 0 rundt hele kabelen.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg <b>A~</b> på bryteren. Vet du ikke hvor stor strømmen er, start på <b>400 A</b>.</span></li><li><span>Legg tanga rundt <b>én</b> leder.</span></li><li><span>Viser displayet <b>OL</b>, velg et høyere område. Få sifre? Velg et lavere.</span></li><li><span>Prøv tanga rundt hele kabelen. Den viser 0, fordi strømmen fram og tilbake opphever hverandre.</span></li></ol>
+      <a class="lk-hb" href="https://verkstedhandboka.vercel.app/#el9-maling" target="_blank" rel="noopener">Les mer i Verkstedhåndboka: 9.15 Måling med multimeter ↗</a>
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Tangamperemeter</h1>
+      <p class="sub">Mål strøm uten å bryte kretsen. Legg tanga rundt én leder.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Modus">
+      <button role="tab" aria-selected="true" data-mode="utforsk">Utforsk</button>
+      <button role="tab" aria-selected="false" data-mode="oppgave">Oppgave</button>
+    </div>
+  </header>
+
+  <section class="stage" aria-label="Arbeidsbenk">
+    <div class="stage-head"><span class="label">Arbeidsbenk</span><span>Trykk på kabelen eller på en leder for å sette tanga rundt. Trykk på bryteren for å velge område.</span></div>
+    <svg id="bench" viewBox="0 0 960 480" role="img" aria-label="Tangamperemeter og kabel til en last"></svg>
+    <div class="notes" id="notes" aria-live="polite"></div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <span class="label">Oppkobling</span>
+      <label class="field"><span>Hva er koblet til?</span><select id="obj"></select></label>
+      <div class="field"><span>Tanga rundt</span><div class="tabs" id="tgt" role="group" aria-label="Tanga rundt"></div></div>
+      <div class="field"><span>Bryter</span><div class="tabs" id="rng" role="group" aria-label="Bryter"></div></div>
+    </section>
+
+    <section class="card" id="taskcard" hidden>
+      <span class="label">Oppgave</span>
+      <div class="task" id="tasktext"></div>
+      <form class="answer" id="ansform" autocomplete="off">
+        <input id="ans" inputmode="decimal" placeholder="0,00" aria-label="Tallet du leser av">
+        <select id="unit" aria-label="Enhet"><option>mA</option><option selected>A</option></select>
+        <button class="btn primary" type="submit">Sjekk</button>
+        <button class="btn" type="button" id="newbtn">Ny oppgave</button>
+      </form>
+      <div id="fb" class="fb" hidden></div>
+      <div class="score" id="score">0 av 0 riktige</div>
+    </section>
+
+    <section class="card">
+      <span class="label">Hva viser tanga?</span>
+      <div class="readout">
+        <div class="r"><span>Tanga er rundt</span><span id="r-tgt"></span></div>
+        <div class="r"><span>Bryter</span><span id="r-rng"></span></div>
+        <div class="r"><span>Displayet viser</span><span id="r-disp"></span></div>
+        <div class="r sum"><span>Avlesning</span><span id="r-val"></span></div>
+      </div>
+    </section>
+
+    <section class="card howto">
+      <span class="label">Slik måler du</span>
+      <ol>
+        <li>Velg <b>A~</b>. Vet du ikke hvor stor strømmen er, start på <b>400 A</b>.</li>
+        <li>Trykk på hendelen, åpne tanga og legg den rundt <b>én</b> leder.</li>
+        <li>Viser displayet <b>OL</b>, er området for lavt. Viser det få sifre, velg et lavere område.</li>
+        <li>Rundt hele kabelen viser tanga <b>0</b>. Strømmen går fram i L og tilbake i N, og magnetfeltene opphever hverandre.</li>
+      </ol>
+      <p>Tanga måler magnetfeltet rundt lederen. Du trenger ikke skru løs noe, og du kommer ikke borti strømførende deler.</p>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const svg = $('bench');
+  const komma = s => String(s).replace('.', ',');
+
+  // ---------- Ekte ledninger (samme tegnestil som multimeter.html, uten SVG-filtre) ----------
+  const DEFS = `<defs>
+    <radialGradient id="metall" cx=".35" cy=".35" r=".8"><stop offset="0" stop-color="#f8f9fa"/><stop offset=".55" stop-color="#adb5bd"/><stop offset="1" stop-color="#5c636a"/></radialGradient>
+    <radialGradient id="glod" r=".5"><stop offset="0" stop-color="#fff3bf"/><stop offset=".5" stop-color="#ffd43b" stop-opacity=".6"/><stop offset="1" stop-color="#ffd43b" stop-opacity="0"/></radialGradient>
+    <linearGradient id="motor" x1="0" x2="0" y2="1"><stop offset="0" stop-color="#ced4da"/><stop offset=".45" stop-color="#868e96"/><stop offset="1" stop-color="#495057"/></linearGradient>
+    <linearGradient id="kappe" x1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1f3f5"/><stop offset=".5" stop-color="#ced4da"/><stop offset="1" stop-color="#868e96"/></linearGradient>
+  </defs>`;
+  const COL = {L:'#6e3b1c', L1:'#6e3b1c', L2:'#2b2b2b', L3:'#9aa0a6', N:'#1565c0', PE:'pe'};
+  const tube = (d, col) => { const pe = col === 'pe';
+    return `<path d="${d}" stroke="rgba(0,0,0,.18)" stroke-width="12" fill="none" transform="translate(2,4)"/>
+    <path d="${d}" stroke="#111" stroke-width="13" fill="none"/><path d="${d}" stroke="${pe?'#e8c300':col}" stroke-width="10" fill="none"/>${pe?`<path d="${d}" stroke="#1e8a3a" stroke-width="10" fill="none" stroke-dasharray="15 15"/>`:''}
+    <path d="${d}" stroke="#fff" stroke-width="2.5" fill="none" opacity=".35" transform="translate(-1.5,-1.5)"/>`; };
+  // Kabelkappe: grå, rund, tykkere enn lederne
+  const sheath = (x1, x2, y, w) => `<rect x="${x1+2}" y="${y-w/2+4}" width="${x2-x1}" height="${w}" rx="${w/2}" fill="rgba(0,0,0,.18)"/>
+    <rect x="${x1}" y="${y-w/2}" width="${x2-x1}" height="${w}" rx="${w/2}" fill="url(#kappe)" stroke="#495057" stroke-width="1.5"/>`;
+  const text = (x, y, t, o = {}) => `<text x="${x}" y="${y}" text-anchor="${o.a||'middle'}" font-size="${o.s||15}" font-weight="${o.w||600}" class="${o.c||'tx'}" font-family="Segoe UI, system-ui, sans-serif">${t}</text>`;
+
+  // ---------- Hva som er koblet til ----------
+  // Strømmene er visere (styrke og vinkel) i retning mot lasten. N får det som blir til overs, PE ingenting.
+  const fase3 = (i1, i2, i3) => [['L1', i1, 0], ['L2', i2, -120], ['L3', i3, 120]];
+  const OBJ = [
+    {id:'led', name:'LED-lampe 9 W', src:'Stikkontakt 230 V', base:[['L', .04, 0]], draw:'lampe', w:26},
+    {id:'ovn', name:'Varmeovn 2000 W', src:'Stikkontakt 230 V', base:[['L', 8.70, 0]], draw:'ovn', w:26},
+    {id:'motor', name:'Elmotor 5,5 kW (3-fase)', src:'Kontakt 400 V', base:fase3(10.8, 10.8, 10.8), draw:'motor', w:32},
+    {id:'tavle', name:'Hovedkabel til verkstedet', lab:'Fordelingstavle', src:'Inntak 400 V', base:fase3(86.0, 74.0, 92.0), draw:'tavle', w:36},
+  ];
+  const ledere = o => {
+    const fs = o.cur.map(([k, I, a]) => ({k, I, a}));
+    let x = 0, y = 0;
+    fs.forEach(f => { x += f.I*Math.cos(f.a*Math.PI/180); y += f.I*Math.sin(f.a*Math.PI/180); });
+    const In = Math.hypot(x, y), an = Math.atan2(-y, -x)*180/Math.PI;
+    return [...fs, {k:'N', I:In, a:an}, {k:'PE', I:0, a:0}];
+  };
+  // Strømmen inne i tanga = summen av viserne for lederne tanga er rundt
+  function iTang(o, tgt){
+    if(!tgt) return 0;
+    const ls = ledere(o).filter(l => tgt === 'hel' || l.k === tgt);
+    let x = 0, y = 0;
+    ls.forEach(l => { x += l.I*Math.cos(l.a*Math.PI/180); y += l.I*Math.sin(l.a*Math.PI/180); });
+    const v = Math.hypot(x, y);
+    return v < 1e-6 ? 0 : v;
+  }
+
+  // ---------- Geometri ----------
+  const CY = 150, XA = 100, XS = 330, XR = 420, XQ = 640, XE = 730, XL = 800, XHEL = 220, XLED = 540;
+  const lederY = (n, i) => CY + (i - (n-1)/2) * 54;
+  const PARK = [150, 250];
+
+  function kilde(o){
+    if(o.id === 'tavle') return `<rect x="16" y="70" width="84" height="160" rx="8" fill="#ced4da" stroke="#6c757d" stroke-width="1.5"/>
+      <rect x="28" y="84" width="60" height="30" rx="3" fill="#495057"/>${text(58,104,'kWh',{s:12,c:'',w:700}).replace('class=""','fill="#c9d8b6"')}
+      ${[0,1,2].map(i=>`<rect x="${32+i*18}" y="130" width="12" height="34" rx="2" fill="#f8f9fa" stroke="#868e96"/>`).join('')}`;
+    if(o.cur.length === 3) return `<rect x="22" y="96" width="78" height="108" rx="10" fill="#e03131" stroke="#a51d1d" stroke-width="1.5"/>
+      <circle cx="61" cy="150" r="27" fill="#c92a2a" stroke="#fff" stroke-width="2"/>
+      ${[0,72,144,216,288].map(a=>`<circle cx="${61+15*Math.sin(a*Math.PI/180)}" cy="${150-15*Math.cos(a*Math.PI/180)}" r="3.5" fill="#fff"/>`).join('')}`;
+    return `<rect x="22" y="100" width="78" height="100" rx="10" fill="#f8f9fa" stroke="#adb5bd" stroke-width="1.5"/>
+      <circle cx="61" cy="150" r="28" fill="#e9ecef" stroke="#ced4da"/><rect x="74" y="134" width="40" height="32" rx="7" fill="#343a40"/>`;
+  }
+  function last(o){
+    const x = XL, d = o.draw;
+    if(d === 'lampe') return tube(`M${x} ${CY} L ${x+30} ${CY}`, '#f1f3f5') +
+      `<circle cx="${x+95}" cy="${CY}" r="80" fill="url(#glod)"/>
+      <rect x="${x+28}" y="${CY-16}" width="26" height="32" rx="4" fill="#adb5bd" stroke="#6c757d"/>
+      <path d="M${x+54} ${CY-18} C ${x+70} ${CY-44}, ${x+138} ${CY-46}, ${x+138} ${CY} S ${x+70} ${CY+44}, ${x+54} ${CY+18} Z" fill="#fff9db" stroke="#adb5bd" stroke-width="2"/>`;
+    if(d === 'ovn') return tube(`M${x} ${CY} L ${x+24} ${CY}`, '#f1f3f5') +
+      `<rect x="${x+20}" y="${CY-90}" width="130" height="180" rx="10" fill="#f1f3f5" stroke="#adb5bd" stroke-width="2"/>
+      ${[0,1,2,3,4,5,6].map(i=>`<rect x="${x+32+i*16.5}" y="${CY-76}" width="9" height="150" rx="4" fill="#dee2e6" stroke="#ced4da"/>`).join('')}
+      <rect x="${x+20}" y="${CY+90}" width="14" height="10" fill="#868e96"/><rect x="${x+136}" y="${CY+90}" width="14" height="10" fill="#868e96"/>
+      ${text(x+85, CY-96, '2000 W', {s:13, c:'txm'})}`;
+    if(d === 'motor') return `<rect x="${x}" y="${CY-62}" width="34" height="34" rx="4" fill="#868e96" stroke="#495057"/>
+      <path d="M${XE} ${CY} C ${XE+40} ${CY}, ${x+17} ${CY-10}, ${x+17} ${CY-28}" stroke="#495057" stroke-width="2" fill="none"/>
+      <rect x="${x+10}" y="${CY-30}" width="120" height="90" rx="14" fill="url(#motor)" stroke="#495057" stroke-width="1.5"/>
+      ${[0,1,2,3,4,5].map(i=>`<line x1="${x+26+i*18}" y1="${CY-26}" x2="${x+26+i*18}" y2="${CY+56}" stroke="#495057" stroke-width="2" opacity=".5"/>`).join('')}
+      <rect x="${x+130}" y="${CY+8}" width="26" height="14" fill="url(#metall)" stroke="#495057"/>
+      <rect x="${x+20}" y="${CY+60}" width="100" height="10" rx="2" fill="#495057"/>`;
+    return `<rect x="${x}" y="${CY-100}" width="150" height="210" rx="8" fill="#dee2e6" stroke="#6c757d" stroke-width="1.5"/>
+      ${[0,1,2].map(r=>[0,1,2,3,4,5].map(i=>`<rect x="${x+16+i*20}" y="${CY-80+r*58}" width="14" height="40" rx="2" fill="#f8f9fa" stroke="#868e96"/><rect x="${x+19+i*20}" y="${CY-70+r*58}" width="8" height="10" fill="#495057"/>`).join('')).join('')}`;
+  }
+
+  // ---------- Tangamperemeteret ----------
+  // Kjeften står på tvers av lederen (sett fra siden blir den en smal ellipse). Bakre halvdel tegnes bak ledningene.
+  const RNG = [{k:'off', lab:'OFF', dl:'OFF', ang:-55}, {k:'40', lab:'40 A~', dl:'40A', ang:0}, {k:'400', lab:'400 A~', dl:'400A', ang:55}];
+  const jawBack = `<path d="M0 -32 A14 32 0 0 1 0 32" stroke="#212529" stroke-width="9" fill="none"/>`;
+  function jawFront(){
+    const dial = RNG.map(r => { const a = r.ang*Math.PI/180;
+      return `<text id="dl-${r.k}" x="${33*Math.sin(a)}" y="${165-33*Math.cos(a)}" text-anchor="middle" font-size="9" font-weight="700" fill="#ced4da" font-family="Segoe UI, sans-serif">${r.dl}</text>`; }).join('');
+    return `<ellipse class="field" cx="0" cy="0" rx="22" ry="44"/><ellipse class="field b" cx="0" cy="0" rx="30" ry="56"/>
+      <path d="M0 32 A14 32 0 0 1 0 -32" stroke="#343a40" stroke-width="10" fill="none"/>
+      <path d="M-4 26 A12 28 0 0 1 -4 -26" stroke="#fff" stroke-width="2" fill="none" opacity=".3"/>
+      <line x1="-6" y1="-33" x2="6" y2="-31" stroke="#f8f9fa" stroke-width="1.5"/>
+      <g transform="rotate(20)">
+        <path d="M-15 28 L15 28 L36 58 L-36 58 Z" fill="#343a40"/>
+        <path d="M-36 40 l-16 10 l4 8 l20 -6 z" fill="#212529"/>
+        <rect x="-50" y="52" width="100" height="172" rx="16" fill="#f0a830" stroke="#a86a00" stroke-width="1.5"/>
+        <rect x="-42" y="60" width="84" height="156" rx="10" fill="#2b2f33"/>
+        <rect x="-36" y="68" width="72" height="40" rx="4" fill="#c9d8b6" stroke="#1d2419" stroke-width="1"/>
+        <text id="lcd" x="32" y="99" text-anchor="end" font-size="23" font-weight="700" fill="#1d2419" font-family="Consolas, ui-monospace, monospace"></text>
+        <text id="lcdu" x="-32" y="80" font-size="9" font-weight="700" fill="#1d2419" font-family="Segoe UI, sans-serif"></text>
+        ${dial}
+        <circle cx="0" cy="163" r="20" fill="url(#metall)" stroke="#495057" stroke-width="1.5"/>
+        <line id="dialptr" x1="0" y1="163" x2="0" y2="146" stroke="#c92a2a" stroke-width="5" stroke-linecap="round"/>
+        <text x="0" y="207" text-anchor="middle" font-size="9" fill="#adb5bd" font-family="Segoe UI, sans-serif">CAT III 600 V</text>
+      </g>`;
+  }
+
+  // ---------- Tilstand ----------
+  const st = {mode:'utforsk', obj:OBJ[1], tgt:null, rng:'off', task:null, tries:0, right:0, total:0};
+  OBJ.forEach(o => o.cur = o.base.map(c => [...c]));
+
+  function scene(){
+    const o = st.obj, ls = ledere(o), n = ls.length;
+    let s = DEFS + `<rect class="benchbg" x="0" y="0" width="960" height="480"/>`;
+    s += `<g id="cBack" class="clamp">${jawBack}</g>`;
+    s += kilde(o);
+    // Lederne går ut av kappen, sprer seg og samles igjen
+    ls.forEach((l, i) => { const y = lederY(n, i);
+      const d = `M${XS-10} ${CY} C ${XS+40} ${CY}, ${XR-40} ${y}, ${XR} ${y} L ${XQ} ${y} C ${XQ+40} ${y}, ${XE-40} ${CY}, ${XE+10} ${CY}`;
+      s += tube(d, COL[l.k]);
+      if(l.I > 0.001){ const del = -((((-l.a) % 360) + 360) % 360)/360*4;
+        s += `<path class="flow" d="${d}" style="animation-delay:${del.toFixed(2)}s;opacity:${(.4 + .6*Math.min(1, l.I/8)).toFixed(2)}"/>`; }
+      s += text(XQ+4, y-11, l.k, {s:14, a:'start'});
+    });
+    s += sheath(XA, XS, CY, o.w) + sheath(XE, XL+2, CY, o.w);
+    s += `<rect x="${XS-6}" y="${CY-o.w/2-1}" width="8" height="${o.w+2}" rx="2" fill="#495057"/><rect x="${XE-2}" y="${CY-o.w/2-1}" width="8" height="${o.w+2}" rx="2" fill="#495057"/>`;
+    s += last(o);
+    s += text(60, 262, o.src, {s:13, c:'txm'}) + text(XL+75, 290, o.lab || o.name, {s:14});
+    s += text((XS+XA)/2, CY+o.w/2+22, 'Hele kabelen', {s:13, c:'txm'});
+    s += `<g id="cFront" class="clamp">${jawFront()}</g>`;
+    // Trykkflater øverst, så de kan treffes selv om tanga henger foran
+    s += `<ellipse class="hit" data-t="hel" cx="${XHEL}" cy="${CY}" rx="26" ry="${o.w/2+16}"><title>Hele kabelen</title></ellipse>`;
+    ls.forEach((l, i) => s += `<ellipse class="hit" data-t="${l.k}" cx="${XLED}" cy="${lederY(n, i)}" rx="22" ry="22"><title>${l.k}</title></ellipse>`);
+    s += `<g id="cTop" class="clamp"><circle class="dialhit" cx="${-163*Math.sin(20*Math.PI/180)}" cy="${163*Math.cos(20*Math.PI/180)}" r="26"><title>Bryter</title></circle></g>`;
+    svg.innerHTML = s;
+    svg.querySelectorAll('.hit').forEach(h => h.onclick = () => setTgt(st.tgt === h.dataset.t ? null : h.dataset.t));
+    svg.querySelector('.dialhit').onclick = () => { const i = RNG.findIndex(r => r.k === st.rng); setRng(RNG[(i+1) % RNG.length].k); };
+    const tabs = $('tgt');
+    tabs.innerHTML = '';
+    [['', 'Ingenting'], ['hel', 'Hele kabelen'], ...ls.map(l => [l.k, l.k])].forEach(([k, lab]) => {
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = lab; b.dataset.t = k;
+      b.onclick = () => setTgt(k || null); tabs.appendChild(b); });
+    update();
+  }
+
+  function pos(){
+    if(!st.tgt) return PARK;
+    if(st.tgt === 'hel') return [XHEL, CY];
+    const ls = ledere(st.obj), i = ls.findIndex(l => l.k === st.tgt);
+    return [XLED, lederY(ls.length, i)];
+  }
+  // Display med 4000 punkter: 40 A-området viser 0.00–39.99, 400 A-området 0.0–399.9
+  function display(I){
+    if(st.rng === 'off') return {txt:'', val:null};
+    const max = st.rng === '40' ? 40 : 400, dec = st.rng === '40' ? 2 : 1;
+    if(I >= max) return {txt:'OL', val:null};
+    const t = I.toFixed(dec);
+    return {txt:t, val:+t};
+  }
+
+  function update(){
+    const o = st.obj, [x, y] = pos();
+    ['cBack', 'cFront', 'cTop'].forEach(id => svg.getElementById(id).style.transform = `translate(${x}px,${y}px)`);
+    svg.classList.toggle('invite', !st.tgt && st.rng !== 'off');
+    svg.querySelectorAll('.hit').forEach(h => h.classList.toggle('on', h.dataset.t === st.tgt));
+    const I = iTang(o, st.tgt), d = display(I);
+    svg.getElementById('lcd').textContent = d.txt;
+    svg.getElementById('lcdu').textContent = st.rng === 'off' ? '' : 'A ~';
+    const r = RNG.find(r => r.k === st.rng);
+    svg.getElementById('dialptr').setAttribute('transform', `rotate(${r.ang} 0 163)`);
+    RNG.forEach(q => svg.getElementById('dl-' + q.k).setAttribute('fill', q.k === st.rng ? '#ffd43b' : '#ced4da'));
+    svg.querySelectorAll('.field').forEach(f => f.classList.toggle('on', st.tgt && I > 0.005));
+    $('tgt').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.t || null) === st.tgt));
+    $('rng').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.r === st.rng));
+
+    const tname = !st.tgt ? 'ingenting' : st.tgt === 'hel' ? 'hele kabelen' : st.tgt;
+    $('r-tgt').textContent = tname;
+    $('r-rng').textContent = r.lab;
+    $('r-disp').textContent = d.txt || '(tomt)';
+    $('r-val').textContent = d.val === null ? (d.txt === 'OL' ? 'for lavt område' : '–') : `${komma(d.txt)} A`;
+    $('r-val').classList.toggle('hidden-val', st.mode === 'oppgave' && !st.task?.done);
+    notes(I, d);
+  }
+
+  function notes(I, d){
+    const o = st.obj, tre = o.cur.length === 3, out = [];
+    const add = (cls, t) => out.push(`<div class="note ${cls}">${t}</div>`);
+    if(st.rng === 'off') add('info', 'Tanga er av. Trykk på bryteren og velg <b>40 A~</b> eller <b>400 A~</b>.');
+    if(!st.tgt) add('info', 'Trykk på <b>kabelen</b> eller på en <b>leder</b> for å sette tanga rundt.');
+    else if(st.tgt === 'hel') add('warn', tre
+      ? 'Tanga er rundt hele kabelen. Strømmene i L1, L2, L3 og N blir til sammen 0, så tanga viser <b>0</b>. Legg den rundt én leder.'
+      : 'Tanga er rundt hele kabelen. Strømmen går fram i L og tilbake i N. Magnetfeltene opphever hverandre, så tanga viser <b>0</b>. Legg den rundt én leder.');
+    else if(st.tgt === 'PE') add('info', 'PE (jord) fører ingen strøm når alt er i orden.');
+    else if(st.tgt === 'N' && tre) add(I > 0.5 ? 'ok' : 'info', I > 0.5
+      ? 'N fører strømmen som blir til overs fordi fasene er ulikt belastet.'
+      : 'N fører nesten ingen strøm når de tre fasene er like belastet.');
+    else if(st.tgt === 'N') add('ok', 'I N går den samme strømmen tilbake som går fram i L.');
+    if(st.rng !== 'off' && st.tgt){
+      if(d.txt === 'OL') add('bad', '<b>OL</b>: strømmen er for stor for området. Velg <b>400 A~</b>.');
+      else if(st.rng === '400' && I > 0 && I < 4) add('warn', 'Få sifre. Velg <b>40 A~</b> for en mer nøyaktig avlesning.');
+      else if(I > 0.005 && st.tgt !== 'N') add('ok', `Tanga er rundt én leder og viser strømmen i ${st.tgt}.`);
+    }
+    $('notes').innerHTML = out.join('');
+  }
+
+  function setTgt(t){ st.tgt = t; update(); }
+  function setRng(k){ st.rng = k; update(); }
+  function setObj(o){ st.obj = o; st.tgt = null; $('obj').value = o.id; scene(); }
+
+  // ---------- Kontroller ----------
+  OBJ.forEach(o => $('obj').insertAdjacentHTML('beforeend', `<option value="${o.id}">${o.name}</option>`));
+  $('obj').onchange = e => { if(st.mode === 'oppgave') newTask(OBJ.find(o => o.id === e.target.value)); else setObj(OBJ.find(o => o.id === e.target.value)); };
+  RNG.forEach(r => { const b = document.createElement('button'); b.type = 'button'; b.textContent = r.lab; b.dataset.r = r.k; b.onclick = () => setRng(r.k); $('rng').appendChild(b); });
+
+  // ---------- Oppgaver ----------
+  const liten = t => /^[A-ZÆØÅ][a-zæøå]/.test(t) ? t[0].toLowerCase() + t.slice(1) : t;
+  const rnd = (v, d) => +(v * (0.96 + Math.random()*0.08)).toFixed(d);
+  function newTask(fixed){
+    const o = fixed || OBJ[Math.floor(Math.random()*OBJ.length)];
+    o.cur = o.base.map(([k, I, a]) => [k, rnd(I, I < 1 ? 2 : I < 40 ? 2 : 1), a]);
+    const ls = ledere(o);
+    let q, ans, k;
+    if(Math.random() < 0.25){ q = `Sett tanga rundt <b>hele kabelen</b> til ${liten(o.name)}. Hva viser den?`; ans = 0; k = 'hel'; }
+    else if(o.cur.length === 1){ q = `Hvor stor strøm trekker <b>${liten(o.name)}</b>?`; ans = ls[0].I; k = 'L'; }
+    else { const cand = o.id === 'tavle' ? ['L1','L2','L3','N'] : ['L1','L2','L3'];
+      k = cand[Math.floor(Math.random()*cand.length)]; ans = ls.find(l => l.k === k).I;
+      q = `Hvor stor strøm går i <b>${k}</b> i kabelen til ${liten(o.name)}?`; }
+    ans = ans < 40 ? +ans.toFixed(2) : +ans.toFixed(1);
+    st.task = {q, ans, k, done:false}; st.tries = 0; st.rng = 'off';
+    $('tasktext').innerHTML = q; $('ans').value = ''; $('fb').hidden = true;
+    setObj(o);
+  }
+  $('newbtn').onclick = () => newTask();
+  $('ansform').onsubmit = e => {
+    e.preventDefault();
+    const t = st.task; if(!t || t.done) return;
+    let v = parseFloat($('ans').value.replace(',', '.').replace('−', '-'));
+    if(isNaN(v)){ fb('bad', 'Skriv inn tallet du leser av på displayet.'); return; }
+    if($('unit').value === 'mA') v /= 1000;
+    const ok = t.ans === 0 ? Math.abs(v) < 0.05 : Math.abs(v - t.ans) <= Math.max(0.03*t.ans, 0.006);
+    st.tries++;
+    if(ok){ t.done = true; st.right++; st.total++;
+      fb('ok', `Riktig! ${komma(t.ans)} A.`, t.ans === 0 ? 'Strømmen fram og tilbake opphever hverandre.' : 'Tanga rundt én leder viser strømmen i den lederen.'); }
+    else if(st.tries < 2){
+      let why = 'Sjekk at tanga sitter rundt riktig leder, og les av displayet på nytt.';
+      if(t.ans > 0 && Math.abs(v) < 0.05) why = st.rng === '400' && t.ans < 4 ? 'Displayet viser for få sifre. Velg <b>40 A~</b>.' : 'Rundt hele kabelen eller PE viser tanga 0. Legg den rundt bare én leder.';
+      else if(t.ans === 0) why = 'Legg tanga rundt <b>hele kabelen</b>, ikke rundt én leder.';
+      fb('bad', 'Ikke helt. Prøv en gang til.', why); }
+    else { t.done = true; st.total++; fb('bad', `Riktig svar er ${komma(t.ans)} A.`,
+      t.ans === 0 ? 'Rundt hele kabelen opphever strømmene hverandre.' : `Legg tanga rundt bare ${t.k}, og velg et område som gir flest mulig sifre.`); }
+    $('score').textContent = `${st.right} av ${st.total} riktige`;
+    update();
+  };
+  function fb(cls, head, why){ const f = $('fb'); f.hidden = false; f.className = 'fb ' + cls; f.innerHTML = head + (why ? `<span class="why">${why}</span>` : ''); }
+
+  document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => {
+    st.mode = b.dataset.mode;
+    document.querySelectorAll('[data-mode]').forEach(x => x.setAttribute('aria-selected', x === b));
+    $('taskcard').hidden = st.mode !== 'oppgave';
+    if(st.mode === 'oppgave') newTask();
+    else { st.task = null; OBJ.forEach(o => o.cur = o.base.map(c => [...c])); setObj(st.obj); }
+  });
+
+  scene();
+})();
+</script>
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body>
+</html>
