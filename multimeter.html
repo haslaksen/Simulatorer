@@ -294,16 +294,6 @@ table.ranges th{color:var(--muted);font-weight:600}
   };
   // ---------- Ekte ledninger: rund isolasjon, kobberender, skruer ----------
   const DEFS = `<defs>
-    <filter id="tube" filterUnits="userSpaceOnUse" x="-500" y="-500" width="2000" height="2000">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="b"/>
-      <feDiffuseLighting in="b" surfaceScale="5" diffuseConstant="1.15" lighting-color="#fff" result="d"><feDistantLight azimuth="235" elevation="55"/></feDiffuseLighting>
-      <feSpecularLighting in="b" surfaceScale="5" specularConstant=".9" specularExponent="25" lighting-color="#fff" result="s"><feDistantLight azimuth="235" elevation="55"/></feSpecularLighting>
-      <feComposite in="SourceGraphic" in2="d" operator="arithmetic" k1="1" result="lit"/>
-      <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
-      <feComposite in="lit" in2="s2" operator="arithmetic" k2="1" k3=".7" result="all"/>
-      <feComposite in="all" in2="SourceAlpha" operator="in"/>
-    </filter>
-    <filter id="skg" filterUnits="userSpaceOnUse" x="-500" y="-500" width="2000" height="2000"><feDropShadow dx="2" dy="5" stdDeviation="3" flood-opacity=".35"/></filter>
     <radialGradient id="metall" cx=".35" cy=".35" r=".8"><stop offset="0" stop-color="#f8f9fa"/><stop offset=".55" stop-color="#adb5bd"/><stop offset="1" stop-color="#5c636a"/></radialGradient>
     <linearGradient id="messing" x1="0" x2="1"><stop offset="0" stop-color="#8d6a2f"/><stop offset=".4" stop-color="#f1d58a"/><stop offset="1" stop-color="#8d6a2f"/></linearGradient>
     <radialGradient id="glass" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".6" stop-color="#e3eef7" stop-opacity=".55"/><stop offset="1" stop-color="#9fb3c4" stop-opacity=".7"/></radialGradient>
@@ -313,17 +303,20 @@ table.ranges th{color:var(--muted);font-weight:600}
     <linearGradient id="motor" x1="0" x2="0" y2="1"><stop offset="0" stop-color="#ced4da"/><stop offset=".45" stop-color="#868e96"/><stop offset="1" stop-color="#495057"/></linearGradient>
   </defs>`;
   const LCOL = {red:'#c4161c', blk:'#2b2b2b', brun:'#6e3b1c', gra:'#9aa0a6', bla:'#1565c0'};
-  const tube = (d, col, pe) => `<g filter="url(#skg)"><g filter="url(#tube)"><path d="${d}" stroke="${pe?'#e8c300':col}" stroke-width="11" fill="none"/>${pe?`<path d="${d}" stroke="#1e8a3a" stroke-width="11" fill="none" stroke-dasharray="15 15"/>`:''}</g></g>`;
+  // Rund ledning uten SVG-filter (filtre gjorde siden treg og kunne krasje): skygge, mørk kant, farge og lys stripe.
+  const tube = (d, col, pe) => `<path d="${d}" stroke="rgba(0,0,0,.18)" stroke-width="12" fill="none" transform="translate(2,4)"/>
+    <path d="${d}" stroke="#111" stroke-width="13" fill="none"/><path d="${d}" stroke="${pe?'#e8c300':col}" stroke-width="10" fill="none"/>${pe?`<path d="${d}" stroke="#1e8a3a" stroke-width="10" fill="none" stroke-dasharray="15 15"/>`:''}
+    <path d="${d}" stroke="#fff" stroke-width="2.5" fill="none" opacity=".35" transform="translate(-1.5,-1.5)"/>`;
   const cu = (x1, y1, x2, y2) => {
     const L = Math.hypot(x2-x1, y2-y1), nx = -(y2-y1)/L, ny = (x2-x1)/L;
-    let s = `<g filter="url(#tube)"><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#c06a2b" stroke-width="7"/>`;
+    let s = `<g><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#c06a2b" stroke-width="7"/>`;
     [[-2.2,'#e9a466'],[0,'#8f4a17'],[2.2,'#f0b37a']].forEach(([o,c])=> s += `<line x1="${x1+nx*o}" y1="${y1+ny*o}" x2="${x2+nx*o}" y2="${y2+ny*o}" stroke="${c}" stroke-width="1.2"/>`);
     return s + '</g>';
   };
   const screw = (x, y, r=9) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#metall)" stroke="#495057" stroke-width="1.5"/><line x1="${x-r*.65}" y1="${y-r*.3}" x2="${x+r*.65}" y2="${y+r*.3}" stroke="#343a40" stroke-width="2.2"/>`;
   const letter = (x, y, t) => `<text x="${x}" y="${y}" text-anchor="middle" font-size="19" font-weight="700" class="tx" font-family="Barlow, sans-serif">${t}</text>`;
   function battery(volt, sub){
-    return `<g filter="url(#skg)"><rect x="40" y="115" width="160" height="110" rx="10" fill="url(#batt)"/><rect x="40" y="115" width="160" height="20" rx="8" fill="#4a5058"/>
+    return `<g><rect x="40" y="115" width="160" height="110" rx="10" fill="url(#batt)"/><rect x="40" y="115" width="160" height="20" rx="8" fill="#4a5058"/>
       <rect x="65" y="95" width="30" height="22" rx="4" fill="url(#klemme)" stroke="#6c757d"/><rect x="145" y="95" width="30" height="22" rx="4" fill="url(#klemme)" stroke="#6c757d"/>
       <text x="80" y="160" text-anchor="middle" font-size="24" font-weight="800" fill="#adb5bd">−</text><text x="160" y="160" text-anchor="middle" font-size="24" font-weight="800" fill="#ff6b6b">+</text>
       <text x="120" y="192" text-anchor="middle" font-size="24" font-weight="800" fill="#f1f3f5" font-family="Barlow, sans-serif">${volt}</text>
@@ -341,7 +334,7 @@ table.ranges th{color:var(--muted);font-weight:600}
     else s += letter(xB,258,'B');
     return s;
   }
-  const socket = () => `<rect x="248" y="195" width="164" height="42" rx="8" fill="#f1ede4" stroke="#bfb6a5" filter="url(#skg)"/>`;
+  const socket = () => `<rect x="248" y="195" width="164" height="42" rx="8" fill="#f1ede4" stroke="#bfb6a5"/>`;
   const CIRC_PTS = (loose, xB, xC, p2) => loose
     ? [{k:'E', x:212, y:252, n:'e', lab:'Ledningsenden', desc:'den løse ledningsenden'}, {k:'B', x:xB, y:215, n:'t', lab:'B', desc:'den ledige klemmen B'}]
     : [{k:'A', x:160, y:106, n:'p', lab:'A', desc:'A (batteriets pluss)'}, {k:'B', x:xB, y:215, n:'p', lab:'B', desc:p2[0]},
@@ -353,10 +346,10 @@ table.ranges th{color:var(--muted);font-weight:600}
     let s = '';
     list.forEach(([k,col],i)=>{ const x = x0 + i*gap, xs = 205 + i*30/(n-1);
       s += tube(`M${xs} 30 C ${xs} 100, ${x} 90, ${x} 158`, col, col==='pe') + cu(x,158,x,200); });
-    s += `<g filter="url(#skg)"><rect x="190" y="-12" width="60" height="48" rx="10" fill="#f1f3f5" stroke="#868e96" stroke-width="1.5"/><rect x="190" y="26" width="60" height="10" rx="3" fill="#dee2e6"/></g>`;
+    s += `<g><rect x="190" y="-12" width="60" height="48" rx="10" fill="#f1f3f5" stroke="#868e96" stroke-width="1.5"/><rect x="190" y="26" width="60" height="10" rx="3" fill="#dee2e6"/></g>`;
     s += `<text x="220" y="304" text-anchor="middle" font-size="13" class="txm" font-family="Barlow, sans-serif">${title}</text>`;
     list.forEach(([k],i)=>{ const x = x0 + i*gap;
-      s += `<g filter="url(#skg)"><rect x="${x-28}" y="196" width="56" height="54" rx="4" fill="${k==='PE'?'#2f9e44':k==='N'?'#4dabf7':'#ced4da'}" stroke="#6c757d"/><rect x="${x-16}" y="190" width="32" height="10" rx="2" fill="#495057"/></g>${screw(x,224,10)}${letter(x,276,k)}`; });
+      s += `<g><rect x="${x-28}" y="196" width="56" height="54" rx="4" fill="${k==='PE'?'#2f9e44':k==='N'?'#4dabf7':'#ced4da'}" stroke="#6c757d"/><rect x="${x-16}" y="190" width="32" height="10" rx="2" fill="#495057"/></g>${screw(x,224,10)}${letter(x,276,k)}`; });
     return s;
   }
   const mainsPts = list => { const n = list.length, gap = n===5 ? 80 : 100, x0 = 220 - gap*(n-1)/2;
@@ -412,7 +405,7 @@ table.ranges th{color:var(--muted);font-weight:600}
       conns:[{id:'par', lab:'Over lyspæra'}, {id:'ser', lab:'I serie (brutt krets)'}],
       model:c => c==='ser' ? {type:'ser', i:0.428, vopen:12.42} : {type:'par', v:12.31, src:true},
       net:loose => CIRC_PTS(loose, 264, 396, ['B (lyspæras ene klemme)', 'C (lyspæras andre klemme)']), link:CIRC_LINK,
-      draw:(c, lit, loose)=>({svg: circuit(`${lit ? '<circle cx="330" cy="120" r="105" fill="url(#glod)"/>' : ''}<g filter="url(#skg)">${socket()}
+      draw:(c, lit, loose)=>({svg: circuit(`${lit ? '<circle cx="330" cy="120" r="105" fill="url(#glod)"/>' : ''}<g>${socket()}
           <rect x="305" y="155" width="50" height="42" rx="4" fill="url(#messing)"/>
           ${[161,168,175,182,189].map(y=>`<line x1="305" y1="${y}" x2="355" y2="${y+3}" stroke="#7a5a24" stroke-width="1.2"/>`).join('')}
           <circle cx="330" cy="112" r="46" fill="${lit?'#fff9db':'url(#glass)'}" stroke="#9fb3c4" stroke-width="1.5"/>
@@ -423,7 +416,7 @@ table.ranges th{color:var(--muted);font-weight:600}
       conns:[{id:'par', lab:'Over motoren'}, {id:'ser', lab:'I serie (brutt krets)'}],
       model:c => c==='ser' ? {type:'ser', i:1.86, vopen:24.08} : {type:'par', v:23.62, src:true},
       net:loose => CIRC_PTS(loose, 264, 396, ['B (motorens ene klemme)', 'C (motorens andre klemme)']), link:CIRC_LINK,
-      draw:(c, lit, loose)=>({svg: circuit(`<g filter="url(#skg)">${socket()}
+      draw:(c, lit, loose)=>({svg: circuit(`<g>${socket()}
           <rect x="280" y="110" width="100" height="84" rx="12" fill="url(#motor)"/><rect x="372" y="118" width="14" height="68" rx="5" fill="#495057"/>
           <rect x="386" y="146" width="34" height="9" rx="3" fill="url(#metall)"/></g>
           <text x="330" y="160" text-anchor="middle" font-size="26" font-weight="800" fill="#212529" font-family="Barlow, sans-serif">M</text>
@@ -441,7 +434,7 @@ table.ranges th{color:var(--muted);font-weight:600}
         const H = {p:2, mid:1, m:0}, set = [r,b].sort().join();
         return {conn: set==='mid,p' ? 'r' : set==='m,mid' ? 'led' : 'tot', swap: H[r] < H[b]}; },
       draw:(c, lit, loose)=>{
-        let s = circuit(`<rect x="222" y="195" width="200" height="42" rx="6" fill="#f1ede4" stroke="#bfb6a5" filter="url(#skg)"/>
+        let s = circuit(`<rect x="222" y="195" width="200" height="42" rx="6" fill="#f1ede4" stroke="#bfb6a5"/>
           <path d="M250 205 V150 H264 M300 150 H316 V205" fill="none" stroke="#adb5bd" stroke-width="3"/>
           <rect x="262" y="140" width="40" height="20" rx="9" fill="#d9b98a" stroke="#b8956a"/>
           <rect x="270" y="140" width="5" height="20" fill="#f9c80e"/><rect x="279" y="140" width="5" height="20" fill="#7b3fa0"/><rect x="288" y="140" width="5" height="20" fill="#7a4a21"/>
@@ -889,7 +882,8 @@ table.ranges th{color:var(--muted);font-weight:600}
     const narrow = svg.getBoundingClientRect().width < 640, B = geom(narrow), p = svgPt(e);
     st.free[pdrag] = [Math.max(10, Math.min(430, (p.x - B.ox)/B.sc)), Math.max(0, Math.min(300, (p.y - B.oy)/B.sc - 40))];
   }
-  svg.addEventListener('pointermove', e=>{ if(pdrag){ movePr(e); render(); } });
+  let raf = 0;
+  svg.addEventListener('pointermove', e=>{ if(pdrag){ movePr(e); if(!raf) raf = requestAnimationFrame(()=>{ raf = 0; render(); }); } });
   ['pointerup','pointercancel'].forEach(t=>svg.addEventListener(t, ()=>{
     if(!pdrag) return;
     const [x,y] = st.free[pdrag]; let bestP = null, bd = 42;
