@@ -739,6 +739,8 @@ table.ranges th{color:var(--muted);font-weight:600}
     const P = points(o);
     let marks = '';
     if(mode!=='lesav') P.forEach(p=>{ if(p.k!==st.at.red && p.k!==st.at.black) marks += `<circle cx="${p.x}" cy="${p.y}" r="14" fill="none" stroke="#f08a45" stroke-width="2.5" stroke-dasharray="5 4"/>`; });
+    if(o.loosen && mode!=='lesav') marks += `<g class="click" data-loose="1"><rect x="40" y="330" width="170" height="34" rx="8" fill="${st.loose?'#495057':'#e8590c'}"/>
+      <text x="125" y="352" text-anchor="middle" font-size="15" font-weight="700" fill="#fff" font-family="Barlow, sans-serif">${st.loose?'Skru ledningen fast':'Skru løs ledningen'}</text></g>`;
     s += `<g transform="translate(${B.ox},${B.oy}) scale(${B.sc})">${dr.svg}${marks}</g>`;
     s += `<g transform="translate(${M.x},${M.y})">${meterSvg(r)}</g>`;
     const G = ([x,y]) => [B.ox + x*B.sc, B.oy + y*B.sc];
@@ -771,7 +773,13 @@ table.ranges th{color:var(--muted);font-weight:600}
   }
 
   // ---------- Oppdatering ----------
+  const isDCA = fn => fn==='ma' || fn==='a10';
+  let lastFn = 'off';
   function update(){
+    // Når bryteren dreies til strøm, løftes spissene av. Da går ikke sikringen bare av at bryteren dreies.
+    const fnNow = POS[st.pos].fn;
+    if(isDCA(fnNow) && !isDCA(lastFn) && mode!=='lesav' && !(objById(st.obj).loosen && st.loose)) st.at = {red:null, black:null};
+    lastFn = fnNow;
     resolve();
     let r = measure();
     if(r.blow && st.fuse){
@@ -804,6 +812,9 @@ table.ranges th{color:var(--muted);font-weight:600}
 
   function whereText(){
     const o = objById(st.obj), P = points(o), r = P.find(p=>p.k===st.at.red), b = P.find(p=>p.k===st.at.black);
+    const dca = isDCA(POS[st.pos].fn);
+    if(dca && !o.loosen) return 'Strøm kan bare måles i en krets. Velg lyspærekretsen, DC-motoren eller LED-kretsen.';
+    if(dca && !st.loose && (!r || !b)) return 'Strøm måles i serie. Trykk «Skru løs ledningen» på benken, og sett spissene i bruddet.';
     if(!r || !b) return o.loosen && st.loose ? 'Ledningen er skrudd løs. Sett én målespiss på ledningsenden og én på den ledige klemmen.' : 'Dra den røde og den svarte målespissen til punktene på måleobjektet.';
     let t = `Rød spiss på ${r.desc}, svart spiss på ${b.desc}.`;
     if(st.conn==='same') return t + ' Begge spissene er på samme ledning. Mellom dem er det ingen spenning.';
@@ -844,6 +855,7 @@ table.ranges th{color:var(--muted);font-weight:600}
   function setObj(id){
     st.obj = id; const o = objById(id); st.swap = false; st.free = {red:[...FREE.red], black:[...FREE.black]};
     placeFor(o, o.conns ? o.conns[0].id : null);
+    if(isDCA(POS[st.pos].fn) && mode!=='lesav') st.at = {red:null, black:null};
   }
   function plugInto(sock){
     if(mode==='lesav') return;
@@ -856,8 +868,9 @@ table.ranges th{color:var(--muted);font-weight:600}
   function setPos(i){ if(mode==='lesav') return; st.pos = Math.max(0, Math.min(POS.length-1, i)); update(); }
 
   svg.addEventListener('click', e=>{
-    const t = e.target.closest('[data-pos],[data-sock],[data-plug]'); if(!t) return;
-    if(t.dataset.pos) setPos(Number(t.dataset.pos));
+    const t = e.target.closest('[data-pos],[data-sock],[data-plug],[data-loose]'); if(!t) return;
+    if(t.dataset.loose){ if(mode!=='lesav'){ st.loose = !st.loose; st.at = {red:null, black:null}; update(); } }
+    else if(t.dataset.pos) setPos(Number(t.dataset.pos));
     else if(t.dataset.sock) plugInto(t.dataset.sock);
     else if(t.dataset.plug && mode!=='lesav'){
       const lead = t.dataset.plug;
