@@ -90,6 +90,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,svg [tabindex]:foc
 .label{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:14px;color:var(--muted)}
 #bench{display:block;width:100%;height:auto;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 #bench .click{cursor:pointer}
+#bench .probe{cursor:grab;touch-action:none}
 #bench .wire{stroke:var(--wire);fill:none}
 #bench .wst{stroke:var(--wire)}
 #bench .bfill{fill:var(--bench)}
@@ -157,7 +158,7 @@ table.ranges th{color:var(--muted);font-weight:600}
   </header>
 
   <section class="stage" aria-label="Arbeidsbenk">
-    <div class="stage-head"><span class="label">Arbeidsbenk</span><span id="draghint">Trykk på et område rundt bryteren for å velge det. Trykk på en kontakt for å plugge inn valgt ledning.</span></div>
+    <div class="stage-head"><span class="label">Arbeidsbenk</span><span id="draghint">Dra målespissene til punktene på måleobjektet. Trykk rundt bryteren for å velge område, og på en kontakt for å plugge inn ledningen.</span></div>
     <svg id="bench" role="img" aria-label="Multimeter koblet til måleobjektet"></svg>
     <div class="notes" id="notes" aria-live="polite"></div>
   </section>
@@ -166,12 +167,14 @@ table.ranges th{color:var(--muted);font-weight:600}
     <section class="card" id="ctrlcard">
       <span class="label">Oppkobling</span>
       <label class="field"><span>Måleobjekt</span><select id="obj"></select></label>
-      <div class="field" id="connwrap"><span>Hvor kobles instrumentet?</span><div class="tabs" id="conn" role="group" aria-label="Kobling"></div></div>
+      <div class="field"><span>Rød målespiss på</span><div class="tabs lead" id="ptred" role="group" aria-label="Rød målespiss"></div></div>
+      <div class="field"><span>Svart målespiss på</span><div class="tabs lead" id="ptblk" role="group" aria-label="Svart målespiss"></div></div>
       <label class="field"><span>Bryter (funksjon og område)</span><select id="possel"></select></label>
       <div class="field"><span>Rød ledning</span><div class="tabs lead" id="leadred" role="group" aria-label="Rød ledning"></div></div>
       <div class="field"><span>Svart ledning</span><div class="tabs lead" id="leadblk" role="group" aria-label="Svart ledning"></div></div>
       <div class="row">
         <button class="btn" id="swapbtn" type="button">Bytt målepunktene</button>
+        <button class="btn" id="loosebtn" type="button" hidden>Skru løs ledningen</button>
         <button class="btn danger" id="fusebtn" type="button" hidden>Bytt sikring i multimeteret</button>
         <label class="chk"><input type="checkbox" id="lyd" checked> Lyd</label>
       </div>
@@ -289,15 +292,76 @@ table.ranges th{color:var(--muted);font-weight:600}
     s += kind==='psu' ? term(205,'#c62828','+') + term(285,'#20262a','−') : term(205,'#5e666c','~') + term(285,'#5e666c','~');
     return s;
   };
-  const loop = (gapL, gapR, extra) => {
-    // ledninger rundt kretsen, med eventuelt brudd nederst til venstre
-    let s = `<path class="wire" stroke-width="3" d="M210 90 H90 V230 H${gapL}"/>
-      <path class="wire" stroke-width="3" d="M230 90 H350 V230 H${gapR}"/>
-      <line x1="210" y1="70" x2="210" y2="110" class="wire" stroke-width="3"/>
-      <line x1="230" y1="80" x2="230" y2="100" class="wire" stroke-width="7"/>
-      <text x="200" y="72" text-anchor="end" font-size="16" font-weight="700" class="tx">+</text>`;
-    return s + extra;
+  // ---------- Ekte ledninger: rund isolasjon, kobberender, skruer ----------
+  const DEFS = `<defs>
+    <filter id="tube" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="b"/>
+      <feDiffuseLighting in="b" surfaceScale="5" diffuseConstant="1.15" lighting-color="#fff" result="d"><feDistantLight azimuth="235" elevation="55"/></feDiffuseLighting>
+      <feSpecularLighting in="b" surfaceScale="5" specularConstant=".9" specularExponent="25" lighting-color="#fff" result="s"><feDistantLight azimuth="235" elevation="55"/></feSpecularLighting>
+      <feComposite in="SourceGraphic" in2="d" operator="arithmetic" k1="1" result="lit"/>
+      <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
+      <feComposite in="lit" in2="s2" operator="arithmetic" k2="1" k3=".7" result="all"/>
+      <feComposite in="all" in2="SourceAlpha" operator="in"/>
+    </filter>
+    <filter id="skg" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="2" dy="5" stdDeviation="3" flood-opacity=".35"/></filter>
+    <radialGradient id="metall" cx=".35" cy=".35" r=".8"><stop offset="0" stop-color="#f8f9fa"/><stop offset=".55" stop-color="#adb5bd"/><stop offset="1" stop-color="#5c636a"/></radialGradient>
+    <linearGradient id="messing" x1="0" x2="1"><stop offset="0" stop-color="#8d6a2f"/><stop offset=".4" stop-color="#f1d58a"/><stop offset="1" stop-color="#8d6a2f"/></linearGradient>
+    <radialGradient id="glass" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".6" stop-color="#e3eef7" stop-opacity=".55"/><stop offset="1" stop-color="#9fb3c4" stop-opacity=".7"/></radialGradient>
+    <radialGradient id="glod" r=".5"><stop offset="0" stop-color="#fff3bf"/><stop offset=".5" stop-color="#ffd43b" stop-opacity=".6"/><stop offset="1" stop-color="#ffd43b" stop-opacity="0"/></radialGradient>
+    <linearGradient id="batt" x1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d4248"/><stop offset="1" stop-color="#16191c"/></linearGradient>
+    <linearGradient id="klemme" x1="0" x2="1"><stop offset="0" stop-color="#b8bdc2"/><stop offset=".5" stop-color="#e6e9ec"/><stop offset="1" stop-color="#9ca2a8"/></linearGradient>
+    <linearGradient id="motor" x1="0" x2="0" y2="1"><stop offset="0" stop-color="#ced4da"/><stop offset=".45" stop-color="#868e96"/><stop offset="1" stop-color="#495057"/></linearGradient>
+  </defs>`;
+  const LCOL = {red:'#c4161c', blk:'#2b2b2b', brun:'#6e3b1c', gra:'#9aa0a6', bla:'#1565c0'};
+  const tube = (d, col, pe) => `<g filter="url(#skg)"><g filter="url(#tube)"><path d="${d}" stroke="${pe?'#e8c300':col}" stroke-width="11" fill="none"/>${pe?`<path d="${d}" stroke="#1e8a3a" stroke-width="11" fill="none" stroke-dasharray="15 15"/>`:''}</g></g>`;
+  const cu = (x1, y1, x2, y2) => {
+    const L = Math.hypot(x2-x1, y2-y1), nx = -(y2-y1)/L, ny = (x2-x1)/L;
+    let s = `<g filter="url(#tube)"><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#c06a2b" stroke-width="7"/>`;
+    [[-2.2,'#e9a466'],[0,'#8f4a17'],[2.2,'#f0b37a']].forEach(([o,c])=> s += `<line x1="${x1+nx*o}" y1="${y1+ny*o}" x2="${x2+nx*o}" y2="${y2+ny*o}" stroke="${c}" stroke-width="1.2"/>`);
+    return s + '</g>';
   };
+  const screw = (x, y, r=9) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#metall)" stroke="#495057" stroke-width="1.5"/><line x1="${x-r*.65}" y1="${y-r*.3}" x2="${x+r*.65}" y2="${y+r*.3}" stroke="#343a40" stroke-width="2.2"/>`;
+  const letter = (x, y, t) => `<text x="${x}" y="${y}" text-anchor="middle" font-size="19" font-weight="700" class="tx" font-family="Barlow, sans-serif">${t}</text>`;
+  function battery(volt, sub){
+    return `<g filter="url(#skg)"><rect x="40" y="115" width="160" height="110" rx="10" fill="url(#batt)"/><rect x="40" y="115" width="160" height="20" rx="8" fill="#4a5058"/>
+      <rect x="65" y="95" width="30" height="22" rx="4" fill="url(#klemme)" stroke="#6c757d"/><rect x="145" y="95" width="30" height="22" rx="4" fill="url(#klemme)" stroke="#6c757d"/>
+      <text x="80" y="160" text-anchor="middle" font-size="24" font-weight="800" fill="#adb5bd">−</text><text x="160" y="160" text-anchor="middle" font-size="24" font-weight="800" fill="#ff6b6b">+</text>
+      <text x="120" y="192" text-anchor="middle" font-size="24" font-weight="800" fill="#f1f3f5" font-family="Barlow, sans-serif">${volt}</text>
+      <text x="120" y="212" text-anchor="middle" font-size="11.5" fill="#adb5bd" font-family="Barlow, sans-serif">${sub}</text></g>${screw(80,106)}${screw(160,106)}`;
+  }
+  // Krets med batteri til venstre og to skrueklemmer til høyre (B og C). Løs = rød ledning skrudd av B.
+  function circuit(comp, volt, sub, loose, xB, xC){
+    let s = battery(volt, sub) + comp;
+    s += tube(`M80 84 C80 -6, 440 -10, 436 100 S 440 215 ${xC+24} 215`, LCOL.blk) + cu(80,84,80,106) + cu(xC+24,215,xC,215);
+    if(loose) s += tube('M160 84 C160 40, 205 50, 200 150 S 175 252 190 252', LCOL.red) + cu(160,84,160,106) + cu(190,252,218,252)
+      + `<text x="292" y="266" font-size="13" class="txm" font-family="Barlow, sans-serif">Ledningen er skrudd løs</text>`;
+    else s += tube(`M160 84 C160 40, ${xB-40} 45, ${xB-40} 130 S ${xB-38} 215 ${xB-22} 215`, LCOL.red) + cu(160,84,160,106) + cu(xB-22,215,xB,215);
+    s += screw(xB,215) + screw(xC,215);
+    if(!loose) s += letter(172,82,'A') + letter(xB,258,'B') + letter(xC,258,'C') + letter(68,82,'D');
+    else s += letter(xB,258,'B');
+    return s;
+  }
+  const socket = () => `<rect x="248" y="195" width="164" height="42" rx="8" fill="#f1ede4" stroke="#bfb6a5" filter="url(#skg)"/>`;
+  const CIRC_PTS = (loose, xB, xC, p2) => loose
+    ? [{k:'E', x:212, y:252, n:'e', lab:'Ledningsenden', desc:'den løse ledningsenden'}, {k:'B', x:xB, y:215, n:'t', lab:'B', desc:'den ledige klemmen B'}]
+    : [{k:'A', x:160, y:106, n:'p', lab:'A', desc:'A (batteriets pluss)'}, {k:'B', x:xB, y:215, n:'p', lab:'B', desc:p2[0]},
+       {k:'C', x:xC, y:215, n:'m', lab:'C', desc:p2[1]}, {k:'D', x:80, y:106, n:'m', lab:'D', desc:'D (batteriets minus)'}];
+  const CIRC_LINK = (r, b) => r==='e' ? {conn:'ser'} : r==='t' ? {conn:'ser', swap:true} : {conn:'par', swap:r==='m'};
+  // Nett: kabel ovenfra som deles i ledere ned til rekkeklemmer
+  function mains(list, title){
+    const n = list.length, gap = n===5 ? 80 : 100, x0 = 220 - gap*(n-1)/2;
+    let s = '';
+    list.forEach(([k,col],i)=>{ const x = x0 + i*gap, xs = 205 + i*30/(n-1);
+      s += tube(`M${xs} 30 C ${xs} 100, ${x} 90, ${x} 158`, col, col==='pe') + cu(x,158,x,200); });
+    s += tube('M220 -14 V34', '#cfd4da');
+    s += `<text x="220" y="304" text-anchor="middle" font-size="13" class="txm" font-family="Barlow, sans-serif">${title}</text>`;
+    list.forEach(([k],i)=>{ const x = x0 + i*gap;
+      s += `<g filter="url(#skg)"><rect x="${x-28}" y="196" width="56" height="54" rx="4" fill="${k==='PE'?'#2f9e44':k==='N'?'#4dabf7':'#ced4da'}" stroke="#6c757d"/><rect x="${x-16}" y="190" width="32" height="10" rx="2" fill="#495057"/></g>${screw(x,224,10)}${letter(x,276,k)}`; });
+    return s;
+  }
+  const mainsPts = list => { const n = list.length, gap = n===5 ? 80 : 100, x0 = 220 - gap*(n-1)/2;
+    return list.map(([k],i)=>({k, x:x0+i*gap, y:176, n:k, lab:k, desc:k})); };
+  const mainsLink = order => (r, b) => { const sw = order.indexOf(r) > order.indexOf(b); const [x,y] = sw ? [b,r] : [r,b]; return {conn:(x+y).toLowerCase(), swap:sw}; };
   const OBJ = [
     {id:'aa', grp:'Likespenning', name:'AA-batteri 1,5 V', model:()=>({type:'par', v:1.563, src:true}),
       draw:()=>({svg:`<rect x="112" y="140" width="10" height="50" rx="2" fill="#9aa0a6"/>
@@ -320,97 +384,76 @@ table.ranges th{color:var(--muted);font-weight:600}
       draw:()=>({svg:deviceBox('Laboratorieforsyning','Likespenning, 0–30 V','psu'), a:[205,212,-.3,1], b:[285,212,.3,1]})},
     {id:'trafo', grp:'Vekselspenning', name:'Transformator 24 V AC', model:()=>({type:'par', v:24.6, ac:true, src:true}),
       draw:()=>({svg:deviceBox('Transformator','Vekselspenning','trafo'), a:[205,212,-.3,1], b:[285,212,.3,1]})},
-    {id:'it', grp:'Vekselspenning', name:'To-fase 230 V IT (stikkontakt)', danger:true,
+    {id:'it', grp:'Vekselspenning', name:'To-fase 230 V IT (kurs til stikkontakt)', danger:true,
       conns:[{id:'l1l2', lab:'L1–L2'}, {id:'l1pe', lab:'L1–PE'}, {id:'l2pe', lab:'L2–PE'}],
       model:c => ({type:'par', ac:true, src:true, v: c==='l1l2' ? 231 : c==='l1pe' ? 134 : 132}),
-      draw:c => {
-        const svg = `<rect x="130" y="60" width="180" height="180" rx="22" fill="#f3f3f1" stroke="#c9c9c4"/>
-          <circle cx="220" cy="150" r="64" fill="#e2e2dd" stroke="#cfcfca"/>
-          <rect x="212" y="86" width="16" height="12" rx="2" fill="#b8bcc0"/><rect x="212" y="202" width="16" height="12" rx="2" fill="#b8bcc0"/>
-          <circle cx="192" cy="150" r="8" fill="#222"/><circle cx="248" cy="150" r="8" fill="#222"/>
-          ${lbl(176,154,'L1','end')}${lbl(264,154,'L2','start')}${lbl(236,82,'PE','start')}
-          <text x="220" y="30" text-anchor="middle" font-size="14" class="txm">IT-nett: begge hullene er faser</text>`;
-        const L1 = [192,150], L2 = [248,150], PE = [220,98];
-        const pr = c==='l1l2' ? [L2,L1] : c==='l1pe' ? [L1,PE] : [L2,PE];
-        return pts(svg, pr[0], pr[1]);
-      }},
-    {id:'tn3', grp:'Vekselspenning', name:'3-fase 400 V TN (CEE-kontakt)', danger:true,
+      net:() => mainsPts(IT_L), link:mainsLink(['L1','L2','PE']),
+      draw:() => ({svg: mains(IT_L, 'IT-nett: L1 og L2 er begge faser')})},
+    {id:'tn3', grp:'Vekselspenning', name:'3-fase 400 V TN', danger:true,
       conns:[{id:'l1l2', lab:'L1–L2'}, {id:'l2l3', lab:'L2–L3'}, {id:'l1l3', lab:'L1–L3'}, {id:'l1n', lab:'L1–N'}, {id:'l3n', lab:'L3–N'}, {id:'npe', lab:'N–PE'}],
-      model:c => ({type:'par', ac:true, src:true, v: {l1l2:401, l2l3:398, l1l3:403, l1n:232, l3n:230, npe:0.6}[c]}),
-      draw:c => {
-        const H = {}; const cx = 220, cy = 158, R = 46;
-        [['PE',90],['N',150],['L1',210],['L2',270],['L3',330]].forEach(([k,a])=>{ const t = a*Math.PI/180; H[k] = [cx+R*Math.cos(t), cy+R*Math.sin(t)]; });
-        let svg = `<rect x="126" y="44" width="188" height="214" rx="18" fill="#c62828" stroke="#9e1f1f"/>
-          <circle cx="${cx}" cy="${cy}" r="84" fill="#d93a3a" stroke="#9e1f1f" stroke-width="2"/>
-          <circle cx="${cx}" cy="${cy}" r="62" fill="#efe9e4"/>`;
-        Object.entries(H).forEach(([k,[x,y]])=>{
-          svg += `<circle cx="${x}" cy="${y}" r="${k==='PE'?8:6.5}" fill="#222"/>`;
-          const t = Math.atan2(y-cy, x-cx);
-          svg += `<text x="${cx+(R+27)*Math.cos(t)}" y="${cy+(R+27)*Math.sin(t)+4}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" font-family="Barlow, sans-serif">${k}</text>`;
-        });
-        svg += `<text x="220" y="62" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" font-family="Barlow, sans-serif">400 V  16 A  5-pol</text>
-          <text x="220" y="18" text-anchor="middle" font-size="14" class="txm">Fase–fase 400 V, fase–N 230 V</text>`;
-        const pair = {l1l2:['L1','L2'], l2l3:['L2','L3'], l1l3:['L1','L3'], l1n:['L1','N'], l3n:['L3','N'], npe:['N','PE']}[c];
-        return pts(svg, H[pair[0]], H[pair[1]]);
-      }},
+      model:c => ({type:'par', ac:true, src:true, v: {l1l2:401, l2l3:398, l1l3:403, l1n:232, l2n:229, l3n:230, l1pe:232, l2pe:229, l3pe:231, npe:0.6}[c]}),
+      net:() => mainsPts(TN_L), link:mainsLink(['L1','L2','L3','N','PE']),
+      draw:() => ({svg: mains(TN_L, 'Fase–fase 400 V, fase–N 230 V')})},
+    {id:'it3', grp:'Vekselspenning', name:'3-fase 230 V IT', danger:true,
+      conns:[{id:'l1l2', lab:'L1–L2'}, {id:'l2l3', lab:'L2–L3'}, {id:'l1l3', lab:'L1–L3'}, {id:'l1pe', lab:'L1–PE'}, {id:'l3pe', lab:'L3–PE'}],
+      model:c => ({type:'par', ac:true, src:true, v: {l1l2:231, l2l3:229, l1l3:232, l1pe:134, l2pe:132, l3pe:133}[c]}),
+      net:() => mainsPts(IT3_L), link:mainsLink(['L1','L2','L3','PE']),
+      draw:() => ({svg: mains(IT3_L, 'IT-nett: ingen N. Fase–fase 230 V')})},
     {id:'r220', grp:'Komponenter', name:'Motstand 220 Ω', model:()=>({type:'par', r:218.4}), draw:()=>({svg:resistorSvg([2,2,1]), a:[74,165,-.3,1], b:[366,165,.3,1]})},
     {id:'r4k7', grp:'Komponenter', name:'Motstand 4,7 kΩ', model:()=>({type:'par', r:4662}), draw:()=>({svg:resistorSvg([4,7,2]), a:[74,165,-.3,1], b:[366,165,.3,1]})},
     {id:'r100k', grp:'Komponenter', name:'Motstand 100 kΩ', model:()=>({type:'par', r:99120}), draw:()=>({svg:resistorSvg([1,0,4]), a:[74,165,-.3,1], b:[366,165,.3,1]})},
     {id:'r1m', grp:'Komponenter', name:'Motstand 1 MΩ', model:()=>({type:'par', r:1.012e6}), draw:()=>({svg:resistorSvg([1,0,5]), a:[74,165,-.3,1], b:[366,165,.3,1]})},
     {id:'wire', grp:'Komponenter', name:'Ledning', model:()=>({type:'par', r:0.2}),
-      draw:()=>({svg:`<path d="M96 172 C 170 90, 270 260, 346 160" stroke="#1565c0" stroke-width="12" fill="none" stroke-linecap="round"/>
-        <line x1="70" y1="178" x2="96" y2="172" stroke="#c77b30" stroke-width="4" stroke-linecap="round"/>
-        <line x1="346" y1="160" x2="372" y2="156" stroke="#c77b30" stroke-width="4" stroke-linecap="round"/>`,
-        a:[72,178,-.3,1], b:[370,157,.3,1]})},
+      draw:()=>({svg: tube('M96 172 C 170 90, 270 260, 346 160', LCOL.bla) + cu(70,178,98,172) + cu(344,160,372,156),
+        a:[74,177,-.3,1], b:[368,157,.3,1]})},
     {id:'fa', grp:'Komponenter', name:'Sikring A', model:()=>({type:'par', r:0.1}), draw:()=>({svg:fuseSvg(), a:[132,165,-.3,1], b:[308,165,.3,1]})},
     {id:'fb', grp:'Komponenter', name:'Sikring B', model:()=>({type:'par', r:Infinity}), draw:()=>({svg:fuseSvg(), a:[132,165,-.3,1], b:[308,165,.3,1]})},
-    {id:'lamp', grp:'Kretser', name:'Lyspærekrets 12 V',
+    {id:'lamp', grp:'Kretser', name:'Lyspærekrets 12 V', loosen:true,
       conns:[{id:'par', lab:'Over lyspæra'}, {id:'ser', lab:'I serie (brutt krets)'}],
       model:c => c==='ser' ? {type:'ser', i:0.428, vopen:12.42} : {type:'par', v:12.31, src:true},
-      draw:(c, lit)=>{
-        const ser = c==='ser';
-        const glow = lit ? `<circle cx="250" cy="230" r="38" fill="#ffd54a" opacity=".45"/><circle cx="250" cy="230" r="24" fill="#ffe680" opacity=".8"/>` : '';
-        const svg = loop(ser?120:232, 268, `
-          ${ser ? `<path class="wire" stroke-width="3" d="M160 230 H232"/><circle cx="120" cy="230" r="4" class="tx"/><circle cx="160" cy="230" r="4" class="tx"/>` : ''}
-          ${glow}<circle cx="250" cy="230" r="18" fill="none" class="wire" stroke-width="3"/>
-          <path class="wire" stroke-width="3" d="M237 217 L263 243 M263 217 L237 243"/>
-          <text x="220" y="56" text-anchor="middle" font-size="15" class="tx">12,4 V</text>
-          <text x="250" y="290" text-anchor="middle" font-size="14" class="txm">12 V / 5 W</text>`);
-        return ser ? {svg, a:[120,230,-.45,1], b:[160,230,.45,1]} : {svg, a:[214,230,-.35,1], b:[286,230,.35,1]};
-      }},
-    {id:'motor', grp:'Kretser', name:'DC-motor 24 V',
+      net:loose => CIRC_PTS(loose, 264, 396, ['B (lyspæras ene klemme)', 'C (lyspæras andre klemme)']), link:CIRC_LINK,
+      draw:(c, lit, loose)=>({svg: circuit(`${lit ? '<circle cx="330" cy="120" r="105" fill="url(#glod)"/>' : ''}<g filter="url(#skg)">${socket()}
+          <rect x="305" y="155" width="50" height="42" rx="4" fill="url(#messing)"/>
+          ${[161,168,175,182,189].map(y=>`<line x1="305" y1="${y}" x2="355" y2="${y+3}" stroke="#7a5a24" stroke-width="1.2"/>`).join('')}
+          <circle cx="330" cy="112" r="46" fill="${lit?'#fff9db':'url(#glass)'}" stroke="#9fb3c4" stroke-width="1.5"/>
+          <path d="M318 156 L321 112 q3 -10 6 0 q3 -10 6 0 q3 -10 6 0 L342 156" fill="none" stroke="${lit?'#f08c00':'#6c757d'}" stroke-width="${lit?2.5:1.5}"/></g>
+          <text x="330" y="228" text-anchor="middle" font-size="12" fill="#6c757d" font-family="Barlow, sans-serif">12 V / 5 W</text>`,
+        '12 V', 'Batteri · 12,4 V nå', loose, 264, 396)})},
+    {id:'motor', grp:'Kretser', name:'DC-motor 24 V', loosen:true,
       conns:[{id:'par', lab:'Over motoren'}, {id:'ser', lab:'I serie (brutt krets)'}],
       model:c => c==='ser' ? {type:'ser', i:1.86, vopen:24.08} : {type:'par', v:23.62, src:true},
-      draw:(c, lit)=>{
-        const ser = c==='ser';
-        const svg = loop(ser?120:232, 268, `
-          ${ser ? `<path class="wire" stroke-width="3" d="M160 230 H232"/><circle cx="120" cy="230" r="4" class="tx"/><circle cx="160" cy="230" r="4" class="tx"/>` : ''}
-          <circle cx="250" cy="230" r="18" class="wst bfill" stroke-width="3"/>
-          <text x="250" y="236" text-anchor="middle" font-size="17" font-weight="700" class="tx">M</text>
-          ${lit ? `<path class="wst" fill="none" stroke-width="2" d="M226 204 A34 34 0 0 1 274 204"/><path class="wst" fill="none" stroke-width="2" d="M270 198 l5 6 l-7 2"/>` : ''}
-          <text x="220" y="56" text-anchor="middle" font-size="15" class="tx">24 V DC</text>
-          <text x="250" y="290" text-anchor="middle" font-size="14" class="txm">${lit ? 'Motoren går' : 'Motoren står'}</text>`);
-        return ser ? {svg, a:[120,230,-.45,1], b:[160,230,.45,1]} : {svg, a:[214,230,-.35,1], b:[286,230,.35,1]};
-      }},
-    {id:'led', grp:'Kretser', name:'LED-krets 9 V',
+      net:loose => CIRC_PTS(loose, 264, 396, ['B (motorens ene klemme)', 'C (motorens andre klemme)']), link:CIRC_LINK,
+      draw:(c, lit, loose)=>({svg: circuit(`<g filter="url(#skg)">${socket()}
+          <rect x="280" y="110" width="100" height="84" rx="12" fill="url(#motor)"/><rect x="372" y="118" width="14" height="68" rx="5" fill="#495057"/>
+          <rect x="386" y="146" width="34" height="9" rx="3" fill="url(#metall)"/></g>
+          <text x="330" y="160" text-anchor="middle" font-size="26" font-weight="800" fill="#212529" font-family="Barlow, sans-serif">M</text>
+          ${lit ? '<path d="M398 120 A26 26 0 0 1 424 150" fill="none" stroke="#e8590c" stroke-width="3"/><path d="M418 140 l6 10 l5 -11" fill="none" stroke="#e8590c" stroke-width="3"/>' : ''}
+          <text x="330" y="228" text-anchor="middle" font-size="12" fill="#6c757d" font-family="Barlow, sans-serif">${lit ? 'Motoren går' : 'Motoren står'}</text>`,
+        '24 V', 'Strømforsyning · 24 V DC', loose, 264, 396)})},
+    {id:'led', grp:'Kretser', name:'LED-krets 9 V', loosen:true,
       conns:[{id:'r', lab:'Over motstanden'}, {id:'led', lab:'Over LED-en'}, {id:'ser', lab:'I serie (brutt krets)'}],
-      model:c => c==='ser' ? {type:'ser', i:0.01574, vopen:9.42} : c==='led' ? {type:'par', v:2.02, src:true} : {type:'par', v:7.40, src:true},
-      draw:(c, lit)=>{
-        const ser = c==='ser';
-        const glow = lit ? `<circle cx="276" cy="230" r="30" fill="#ff5a4a" opacity=".35"/>` : '';
-        const svg = loop(ser?105:160, 290, `
-          ${ser ? `<path class="wire" stroke-width="3" d="M135 230 H160"/><circle cx="105" cy="230" r="4" class="tx"/><circle cx="135" cy="230" r="4" class="tx"/>` : ''}
-          <rect x="160" y="220" width="60" height="20" rx="2" class="wst bfill" stroke-width="3"/>
-          <path class="wire" stroke-width="3" d="M220 230 H262"/>
-          ${glow}<path d="M262 214 L262 246 L290 230 Z" class="wst" style="fill:${lit?'#ff5a4a':'transparent'}" stroke-width="3"/>
-          <line x1="290" y1="214" x2="290" y2="246" class="wire" stroke-width="3"/>
-          <path class="wire" stroke-width="2" d="M278 208 l10 -12 M286 212 l10 -12"/>
-          <text x="220" y="56" text-anchor="middle" font-size="15" class="tx">9,4 V</text>
-          <text x="190" y="268" text-anchor="middle" font-size="14" class="txm">470 Ω</text>
-          <text x="276" y="268" text-anchor="middle" font-size="14" class="txm">LED</text>`);
-        if(ser) return {svg, a:[105,230,-.5,1], b:[135,230,.5,1]};
-        if(c==='led') return {svg, a:[254,230,-.35,1], b:[302,230,.35,1]};
-        return {svg, a:[150,230,-.35,1], b:[232,230,.35,1]};
+      model:c => c==='ser' ? {type:'ser', i:0.01574, vopen:9.42} : c==='led' ? {type:'par', v:2.02, src:true} : c==='tot' ? {type:'par', v:9.42, src:true} : {type:'par', v:7.40, src:true},
+      net:loose => loose ? CIRC_PTS(true, 244, 0)
+        : [{k:'A', x:160, y:106, n:'p', lab:'A', desc:'A (batteriets pluss)'}, {k:'B', x:244, y:215, n:'p', lab:'B', desc:'B (inn på motstanden)'},
+           {k:'C', x:322, y:215, n:'mid', lab:'C', desc:'C (mellom motstanden og LED-en)'}, {k:'D', x:400, y:215, n:'m', lab:'D', desc:'D (ut fra LED-en)'},
+           {k:'E', x:80, y:106, n:'m', lab:'E', desc:'E (batteriets minus)'}],
+      link:(r, b) => { if(r==='e'||r==='t') return CIRC_LINK(r, b);
+        const H = {p:2, mid:1, m:0}, set = [r,b].sort().join();
+        return {conn: set==='mid,p' ? 'r' : set==='m,mid' ? 'led' : 'tot', swap: H[r] < H[b]}; },
+      draw:(c, lit, loose)=>{
+        let s = circuit(`<rect x="222" y="195" width="200" height="42" rx="6" fill="#f1ede4" stroke="#bfb6a5" filter="url(#skg)"/>
+          <path d="M250 205 V150 H264 M300 150 H316 V205" fill="none" stroke="#adb5bd" stroke-width="3"/>
+          <rect x="262" y="140" width="40" height="20" rx="9" fill="#d9b98a" stroke="#b8956a"/>
+          <rect x="270" y="140" width="5" height="20" fill="#f9c80e"/><rect x="279" y="140" width="5" height="20" fill="#7b3fa0"/><rect x="288" y="140" width="5" height="20" fill="#7a4a21"/>
+          <path d="M328 205 L352 150 M394 205 L370 150" fill="none" stroke="#adb5bd" stroke-width="3"/>
+          ${lit ? '<circle cx="361" cy="130" r="40" fill="#ff5a4a" opacity=".3"/>' : ''}
+          <path d="M346 152 V130 a15 15 0 0 1 30 0 V152 Z" fill="${lit?'#ff6b5a':'#c92a2a'}" opacity=".9" stroke="#8b1a1a"/>
+          <text x="282" y="128" text-anchor="middle" font-size="12" fill="#6c757d" font-family="Barlow, sans-serif">470 Ω</text>
+          <text x="361" y="103" text-anchor="middle" font-size="12" fill="#6c757d" font-family="Barlow, sans-serif">LED</text>`,
+          '9 V', 'Batteri · 9,4 V nå', loose, 244, 400);
+        s += screw(322,215);
+        if(!loose) s = s.replace(letter(68,82,'D'), letter(68,82,'E')).replace(letter(400,258,'C'), letter(322,258,'C') + letter(400,258,'D'));
+        return {svg:s};
       }},
   ];
   function fuseSvg(){
@@ -420,21 +463,57 @@ table.ranges th{color:var(--muted);font-weight:600}
       <rect x="152" y="146" width="136" height="38" rx="3" fill="#f1efe8" stroke="#c9c6bb"/>
       <text x="220" y="171" text-anchor="middle" font-size="14" fill="#55534c" font-family="Barlow, sans-serif">T 2A 250V</text>`;
   }
-  function lbl(x, y, t, anchor){ return `<text x="${x}" y="${y}" text-anchor="${anchor}" font-size="13" font-weight="700" fill="#2b2f33" font-family="Barlow, sans-serif">${t}</text>`; }
-  function pts(svg, A, Bp){
-    const right = A[0] >= Bp[0];
-    return {svg, a:[A[0],A[1], right?.38:-.38, 1], b:[Bp[0],Bp[1], right?-.38:.38, 1]};
-  }
+  const IT_L = [['L1',LCOL.brun], ['L2',LCOL.blk], ['PE','pe']];
+  const TN_L = [['L1',LCOL.brun], ['L2',LCOL.blk], ['L3',LCOL.gra], ['N',LCOL.bla], ['PE','pe']];
+  const IT3_L = [['L1',LCOL.brun], ['L2',LCOL.blk], ['L3',LCOL.gra], ['PE','pe']];
+  // Merkelapper for måleobjekter med to ender
+  const LABS = {aa:[['+','plusspolen'],['−','minuspolen']], b9:[['+','plusspolen'],['−','minuspolen']], psu:[['+','pluss'],['−','minus']], trafo:[['Venstre','venstre klemme'],['Høyre','høyre klemme']]};
   const objById = id => OBJ.find(o => o.id===id);
+  // Målepunkter på objektet. Hvert punkt hører til en node (samme ledning = samme node).
+  function points(o){
+    if(o.net) return o.net(st.loose);
+    const d = o.draw(null, true), L = LABS[o.id] || [['Venstre','venstre ende'],['Høyre','høyre ende']];
+    return [{k:'a', x:d.a[0], y:d.a[1], dx:d.a[2], dy:d.a[3], n:'a', lab:L[0][0], desc:L[0][1]},
+            {k:'b', x:d.b[0], y:d.b[1], dx:d.b[2], dy:d.b[3], n:'b', lab:L[1][0], desc:L[1][1]}];
+  }
+  function link(o, r, b){
+    if(r===b) return {conn:'same'};
+    return o.link ? o.link(r, b) : {conn:null, swap:r==='b'};
+  }
+  // Finn hvilken kobling spissene gir
+  function resolve(){
+    const o = objById(st.obj), P = points(o), r = P.find(p=>p.k===st.at.red), b = P.find(p=>p.k===st.at.black);
+    if(!r || !b){ st.conn = 'air'; st.swap = false; return; }
+    const L = link(o, r.n, b.n); st.conn = L.conn; st.swap = !!L.swap;
+  }
+  function curModel(){
+    if(st.conn==='air') return {type:'par', r:Infinity};
+    if(st.conn==='same') return {type:'par', v:0, src:true, wire:true, r:0.1};
+    return objById(st.obj).model(st.conn);
+  }
+  // Sett spissene på punktene som gir koblingen conn
+  function placeFor(o, conn){
+    for(const loose of o.loosen ? [false, true] : [false]){
+      st.loose = loose;
+      const P = points(o).sort((p, q) => (p.y < 150) - (q.y < 150));
+      for(const r of P) for(const b of P){
+        if(r===b) continue;
+        const L = link(o, r.n, b.n);
+        if((L.conn??null)===(conn??null) && !L.swap){ st.at = {red:r.k, black:b.k}; return; }
+      }
+    }
+    st.loose = false; st.at = {red:null, black:null};
+  }
+  const FREE = {red:[400,240], black:[50,240]};
 
   // ---------- Tilstand ----------
-  const st = {pos:0, red:'V', black:'COM', obj:'b9', conn:null, swap:false, fuse:true, active:'red'};
+  const st = {pos:0, red:'V', black:'COM', obj:'b9', conn:null, swap:false, fuse:true, active:'red', at:{red:null, black:null}, loose:false, free:{red:[...FREE.red], black:[...FREE.black]}};
   let mode = 'utforsk', task = null, answered = false, score = {ok:0, tot:0};
   let fuseMsg = '', last = null;
 
   // ---------- Måling ----------
   function measure(){
-    const o = objById(st.obj), m = o.model(st.conn);
+    const o = objById(st.obj), m = curModel();
     const p = POS[st.pos], fn = p.fn;
     const notes = [];
     let pair = null, pol = 1;
@@ -472,7 +551,7 @@ table.ranges th{color:var(--muted);font-weight:600}
       }
     } else { // parallelt
       if(low){
-        if(m.src){
+        if(m.src && !m.wire){
           if(pair==='V'){ blow = true; }
           else {
             if(fn==='a10') kind = 'ol';
@@ -497,6 +576,7 @@ table.ranges th{color:var(--muted);font-weight:600}
         } else if(fn==='a10' && pair==='V') notes.push(['warn', 'Bryteren står på 10A, men rød ledning står i VΩmA. Flytt rød ledning til 10A.']);
       }
     }
+    if(st.loose && m.type!=='ser') lit = false;
     if(pair==='V' && fn==='ma' && !st.fuse) notes.push(['bad', 'Sikringen i multimeteret er røket, så strømområdene viser bare null. Bytt sikring.']);
     if(o.danger && pair && !low) notes.push(['warn', 'Målinger på nettspenning (230 V og 400 V) krever opplæring og et instrument med riktig CAT-klasse. Her øver du bare i simulatoren.']);
 
@@ -651,25 +731,32 @@ table.ranges th{color:var(--muted);font-weight:600}
       <circle cx="${x}" cy="${y}" r="18" fill="${col}" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/><circle cx="${x}" cy="${y}" r="7" fill="rgba(0,0,0,.35)"/></g>`;
   }
 
+  const geom = narrow => narrow ? {x:0, y:648, w:420, h:420, ox:-10, oy:700, sc:0.955} : {x:440, y:10, w:452, h:680, ox:448, oy:120, sc:1};
   function render(){
     const r = last;
     const narrow = svg.getBoundingClientRect().width < 640;
-    const o = objById(st.obj), dr = o.draw(st.conn, r.lit);
+    const o = objById(st.obj), dr = o.draw(st.conn, r.lit, st.loose);
     const M = narrow ? {x:10, y:0} : {x:10, y:20};
-    const B = narrow ? {x:0, y:648, w:420, h:420, ox:-10, oy:700, sc:0.955} : {x:440, y:10, w:452, h:680, ox:448, oy:120, sc:1};
+    const B = geom(narrow);
     const W = narrow ? 420 : 900, H = narrow ? 1072 : 700;
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-    let s = `<rect class="benchbg" x="${B.x+1}" y="${B.y+1}" width="${B.w-2}" height="${B.h-2}" rx="14"/>
-      <text x="${B.x+18}" y="${B.y+30}" font-size="20" font-weight="700" class="tx" font-family="Barlow Condensed, sans-serif">${o.name}${o.conns ? ' · ' + o.conns.find(c=>c.id===st.conn).lab : ''}</text>`;
+    let s = DEFS + `<rect class="benchbg" x="${B.x+1}" y="${B.y+1}" width="${B.w-2}" height="${B.h-2}" rx="14"/>
+      <text x="${B.x+18}" y="${B.y+30}" font-size="20" font-weight="700" class="tx" font-family="Barlow Condensed, sans-serif">${o.name}</text>`;
     if(o.danger) s += `<text x="${B.x+18}" y="${B.y+52}" font-size="13" class="txm" font-family="Barlow, sans-serif">Farlig spenning. Bare for øving i simulatoren.</text>`;
-    s += `<g transform="translate(${B.ox},${B.oy}) scale(${B.sc})">${dr.svg}</g>`;
+    const P = points(o);
+    let marks = '';
+    if(mode!=='lesav') P.forEach(p=>{ if(p.k!==st.at.red && p.k!==st.at.black) marks += `<circle cx="${p.x}" cy="${p.y}" r="14" fill="none" stroke="#f08a45" stroke-width="2.5" stroke-dasharray="5 4"/>`; });
+    s += `<g transform="translate(${B.ox},${B.oy}) scale(${B.sc})">${dr.svg}${marks}</g>`;
     s += `<g transform="translate(${M.x},${M.y})">${meterSvg(r)}</g>`;
     const G = ([x,y]) => [B.ox + x*B.sc, B.oy + y*B.sc];
     const rest = narrow ? {red:[380,634], black:[330,634]} : {red:[840,650], black:[780,650]};
-    const leads = [['black','#20262a', st.swap ? dr.a : dr.b], ['red','#c62828', st.swap ? dr.b : dr.a]];
+    const where = lead => { const p = P.find(q=>q.k===st.at[lead]), def = lead==='red' ? [.35,1] : [-.35,1];
+      return p ? [p.x, p.y, p.dx ?? def[0], p.dy ?? def[1]] : [...st.free[lead], ...def]; };
+    const leads = [['black','#20262a', where('black')], ['red','#c62828', where('red')]];
     let cables = '', plugs = '';
     leads.forEach(([lead,col,pt])=>{
       const pr = probe(G(pt), [pt[2],pt[3]], col, false);
+      if(mode!=='lesav') pr.s = `<g class="probe" data-probe="${lead}">${pr.s}<circle cx="${(G(pt)[0]+pr.E[0])/2}" cy="${(G(pt)[1]+pr.E[1])/2}" r="44" fill="transparent"/></g>`;
       const sock = st[lead];
       const S = sock ? [M.x + SOCK[sock].x, M.y + SOCK_Y] : rest[lead];
       cables += (narrow && pr.d[1] > 0 ? routed(pr.E, pr.d, S, col, lead==='red' ? 408 : 12, B) : cable(pr.E, pr.d, S, col, narrow ? 90 : 150)) + pr.s;
@@ -692,10 +779,11 @@ table.ranges th{color:var(--muted);font-weight:600}
 
   // ---------- Oppdatering ----------
   function update(){
+    resolve();
     let r = measure();
     if(r.blow && st.fuse){
       st.fuse = false;
-      fuseMsg = 'Sikringen i multimeteret gikk! Du sendte for stor strøm gjennom VΩmA-kontakten' + (objById(st.obj).model(st.conn).type==='par' ? ', fordi strømmåleren var koblet parallelt over en spenningskilde.' : '. Strømmer over 200 mA skal måles i 10A-kontakten.');
+      fuseMsg = 'Sikringen i multimeteret gikk! Du sendte for stor strøm gjennom VΩmA-kontakten' + (curModel().type==='par' ? ', fordi strømmåleren var koblet parallelt over en spenningskilde.' : '. Strømmer over 200 mA skal måles i 10A-kontakten.');
       r = measure();
     }
     last = r;
@@ -706,6 +794,7 @@ table.ranges th{color:var(--muted);font-weight:600}
     if(mode==='lesav' && !answered){ notes.length = 0; notes.push(['info', 'Les av displayet. Se på bryteren for å finne enheten.']); }
     else if(!notes.length && r.kind!=='blank') notes.push(['ok', 'Displayet viser ' + (r.kind==='ol' ? '1 (over området).' : dispString(r) + '. Bryteren står på ' + posName(r.p) + ', så avlesningen er ' + shownText(r) + '.')]);
     if(r.kind==='blank' && !notes.length) notes.push(['info', 'Instrumentet er av. Drei bryteren til en funksjon.']);
+    if(!(mode==='lesav' && !answered)) notes.unshift(['info', whereText()]);
     $('notes').innerHTML = '';
     notes.forEach(([c,t])=>{ const d = document.createElement('div'); d.className = 'note '+c; d.textContent = t; $('notes').append(d); });
     $('fusebtn').hidden = st.fuse;
@@ -718,6 +807,19 @@ table.ranges th{color:var(--muted);font-weight:600}
     const hide = !$('vis').checked || (mode==='lesav' && !answered);
     $('readout').querySelectorAll('.r span:last-child').forEach(e=>e.classList.toggle('hidden-val', hide));
     syncControls();
+  }
+
+  function whereText(){
+    const o = objById(st.obj), P = points(o), r = P.find(p=>p.k===st.at.red), b = P.find(p=>p.k===st.at.black);
+    if(!r || !b) return o.loosen && st.loose ? 'Ledningen er skrudd løs. Sett én målespiss på ledningsenden og én på den ledige klemmen.' : 'Dra den røde og den svarte målespissen til punktene på måleobjektet.';
+    let t = `Rød spiss på ${r.desc}, svart spiss på ${b.desc}.`;
+    if(st.conn==='same') return t + ' Begge spissene er på samme ledning. Mellom dem er det ingen spenning.';
+    if(st.conn==='ser') return t + ' Multimeteret sitter i bruddet, i serie med ' + (o.id==='motor' ? 'motoren.' : o.id==='led' ? 'LED-en.' : 'lyspæra.');
+    if(st.conn==='tot') return t + ' Du måler over hele kretsen, altså batterispenningen.';
+    const c = (o.conns||[]).find(c=>c.id===st.conn);
+    if(o.net && o.link && !o.loosen) return t + ` Du måler mellom ${r.lab} og ${b.lab}.`;
+    if(c) return t + ` Du måler ${c.lab[0].toLowerCase() + c.lab.slice(1)}.`;
+    return t;
   }
 
   // ---------- Kontroller ----------
@@ -735,15 +837,20 @@ table.ranges th{color:var(--muted);font-weight:600}
     $('obj').value = st.obj; $('obj').disabled = mode!=='utforsk';
     $('possel').value = st.pos; $('possel').disabled = lock;
     const o = objById(st.obj);
-    $('connwrap').hidden = !o.conns;
-    const cw = $('conn');
-    cw.innerHTML = '';
-    (o.conns||[]).forEach(c=>{ const b = document.createElement('button'); b.type='button'; b.textContent=c.lab; b.dataset.conn=c.id; b.setAttribute('aria-pressed', String(c.id===st.conn)); b.disabled = lock; cw.append(b); });
+    const P = points(o);
+    [['ptred','red','red'],['ptblk','black','blk']].forEach(([id,lead,cls])=>{
+      const w = $(id); w.innerHTML = '';
+      P.forEach(p=>{ const b = document.createElement('button'); b.type='button'; b.textContent = p.lab; b.className = cls; b.dataset.pt = p.k; b.dataset.probe = lead; b.title = p.desc;
+        b.setAttribute('aria-pressed', String(st.at[lead]===p.k)); b.disabled = lock; w.append(b); });
+    });
+    $('loosebtn').hidden = !o.loosen; $('loosebtn').disabled = lock;
+    $('loosebtn').textContent = st.loose ? 'Skru ledningen fast igjen' : 'Skru løs ledningen (for strømmåling)';
     document.querySelectorAll('[data-lead]').forEach(b=>{ b.setAttribute('aria-pressed', String((st[b.dataset.lead]??'')===b.dataset.sock)); b.disabled = lock; });
     $('swapbtn').disabled = lock;
   }
   function setObj(id){
-    st.obj = id; const o = objById(id); st.conn = o.conns ? o.conns[0].id : null; st.swap = false;
+    st.obj = id; const o = objById(id); st.swap = false; st.free = {red:[...FREE.red], black:[...FREE.black]};
+    placeFor(o, o.conns ? o.conns[0].id : null);
   }
   function plugInto(sock){
     if(mode==='lesav') return;
@@ -773,6 +880,23 @@ table.ranges th{color:var(--muted);font-weight:600}
     const p = svgPt(e), a = Math.atan2(p.y - (M.y+DC.y), p.x - (M.x+DC.x))*180/Math.PI;
     return Math.round((((a + 90) % 360) + 360) % 360 / STEP) % POS.length;
   }
+  let pdrag = null;
+  svg.addEventListener('pointerdown', e=>{
+    const t = e.target.closest('g[data-probe]'); if(!t || mode==='lesav') return;
+    pdrag = t.dataset.probe; st.at[pdrag] = null; svg.setPointerCapture(e.pointerId); e.preventDefault(); movePr(e); update();
+  });
+  function movePr(e){
+    const narrow = svg.getBoundingClientRect().width < 640, B = geom(narrow), p = svgPt(e);
+    st.free[pdrag] = [Math.max(10, Math.min(430, (p.x - B.ox)/B.sc)), Math.max(0, Math.min(300, (p.y - B.oy)/B.sc - 40))];
+  }
+  svg.addEventListener('pointermove', e=>{ if(pdrag){ movePr(e); render(); } });
+  ['pointerup','pointercancel'].forEach(t=>svg.addEventListener(t, ()=>{
+    if(!pdrag) return;
+    const [x,y] = st.free[pdrag]; let bestP = null, bd = 42;
+    points(objById(st.obj)).forEach(p=>{ const d = Math.hypot(p.x-x, p.y-y); if(d < bd){ bd = d; bestP = p; } });
+    if(bestP) st.at[pdrag] = bestP.k;
+    pdrag = null; update();
+  }));
   svg.addEventListener('pointerdown', e=>{ if(e.target.closest('#knob') && mode!=='lesav'){ drag = true; svg.setPointerCapture(e.pointerId); e.preventDefault(); } });
   svg.addEventListener('pointermove', e=>{ if(drag){ const i = knobAngle(e); if(i!==st.pos){ st.pos = i; update(); } } });
   ['pointerup','pointercancel'].forEach(t=>svg.addEventListener(t, ()=>{ if(drag){ drag=false; update(); } }));
@@ -785,14 +909,15 @@ table.ranges th{color:var(--muted);font-weight:600}
 
   $('obj').addEventListener('change', e=>{ setObj(e.target.value); update(); });
   $('possel').addEventListener('change', e=> setPos(Number(e.target.value)));
-  $('conn').addEventListener('click', e=>{ const b = e.target.closest('[data-conn]'); if(b){ st.conn = b.dataset.conn; update(); } });
+  ['ptred','ptblk'].forEach(id=> $(id).addEventListener('click', e=>{ const b = e.target.closest('[data-pt]'); if(b){ st.at[b.dataset.probe] = b.dataset.pt; update(); } }));
+  $('loosebtn').addEventListener('click', ()=>{ st.loose = !st.loose; st.at = {red:null, black:null}; update(); });
   document.querySelectorAll('.lead').forEach(g=> g.addEventListener('click', e=>{
     const b = e.target.closest('[data-lead]'); if(!b) return;
     const lead = b.dataset.lead, other = lead==='red'?'black':'red', sock = b.dataset.sock || null;
     if(sock && st[other]===sock) st[other] = null;
     st[lead] = sock; st.active = lead; update();
   }));
-  $('swapbtn').addEventListener('click', ()=>{ st.swap = !st.swap; update(); });
+  $('swapbtn').addEventListener('click', ()=>{ st.at = {red:st.at.black, black:st.at.red}; st.free = {red:st.free.black, black:st.free.red}; update(); });
   $('fusebtn').addEventListener('click', ()=>{ st.fuse = true; fuseMsg = ''; update(); });
   $('vis').addEventListener('change', update);
   $('lyd').addEventListener('change', update);
@@ -832,7 +957,7 @@ table.ranges th{color:var(--muted);font-weight:600}
     st.fuse = true; fuseMsg = ''; st.swap = false;
     if(mode==='lesav'){
       const c = rnd(candidates().filter(c=> c.fn!=='cont' && !(c.fn==='vac' && c.v < 1)));
-      setObj(c.obj); st.conn = c.conn;
+      setObj(c.obj); placeFor(objById(c.obj), c.conn);
       const vs = valid(c.fn, c.v);
       const vs2 = vs.filter(x=> Math.abs(c.v)/x.p.res >= 10);
       st.pos = Math.random() < .6 || !vs2.length ? best(c.fn, c.v) : rnd(vs2).i;
@@ -845,7 +970,7 @@ table.ranges th{color:var(--muted);font-weight:600}
     } else {
       const c = rnd(candidates());
       setObj(c.obj); task = c;
-      st.pos = 0; st.red = null; st.black = null; st.active = 'black';
+      st.pos = 0; st.red = null; st.black = null; st.active = 'black'; st.loose = false; st.at = {red:null, black:null};
       $('vis').checked = false;
       $('tasklabel').textContent = 'Still inn';
       $('tasktext').innerHTML = taskText(c);
@@ -875,7 +1000,9 @@ table.ranges th{color:var(--muted);font-weight:600}
     if(st.black!=='COM') issues.push('Svart ledning skal stå i COM.');
     const wantRed = c.fn==='a10' ? 'A10' : 'V';
     if(st.red!==wantRed) issues.push(c.fn==='a10' ? 'Strømmen er over 200 mA. Rød ledning må stå i 10A.' : 'Rød ledning skal stå i VΩmA.');
-    if(o.conns && st.conn!==c.conn) issues.push(c.fn==='ma'||c.fn==='a10' ? 'Strøm måles i serie. Velg «I serie (brutt krets)».' : 'Instrumentet er koblet på feil sted i kretsen.');
+    if(st.conn==='air') issues.push('Begge målespissene må stå på et punkt på måleobjektet.');
+    else if(st.conn==='same') issues.push('Begge spissene står på samme ledning. Da måler du ingenting.');
+    else if(o.conns && st.conn!==c.conn) issues.push(c.fn==='ma'||c.fn==='a10' ? 'Strøm måles i serie. Skru løs ledningen og sett spissene i bruddet.' : 'Målespissene står på feil sted i kretsen.');
     if(!okFn) issues.push(c.fn==='ma' && r.fn==='a10' ? 'Strømmen er under 200 mA. Bruk mA-områdene for mer nøyaktig måling.' : `Feil funksjon. Her skal du bruke ${c.fn==='vdc'?'DCV':c.fn==='vac'?'ACV':c.fn==='ohm'?'Ω':c.fn==='cont'?'•))) eller Ω':'DCA'}.`);
     else if(c.fn!=='cont'){
       const b = best(c.fn, c.v);
@@ -911,7 +1038,7 @@ table.ranges th{color:var(--muted);font-weight:600}
     document.querySelectorAll('.modes button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.mode===m)));
     $('taskcard').hidden = m==='utforsk';
     $('showwrap').hidden = m==='lesav';
-    $('draghint').textContent = m==='lesav' ? 'Instrumentet er koblet opp. Les av displayet og bryteren.' : 'Trykk på et område rundt bryteren for å velge det. Trykk på en kontakt for å plugge inn valgt ledning.';
+    $('draghint').textContent = m==='lesav' ? 'Instrumentet er koblet opp. Les av displayet og bryteren.' : 'Dra målespissene til punktene på måleobjektet. Trykk rundt bryteren for å velge område, og på en kontakt for å plugge inn ledningen.';
     if(m==='utforsk'){ $('vis').checked = true; st.fuse = true; fuseMsg=''; update(); }
     else newTask();
   }
