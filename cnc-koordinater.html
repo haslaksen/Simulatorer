@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CNC-koordinater</title>
+<style>
+/* Samme oppsett som tangamperemeter.html: figur øverst, inntasting og oppgaver i to kolonner under. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c;
+  --bench:#dfe5e8; --bench-line:#c4ced3;
+  --display:"Segoe UI", system-ui, sans-serif;
+  --body:"Segoe UI", system-ui, sans-serif;
+  --mono:ui-monospace, "Consolas", monospace;
+}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69;
+  --bench:#232c31; --bench-line:#334047; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px 20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.tabs button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 14px;border-radius:7px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);flex-wrap:wrap}
+.label{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:14px;color:var(--muted)}
+#fig{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none}
+#fig .bg{fill:var(--bench)}
+#fig .grid1{stroke:var(--bench-line);stroke-width:1}
+#fig .axis{stroke:var(--ink);stroke-width:2}
+#fig .cl{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:18 4 3 4}
+#fig .tx{fill:var(--ink);font:600 14px var(--body)}
+#fig .txm{fill:var(--muted);font:13px var(--body)}
+#fig .ax{fill:var(--ink);font:700 18px var(--body)}
+#fig .mat{fill:#b9c2c9;stroke:#5f6b74;stroke-width:2}
+#fig .mat2{fill:#a3adb5;stroke:#5f6b74;stroke-width:2}
+#fig .hid{fill:none;stroke:#5f6b74;stroke-width:1.5;stroke-dasharray:6 4}
+#fig .chuck{fill:#6c767e;stroke:#3e474e;stroke-width:2}
+#fig .pt{fill:var(--accent);stroke:var(--panel);stroke-width:2}
+#fig .ptl{fill:var(--accent);font:700 18px var(--body)}
+#fig .tgt{fill:none;stroke:var(--accent);stroke-width:3}
+#fig .tgt{animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{50%{opacity:.25}}
+#fig .tool{fill:#e9b949;stroke:#7a5a12;stroke-width:1.5}
+#fig .holder{fill:#59636b;stroke:#2f363b;stroke-width:1.5}
+#fig .crash .tool,#fig .crash .holder{fill:var(--bad);stroke:var(--bad)}
+#fig .tip{fill:var(--ink)}
+#fig .dim{stroke:var(--accent);stroke-width:2;fill:none}
+#fig .dimt{fill:var(--accent);font:700 15px var(--body)}
+#fig .trail{stroke:var(--accent);stroke-width:2;stroke-dasharray:5 5;fill:none;opacity:.7}
+#fig .proj{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 4}
+@media (prefers-reduced-motion:reduce){#fig .tgt{animation:none}}
+.notes{display:grid;gap:6px;padding:10px 14px;border-top:1px solid var(--line);min-height:46px;align-content:center}
+.note{font-size:15px;padding-left:12px;border-left:4px solid var(--line)}
+.note.bad{border-color:var(--bad);color:var(--bad);font-weight:600}
+.note.ok{border-color:var(--ok)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.coords{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.coords label{display:grid;gap:2px;font:700 20px var(--display)}
+.coords input{font:700 22px var(--mono);width:6.5ch;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.btn{font:600 15px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:10px 14px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.hint{color:var(--muted);font-size:14px;margin:0}
+.display{font:700 22px var(--mono);background:#10161a;color:#7cf29a;border-radius:8px;padding:10px 14px;display:flex;gap:22px;flex-wrap:wrap}
+.task{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.25}
+.task b{color:var(--accent)}
+.fb{padding:10px 12px;border-radius:8px;font-size:15px;border:1px solid var(--line)}
+.fb.ok{border-color:var(--ok);color:var(--ok)}
+.fb.bad{border-color:var(--bad);color:var(--bad)}
+.fb .why{display:block;color:var(--ink);margin-top:4px}
+.score{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+</style>
+<!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1040px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head>
+<body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>CNC-koordinater</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Maskinering · CNC</div>
+      <h1>CNC-koordinater</h1>
+      <p class="lk-lead">Øv på koordinatsystemet. Skriv inn X og Z på dreiebenken, eller X, Y og Z på fresen, og se verktøyet flytte seg dit.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg <b>Dreiebenk</b> eller <b>Fres</b>.</span></li><li><span>Finn punktet i figuren. Nullpunktet heter <b>W</b>. Hver rute er 10 mm.</span></li><li><span>Skriv inn koordinatene og trykk <b>Flytt</b>. På dreiebenken er X <b>diameteren</b>.</span></li><li><span>Inn i materialet er Z <b>minus</b>. Treffer du materialet, blir verktøyet rødt.</span></li></ol>
+      <a class="lk-hb" href="https://verkstedhandboka.vercel.app/#m3-cnc" target="_blank" rel="noopener">Les mer i Verkstedhåndboka: 3.15 CNC-koder ↗</a>
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<div class="wrap">
+  <header>
+    <div>
+      <h1>CNC-koordinater</h1>
+      <p class="sub">Skriv inn koordinater, og se verktøyet flytte seg dit.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Maskin">
+      <button role="tab" aria-selected="true" data-m="dre">Dreiebenk (X og Z)</button>
+      <button role="tab" aria-selected="false" data-m="fres">Fres (X, Y og Z)</button>
+    </div>
+  </header>
+
+  <section class="stage" aria-label="Figur">
+    <div class="stage-head"><span class="label" id="figlabel">Dreiebenk</span><span id="fighelp"></span></div>
+    <svg id="fig" viewBox="0 0 800 380" role="img" aria-label="Arbeidsstykke og verktøy"></svg>
+    <div class="notes" id="notes" aria-live="polite"></div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <span class="label">Flytt verktøyet</span>
+      <form class="coords" id="form" autocomplete="off">
+        <label id="lx">X <input id="ix" inputmode="decimal" value="80"></label>
+        <label id="ly" hidden>Y <input id="iy" inputmode="decimal" value="0"></label>
+        <label id="lz">Z <input id="iz" inputmode="decimal" value="40"></label>
+        <button class="btn primary" type="submit">Flytt</button>
+        <button class="btn" type="button" id="home">Startpunkt</button>
+      </form>
+      <p class="hint" id="hint"></p>
+      <div class="display" id="disp" aria-label="Posisjon"></div>
+    </section>
+
+    <section class="card">
+      <span class="label">Oppgave</span>
+      <div class="task" id="task"></div>
+      <div id="fb" class="fb" hidden></div>
+      <div class="row"><button class="btn" type="button" id="next">Neste oppgave</button></div>
+      <div class="score" id="score"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+(function(){
+const NS="http://www.w3.org/2000/svg";
+const svg=document.getElementById("fig");
+const $=id=>document.getElementById(id);
+const el=(tag,attr,parent,text)=>{const e=document.createElementNS(NS,tag);for(const k in attr)e.setAttribute(k,attr[k]);if(text!=null)e.textContent=text;(parent||svg).appendChild(e);return e;};
+const fmt=v=>(Math.round(v*1000)/1000).toString().replace(".",",");
+const num=s=>{s=String(s).trim().replace(",",".").replace(/^\+/,"");return s===""||isNaN(+s)?null:+s;};
+
+/* ---------- Dreiebenk ---------- */
+// Arbeidsstykke: Ø30 fra Z0 til Z-20, Ø50 fra Z-20 til chucken ved Z-60.
+const DRE={
+  start:{x:80,z:40},
+  lim:{x:[0,90],z:[-60,60]},
+  pts:{W:{x:0,z:0},B:{x:30,z:0},C:{x:30,z:-20},D:{x:50,z:-20},E:{x:50,z:-50}},
+  tasks:[
+    {t:"Flytt verktøyet til nullpunktet <b>W</b>.",x:0,z:0,p:"W"},
+    {t:"Flytt til punkt <b>B</b>.",x:30,z:0,p:"B"},
+    {t:"Flytt til punkt <b>C</b>.",x:30,z:-20,p:"C"},
+    {t:"Flytt til punkt <b>D</b>.",x:50,z:-20,p:"D"},
+    {t:"Flytt til punkt <b>E</b>.",x:50,z:-50,p:"E"},
+    {t:"Stå <b>2 mm foran</b> endeflaten, rett ut for punkt B.",x:30,z:2,p:"B"},
+    {t:"Stå <b>5 mm utenfor</b> punkt E (målt fra overflaten).",x:60,z:-50,p:"E",why:"5 mm på radien er 10 mm på diameteren: X = 50 + 10 = 60."}
+  ],
+  // radius på materialet ved en Z-verdi (null = luft)
+  r(z){if(z>0)return null;if(z>-20)return 15;if(z>-60)return 25;return 45;}
+};
+const S=5, OX=425, CY=235;            // 5 piksler per mm, W ligger i (OX,CY)
+const dpx=z=>OX+z*S, dpy=x=>CY-x/2*S; // X er diameter: radius = X/2
+
+/* ---------- Fres ---------- */
+// Blokk 100 x 60 x 30. W i hjørnet foran til venstre, oppå. Lomme 40 x 30, 10 dyp. Hull Ø16 gjennom.
+const FRES={
+  start:{x:-10,y:-5,z:30},
+  lim:{x:[-20,130],y:[-10,70],z:[-30,40]},
+  pts:{W:{x:0,y:0,z:0},B:{x:100,y:60,z:0},C:{x:75,y:30,z:0},D:{x:30,y:30,z:-10}},
+  tasks:[
+    {t:"Flytt verktøyet til nullpunktet <b>W</b>.",x:0,y:0,z:0,p:"W"},
+    {t:"Stå <b>10 mm over</b> W.",x:0,y:0,z:10,p:"W"},
+    {t:"Flytt til hjørnet <b>B</b> (oppå blokka).",x:100,y:60,z:0,p:"B"},
+    {t:"Stå <b>5 mm over</b> midten av hullet <b>C</b>.",x:75,y:30,z:5,p:"C"},
+    {t:"Gå <b>15 mm ned</b> i hullet C.",x:75,y:30,z:-15,p:"C",why:"Under toppen er Z minus: Z-15."},
+    {t:"Flytt til bunnen av lomma, i midten (<b>D</b>).",x:30,y:30,z:-10,p:"D"}
+  ],
+  R:5, // fresen er Ø10
+  h(x,y){ // høyden på materialet i et punkt (null = luft)
+    if(x<0||x>100||y<0||y>60)return null;
+    if((x-75)**2+(y-30)**2<64)return null;
+    if(x>10&&x<50&&y>15&&y<45)return -10;
+    return 0;
+  }
+};
+const F=3, FX=200, FZ0=150, FY0=495; // fres: X til venstre ved FX+20*F, Z0 ved FZ0, Y0 ved FY0
+const fx=x=>FX+(x+20)*F, fz=z=>FZ0-z*F, fy=y=>FY0-y*F;
+
+let mode="dre", pos={...DRE.start}, ti=0, solved=new Set(), crash=false, anim=null, trail=null;
+const M=()=>mode==="dre"?DRE:FRES;
+
+function grid(x0,x1,y0,y1,step,stepy){
+  for(let x=x0;x<=x1+0.1;x+=step)el("line",{x1:x,y1:y0,x2:x,y2:y1,class:"grid1"});
+  for(let y=y0;y<=y1+0.1;y+=stepy||step)el("line",{x1:x0,y1:y,x2:x1,y2:y,class:"grid1"});
+}
+function arrow(x1,y1,x2,y2,cls){
+  el("line",{x1,y1,x2,y2,class:cls||"axis"});
+  const a=Math.atan2(y2-y1,x2-x1),L=12,w=6;
+  el("path",{d:`M${x2},${y2} L${x2-L*Math.cos(a)+w*Math.sin(a)},${y2-L*Math.sin(a)-w*Math.cos(a)} L${x2-L*Math.cos(a)-w*Math.sin(a)},${y2-L*Math.sin(a)+w*Math.cos(a)}Z`,fill:"currentColor",class:cls==="dim"?"dimt":"tip"});
+}
+function point(px,py,name,dx,dy){
+  el("circle",{cx:px,cy:py,r:6,class:"pt"});
+  el("text",{x:px+(dx||8),y:py+(dy||-8),class:"ptl"},null,name);
+}
+
+/* --- Tegn dreiebenk --- */
+function drawDre(){
+  svg.setAttribute("viewBox","0 0 800 380");
+  el("rect",{x:0,y:0,width:800,height:380,class:"bg"});
+  grid(dpx(-70),dpx(70),CY-45*S,CY+30*S,10*S,5*S); // 5 mm på radien = 10 mm på diameteren
+  // Skala: X som diameter langs venstre kant, Z langs bunnen
+  for(let d=10;d<=90;d+=10)el("text",{x:795,y:dpy(d)+5,"text-anchor":"end",class:"txm"},null,"X"+d);
+  for(let z=-50;z<=60;z+=10)if(z)el("text",{x:dpx(z),y:372,"text-anchor":"middle",class:"txm"},null,"Z"+z);
+  // Chuck og arbeidsstykke (hele, symmetrisk om senterlinja)
+  el("rect",{x:dpx(-75),y:CY-45*S,width:15*S,height:90*S,class:"chuck"});
+  el("rect",{x:dpx(-60),y:CY-25*S,width:40*S,height:50*S,class:"mat"});
+  el("rect",{x:dpx(-20),y:CY-15*S,width:20*S,height:30*S,class:"mat"});
+  el("text",{x:dpx(-67.5),y:CY-35*S,"text-anchor":"middle",fill:"#fff",style:"font:600 13px var(--body)"},null,"Chuck");
+  el("line",{x1:20,y1:CY,x2:790,y2:CY,class:"cl"});
+  // Akser fra W
+  arrow(OX,CY,OX+80,CY); el("text",{x:OX+86,y:CY+6,class:"ax"},null,"Z+");
+  arrow(OX,CY,OX,CY-50); el("text",{x:OX-36,y:CY-36,class:"ax"},null,"X+");
+  const t=DRE.tasks[ti];
+  if(t&&!solved.has(ti)){const p=DRE.pts[t.p];el("circle",{cx:dpx(p.z),cy:dpy(p.x),r:13,class:"tgt"});}
+  for(const k in DRE.pts){const p=DRE.pts[k];point(dpx(p.z),dpy(p.x),k,k==="W"?-22:8,k==="W"?20:-8);}
+  trail=el("path",{class:"trail",d:""});
+  // Verktøy: vendeskjær med spissen i posisjonen
+  const g=el("g",{id:"tool"});
+  el("rect",{x:6,y:-70,width:26,height:56,class:"holder"},g);
+  el("path",{d:"M0,0 L24,-10 L22,-26 L6,-22 Z",class:"tool"},g);
+  el("circle",{cx:0,cy:0,r:3,class:"tip"},g);
+  // Diametermål: fra spissen, gjennom senter, til speilpunktet under
+  el("g",{id:"dimg"});
+}
+function placeDre(p){
+  const X=dpx(p.z),Y=dpy(p.x),g=$("tool");
+  g.setAttribute("transform",`translate(${X},${Y})`);
+  g.setAttribute("class",crash?"crash":"");
+  const d=$("dimg");d.innerHTML="";
+  if(p.x>0.5){
+    const Y2=dpy(-p.x);
+    el("line",{x1:X,y1:Y,x2:X,y2:Y2,class:"dim"},d);
+    el("circle",{cx:X,cy:Y2,r:4,fill:"none",stroke:"var(--accent)","stroke-width":2},d);
+    el("text",{x:X+8,y:CY+24,class:"dimt"},d,"X"+fmt(p.x)+" = Ø"+fmt(p.x));
+  }
+}
+
+/* --- Tegn fres --- */
+function drawFres(){
+  svg.setAttribute("viewBox","0 0 800 555");
+  el("rect",{x:0,y:0,width:800,height:555,class:"bg"});
+  // Sett forfra (X og Z)
+  el("text",{x:16,y:fz(40)+5,class:"tx"},null,"Sett forfra");
+  grid(fx(-20),fx(130),fz(40),fz(-30),10*F);
+  for(let z=-30;z<=40;z+=10)el("text",{x:fx(-20)-6,y:fz(z)+5,"text-anchor":"end",class:"txm"},null,"Z"+z);
+  el("rect",{x:fx(0),y:fz(0),width:100*F,height:30*F,class:"mat"});
+  el("rect",{x:fx(10),y:fz(0),width:40*F,height:10*F,class:"hid"});
+  el("rect",{x:fx(67),y:fz(0),width:16*F,height:30*F,class:"hid"});
+  el("line",{x1:fx(-20),y1:fz(-30),x2:fx(130),y2:fz(-30),stroke:"var(--ink)","stroke-width":3});
+  arrow(fx(0),fz(0),fx(0)+60,fz(0)); el("text",{x:fx(0)+64,y:fz(0)+6,class:"ax"},null,"X+");
+  arrow(fx(0),fz(0),fx(0),fz(0)-60); el("text",{x:fx(0)-10,y:fz(0)-66,class:"ax"},null,"Z+");
+  // Sett ovenfra (X og Y)
+  el("text",{x:16,y:fy(70)+5,class:"tx"},null,"Sett ovenfra");
+  grid(fx(-20),fx(130),fy(70),fy(-10),10*F);
+  for(let y=-10;y<=70;y+=10)el("text",{x:fx(-20)-6,y:fy(y)+5,"text-anchor":"end",class:"txm"},null,"Y"+y);
+  for(let x=-20;x<=120;x+=20)el("text",{x:fx(x),y:550,"text-anchor":"middle",class:"txm"},null,"X"+x);
+  el("rect",{x:fx(0),y:fy(60),width:100*F,height:60*F,class:"mat"});
+  el("rect",{x:fx(10),y:fy(45),width:40*F,height:30*F,class:"mat2"});
+  el("circle",{cx:fx(75),cy:fy(30),r:8*F,fill:"var(--bench)",stroke:"#5f6b74","stroke-width":2});
+  arrow(fx(0),fy(0),fx(0)+60,fy(0)); el("text",{x:fx(0)+64,y:fy(0)+20,class:"ax"},null,"X+");
+  arrow(fx(0),fy(0),fx(0),fy(0)-60); el("text",{x:fx(0)-30,y:fy(0)-60,class:"ax"},null,"Y+");
+  el("text",{x:fx(30),y:fy(40)+5,"text-anchor":"middle",class:"txm"},null,"lomme");
+  const t=FRES.tasks[ti];
+  if(t&&!solved.has(ti)){const p=FRES.pts[t.p];el("circle",{cx:fx(p.x),cy:fy(p.y),r:13,class:"tgt"});el("circle",{cx:fx(p.x),cy:fz(p.z),r:13,class:"tgt"});}
+  for(const k in FRES.pts){const p=FRES.pts[k];
+    point(fx(p.x),fy(p.y),k,k==="W"?-24:8,k==="W"?20:-8);
+    el("circle",{cx:fx(p.x),cy:fz(p.z),r:5,class:"pt"});
+    el("text",{x:fx(p.x)+(k==="W"?-22:6),y:fz(p.z)+(k==="W"?-6:18),class:"ptl",style:"font-size:15px"},null,k);}
+  trail=el("path",{class:"trail",d:""});
+  el("line",{id:"proj",class:"proj"});
+  // Fres Ø10 i begge visninger
+  const g1=el("g",{id:"tool"});
+  el("rect",{x:-5*F,y:-40*F,width:10*F,height:40*F,class:"tool"},g1);
+  for(let i=1;i<6;i++)el("line",{x1:-5*F,y1:-i*6*F+2,x2:5*F,y2:-i*6*F-6,stroke:"#7a5a12","stroke-width":1.2},g1);
+  el("rect",{x:-9*F,y:-70*F,width:18*F,height:30*F,class:"holder"},g1);
+  el("circle",{cx:0,cy:0,r:3,class:"tip"},g1);
+  const g2=el("g",{id:"tool2"});
+  el("circle",{cx:0,cy:0,r:5*F,class:"tool"},g2);
+  el("path",{d:"M-8,0H8M0,-8V8",stroke:"#2f363b","stroke-width":2},g2);
+}
+function placeFres(p){
+  const c=crash?"crash":"";
+  $("tool").setAttribute("transform",`translate(${fx(p.x)},${fz(p.z)})`);$("tool").setAttribute("class",c);
+  $("tool2").setAttribute("transform",`translate(${fx(p.x)},${fy(p.y)})`);$("tool2").setAttribute("class",c);
+  const pr=$("proj");pr.setAttribute("x1",fx(p.x));pr.setAttribute("x2",fx(p.x));pr.setAttribute("y1",fz(p.z));pr.setAttribute("y2",fy(p.y));
+}
+
+function draw(){
+  svg.innerHTML="";
+  if(mode==="dre")drawDre();else drawFres();
+  place(pos);
+}
+function place(p){
+  if(mode==="dre")placeDre(p);else placeFres(p);
+  const ax=mode==="dre"?["x","z"]:["x","y","z"];
+  $("disp").innerHTML=ax.map(a=>`<span>${a.toUpperCase()} ${(p[a]<0?"-":" ")+Math.abs(p[a]).toFixed(3)}</span>`).join("");
+}
+function tp(p){return mode==="dre"?[dpx(p.z),dpy(p.x)]:[fx(p.x),fy(p.y)];}
+
+/* Kollisjon: verktøyspissen inne i materialet eller chucken */
+function collides(p){
+  if(mode==="dre"){const r=z=>DRE.r(z)||0;return p.x/2<Math.min(r(p.z+1e-6),r(p.z-1e-6))-1e-6;}
+  const R=FRES.R;let lo=Infinity;
+  for(let i=0;i<=16;i++){const a=i*Math.PI/8,rr=i===16?0:R*0.98;const h=FRES.h(p.x+rr*Math.cos(a),p.y+rr*Math.sin(a));if(h!=null)lo=Math.min(lo,-h);}
+  return p.z<-30-1e-6||(lo!==Infinity&&p.z< -lo-1e-6);
+}
+
+function note(html,cls){$("notes").innerHTML=html?`<div class="note ${cls||""}">${html}</div>`:"";}
+
+function move(to){
+  if(anim)cancelAnimationFrame(anim);
+  const from={...pos},keys=Object.keys(to);
+  const dist=Math.hypot(...keys.map(k=>to[k]-from[k]));
+  const dur=Math.min(1400,300+dist*12),t0=performance.now();
+  const [sx,sy]=tp(from),[ex,ey]=tp(to);
+  trail.setAttribute("d",`M${sx},${sy} L${ex},${ey}`);
+  crash=false;$("fb").hidden=true;
+  const step=now=>{
+    const k=Math.min(1,(now-t0)/dur),e=k<.5?2*k*k:1-(-2*k+2)**2/2,p={};
+    keys.forEach(a=>p[a]=from[a]+(to[a]-from[a])*e);
+    place(p);
+    if(k<1)anim=requestAnimationFrame(step);else{anim=null;pos={...to};crash=collides(pos);place(pos);after();}
+  };
+  anim=requestAnimationFrame(step);
+}
+
+function after(){
+  if(crash){note("Krasj! Verktøyspissen står inne i materialet. Sjekk tallene og flytt på nytt.","bad");}
+  else note("");
+  check();
+}
+
+function check(){
+  const t=M().tasks[ti]; if(!t||solved.has(ti))return;
+  const ax=mode==="dre"?["x","z"]:["x","y","z"];
+  const eq=(a,b)=>Math.abs(a-b)<0.01;
+  const fb=$("fb");
+  if(ax.every(a=>eq(pos[a],t[a]))&&!crash){
+    solved.add(ti);
+    fb.className="fb ok";fb.hidden=false;
+    fb.innerHTML=`Riktig! ${ax.map(a=>a.toUpperCase()+fmt(t[a])).join(" ")}${t.why?`<span class="why">${t.why}</span>`:""}`;
+    if(solved.size<M().tasks.length)nextTask();showTask(true);draw();return;
+  }
+  let why="Tell rutene. Hver rute er 10 mm.";
+  if(mode==="dre"){
+    if(eq(pos.x*2,t.x)&&t.x)why="X er <b>diameteren</b>, ikke radien. Gang avstanden fra senterlinja med 2.";
+    else if(eq(pos.z,-t.z)&&t.z)why="Sjekk fortegnet på Z. Inn mot chucken er Z <b>minus</b>.";
+    else if(eq(pos.x,t.z)&&eq(pos.z,t.x))why="Du har byttet om X og Z. X er opp og ned, Z er bortover.";
+    else if(eq(pos.x,t.x))why="X er riktig. Sjekk Z.";
+    else if(eq(pos.z,t.z))why="Z er riktig. Sjekk X. Husk at X er diameteren.";
+  }else{
+    if(eq(pos.x,t.y)&&eq(pos.y,t.x)&&t.x!==t.y)why="Du har byttet om X og Y. X er bortover, Y er innover (opp i «Sett ovenfra»).";
+    else if(eq(pos.x,t.x)&&eq(pos.y,t.y)&&eq(pos.z,-t.z))why="Sjekk fortegnet på Z. Under toppen av blokka er Z <b>minus</b>.";
+    else if(eq(pos.x,t.x)&&eq(pos.y,t.y))why="X og Y er riktig. Sjekk Z i «Sett forfra».";
+    else{const ok=["x","y","z"].filter(a=>eq(pos[a],t[a])).map(a=>a.toUpperCase());if(ok.length)why=ok.join(" og ")+" er riktig. Sjekk resten.";}
+  }
+  fb.className="fb bad";fb.hidden=false;fb.innerHTML=`Ikke helt.<span class="why">${why}</span>`;
+}
+
+function score(){
+  const n=M().tasks.length;
+  $("score").textContent=`${solved.size} av ${n} oppgaver løst`;
+}
+function nextTask(){
+  const ts=M().tasks;
+  if(solved.size===ts.length){solved.clear();ti=0;return;}
+  do{ti=(ti+1)%ts.length;}while(solved.has(ti));
+}
+function showTask(keep){
+  const ts=M().tasks;
+  if(solved.size===ts.length){$("task").innerHTML="Alle oppgavene er løst! 🎉 Prøv den andre maskinen, eller øv fritt.";$("next").textContent="Start på nytt";}
+  else{$("task").innerHTML=ts[ti].t;$("next").textContent="Neste oppgave";}
+  if(!keep)$("fb").hidden=true;score();
+}
+$("next").onclick=()=>{
+  nextTask();showTask();draw();
+};
+
+$("form").onsubmit=e=>{
+  e.preventDefault();
+  const m=M(),to={},ax=mode==="dre"?["x","z"]:["x","y","z"];
+  for(const a of ax){
+    const v=num($("i"+a).value);
+    if(v==null){note(`Skriv et tall i ${a.toUpperCase()}.`,"bad");return;}
+    const [lo,hi]=m.lim[a];
+    if(v<lo||v>hi){note(mode==="dre"&&a==="x"&&v<0?"X skal være 0 eller mer på denne dreiebenken.":`${a.toUpperCase()} må være mellom ${lo} og ${hi} her.`,"bad");return;}
+    to[a]=v;
+  }
+  move(to);
+};
+$("home").onclick=()=>{const s=M().start;for(const a in s)$("i"+a).value=fmt(s[a]);move({...s});};
+
+function setMode(m){
+  if(anim){cancelAnimationFrame(anim);anim=null;}
+  mode=m;ti=0;solved=new Set();crash=false;pos={...M().start};
+  document.querySelectorAll("[data-m]").forEach(b=>b.setAttribute("aria-selected",b.dataset.m===m));
+  $("ly").hidden=m==="dre";
+  for(const a in pos)$("i"+a).value=fmt(pos[a]);
+  $("figlabel").textContent=m==="dre"?"Dreiebenk":"Fres";
+  $("fighelp").textContent=m==="dre"?"W er nullpunktet, midt på endeflaten. X er diameter.":"W er nullpunktet, i hjørnet oppå blokka. Fresen er Ø10.";
+  $("hint").innerHTML=m==="dre"
+    ?"<b>X</b> = diameter (2 × avstanden fra senterlinja). <b>Z</b> = langs dreiestykket, minus inn mot chucken."
+    :"<b>X</b> = bortover, <b>Y</b> = innover, <b>Z</b> = opp og ned. Under toppen av blokka er Z minus.";
+  note("");draw();showTask();
+}
+document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>setMode(b.dataset.m));
+setMode("dre");
+})();
+</script>
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body>
+</html>

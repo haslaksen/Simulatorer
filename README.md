@@ -6,7 +6,7 @@ Interaktive simulatorer for Teknologi- og industrifag (Vg1 TIF og Vg2 Industrite
 |---|---|
 | Måleteknikk | `skyvelaere.html` · `mikrometer.html` · `maleur.html` · `toleranser.html` · `gjenger.html` |
 | Materiallære og mekanikk | `strekkprove.html` · `charpy.html` · `bjelke.html` |
-| Maskinering | `skjaeredata.html` · `cnc-dreiebenk.html` |
+| Maskinering | `skjaeredata.html` · `cnc-dreiebenk.html` · `cnc-koordinater.html` |
 | Montering | `momentnokkel.html` |
 | Elektro | `multimeter.html` · `tangamperemeter.html` |
 | Pneumatikk | `pneumatikk-og-hydraulikk.html` |
