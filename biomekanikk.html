@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Biomekanikk</title>
+<style>
+/* Faner øverst (én idé per fane), arbeidsbenk med utøveren, glidere og avlesning i to kolonner under. Stables på mobil. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c;
+  --bench:#dfe5e8; --bench-line:#c4ced3;
+  --hofte:#1c6fd1; --kne:#c92a2a; --gronn:#2b8a3e;
+  --hud:#e9b98f; --troye:#1c6fd1; --shorts:#2d3540; --sko:#14181d; --stang:#3b4650; --gra:#9aa5ae;
+  --display:"Segoe UI", system-ui, sans-serif;
+  --body:"Segoe UI", system-ui, sans-serif;
+  --mono:ui-monospace, "Consolas", monospace;
+}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69;
+  --bench:#232c31; --bench-line:#334047;
+  --hofte:#5aa2f5; --kne:#ff6b6b; --gronn:#51cf66;
+  --hud:#d9a57a; --troye:#3d86e0; --shorts:#56606c; --sko:#0b0e12; --stang:#9aa7af; --gra:#56606c; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:grid;gap:12px}
+h1{font-family:var(--display);margin:0;font-size:28px}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.faner{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.faner button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:7px;cursor:pointer}
+.faner button b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--bench);color:var(--ink);font-size:12px;margin-right:6px}
+.faner button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.faner button[aria-selected="true"] b{background:var(--accent);color:#fff}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.modus{display:grid;gap:16px}
+.stage{background:var(--bench);border:1px solid var(--bench-line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;flex-wrap:wrap;gap:6px 14px;padding:10px 14px;font-size:14px;color:var(--muted);border-bottom:1px solid var(--bench-line)}
+.label{font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;font-size:12px}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body);fill:var(--ink)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:14px;align-content:start}
+.panel h2{margin:0;font-size:18px}
+.ctl{display:grid;gap:4px}
+.ctl label,.ctl .navn{display:flex;justify-content:space-between;gap:10px;font-weight:600;font-size:15px}
+.ctl output{font-family:var(--mono);color:var(--accent);font-weight:700}
+.ctl small{color:var(--muted);font-size:13px}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.valg{display:flex;flex-wrap:wrap;gap:6px}
+.valg button,.knapp{font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:6px 12px}
+.valg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.knapp.hoved{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700;font-size:16px;padding:8px 18px}
+.valg button:disabled{opacity:.35;cursor:default}
+.tall{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tall div{border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.tall b{display:block;font-family:var(--mono);font-size:22px}
+.tall span{font-size:13px;color:var(--muted)}
+.melding{border-radius:10px;padding:8px 12px;font-weight:600;font-size:15px;background:var(--bench);border:1px solid var(--bench-line)}
+.melding.feil{color:var(--bad);border-color:var(--bad)}
+.melding.ok{color:var(--ok);border-color:var(--ok)}
+.prov ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:15px}
+details{border:1px dashed var(--line);border-radius:10px;padding:8px 12px;font-size:14px;color:var(--muted)}
+details summary{cursor:pointer;font-weight:700;color:var(--ink)}
+details p{margin:6px 0 0}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+<!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1040px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head>
+<body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Biomekanikk</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg3 Idrett · Treningslære</div>
+      <h1>Biomekanikk</h1>
+      <p class="lk-lead">Sju små simulatorer om krefter og bevegelse: knebøy, balanse, kraft og motkraft, vektstang, kast, bevegelseskjeden og landing.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg en fane øverst, for eksempel <b>Knebøy</b> eller <b>Balanse</b>.</span></li><li><span>Dra i gliderne, og se hva som skjer med figuren.</span></li><li><span>Les av tallene og meldingen til høyre.</span></li><li><span>Svar på spørsmålene under <b>Prøv dette</b>.</span></li></ol>
+      
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Biomekanikk</h1>
+      <p class="sub">Sju små simulatorer om krefter og bevegelse i idrett.</p>
+    </div>
+    <nav class="faner" role="tablist" aria-label="Velg simulator" id="faner"></nav>
+  </header>
+
+  <!-- A Knebøy -->
+  <section class="modus" id="kneboy" role="tabpanel">
+    <div class="stage">
+      <div class="stage-head"><span class="label">Knebøy sett fra siden</span><span>Den stiplede linja går rett ned fra stanga. Vektarmen er avstanden fra leddet til linja.</span></div>
+      <svg id="aBilde" viewBox="0 0 960 500" role="img" aria-label="Utøver i knebøy med vektarm til hofte og kne"></svg>
+    </div>
+    <div class="grid">
+      <section class="panel"><h2>Still inn</h2>
+        <div class="ctl"><label for="aDybde">Hvor dypt <output id="aDybdeUt"></output></label><input type="range" id="aDybde" min="0" max="110" value="70"><small>Vinkel mellom låret og loddrett. 90° betyr at låret er vannrett.</small></div>
+        <div class="ctl"><label for="aKne">Knærne fram <output id="aKneUt"></output></label><input type="range" id="aKne" min="0" max="100" value="50"><small>Mer knær fram gir mer oppreist overkropp.</small></div>
+        <div class="ctl"><span class="navn">Stanga på ryggen</span><div class="valg" id="aStang"><button type="button" data-v="hoy" aria-pressed="true">Høy stang</button><button type="button" data-v="lav" aria-pressed="false">Lav stang</button></div></div>
+        <div class="ctl"><label for="aVekt">Vekt på stanga <output id="aVektUt"></output></label><input type="range" id="aVekt" min="20" max="200" step="5" value="60"></div>
+      </section>
+      <section class="panel"><h2>Hvem får mest jobb?</h2>
+        <svg id="aStolper" viewBox="0 0 400 230" role="img" aria-label="Moment i hofte og kne"></svg>
+        <div class="tall"><div><span>Vektarm hofte</span><b id="aArmH" style="color:var(--hofte)"></b><span id="aMomH"></span></div><div><span>Vektarm kne</span><b id="aArmK" style="color:var(--kne)"></b><span id="aMomK"></span></div></div>
+        <div class="melding" id="aMelding" role="status"></div>
+        <details><summary>Ekstra: regn ut momentet</summary><p>Moment = kraft × vektarm. Kraften fra stanga er vekt × 9,81. Eksempel: 60 kg × 9,81 = 589 N. Med 20 cm vektarm blir momentet 589 N × 0,20 m = 118 N·m. Vi ser bare på stanga, ikke på kroppsvekten.</p></details>
+      </section>
+    </div>
+    <section class="panel prov"><h2>Prøv dette</h2><ol>
+      <li>Gå fra å stå til dyp knebøy. Hva skjer med begge vektarmene?</li>
+      <li>Hold dybden fast. Skyv knærne fram. Hvilket ledd får mer jobb, og hvilket får mindre?</li>
+      <li>Bytt mellom høy og lav stang. Hvorfor lener du deg mer fram med lav stang?</li>
+      <li>Dobbel vekt: blir vektarmen eller momentet dobbelt så stort?</li></ol></section>
+  </section>
+
+  <!-- B Balanse -->
+  <section class="modus" id="balanse" role="tabpanel" hidden>
+    <div class="stage">
+      <div class="stage-head"><span class="label">Balanse</span><span>Det oransje punktet er tyngdepunktet. Står loddlinja innenfor den grønne støtteflaten, står du støtt.</span></div>
+      <svg id="bBilde" viewBox="130 0 640 500" role="img" aria-label="Person med tyngdepunkt og støtteflate"></svg>
+    </div>
+    <div class="grid">
+      <section class="panel"><h2>Still inn</h2>
+        <div class="ctl"><span class="navn">Stilling</span><div class="valg" id="bFot"><button type="button" data-v="to" aria-pressed="true">To føtter</button><button type="button" data-v="en" aria-pressed="false">Én fot</button></div></div>
+        <div class="ctl" id="bStegBoks"><label for="bSteg">Avstand mellom føttene <output id="bStegUt"></output></label><input type="range" id="bSteg" min="0" max="60" value="20"><small>Én fot foran og én bak.</small></div>
+        <div class="ctl"><label for="bLen">Len overkroppen <output id="bLenUt"></output></label><input type="range" id="bLen" min="-30" max="70" value="0"><small>Plusstall er fram, minustall er bakover.</small></div>
+        <div class="ctl"><label for="bArm">Armene <output id="bArmUt"></output></label><input type="range" id="bArm" min="-60" max="150" value="0"><small>0° er rett ned. Plusstall er fram, minustall er bak.</small></div>
+      </section>
+      <section class="panel"><h2>Står du støtt?</h2>
+        <div class="melding" id="bMelding" role="status"></div>
+        <div class="tall"><div><span>Støtteflate</span><b id="bFlate"></b></div><div><span>Margin til kanten</span><b id="bMargin"></b></div></div>
+        <details><summary>Ekstra: hvordan finner vi tyngdepunktet?</summary><p>Hver kroppsdel har sin vekt: overkroppen er omtrent halve kroppen, hvert lår 10 %, hodet 8 %. Tyngdepunktet er gjennomsnittet av alle delene, vektet etter hvor tunge de er.</p></details>
+      </section>
+    </div>
+    <section class="panel prov"><h2>Prøv dette</h2><ol>
+      <li>Stå på to føtter med føttene samlet. Hvor langt fram kan du lene deg?</li>
+      <li>Øk avstanden mellom føttene. Hvor langt kan du lene deg nå?</li>
+      <li>Len deg fram, og strekk armene bakover. Hva skjer med tyngdepunktet?</li>
+      <li>Bytt til én fot. Hvorfor er det vanskeligere å stå stille?</li></ol></section>
+  </section>
+
+  <!-- C Kraft og motkraft -->
+  <section class="modus" id="fraspark" role="tabpanel" hidden>
+    <div class="stage">
+      <div class="stage-head"><span class="label">Kraft og motkraft</span><span>Du skyver bakken bakover. Bakken skyver deg like hardt fram.</span></div>
+      <svg id="cBilde" viewBox="0 0 960 500" role="img" aria-label="Løper i fraspark med kraft og motkraft"></svg>
+    </div>
+    <div class="grid">
+      <section class="panel"><h2>Still inn</h2>
+        <div class="ctl"><label for="cKraft">Kraft mot bakken <output id="cKraftUt"></output></label><input type="range" id="cKraft" min="200" max="2000" step="50" value="1000"></div>
+        <div class="ctl"><label for="cTid">Hvor lenge du skyver <output id="cTidUt"></output></label><input type="range" id="cTid" min="0.05" max="0.40" step="0.01" value="0.20"></div>
+        <div class="ctl"><label for="cVinkel">Vinkel på frasparket <output id="cVinkelUt"></output></label><input type="range" id="cVinkel" min="30" max="85" value="50"><small>Lav vinkel betyr at du lener deg langt fram.</small></div>
+        <button type="button" class="knapp hoved" id="cSkyv">Skyv!</button>
+      </section>
+      <section class="panel"><h2>Hvor mye fart?</h2>
+        <div class="tall"><div><span>Kraft × tid</span><b id="cImpuls"></b></div><div><span>Fart fremover</span><b id="cFart" style="color:var(--hofte)"></b><span id="cKmh"></span></div></div>
+        <div class="melding" id="cMelding" role="status"></div>
+        <details><summary>Ekstra: formelen</summary><p>Fart = kraft fremover × tid / masse. Utøveren veier 70 kg. Kraften fremover er kraft × cos(vinkel). Vi ser bort fra luftmotstand og tyngdekraft.</p></details>
+      </section>
+    </div>
+    <section class="panel prov"><h2>Prøv dette</h2><ol>
+      <li>Hold kraften fast. Dobbel tid: hva skjer med farten?</li>
+      <li>Hvilken vinkel gir mest fart fremover? Hvorfor lener sprintere seg fram i starten?</li>
+      <li>Er pilen fra bakken alltid like lang som pilen mot bakken?</li></ol></section>
+  </section>
+
+  <!-- D Vektstang -->
+  <section class="modus" id="vektstang" role="tabpanel" hidden>
+    <div class="stage">
+      <div class="stage-head"><span class="label">Kroppen som vektstang</span><span>Albuen er dreiepunktet. Biceps fester nær albuen, manualen er langt unna.</span></div>
+      <svg id="dBilde" viewBox="0 0 960 500" role="img" aria-label="Underarm som vektstang med biceps og manual"></svg>
+    </div>
+    <div class="grid">
+      <section class="panel"><h2>Still inn</h2>
+        <div class="ctl"><label for="dVekt">Manual <output id="dVektUt"></output></label><input type="range" id="dVekt" min="1" max="20" value="5"></div>
+        <div class="ctl"><label for="dLast">Manualen fra albuen <output id="dLastUt"></output></label><input type="range" id="dLast" min="10" max="35" value="33"></div>
+        <div class="ctl"><label for="dFeste">Bicepsfestet fra albuen <output id="dFesteUt"></output></label><input type="range" id="dFeste" min="3" max="7" step="0.5" value="4"><small>Festet er litt forskjellig fra person til person.</small></div>
+      </section>
+      <section class="panel"><h2>Hvor hardt må biceps dra?</h2>
+        <div class="tall"><div><span>Manualen veier</span><b id="dLastN" style="color:var(--accent)"></b></div><div><span>Biceps må dra</span><b id="dMuskel" style="color:var(--kne)"></b></div></div>
+        <div class="melding" id="dMelding" role="status"></div>
+        <details><summary>Ekstra: likevekt</summary><p>Momentet fra muskelen må være like stort som momentet fra manualen: muskelkraft × festeavstand = manualkraft × avstand til manualen. Vi ser bort fra vekten av underarmen.</p></details>
+      </section>
+    </div>
+    <section class="panel prov"><h2>Prøv dette</h2><ol>
+      <li>Hvor mange ganger tyngre enn manualen må biceps dra?</li>
+      <li>Flytt manualen nærmere albuen. Hva skjer?</li>
+      <li>Hvorfor er det lurt å holde tunge ting tett inntil kroppen?</li></ol></section>
+  </section>
+
+  <!-- E Kast -->
+  <section class="modus" id="kast" role="tabpanel" hidden>
+    <div class="stage">
+      <div class="stage-head"><span class="label">Kast</span><span>De tre siste kastene blir stående, så du kan sammenligne.</span></div>
+      <svg id="eBilde" viewBox="0 0 960 500" role="img" aria-label="Kastebaner"></svg>
+    </div>
+    <div class="grid">
+      <section class="panel"><h2>Still inn</h2>
+        <div class="ctl"><label for="eFart">Utgangsfart <output id="eFartUt"></output></label><input type="range" id="eFart" min="5" max="30" value="14"></div>
+        <div class="ctl"><label for="eVinkel">Utgangsvinkel <output id="eVinkelUt"></output></label><input type="range" id="eVinkel" min="5" max="80" value="40"></div>
+        <div class="ctl"><label for="eHoyde">Utgangshøyde <output id="eHoydeUt"></output></label><input type="range" id="eHoyde" min="0" max="2.5" step="0.1" value="2"><small>Kulestøt: rundt 2 m. Lengdehopp: rundt 1 m.</small></div>
+        <div class="valg"><button type="button" class="knapp hoved" id="eKast">Kast!</button><button type="button" class="knapp" id="eTom">Fjern kastene</button></div>
+      </section>
+      <section class="panel"><h2>Hvor langt?</h2>
+        <div class="tall"><div><span>Lengde</span><b id="eLengde" style="color:var(--accent)"></b></div><div><span>Høyeste punkt</span><b id="eTopp"></b></div></div>
+        <div class="melding" id="eMelding" role="status">Trykk «Kast!».</div>
+        <details><summary>Ekstra: hvorfor ikke 45°?</summary><p>Fra bakken er 45° best. Når du kaster fra en høyde, er det best med litt lavere vinkel, fordi kula allerede er i lufta. I tillegg klarer man å kaste hardere med lav vinkel.</p></details>
+      </section>
+    </div>
+    <section class="panel prov"><h2>Prøv dette</h2><ol>
+      <li>Kast med samme vinkel, men 10 % mer fart. Hvor mye lengre gikk det?</li>
+      <li>Finn den beste vinkelen for utgangshøyde 2 m. Er den over eller under 45°?</li>
+      <li>Hva betyr mest for lengden: vinkel eller fart?</li></ol></section>
+  </section>
+
+  <!-- F Bevegelseskjede -->
+  <section class="modus" id="kjede" role="tabpanel" hidden>
+    <div class="stage">
+      <div class="stage-head"><span class="label">Bevegelseskjeden</span><span>Trykk på leddene i den rekkefølgen de skal starte i kastet.</span></div>
+      <svg id="fBilde" viewBox="0 0 960 500" role="img" aria-label="Kaster med nummererte ledd og fart i hvert ledd"></svg>
+    </div>
+    <div class="grid">
+      <section class="panel"><h2>Velg rekkefølge</h2>
+        <div class="valg" id="fValg"></div>
+        <div class="valg"><button type="button" class="knapp" id="fNull">Start på nytt</button><button type="button" class="knapp" id="fRiktig">Vis riktig rekkefølge</button></div>
+      </section>
+      <section class="panel"><h2>Fart i hånda</h2>
+        <div class="tall"><div><span>Fart i hånda</span><b id="fFart" style="color:var(--accent)"></b></div><div><span>Beste mulige</span><b id="fBest"></b></div></div>
+        <div class="melding" id="fMelding" role="status"></div>
+      </section>
+    </div>
+    <section class="panel prov"><h2>Prøv dette</h2><ol>
+      <li>Prøv å starte med hånda. Hvor mye fart får du?</li>
+      <li>Finn rekkefølgen som gir mest fart. Hva er regelen?</li>
+      <li>Nevn en annen øvelse der bevegelseskjeden er viktig.</li></ol></section>
+  </section>
+
+  <!-- G Landing -->
+  <section class="modus" id="landing" role="tabpanel" hidden>
+    <div class="stage">
+      <div class="stage-head"><span class="label">Myk landing</span><span>Grafen viser kraften fra bakken under landingen. Den grå kurven er landing med stive knær.</span></div>
+      <svg id="gBilde" viewBox="0 0 960 500" role="img" aria-label="Landing og kraft over tid"></svg>
+    </div>
+    <div class="grid">
+      <section class="panel"><h2>Still inn</h2>
+        <div class="ctl"><label for="gHoyde">Fallhøyde <output id="gHoydeUt"></output></label><input type="range" id="gHoyde" min="0.2" max="1.0" step="0.05" value="0.5"></div>
+        <div class="ctl"><label for="gBoy">Bøy i knærne i landingen <output id="gBoyUt"></output></label><input type="range" id="gBoy" min="0" max="40" value="20"><small>Hvor mange cm hofta synker før du stopper.</small></div>
+      </section>
+      <section class="panel"><h2>Hvor stor blir kraften?</h2>
+        <div class="tall"><div><span>Bremsetid</span><b id="gTid"></b></div><div><span>Største kraft</span><b id="gKraft" style="color:var(--kne)"></b><span id="gKraftN"></span></div></div>
+        <div class="melding" id="gMelding" role="status"></div>
+        <details><summary>Ekstra: samme regel som i fraspark</summary><p>Farten du har når du treffer bakken, må bremses ned til 0. Kraft × tid er det samme uansett. Lang tid gir derfor liten kraft. Utøveren veier 70 kg.</p></details>
+      </section>
+    </div>
+    <section class="panel prov"><h2>Prøv dette</h2><ol>
+      <li>Land med stive knær fra 0,5 m. Hvor mange ganger kroppsvekten blir kraften?</li>
+      <li>Bøy knærne 30 cm. Hvor mye mindre blir kraften?</li>
+      <li>Hvorfor øver idrettsutøvere på å lande mykt?</li></ol></section>
+  </section>
+</div>
+
+<script>
+(function(){
+  var NS="http://www.w3.org/2000/svg", G=9.81;
+  var $=function(id){return document.getElementById(id)};
+  var ROLIG=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---------- tegnehjelp ----------
+  function el(g,navn,att){var e=document.createElementNS(NS,navn);for(var k in att)e.setAttribute(k,att[k]);g.appendChild(e);return e}
+  function ln(g,a,b,w,c,ekstra){var e=el(g,"line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:c,"stroke-width":w,"stroke-linecap":"round"});if(ekstra)for(var k in ekstra)e.setAttribute(k,ekstra[k]);return e}
+  function ci(g,p,r,c){return el(g,"circle",{cx:p[0],cy:p[1],r:r,fill:c})}
+  function tx(g,p,t,att){var e=el(g,"text",Object.assign({x:p[0],y:p[1],"font-size":15},att||{}));e.textContent=t;return e}
+  function mid(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t]}
+  function pil(g,a,b,w,c){
+    var dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,ux=dx/l,uy=dy/l,h=Math.min(18,l*.5);
+    var c0=[b[0]-ux*h,b[1]-uy*h];
+    ln(g,a,c0,w,c);
+    el(g,"polygon",{points:b[0]+","+b[1]+" "+(c0[0]-uy*h*.6)+","+(c0[1]+ux*h*.6)+" "+(c0[0]+uy*h*.6)+","+(c0[1]-ux*h*.6),fill:c});
+  }
+  function bakke(g,y){el(g,"rect",{x:0,y:y,width:960,height:500-y,fill:"var(--bench-line)",opacity:.45});ln(g,[0,y],[960,y],3,"var(--bench-line)")}
+  function tall(x,d){return x.toFixed(d===undefined?0:d).replace(".",",")}
+
+  // Et menneske sett fra siden. p: ankel a, kne k, hofte h, skulder s, hode hd, albue e, hånd hn
+  // (bakre ben og arm: a2, k2, e2, hn2). s = størrelse, dir = 1 mot høyre, -1 mot venstre.
+  function menneske(g,p,s,dir){
+    s=s||1;dir=dir||1;
+    var H="var(--hud)",T="var(--troye)",S="var(--shorts)";
+    function ben(a,k){ln(g,k,a,12*s,H);ln(g,p.h,k,16*s,H);ln(g,p.h,mid(p.h,k,.55),18*s,S);ln(g,[a[0]-5*s*dir,a[1]+2*s],[a[0]+17*s*dir,a[1]+3*s],9*s,"var(--sko)")}
+    function arm(e,hn){ln(g,p.s,e,10*s,T);ln(g,mid(p.s,e,.5),e,8*s,H);ln(g,e,hn,8*s,H);ci(g,hn,5*s,H)}
+    if(p.e2)arm(p.e2,p.hn2);
+    if(p.a2)ben(p.a2,p.k2);
+    ln(g,p.h,p.s,25*s,T);ci(g,p.h,11*s,S);
+    ben(p.a,p.k);
+    ln(g,p.s,mid(p.s,p.hd,.6),8*s,H);
+    var r=14*s,x=p.hd[0],y=p.hd[1];
+    ci(g,p.hd,r,H);
+    el(g,"path",{d:"M"+(x-r*dir)+" "+(y+1)+" A"+r+" "+r+" 0 0 "+(dir>0?1:0)+" "+(x+r*.7*dir)+" "+(y-r*.7)+" Q"+(x-r*.2*dir)+" "+(y-r*.2)+" "+(x-r*.35*dir)+" "+(y+r*.6)+" Z",fill:S});
+    ci(g,[x+r*.5*dir,y-r*.05],1.9*s,"var(--ink)");
+    if(p.e)arm(p.e,p.hn);
+  }
+
+  function glider(id,ut,fmt,fn){var e=$(id);e.addEventListener("input",function(){fn()});return function(){var v=+e.value;if(ut)$(ut).textContent=fmt(v);return v}}
+  function valg(id,fn){var boks=$(id),v=boks.querySelector('[aria-pressed="true"]').dataset.v;
+    boks.querySelectorAll("button").forEach(function(b){b.addEventListener("click",function(){v=b.dataset.v;boks.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")});fn()})});
+    return function(){return v}}
+  function melding(id,tekst,type){var m=$(id);m.textContent=tekst;m.className="melding"+(type?" "+type:"")}
+
+  // ---------- A Knebøy ----------
+  var A=(function(){
+    var LEGG=0.45,LAR=0.45,SKULDER=0.50,HODE=0.66,MIDTFOT=0.06,STANG={hoy:0.52,lav:0.45},SK=260,X0=360,Y0=452;
+    var dybde=glider("aDybde","aDybdeUt",function(v){return v+"°"},tegn);
+    var kne=glider("aKne","aKneUt",function(v){return v<34?"lite":v<67?"middels":"mye"},tegn);
+    var vekt=glider("aVekt","aVektUt",function(v){return v+" kg"},tegn);
+    var stang=valg("aStang",tegn);
+    function px(p){return [X0+p[0]*SK,Y0-p[1]*SK]}
+    function tegn(){
+      var D=dybde(),Kf=kne(),V=vekt(),a=D*Math.PI/180,lg=(D/110)*(12+28*Kf/100)*Math.PI/180;
+      var K=[LEGG*Math.sin(lg),LEGG*Math.cos(lg)],Hm=[K[0]-LAR*Math.sin(a),K[1]+LAR*Math.cos(a)],lb=STANG[stang()];
+      var sb=(MIDTFOT-Hm[0])/lb,faller=false;
+      if(sb>0.97){sb=0.97;faller=true} if(sb<-0.3){sb=-0.3;faller=true}
+      var b=Math.asin(sb),r=[Math.sin(b),Math.cos(b)];
+      var Bm=[Hm[0]+lb*r[0],Hm[1]+lb*r[1]];
+      var Ap=px([0,0]),Kp=px(K),Hp=px(Hm),Bp=px(Bm),Sp=px([Hm[0]+SKULDER*r[0],Hm[1]+SKULDER*r[1]]),Hd=px([Hm[0]+HODE*r[0]+0.03,Hm[1]+HODE*r[1]]);
+      var g=$("aBilde");g.innerHTML="";bakke(g,462);
+      ln(g,Bp,[Bp[0],462],2.5,"var(--accent)",{"stroke-dasharray":"7 6"});
+      menneske(g,{a:Ap,k:Kp,h:Hp,s:Sp,hd:Hd,e:[Sp[0]-24,Sp[1]+34],hn:[Bp[0]+2,Bp[1]+6],e2:[Sp[0]-34,Sp[1]+30],hn2:[Bp[0]-6,Bp[1]+4]},1.25,1);
+      var rs=26+Math.min(V,200)/200*14;
+      ci(g,Bp,rs,"var(--stang)");ci(g,Bp,rs-6,"var(--panel)");
+      tx(g,[Bp[0],Bp[1]+5],V+" kg",{"font-size":13,"font-weight":700,"text-anchor":"middle"});
+      ln(g,Hp,[Bp[0],Hp[1]],5,"var(--hofte)");ln(g,Kp,[Bp[0],Kp[1]],5,"var(--kne)");
+      ci(g,Hp,7,"var(--hofte)");ci(g,Kp,7,"var(--kne)");
+      var armH=Math.abs(Bm[0]-Hm[0]),armK=Math.abs(K[0]-Bm[0]);
+      tx(g,[Math.min(Hp[0],Bp[0])-6,Hp[1]-14],"hofte "+Math.round(armH*100)+" cm",{"font-weight":700,fill:"var(--hofte)","text-anchor":"end"});
+      tx(g,[Math.max(Kp[0],Bp[0])+12,Kp[1]+28],"kne "+Math.round(armK*100)+" cm",{"font-weight":700,fill:"var(--kne)"});
+      if(faller)tx(g,[620,80],"Du faller!",{"font-size":28,"font-weight":700,fill:"var(--bad)"});
+      // stolper
+      var F=V*G,mH=F*armH,mK=F*armK,maks=Math.max(120*G*0.45,mH,mK)*1.05,s=$("aStolper");s.innerHTML="";
+      ln(s,[30,200],[370,200],2,"var(--line)");
+      [["Hofte",mH,"var(--hofte)",80],["Kne",mK,"var(--kne)",240]].forEach(function(d){
+        var h=Math.max(2,d[1]/maks*170);
+        el(s,"rect",{x:d[3],y:200-h,width:80,height:h,rx:4,fill:d[2]});
+        tx(s,[d[3]+40,222],d[0],{"text-anchor":"middle","font-weight":700});
+        tx(s,[d[3]+40,192-h],Math.round(d[1])+" N·m",{"text-anchor":"middle","font-weight":700,fill:d[2]});
+      });
+      $("aArmH").textContent=Math.round(armH*100)+" cm";$("aArmK").textContent=Math.round(armK*100)+" cm";
+      $("aMomH").textContent=Math.round(mH)+" N·m";$("aMomK").textContent=Math.round(mK)+" N·m";
+      if(faller)melding("aMelding","Stanga kommer ikke over midten av foten. Du faller. Skyv knærne fram eller gå mindre dypt.","feil");
+      else if(D<10)melding("aMelding","Du står nesten rett opp. Vektarmene er korte, så musklene får lite jobb.");
+      else if(mH>mK*1.3)melding("aMelding","Hofta får mest jobb: setemuskler og baksiden av låret.");
+      else if(mK>mH*1.3)melding("aMelding","Kneet får mest jobb: forsiden av låret.");
+      else melding("aMelding","Hofte og kne deler jobben omtrent likt.");
+    }
+    return tegn;
+  })();
+
+  // ---------- B Balanse ----------
+  var B=(function(){
+    var SK=205,X0=430,Y0=455;
+    var fot=valg("bFot",tegn);
+    var steg=glider("bSteg","bStegUt",function(v){return v+" cm"},tegn);
+    var len=glider("bLen","bLenUt",function(v){return v+"°"},tegn);
+    var arm=glider("bArm","bArmUt",function(v){return v+"°"},tegn);
+    function px(p){return [X0+p[0]*SK,Y0-p[1]*SK]}
+    function tegn(){
+      var en=fot()==="en",st=en?0:steg()/100,b=len()*Math.PI/180,al=arm()*Math.PI/180;
+      $("bStegBoks").hidden=en;
+      var ank=0.08,Lb=0.9,P={};
+      if(en){P.a=[0,ank];P.h=[0,ank+Lb];P.k=mid(P.a,P.h,.5);P.k2=[0.40,ank+Lb-0.08];P.a2=[0.36,ank+Lb-0.52]}
+      else{var dy=Math.sqrt(Lb*Lb-(st/2)*(st/2));P.a=[st/2,ank];P.a2=[-st/2,ank];P.h=[0,ank+dy];P.k=mid(P.a,P.h,.5);P.k2=mid(P.a2,P.h,.5)}
+      var r=[Math.sin(b),Math.cos(b)];
+      P.s=[P.h[0]+0.52*r[0],P.h[1]+0.52*r[1]];P.hd=[P.h[0]+0.70*r[0],P.h[1]+0.70*r[1]];
+      var ar=[Math.sin(al),-Math.cos(al)];
+      P.e=[P.s[0]+0.30*ar[0],P.s[1]+0.30*ar[1]];P.hn=[P.e[0]+0.28*ar[0],P.e[1]+0.28*ar[1]];
+      P.e2=[P.e[0]-0.02,P.e[1]+0.01];P.hn2=[P.hn[0]-0.02,P.hn[1]+0.01];
+      // tyngdepunkt (andel av kroppsvekt per del)
+      var deler=[[0.081,P.hd],[0.497,mid(P.h,P.s,.5)],
+        [0.028,mid(P.s,P.e,.5)],[0.028,mid(P.s,P.e2,.5)],[0.022,mid(P.e,P.hn,.4)],[0.022,mid(P.e2,P.hn2,.4)],
+        [0.10,mid(P.h,P.k,.5)],[0.10,mid(P.h,P.k2,.5)],[0.0465,mid(P.k,P.a,.5)],[0.0465,mid(P.k2,P.a2,.5)],
+        [0.0145,[P.a[0]+0.06,P.a[1]]],[0.0145,[P.a2[0]+0.06,P.a2[1]]]];
+      var sum=0,cx=0,cy=0;deler.forEach(function(d){sum+=d[0];cx+=d[0]*d[1][0];cy+=d[0]*d[1][1]});cx/=sum;cy/=sum;
+      var bak=en?-0.06:-st/2-0.06,fram=en?0.19:st/2+0.19;
+      var inne=cx>=bak&&cx<=fram,margin=Math.min(cx-bak,fram-cx);
+      var g=$("bBilde");g.innerHTML="";bakke(g,Y0+4);
+      var p1=px([bak,0]),p2=px([fram,0]);
+      el(g,"rect",{x:p1[0],y:Y0-2,width:p2[0]-p1[0],height:12,rx:4,fill:inne?"var(--gronn)":"var(--bad)",opacity:.75});
+      tx(g,[(p1[0]+p2[0])/2,Y0+34],"støtteflate",{"text-anchor":"middle","font-size":14,fill:"var(--muted)"});
+      var Q={};for(var k in P)Q[k]=px(P[k]);
+      menneske(g,Q,1.15,1);
+      var c=px([cx,cy]);
+      ln(g,c,[c[0],Y0],2.5,"var(--accent)",{"stroke-dasharray":"7 6"});
+      ci(g,c,10,"var(--accent)");el(g,"circle",{cx:c[0],cy:c[1],r:10,fill:"none",stroke:"var(--panel)","stroke-width":3});
+      tx(g,[c[0]+16,c[1]+5],"tyngdepunkt",{"font-weight":700,fill:"var(--accent)"});
+      if(!inne){var fr=cx>fram;pil(g,[Q.hd[0],Q.hd[1]-40],[Q.hd[0]+(fr?90:-90),Q.hd[1]-10],5,"var(--bad)");tx(g,[fr?560:300,60],fr?"Du faller fram!":"Du faller bakover!",{"font-size":26,"font-weight":700,fill:"var(--bad)"})}
+      $("bFlate").textContent=Math.round((fram-bak)*100)+" cm";
+      $("bMargin").textContent=inne?Math.round(margin*100)+" cm":"utenfor";
+      if(inne&&margin<0.04)melding("bMelding","Du står, men nesten på kanten. Litt til, og du faller.");
+      else if(inne)melding("bMelding","Du står støtt. Loddlinja fra tyngdepunktet er innenfor støtteflaten.","ok");
+      else melding("bMelding","Du faller. Tyngdepunktet er utenfor støtteflaten.","feil");
+    }
+    return tegn;
+  })();
+
+  // ---------- C Kraft og motkraft ----------
+  var C=(function(){
+    var Y0=440,X0=330,M=70,flytt=0,anim=null;
+    var kraft=glider("cKraft","cKraftUt",function(v){return v+" N"},nullstill);
+    var tid=glider("cTid","cTidUt",function(v){return tall(v,2)+" s"},nullstill);
+    var vinkel=glider("cVinkel","cVinkelUt",function(v){return v+"°"},nullstill);
+    function nullstill(){if(anim)cancelAnimationFrame(anim);anim=null;flytt=0;tegn()}
+    function fart(){return kraft()*Math.cos(vinkel()*Math.PI/180)*tid()/M}
+    function tegn(){
+      var F=kraft(),t=tid(),th=vinkel()*Math.PI/180,v=fart();
+      var g=$("cBilde");g.innerHTML="";bakke(g,Y0+6);
+      var x=X0+flytt,u=[Math.cos(th),-Math.sin(th)];
+      var a2=[x-120*u[0],Y0],h=[a2[0]+190*u[0],Y0+190*u[1]];
+      var k2=[mid(a2,h,.5)[0]+8*u[1]*-1,mid(a2,h,.5)[1]+8*u[0]*-1];
+      var t2=Math.max(th-0.18,0.35),uu=[Math.cos(t2),-Math.sin(t2)];
+      var s=[h[0]+120*uu[0],h[1]+120*uu[1]],hd=[h[0]+168*uu[0],h[1]+168*uu[1]];
+      var k=[h[0]+70,h[1]+15],a=[k[0]-8,k[1]+80];
+      menneske(g,{a:a,k:k,h:h,s:s,hd:hd,e:[s[0]+40,s[1]+35],hn:[s[0]+72,s[1]+10],a2:a2,k2:k2,e2:[s[0]-38,s[1]+38],hn2:[s[0]-62,s[1]+18]},1.2,1);
+      if(!flytt){
+        var L=40+F/2000*150,f=[a2[0]-6,Y0+4],n=[-u[1],-u[0]],L2=Math.min(L,52/Math.max(0.3,Math.sin(th)));
+        pil(g,f,[f[0]-L2*u[0],f[1]-L2*u[1]],7,"var(--kne)");
+        var b0=[f[0]+n[0]*-26,f[1]+n[1]*-26];
+        pil(g,b0,[b0[0]+L*u[0],b0[1]+L*u[1]],7,"var(--hofte)");
+        tx(g,[f[0]-L2*u[0]-8,494],"du skyver bakken: "+F+" N",{"font-weight":700,fill:"var(--kne)","text-anchor":"end"});
+        tx(g,[b0[0]+L*u[0]-14,b0[1]+L*u[1]-6],"bakken skyver deg: "+F+" N",{"font-weight":700,fill:"var(--hofte)","text-anchor":"end"});
+      }else{
+        pil(g,[X0-60,120],[X0-60+Math.min(flytt,520),120],6,"var(--hofte)");
+        tx(g,[X0-60,105],tall(v,1)+" m/s",{"font-weight":700,fill:"var(--hofte)"});
+      }
+      // fartsstolpe
+      var maks=2000*0.4/M,hh=Math.max(2,v/maks*300);
+      el(g,"rect",{x:880,y:Y0-hh,width:44,height:hh,rx:4,fill:"var(--hofte)"});
+      tx(g,[902,Y0+28],"fart",{"text-anchor":"middle","font-weight":700});
+      tx(g,[902,Y0-hh-8],tall(v,1)+" m/s",{"text-anchor":"middle","font-weight":700,fill:"var(--hofte)","font-size":14});
+      $("cImpuls").textContent=Math.round(F*t)+" N·s";
+      $("cFart").textContent=tall(v,1)+" m/s";$("cKmh").textContent=tall(v*3.6,1)+" km/t";
+      melding("cMelding",vinkel()<=45?"Du lener deg langt fram. Mye av kraften går fremover.":"Du står ganske rett opp. Mye av kraften går oppover, ikke fremover.");
+    }
+    $("cSkyv").addEventListener("click",function(){
+      if(anim)cancelAnimationFrame(anim);
+      var mal=Math.min(520,fart()*90),t0=null;
+      if(ROLIG){flytt=mal;tegn();return}
+      function steg(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/900);flytt=Math.max(1,mal*(1-Math.pow(1-p,2)));tegn();if(p<1)anim=requestAnimationFrame(steg);else anim=null}
+      anim=requestAnimationFrame(steg);
+    });
+    return tegn;
+  })();
+
+  // ---------- D Kroppen som vektstang ----------
+  var D=(function(){
+    var EX=300,EY=360;
+    var vekt=glider("dVekt","dVektUt",function(v){return v+" kg"},tegn);
+    var last=glider("dLast","dLastUt",function(v){return v+" cm"},tegn);
+    var feste=glider("dFeste","dFesteUt",function(v){return tall(v,1)+" cm"},tegn);
+    function tegn(){
+      var m=vekt(),L=last()/100,d=feste()/100,F=m*G,Fm=F*L/d;
+      var g=$("dBilde");g.innerHTML="";
+      var sk=800,E=[EX,EY],S=[EX-10,EY-0.30*sk],hand=[EX+0.36*sk,EY];
+      // overkropp og hode
+      ln(g,[S[0]-60,S[1]+10],[S[0]-80,480],70,"var(--troye)");
+      ln(g,[S[0]-50,S[1]-10],[S[0]-45,S[1]-40],20,"var(--hud)");
+      var hc=[S[0]-40,S[1]-72];
+      ci(g,hc,36,"var(--hud)");
+      el(g,"path",{d:"M"+(hc[0]-36)+" "+(hc[1]+1)+" A36 36 0 0 1 "+(hc[0]+25)+" "+(hc[1]-25)+" Q"+(hc[0]-7)+" "+(hc[1]-7)+" "+(hc[0]-13)+" "+(hc[1]+22)+" Z",fill:"var(--shorts)"});
+      ci(g,[hc[0]+18,hc[1]-2],3.5,"var(--ink)");
+      // overarm (ermet) og underarm
+      ln(g,S,E,40,"var(--troye)");ln(g,mid(S,E,.55),E,34,"var(--hud)");
+      ln(g,E,hand,30,"var(--hud)");
+      ci(g,hand,20,"var(--hud)");
+      // dreiepunkt
+      ci(g,E,13,"var(--panel)");el(g,"circle",{cx:E[0],cy:E[1],r:13,fill:"none",stroke:"var(--ink)","stroke-width":4});
+      tx(g,[E[0]-20,EY+40],"albue (dreiepunkt)",{"font-weight":700,"text-anchor":"middle"});
+      // biceps
+      var B=[EX+d*sk,EY-10];
+      el(g,"path",{d:"M"+(S[0]+10)+" "+(S[1]+30)+" Q"+(EX+48)+" "+(EY-130)+" "+B[0]+" "+B[1],fill:"none",stroke:"var(--kne)","stroke-width":12,"stroke-linecap":"round",opacity:.85});
+      var Lp=Math.min(200,40+Fm/1500*160);
+      pil(g,[B[0]+40,B[1]],[B[0]+40,B[1]-Lp],6,"var(--kne)");
+      tx(g,[B[0]+52,B[1]-Lp+16],"biceps: "+Math.round(Fm)+" N",{"font-weight":700,fill:"var(--kne)"});
+      // manual
+      var mx=EX+L*sk,ms=16+m*1.2;
+      el(g,"rect",{x:mx-ms/2,y:EY-ms/2-4,width:ms,height:ms+8,rx:4,fill:"var(--stang)"});
+      pil(g,[mx,EY+ms/2+8],[mx,EY+ms/2+28+F/200*40],6,"var(--accent)");
+      tx(g,[mx+14,EY+ms/2+34],m+" kg = "+Math.round(F)+" N",{"font-weight":700,fill:"var(--accent)"});
+      // avstander
+      ln(g,[EX,EY+70],[EX+d*sk,EY+70],4,"var(--kne)");tx(g,[EX+d*sk+8,EY+75],tall(d*100,1)+" cm",{"font-size":14,fill:"var(--kne)","font-weight":700});
+      ln(g,[EX,EY+100],[mx,EY+100],4,"var(--accent)",{"stroke-dasharray":"8 5"});tx(g,[(EX+mx)/2,EY+122],Math.round(L*100)+" cm",{"font-size":14,"text-anchor":"middle",fill:"var(--accent)","font-weight":700});
+      $("dLastN").textContent=Math.round(F)+" N";$("dMuskel").textContent=Math.round(Fm)+" N";
+      melding("dMelding","Biceps må dra "+tall(L/d,1)+" ganger så hardt som manualen veier. Til gjengjeld beveger hånda seg "+tall(L/d,1)+" ganger så langt og fort som muskelen.");
+    }
+    return tegn;
+  })();
+
+  // ---------- E Kast ----------
+  var E=(function(){
+    var Y0=440,X0=90,kast=[],anim=null,ball=null;
+    var fart=glider("eFart","eFartUt",function(v){return v+" m/s"},tegn);
+    var vinkel=glider("eVinkel","eVinkelUt",function(v){return v+"°"},tegn);
+    var hoyde=glider("eHoyde","eHoydeUt",function(v){return tall(v,1)+" m"},tegn);
+    function bane(v,a,h){a=a*Math.PI/180;var vx=v*Math.cos(a),vy=v*Math.sin(a),T=(vy+Math.sqrt(vy*vy+2*G*h))/G,p=[];
+      for(var i=0;i<=60;i++){var t=T*i/60;p.push([vx*t,h+vy*t-G*t*t/2])}
+      return {p:p,lengde:vx*T,topp:h+Math.max(0,vy*vy/(2*G)),v:v,a:Math.round(a*180/Math.PI),h:h}}
+    function skala(){var mx=20,my=5;kast.concat([bane(fart(),vinkel(),hoyde())]).forEach(function(k){mx=Math.max(mx,k.lengde);my=Math.max(my,k.topp)});
+      return Math.min(820/(mx*1.08),380/(my*1.1))}
+    function tegn(){
+      var g=$("eBilde");g.innerHTML="";bakke(g,Y0);
+      var sk=skala(),px=function(q){return [X0+q[0]*sk,Y0-q[1]*sk]};
+      // meterskala
+      var steg=[5,10,20,25,50][[5,10,20,25,50].findIndex(function(s){return 820/sk/s<=10})]||50;
+      for(var m=steg;X0+m*sk<950;m+=steg){ln(g,[X0+m*sk,Y0],[X0+m*sk,Y0+10],2,"var(--muted)");tx(g,[X0+m*sk,Y0+30],m+" m",{"text-anchor":"middle","font-size":13,fill:"var(--muted)"})}
+      // kaster (liten, i skala)
+      var h=hoyde(),s=Math.max(0.35,Math.min(1,sk/40));
+      var fot=[X0-4,Y0-4],hm=[X0-6,Y0-0.95*sk*0+(-95*s)],sh=[X0-2,Y0-155*s],hd=[X0+4,Y0-182*s];
+      menneske(g,{a:fot,k:[X0-1,Y0-50*s],h:hm,s:sh,hd:hd,e:[X0+18*s,Y0-140*s],hn:[X0+10*s,Y0-160*s],a2:[X0-30*s,Y0-4],k2:[X0-20*s,Y0-50*s]},s*0.9,1);
+      kast.forEach(function(k,i){var siste=i===kast.length-1&&!anim;
+        el(g,"polyline",{points:k.p.map(px).map(function(q){return q.join(",")}).join(" "),fill:"none",stroke:siste?"var(--accent)":"var(--gra)","stroke-width":siste?4:3,"stroke-dasharray":siste?"":"8 6"});
+        var e=px([k.lengde,0]);ci(g,e,6,siste?"var(--accent)":"var(--gra)");
+        tx(g,[e[0],e[1]-14-(siste?0:20*(kast.length-1-i))],tall(k.lengde,1)+" m ("+k.v+" m/s, "+k.a+"°)",{"text-anchor":"middle","font-size":13,"font-weight":700,fill:siste?"var(--accent)":"var(--muted)"});
+      });
+      var start=px([0,h]);ci(g,ball||start,8,"var(--accent)");
+    }
+    $("eKast").addEventListener("click",function(){
+      var k=bane(fart(),vinkel(),hoyde());if(anim)cancelAnimationFrame(anim);
+      kast.push(k);if(kast.length>3)kast.shift();
+      $("eLengde").textContent=tall(k.lengde,1)+" m";$("eTopp").textContent=tall(k.topp,1)+" m";
+      var best=kast.reduce(function(a,b){return b.lengde>a.lengde?b:a});
+      melding("eMelding",kast.length>1?"Lengste av de siste kastene: "+tall(best.lengde,1)+" m med "+best.v+" m/s og "+best.a+"°.":"Endre fart eller vinkel, og kast igjen.");
+      if(ROLIG){ball=null;tegn();return}
+      var t0=null;anim=1;
+      function steg(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/1300),sk=skala(),q=k.p[Math.round(p*60)];
+        ball=[X0+q[0]*sk,Y0-q[1]*sk];tegn();if(p<1)anim=requestAnimationFrame(steg);else{anim=null;ball=null;tegn()}}
+      anim=requestAnimationFrame(steg);
+    });
+    $("eTom").addEventListener("click",function(){kast=[];$("eLengde").textContent="–";$("eTopp").textContent="–";melding("eMelding","Trykk «Kast!».");tegn()});
+    $("eLengde").textContent="–";$("eTopp").textContent="–";
+    return tegn;
+  })();
+
+  // ---------- F Bevegelseskjeden ----------
+  var F=(function(){
+    var LEDD=[{n:"Bein",f:3},{n:"Hofte",f:4},{n:"Overkropp",f:5},{n:"Skulder",f:6},{n:"Albue",f:5},{n:"Hånd",f:4}];
+    var BEST=LEDD.reduce(function(s,l){return s+l.f},0),valgt=[];
+    var boks=$("fValg");
+    LEDD.forEach(function(l,i){var b=document.createElement("button");b.type="button";b.textContent=l.n;b.dataset.i=i;b.setAttribute("aria-pressed","false");
+      b.addEventListener("click",function(){if(valgt.indexOf(i)<0&&valgt.length<LEDD.length){valgt.push(i);tegn()}});boks.appendChild(b)});
+    $("fNull").addEventListener("click",function(){valgt=[];tegn()});
+    $("fRiktig").addEventListener("click",function(){valgt=LEDD.map(function(_,i){return i});tegn()});
+    function beregn(){var v=0,forr=-1,steg=[];
+      valgt.forEach(function(i){var ok=i===forr+1||(forr<0&&i===0);var g=ok?LEDD[i].f:LEDD[i].f*0.4;v+=g;steg.push({i:i,v:v,ok:ok});forr=i});
+      return steg}
+    function tegn(){
+      var steg=beregn(),g=$("fBilde");g.innerHTML="";bakke(g,452);
+      boks.querySelectorAll("button").forEach(function(b){var i=+b.dataset.i,n=valgt.indexOf(i);b.disabled=n>=0;b.textContent=(n>=0?(n+1)+". ":"")+LEDD[i].n});
+      // kaster i bakoverlent kaststilling
+      var P={a:[250,448],k:[262,380],h:[225,315],s:[195,200],hd:[178,165],e:[140,175],hn:[95,150],a2:[150,448],k2:[175,385],e2:[245,235],hn2:[285,215]};
+      menneske(g,P,1.25,1);
+      var punkt=[mid(P.a2,P.k2,.4),P.h,mid(P.h,P.s,.55),P.s,P.e,P.hn];
+      punkt.forEach(function(p,i){var n=valgt.indexOf(i);
+        ci(g,p,15,n<0?"var(--panel)":"var(--accent)");el(g,"circle",{cx:p[0],cy:p[1],r:15,fill:"none",stroke:"var(--accent)","stroke-width":3});
+        tx(g,[p[0],p[1]+5],n<0?"?":String(n+1),{"text-anchor":"middle","font-weight":700,"font-size":14,fill:n<0?"var(--accent)":"#fff"})});
+      // stolper: fart etter hvert steg
+      var x0=430,bw=70,maks=BEST*1.1;
+      ln(g,[x0-10,420],[x0+6*(bw+12),420],2,"var(--muted)");
+      tx(g,[x0-10,40],"Fart i hånda etter hvert ledd",{"font-weight":700});
+      steg.forEach(function(s,j){var h=s.v/maks*340,x=x0+j*(bw+12);
+        el(g,"rect",{x:x,y:420-h,width:bw,height:h,rx:4,fill:s.ok?"var(--hofte)":"var(--accent)"});
+        tx(g,[x+bw/2,412-h],tall(s.v,1)+" m/s",{"text-anchor":"middle","font-size":13,"font-weight":700});
+        tx(g,[x+bw/2,440],LEDD[s.i].n,{"text-anchor":"middle","font-size":13})});
+      if(steg.length>1)el(g,"polyline",{points:steg.map(function(s,j){return (x0+j*(bw+12)+bw/2)+","+(420-s.v/maks*340)}).join(" "),fill:"none",stroke:"var(--ink)","stroke-width":2,"stroke-dasharray":"5 4"});
+      var v=steg.length?steg[steg.length-1].v:0;
+      $("fFart").textContent=tall(v,1)+" m/s";$("fBest").textContent=tall(BEST,1)+" m/s";
+      if(!valgt.length)melding("fMelding","Trykk på det leddet som skal starte først.");
+      else if(valgt.length<LEDD.length)melding("fMelding","Velg neste ledd.");
+      else if(steg.every(function(s){return s.ok}))melding("fMelding","Riktig! Store ledd først, små ledd sist. Hvert ledd bygger videre på farten fra det forrige.","ok");
+      else melding("fMelding","Noen ledd kom i feil rekkefølge (oransje). Da går mye av farten tapt.","feil");
+    }
+    return tegn;
+  })();
+
+  // ---------- G Myk landing ----------
+  var Gl=(function(){
+    var M=70,Y0=440;
+    var hoyde=glider("gHoyde","gHoydeUt",function(v){return tall(v,2)+" m"},tegn);
+    var boy=glider("gBoy","gBoyUt",function(v){return v+" cm"},tegn);
+    function landing(h,d){var v=Math.sqrt(2*G*h),de=d+0.08,t=2*de/v,Fp=M*G+(Math.PI/2)*M*v/t;return {v:v,t:t,Fp:Fp}}
+    function tegn(){
+      var h=hoyde(),d=boy()/100,L=landing(h,d),S=landing(h,0);
+      var g=$("gBilde");g.innerHTML="";bakke(g,Y0+4);
+      // utøver i landing: hofta synker d
+      var sk=230,ax=150,a=[ax,Y0],Dh=0.9-d*1.15,hx=ax-Math.min(0.25,d*0.7)*sk;
+      var hp=[hx,Y0-Dh*sk-14],km=mid(a,hp,.5),dl=Math.hypot(hp[0]-a[0],hp[1]-a[1])/2,off=Math.sqrt(Math.max(0,(0.45*sk)*(0.45*sk)-dl*dl));
+      var ux=(hp[0]-a[0])/(2*dl),uy=(hp[1]-a[1])/(2*dl),k=[km[0]-uy*off,km[1]+ux*off];
+      var lean=d*1.6,s=[hp[0]+Math.sin(lean)*120,hp[1]-Math.cos(lean)*120],hd=[hp[0]+Math.sin(lean)*162,hp[1]-Math.cos(lean)*162];
+      menneske(g,{a:a,k:k,h:hp,s:s,hd:hd,e:[s[0]+40,s[1]+30],hn:[s[0]+80,s[1]+15],e2:[s[0]+30,s[1]+38],hn2:[s[0]+70,s[1]+28]},1.15,1);
+      // fallhøyde
+      var hy=Math.min(380,h*300);
+      pil(g,[40,Y0-hy],[40,Y0-6],4,"var(--muted)");tx(g,[50,Y0-hy+4],"fall "+tall(h,2)+" m",{"font-size":13,fill:"var(--muted)","font-weight":700});
+      var Lp=Math.min(160,L.Fp/(M*G)*12);pil(g,[ax+6,Y0+2],[ax+6,Y0-Lp],6,"var(--kne)");
+      // graf
+      var gx=420,gy=Y0,gw=500,gh=380,tm=0.5,fm=24;
+      ln(g,[gx,gy],[gx+gw,gy],2,"var(--muted)");ln(g,[gx,gy],[gx,gy-gh],2,"var(--muted)");
+      [0,5,10,15,20].forEach(function(f){var y=gy-f/fm*gh;ln(g,[gx-6,y],[gx+gw,y],1,"var(--bench-line)");tx(g,[gx-10,y+5],f+"×",{"text-anchor":"end","font-size":12,fill:"var(--muted)"})});
+      tx(g,[gx+4,gy-gh-8],"kraft (× kroppsvekt)",{"font-size":13,fill:"var(--muted)"});
+      tx(g,[gx+gw,gy+24],"tid "+tall(tm,1)+" s",{"text-anchor":"end","font-size":13,fill:"var(--muted)"});
+      function kurve(X,farge,fyll){var pts=[gx+","+gy];for(var i=0;i<=40;i++){var t=X.t*i/40,f=M*G+(X.Fp-M*G)*Math.sin(Math.PI*i/40);pts.push((gx+Math.min(t,tm)/tm*gw)+","+(gy-Math.min(f/(M*G),fm)/fm*gh))}pts.push((gx+Math.min(X.t,tm)/tm*gw)+","+gy);
+        el(g,"polygon",{points:pts.join(" "),fill:farge,opacity:fyll})}
+      kurve(S,"var(--gra)",.6);kurve(L,d<0.05?"var(--kne)":"var(--gronn)",.75);
+      $("gTid").textContent=tall(L.t,2)+" s";$("gKraft").textContent=tall(L.Fp/(M*G),1)+" × kroppsvekt";$("gKraftN").textContent=Math.round(L.Fp)+" N";
+      if(d<0.05)melding("gMelding","Stive knær: veldig kort bremsetid og stor kraft på ledd og sener.","feil");
+      else melding("gMelding","Bøyde knær gir "+tall(L.t/S.t,1)+" ganger så lang bremsetid som stive knær. Kraften blir mye mindre.","ok");
+    }
+    return tegn;
+  })();
+
+  // ---------- faner ----------
+  var FANER=[["kneboy","A","Knebøy",A],["balanse","B","Balanse",B],["fraspark","C","Kraft og motkraft",C],["vektstang","D","Vektstang",D],["kast","E","Kast",E],["kjede","F","Bevegelseskjeden",F],["landing","G","Myk landing",Gl]];
+  var nav=$("faner");
+  FANER.forEach(function(f){var b=document.createElement("button");b.type="button";b.setAttribute("role","tab");b.id="fane-"+f[0];b.setAttribute("aria-controls",f[0]);
+    b.innerHTML="<b>"+f[1]+"</b>"+f[2];b.addEventListener("click",function(){vis(f[0],true)});nav.appendChild(b)});
+  function vis(id,lagre){
+    FANER.forEach(function(f){var på=f[0]===id;$(f[0]).hidden=!på;$("fane-"+f[0]).setAttribute("aria-selected",på?"true":"false");if(på)f[3]()});
+    if(lagre)try{history.replaceState(null,"","#"+id)}catch(e){}
+  }
+  var start=(location.hash||"").slice(1);
+  vis(FANER.some(function(f){return f[0]===start})?start:"kneboy",false);
+  window.addEventListener("resize",function(){var f=FANER.find(function(f){return !$(f[0]).hidden});if(f)f[3]()});
+})();
+</script>
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body>
+</html>

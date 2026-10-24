@@ -1,6 +1,21 @@
 {
   "cleanUrls": true,
   "headers": [
-    { "source": "/(.*)", "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }] }
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/kneboy",
+      "destination": "/biomekanikk",
+      "permanent": false
+    }
   ]
 }
