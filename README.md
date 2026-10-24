@@ -11,6 +11,7 @@ Interaktive simulatorer for Teknologi- og industrifag (Vg1 TIF og Vg2 Industrite
 | Elektro | `multimeter.html` · `tangamperemeter.html` |
 | Pneumatikk | `pneumatikk-og-hydraulikk.html` |
 | Automasjon | `robotlab.html` |
+| Idrett (Vg3 Treningslære) | `kneboy.html` |
 
 `index.html` er oversiktssiden.
 

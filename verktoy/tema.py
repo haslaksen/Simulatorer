@@ -105,6 +105,13 @@ SIMULATORER = [
                "Prøv tanga rundt hele kabelen. Den viser 0, fordi strømmen fram og tilbake opphever hverandre."],
          hb=("el9-maling", "9.15 Måling med multimeter"),
          rot=".wrap", skjul=[".wrap > header > div:first-child"], farger=VERKSTED),
+    dict(fil="kneboy.html", navn="Knebøy", emne="Treningslære", trinn="Vg3 Idrett",
+         ingress="Se hvordan stillingen i knebøy fordeler jobben mellom hofte og kne. Vektarmen avgjør.",
+         steg=["Dra i <b>Hvor dypt</b>. Se at vektarmene blir lengre jo dypere du går.",
+               "Dra i <b>Knærne fram</b>. Overkroppen retter seg opp, og jobben flytter seg fra hofte til kne.",
+               "Bytt mellom <b>Høy stang</b> og <b>Lav stang</b>.",
+               "Les av stolpene: moment = kraft × vektarm."],
+         rot=".wrap", skjul=[".wrap > header > div:first-child"], farger=VERKSTED),
     dict(fil="skjaeredata.html", navn="Skjæredata", emne="Maskinering",
          ingress="Velg turtall og mating for dreiing og fresing ut fra materiale, verktøy og diameter.",
          steg=["Velg materiale og verktøy.",
@@ -276,7 +283,7 @@ def bygg(c):
 <section class="lk-intro" id="lk-intro">
   <div class="lk-in">
     <div>
-      <div class="lk-kicker">Vg2 industriteknologi · {html.escape(c['emne'])}</div>
+      <div class="lk-kicker">{html.escape(c.get('trinn', 'Vg2 industriteknologi'))} · {html.escape(c['emne'])}</div>
       <h1>{html.escape(c['navn'])}</h1>
       <p class="lk-lead">{html.escape(c['ingress'])}</p>
     </div>
