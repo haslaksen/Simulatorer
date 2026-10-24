@@ -11,7 +11,8 @@
   --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c;
   --bench:#dfe5e8; --bench-line:#c4ced3;
   --hofte:#1c6fd1; --kne:#c92a2a; --gronn:#2b8a3e;
-  --hud:#e9b98f; --troye:#1c6fd1; --shorts:#2d3540; --sko:#14181d; --stang:#3b4650; --gra:#9aa5ae;
+  --hud:#ecbf96; --hud2:#cf9b6e; --troye:#1c6fd1; --troye2:#14549f; --shorts:#2d3540; --shorts2:#1d232b;
+  --sko:#14181d; --sko2:#2b3036; --sale:#e9edf0; --har:#3a2a20; --bein:#f6f1e7; --muskel:#e0827a; --stang:#3b4650; --gra:#9aa5ae;
   --display:"Segoe UI", system-ui, sans-serif;
   --body:"Segoe UI", system-ui, sans-serif;
   --mono:ui-monospace, "Consolas", monospace;
@@ -21,7 +22,7 @@
   --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69;
   --bench:#232c31; --bench-line:#334047;
   --hofte:#5aa2f5; --kne:#ff6b6b; --gronn:#51cf66;
-  --hud:#d9a57a; --troye:#3d86e0; --shorts:#56606c; --sko:#0b0e12; --stang:#9aa7af; --gra:#56606c; color-scheme:dark}
+  --hud:#d9a57a; --hud2:#b48159; --troye:#3d86e0; --troye2:#2a62ad; --shorts:#56606c; --shorts2:#414a55; --sko:#0b0e12; --sko2:#22282e; --sale:#9aa7af; --har:#1d1510; --bein:#efe6d6; --muskel:#d9675e; --stang:#9aa7af; --gra:#56606c; color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
@@ -41,6 +42,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .label{font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;font-size:12px}
 svg{display:block;width:100%;height:auto}
 svg text{font-family:var(--body);fill:var(--ink)}
+#dBilde text{font-size:19px}
+#dBilde text,#aBilde text,#bBilde text{paint-order:stroke;stroke:var(--bench);stroke-width:5px;stroke-linejoin:round}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:14px;align-content:start}
 .panel h2{margin:0;font-size:18px}
@@ -211,7 +214,7 @@ details p{margin:6px 0 0}
   <section class="modus" id="vektstang" role="tabpanel" hidden>
     <div class="stage">
       <div class="stage-head"><span class="label">Kroppen som vektstang</span><span>Albuen er dreiepunktet. Biceps fester nær albuen, manualen er langt unna.</span></div>
-      <svg id="dBilde" viewBox="0 0 960 500" role="img" aria-label="Underarm som vektstang med biceps og manual"></svg>
+      <svg id="dBilde" viewBox="100 0 760 560" role="img" aria-label="Underarm som vektstang med biceps og manual"></svg>
     </div>
     <div class="grid">
       <section class="panel"><h2>Still inn</h2>
@@ -323,24 +326,81 @@ details p{margin:6px 0 0}
   function bakke(g,y){el(g,"rect",{x:0,y:y,width:960,height:500-y,fill:"var(--bench-line)",opacity:.45});ln(g,[0,y],[960,y],3,"var(--bench-line)")}
   function tall(x,d){return x.toFixed(d===undefined?0:d).replace(".",",")}
 
-  // Et menneske sett fra siden. p: ankel a, kne k, hofte h, skulder s, hode hd, albue e, hånd hn
-  // (bakre ben og arm: a2, k2, e2, hn2). s = størrelse, dir = 1 mot høyre, -1 mot venstre.
+  // Myk, lukket kurve gjennom punktene (Catmull-Rom). skarp: indekser der kurven skal ha et skarpt hjørne.
+  function glatt(P,skarp){var n=P.length,d="M"+P[0][0].toFixed(1)+" "+P[0][1].toFixed(1);
+    for(var i=0;i<n;i++){var p0=P[(i-1+n)%n],p1=P[i],p2=P[(i+1)%n],p3=P[(i+2)%n];
+      if(skarp&&skarp.indexOf(i)>=0)p0=p1; if(skarp&&skarp.indexOf((i+1)%n)>=0)p3=p2;
+      var c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];
+      d+=" C"+c1[0].toFixed(1)+" "+c1[1].toFixed(1)+" "+c2[0].toFixed(1)+" "+c2[1].toFixed(1)+" "+p2[0].toFixed(1)+" "+p2[1].toFixed(1)}
+    return d+"Z"}
+  // Kroppsdel fra a til b med profil [[t, bredde foran, bredde bak], ...] (t: 0 i a, 1 i b).
+  // side: hvilken side som er «foran». rund: [start, slutt] avrundet (false = rett kant, f.eks. ermekant).
+  function del(g,a,b,prof,farge,side,rund){
+    var dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy)||1,u=[dx/L,dy/L],nv=[-u[1]*side,u[0]*side];
+    function pt(t,q){return [a[0]+u[0]*t+nv[0]*q,a[1]+u[1]*t+nv[1]*q]}
+    rund=rund||[true,true];var P=[],f=prof[0],l=prof[prof.length-1],skarp=[];
+    if(rund[0])P.push(pt(f[0]*L-(f[1]+f[2])*.42,(f[1]-f[2])/2));
+    prof.forEach(function(q){P.push(pt(q[0]*L,q[1]))});
+    if(rund[1])P.push(pt(l[0]*L+(l[1]+l[2])*.42,(l[1]-l[2])/2));else skarp.push(P.length-1,P.length);
+    for(var i=prof.length-1;i>=0;i--)P.push(pt(prof[i][0]*L,-prof[i][2]));
+    if(!rund[0])skarp.push(P.length-1,0);
+    return el(g,"path",{d:glatt(P,skarp),fill:farge});
+  }
+  function sko(g,a,s,dir,farge){
+    var P=[[-8,-8],[-11,-1],[-10,7],[12,7.5],[34,7.5],[40,3.5],[36,-2],[20,-5],[8,-11],[-3,-12]].map(function(q){return [a[0]+q[0]*s*dir,a[1]+q[1]*s]});
+    el(g,"path",{d:glatt(P,[2,4]),fill:farge});
+    ln(g,[a[0]-8*s*dir,a[1]+6*s],[a[0]+35*s*dir,a[1]+6*s],2.2*s,"var(--sale)");
+  }
+  function hode(g,c,r,dir){
+    var x=c[0],y=c[1],X=function(k){return x+k*r*dir},Y=function(k){return y+k*r};
+    el(g,"ellipse",{cx:X(.3),cy:Y(.5),rx:r*.55,ry:r*.48,fill:"var(--hud)"});
+    el(g,"ellipse",{cx:x,cy:y,rx:r*.95,ry:r,fill:"var(--hud)"});
+    el(g,"path",{d:"M"+X(.86)+" "+Y(.02)+" L"+X(1.12)+" "+Y(.3)+" L"+X(.84)+" "+Y(.36)+"Z",fill:"var(--hud)"});
+    var har=[-38,-65,-95,-125,-155,175,148].map(function(v){v*=Math.PI/180;return [X(Math.cos(v)*1.05),Y(Math.sin(v)*1.05)]}).concat([[X(-.42),Y(.3)],[X(-.18),Y(-.22)],[X(.32),Y(-.5)]]);
+    el(g,"path",{d:glatt(har,[0,6]),fill:"var(--har)"});
+    el(g,"ellipse",{cx:X(-.1),cy:Y(.12),rx:r*.16,ry:r*.24,fill:"var(--hud2)"});
+    ci(g,[X(.52),Y(-.02)],r*.09,"var(--ink)");
+    ln(g,[X(.38),Y(-.22)],[X(.7),Y(-.24)],r*.08,"var(--har)");
+    ln(g,[X(.6),Y(.56)],[X(.8),Y(.54)],r*.06,"var(--hud2)");
+  }
+
+  // Et menneske sett fra siden. p: ankel a, kne k, hofte h, skulder s, hode hd, albue e, håndledd hn
+  // (bakre ben og arm: a2, k2, e2, hn2). s = størrelse (1 ≈ 200 px per meter), dir = 1 mot høyre, -1 mot venstre.
+  // Bakre ben og arm tegnes litt mørkere, så du ser hva som er nærmest.
   function menneske(g,p,s,dir){
     s=s||1;dir=dir||1;
-    var H="var(--hud)",T="var(--troye)",S="var(--shorts)";
-    function ben(a,k){ln(g,k,a,12*s,H);ln(g,p.h,k,16*s,H);ln(g,p.h,mid(p.h,k,.55),18*s,S);ln(g,[a[0]-5*s*dir,a[1]+2*s],[a[0]+17*s*dir,a[1]+3*s],9*s,"var(--sko)")}
-    function arm(e,hn){ln(g,p.s,e,10*s,T);ln(g,mid(p.s,e,.5),e,8*s,H);ln(g,e,hn,8*s,H);ci(g,hn,5*s,H)}
-    if(p.e2)arm(p.e2,p.hn2);
-    if(p.a2)ben(p.a2,p.k2);
-    ln(g,p.h,p.s,25*s,T);ci(g,p.h,11*s,S);
-    ben(p.a,p.k);
-    ln(g,p.s,mid(p.s,p.hd,.6),8*s,H);
-    var r=14*s,x=p.hd[0],y=p.hd[1];
-    ci(g,p.hd,r,H);
-    el(g,"path",{d:"M"+(x-r*dir)+" "+(y+1)+" A"+r+" "+r+" 0 0 "+(dir>0?1:0)+" "+(x+r*.7*dir)+" "+(y-r*.7)+" Q"+(x-r*.2*dir)+" "+(y-r*.2)+" "+(x-r*.35*dir)+" "+(y+r*.6)+" Z",fill:S});
-    ci(g,[x+r*.5*dir,y-r*.05],1.9*s,"var(--ink)");
-    if(p.e)arm(p.e,p.hn);
+    function w(prof){return prof.map(function(q){return [q[0],q[1]*s,q[2]*s]})}
+    function ben(a,k,bak){
+      var H=bak?"var(--hud2)":"var(--hud)",SH=bak?"var(--shorts2)":"var(--shorts)";
+      del(g,k,a,w([[0,9,8],[.3,8,11.5],[.62,6,7],[1,5,5]]),H,-dir);
+      del(g,p.h,k,w([[0,15,15],[.4,14,12.5],[.8,10.5,9.5],[1,9,9]]),H,-dir);
+      ci(g,k,8.5*s,H);
+      del(g,p.h,k,w([[0,16.5,16.5],[.35,15.5,14],[.58,14.5,12.5]]),SH,-dir,[true,false]);
+      sko(g,a,s,dir,bak?"var(--sko2)":"var(--sko)");
+    }
+    function arm(e,hn,bak){
+      var H=bak?"var(--hud2)":"var(--hud)",T=bak?"var(--troye2)":"var(--troye)";
+      var u=[hn[0]-e[0],hn[1]-e[1]],l=Math.hypot(u[0],u[1])||1,hand=[hn[0]+u[0]/l*10*s,hn[1]+u[1]/l*10*s];
+      del(g,e,hn,w([[0,7,7],[.35,7.5,6.5],[1,4.5,4.5]]),H,-dir);
+      del(g,hn,hand,w([[0,5,5],[.6,6,6],[1,5,5]]),H,-dir);
+      del(g,p.s,e,w([[0,9,9],[.5,8.5,8],[1,6.5,6.5]]),H,-dir);
+      ci(g,e,6.5*s,H);
+      del(g,p.s,e,w([[0,10.5,10.5],[.42,10,9.5]]),T,-dir,[true,false]);
+    }
+    if(p.e2)arm(p.e2,p.hn2,true);
+    if(p.a2)ben(p.a2,p.k2,true);
+    del(g,p.h,p.s,w([[-.08,16,19],[.12,17,18],[.38,16,13],[.64,19,16],[.88,16,15.5],[1.03,10,14]]),"var(--troye)",dir);
+    del(g,p.h,p.s,w([[-.08,16.8,19.8],[.12,17.8,18.8],[.22,17.5,17.8]]),"var(--shorts)",dir,[true,false]);
+    ben(p.a,p.k,false);
+    del(g,p.s,p.hd,w([[.05,7.5,8],[.7,6.5,6.5]]),"var(--hud)",dir);
+    hode(g,p.hd,19*s,dir);
+    if(p.e)arm(p.e,p.hn,false);
   }
+  // Ledd mellom a og b når delene er l1 og l2 lange. side velger hvilken vei leddet bøyer.
+  function ledd(a,b,l1,l2,side){
+    var dx=b[0]-a[0],dy=b[1]-a[1],d=Math.min(Math.hypot(dx,dy)||1e-6,l1+l2-1e-6),u=[dx/Math.hypot(dx,dy),dy/Math.hypot(dx,dy)];
+    var x=(l1*l1-l2*l2+d*d)/(2*d),h=Math.sqrt(Math.max(0,l1*l1-x*x));
+    return [a[0]+u[0]*x-u[1]*h*side,a[1]+u[1]*x+u[0]*h*side]}
 
   function glider(id,ut,fmt,fn){var e=$(id);e.addEventListener("input",function(){fn()});return function(){var v=+e.value;if(ut)$(ut).textContent=fmt(v);return v}}
   function valg(id,fn){var boks=$(id),v=boks.querySelector('[aria-pressed="true"]').dataset.v;
@@ -366,10 +426,13 @@ details p{margin:6px 0 0}
       var Ap=px([0,0]),Kp=px(K),Hp=px(Hm),Bp=px(Bm),Sp=px([Hm[0]+SKULDER*r[0],Hm[1]+SKULDER*r[1]]),Hd=px([Hm[0]+HODE*r[0]+0.03,Hm[1]+HODE*r[1]]);
       var g=$("aBilde");g.innerHTML="";bakke(g,462);
       ln(g,Bp,[Bp[0],462],2.5,"var(--accent)",{"stroke-dasharray":"7 6"});
-      menneske(g,{a:Ap,k:Kp,h:Hp,s:Sp,hd:Hd,e:[Sp[0]-24,Sp[1]+34],hn:[Bp[0]+2,Bp[1]+6],e2:[Sp[0]-34,Sp[1]+30],hn2:[Bp[0]-6,Bp[1]+4]},1.25,1);
-      var rs=26+Math.min(V,200)/200*14;
-      ci(g,Bp,rs,"var(--stang)");ci(g,Bp,rs-6,"var(--panel)");
-      tx(g,[Bp[0],Bp[1]+5],V+" kg",{"font-size":13,"font-weight":700,"text-anchor":"middle"});
+      // vektskiva sett fra siden ligger bak kroppen (gjennomsiktig), stanga hviler på øvre del av ryggen
+      var rs=0.2*SK;
+      el(g,"circle",{cx:Bp[0],cy:Bp[1],r:rs,fill:"var(--stang)","fill-opacity":.18,stroke:"var(--stang)","stroke-width":4,"stroke-opacity":.55});
+      var Sm=[Hm[0]+SKULDER*r[0],Hm[1]+SKULDER*r[1]],e1=px([Sm[0]-0.09,Sm[1]-0.21]),e2=[e1[0]-6,e1[1]-3];
+      menneske(g,{a:Ap,k:Kp,h:Hp,s:Sp,hd:Hd,e:e1,hn:[Bp[0]+4,Bp[1]+8],e2:e2,hn2:[Bp[0]-4,Bp[1]+6]},1.25,1);
+      ci(g,Bp,9,"var(--stang)");ci(g,Bp,3.5,"var(--panel)");
+      tx(g,[Bp[0]-rs-8,Bp[1]-rs+18],V+" kg",{"font-size":17,"font-weight":700,"text-anchor":"end"});
       ln(g,Hp,[Bp[0],Hp[1]],5,"var(--hofte)");ln(g,Kp,[Bp[0],Kp[1]],5,"var(--kne)");
       ci(g,Hp,7,"var(--hofte)");ci(g,Kp,7,"var(--kne)");
       var armH=Math.abs(Bm[0]-Hm[0]),armK=Math.abs(K[0]-Bm[0]);
@@ -407,7 +470,7 @@ details p{margin:6px 0 0}
     function tegn(){
       var en=fot()==="en",st=en?0:steg()/100,b=len()*Math.PI/180,al=arm()*Math.PI/180;
       $("bStegBoks").hidden=en;
-      var ank=0.08,Lb=0.9,P={};
+      var ank=0.035,Lb=0.92,P={};
       if(en){P.a=[0,ank];P.h=[0,ank+Lb];P.k=mid(P.a,P.h,.5);P.k2=[0.40,ank+Lb-0.08];P.a2=[0.36,ank+Lb-0.52]}
       else{var dy=Math.sqrt(Lb*Lb-(st/2)*(st/2));P.a=[st/2,ank];P.a2=[-st/2,ank];P.h=[0,ank+dy];P.k=mid(P.a,P.h,.5);P.k2=mid(P.a2,P.h,.5)}
       var r=[Math.sin(b),Math.cos(b)];
@@ -493,42 +556,56 @@ details p{margin:6px 0 0}
 
   // ---------- D Kroppen som vektstang ----------
   var D=(function(){
-    var EX=300,EY=360;
+    // Overkropp i stor skala (650 px per meter). Bein og muskel tegnes oppå armen, som et røntgenbilde.
+    var SK=650,EX=330,EY=380,S=[EX-4,EY-0.28*SK];
     var vekt=glider("dVekt","dVektUt",function(v){return v+" kg"},tegn);
     var last=glider("dLast","dLastUt",function(v){return v+" cm"},tegn);
     var feste=glider("dFeste","dFesteUt",function(v){return tall(v,1)+" cm"},tegn);
     function tegn(){
       var m=vekt(),L=last()/100,d=feste()/100,F=m*G,Fm=F*L/d;
       var g=$("dBilde");g.innerHTML="";
-      var sk=800,E=[EX,EY],S=[EX-10,EY-0.30*sk],hand=[EX+0.36*sk,EY];
-      // overkropp og hode
-      ln(g,[S[0]-60,S[1]+10],[S[0]-80,480],70,"var(--troye)");
-      ln(g,[S[0]-50,S[1]-10],[S[0]-45,S[1]-40],20,"var(--hud)");
-      var hc=[S[0]-40,S[1]-72];
-      ci(g,hc,36,"var(--hud)");
-      el(g,"path",{d:"M"+(hc[0]-36)+" "+(hc[1]+1)+" A36 36 0 0 1 "+(hc[0]+25)+" "+(hc[1]-25)+" Q"+(hc[0]-7)+" "+(hc[1]-7)+" "+(hc[0]-13)+" "+(hc[1]+22)+" Z",fill:"var(--shorts)"});
-      ci(g,[hc[0]+18,hc[1]-2],3.5,"var(--ink)");
-      // overarm (ermet) og underarm
-      ln(g,S,E,40,"var(--troye)");ln(g,mid(S,E,.55),E,34,"var(--hud)");
-      ln(g,E,hand,30,"var(--hud)");
-      ci(g,hand,20,"var(--hud)");
+      var E=[EX,EY],mx=EX+L*SK,iHand=L>=0.3,Lh=iHand?L:0.33,hn=[EX+(Lh-0.055)*SK,EY],hc=[EX+Lh*SK,EY];
+      var rv=iHand?16+m*1.8:14+m*1.2;
+      // manual i hånda: skiva bak hånda
+      if(iHand){ci(g,hc,rv,"var(--stang)");el(g,"circle",{cx:hc[0],cy:hc[1],r:rv-5,fill:"none",stroke:"var(--panel)","stroke-width":2,opacity:.35})}
+      var s=SK/200;
+      menneske(g,{h:[EX-48,EY+0.5*SK],s:S,hd:[S[0]+16,S[1]-0.17*SK],e:E,hn:hn,a:[EX-40,EY+1.4*SK],k:[EX-20,EY+1.0*SK]},s,1);
+      if(iHand)ci(g,hc,6,"var(--panel)");
+      // bein: overarm og underarm
+      var bein="var(--bein)",kant="var(--gra)";
+      [[[S[0],S[1]+14],[EX-2,EY-12],12],[[EX+6,EY+2],[hn[0]-6,EY+2],9]].forEach(function(b){
+        ln(g,b[0],b[1],b[2]+3,kant,{opacity:.6});ln(g,b[0],b[1],b[2],bein);
+        ci(g,b[0],b[2]*.85,bein);ci(g,b[1],b[2]*.85,bein)});
+      // biceps: fra skulderen til festet på underarmen
+      var B=[EX+d*SK,EY-4],O=[S[0]+8,S[1]+30];
+      del(g,O,B,[[0,3,3],[.12,8,8],[.42,17,12],[.72,12,9],[.88,4,4],[1,3,3]],"var(--muskel)",-1);
+      ln(g,mid(O,B,.86),B,4,"var(--muskel)");
+      ci(g,B,6,"var(--kne)");
       // dreiepunkt
-      ci(g,E,13,"var(--panel)");el(g,"circle",{cx:E[0],cy:E[1],r:13,fill:"none",stroke:"var(--ink)","stroke-width":4});
-      tx(g,[E[0]-20,EY+40],"albue (dreiepunkt)",{"font-weight":700,"text-anchor":"middle"});
-      // biceps
-      var B=[EX+d*sk,EY-10];
-      el(g,"path",{d:"M"+(S[0]+10)+" "+(S[1]+30)+" Q"+(EX+48)+" "+(EY-130)+" "+B[0]+" "+B[1],fill:"none",stroke:"var(--kne)","stroke-width":12,"stroke-linecap":"round",opacity:.85});
+      ci(g,E,13,"var(--panel)");el(g,"circle",{cx:E[0],cy:E[1],r:13,fill:"none",stroke:"var(--ink)","stroke-width":4});ci(g,E,3.5,"var(--ink)");
+      tx(g,[EX-26,EY+48],"albue (dreiepunkt)",{"font-weight":700,"text-anchor":"end"});
+      // vekt som henger på underarmen når den er nærmere albuen enn hånda
+      var wy=EY;
+      if(!iHand){
+        wy=EY+30+rv;
+        ln(g,[mx-6,EY+14],[mx-6,wy-rv+4],3,"var(--stang)");ln(g,[mx+6,EY+14],[mx+6,wy-rv+4],3,"var(--stang)");
+        el(g,"rect",{x:mx-12,y:EY-24,width:24,height:9,rx:3,fill:"var(--stang)"});
+        el(g,"rect",{x:mx-13,y:EY-26,width:26,height:52,rx:6,fill:"none",stroke:"var(--stang)","stroke-width":4});
+        ci(g,[mx,wy],rv,"var(--stang)");el(g,"circle",{cx:mx,cy:wy,r:rv-5,fill:"none",stroke:"var(--panel)","stroke-width":2,opacity:.35});
+      }
+      // krefter
       var Lp=Math.min(200,40+Fm/1500*160);
-      pil(g,[B[0]+40,B[1]],[B[0]+40,B[1]-Lp],6,"var(--kne)");
-      tx(g,[B[0]+52,B[1]-Lp+16],"biceps: "+Math.round(Fm)+" N",{"font-weight":700,fill:"var(--kne)"});
-      // manual
-      var mx=EX+L*sk,ms=16+m*1.2;
-      el(g,"rect",{x:mx-ms/2,y:EY-ms/2-4,width:ms,height:ms+8,rx:4,fill:"var(--stang)"});
-      pil(g,[mx,EY+ms/2+8],[mx,EY+ms/2+28+F/200*40],6,"var(--accent)");
-      tx(g,[mx+14,EY+ms/2+34],m+" kg = "+Math.round(F)+" N",{"font-weight":700,fill:"var(--accent)"});
+      pil(g,B,[B[0],B[1]-Lp],6,"var(--kne)");
+      tx(g,[B[0]+12,B[1]-Lp+16],"biceps: "+Math.round(Fm)+" N",{"font-weight":700,fill:"var(--kne)"});
+      var Lw=25+F/196*30;
+      pil(g,[mx,wy],[mx,wy+Lw],6,"var(--accent)");ci(g,[mx,wy],5,"var(--accent)");
+      tx(g,[mx+rv+10,wy+6],m+" kg = "+Math.round(F)+" N",{"font-weight":700,fill:"var(--accent)"});
       // avstander
-      ln(g,[EX,EY+70],[EX+d*sk,EY+70],4,"var(--kne)");tx(g,[EX+d*sk+8,EY+75],tall(d*100,1)+" cm",{"font-size":14,fill:"var(--kne)","font-weight":700});
-      ln(g,[EX,EY+100],[mx,EY+100],4,"var(--accent)",{"stroke-dasharray":"8 5"});tx(g,[(EX+mx)/2,EY+122],Math.round(L*100)+" cm",{"font-size":14,"text-anchor":"middle",fill:"var(--accent)","font-weight":700});
+      var y1=EY+130,y2=EY+152;
+      [[EX,y1-12],[EX,y2+8]].forEach(function(q){ln(g,[q[0],EY+20],q,1.5,"var(--muted)",{"stroke-dasharray":"3 4"})});
+      ln(g,[B[0],EY+6],[B[0],y1+6],1.5,"var(--kne)",{"stroke-dasharray":"3 4"});ln(g,[mx,wy+Lw+4],[mx,y2+6],1.5,"var(--accent)",{"stroke-dasharray":"3 4"});
+      ln(g,[EX,y1],[B[0],y1],5,"var(--kne)");tx(g,[EX-10,y1+5],tall(d*100,1)+" cm",{"font-size":15,fill:"var(--kne)","font-weight":700,"text-anchor":"end"});
+      ln(g,[EX,y2],[mx,y2],5,"var(--accent)");tx(g,[(EX+mx)/2,y2+21],Math.round(L*100)+" cm",{"font-size":15,"text-anchor":"middle",fill:"var(--accent)","font-weight":700});
       $("dLastN").textContent=Math.round(F)+" N";$("dMuskel").textContent=Math.round(Fm)+" N";
       melding("dMelding","Biceps må dra "+tall(L/d,1)+" ganger så hardt som manualen veier. Til gjengjeld beveger hånda seg "+tall(L/d,1)+" ganger så langt og fort som muskelen.");
     }
@@ -544,6 +621,20 @@ details p{margin:6px 0 0}
     function bane(v,a,h){a=a*Math.PI/180;var vx=v*Math.cos(a),vy=v*Math.sin(a),T=(vy+Math.sqrt(vy*vy+2*G*h))/G,p=[];
       for(var i=0;i<=60;i++){var t=T*i/60;p.push([vx*t,h+vy*t-G*t*t/2])}
       return {p:p,lengde:vx*T,topp:h+Math.max(0,vy*vy/(2*G)),v:v,a:Math.round(a*180/Math.PI),h:h}}
+    // Kroppen i meter, med hånda i slippunktet (0, h). Lavt slipp: kasteren går ned i utfall. Høyt slipp: kasteren hopper.
+    function kaster(h){
+      var lift=Math.max(0,h-0.68-1.47),ys=h<=0.97?Math.max(1.0,h+0.5):1.47+lift;
+      var hip=0.95-0.8*(1.47-Math.min(1.47,ys))+lift,lean=Math.acos(Math.min(1,(ys-hip)/0.52));
+      var dy=h-ys,rx=Math.sqrt(Math.max(0,0.68*0.68-dy*dy)),sx=-rx,hx=sx-0.52*Math.sin(lean);
+      var P={s:[sx,ys],h:[hx,hip]};
+      P.hd=[sx+0.03+0.19*Math.sin(lean*0.6),ys+0.19*Math.cos(lean*0.6)];
+      var hand=[0,h],u=[hand[0]-sx,hand[1]-ys],l=Math.hypot(u[0],u[1])||1;
+      P.hn=[sx+u[0]/l*Math.min(l,0.68)*0.93,ys+u[1]/l*Math.min(l,0.68)*0.93];
+      P.e=ledd(P.s,P.hn,0.3,0.34,1);
+      P.e2=[sx+0.12,ys-0.24];P.hn2=[sx+0.36,ys-0.3];
+      var fy=0.03+lift;P.a=[hx+0.3,fy];P.a2=[hx-0.32,fy];
+      P.k=ledd(P.h,P.a,0.47,0.45,-1);P.k2=ledd(P.h,P.a2,0.47,0.45,-1);
+      return P}
     function skala(){var mx=20,my=5;kast.concat([bane(fart(),vinkel(),hoyde())]).forEach(function(k){mx=Math.max(mx,k.lengde);my=Math.max(my,k.topp)});
       return Math.min(820/(mx*1.08),380/(my*1.1))}
     function tegn(){
@@ -552,16 +643,15 @@ details p{margin:6px 0 0}
       // meterskala
       var steg=[5,10,20,25,50][[5,10,20,25,50].findIndex(function(s){return 820/sk/s<=10})]||50;
       for(var m=steg;X0+m*sk<950;m+=steg){ln(g,[X0+m*sk,Y0],[X0+m*sk,Y0+10],2,"var(--muted)");tx(g,[X0+m*sk,Y0+30],m+" m",{"text-anchor":"middle","font-size":13,fill:"var(--muted)"})}
-      // kaster (liten, i skala)
-      var h=hoyde(),s=Math.max(0.35,Math.min(1,sk/40));
-      var fot=[X0-4,Y0-4],hm=[X0-6,Y0-0.95*sk*0+(-95*s)],sh=[X0-2,Y0-155*s],hd=[X0+4,Y0-182*s];
-      menneske(g,{a:fot,k:[X0-1,Y0-50*s],h:hm,s:sh,hd:hd,e:[X0+18*s,Y0-140*s],hn:[X0+10*s,Y0-160*s],a2:[X0-30*s,Y0-4],k2:[X0-20*s,Y0-50*s]},s*0.9,1);
+      // kaster i riktig skala (1,80 m høy). Kastehånda er der ballen slippes.
+      var h=hoyde(),M=kaster(h),s=sk/200,Q={};for(var k in M)Q[k]=px(M[k]);
+      menneske(g,Q,s,1);
       kast.forEach(function(k,i){var siste=i===kast.length-1&&!anim;
         el(g,"polyline",{points:k.p.map(px).map(function(q){return q.join(",")}).join(" "),fill:"none",stroke:siste?"var(--accent)":"var(--gra)","stroke-width":siste?4:3,"stroke-dasharray":siste?"":"8 6"});
         var e=px([k.lengde,0]);ci(g,e,6,siste?"var(--accent)":"var(--gra)");
         tx(g,[e[0],e[1]-14-(siste?0:20*(kast.length-1-i))],tall(k.lengde,1)+" m ("+k.v+" m/s, "+k.a+"°)",{"text-anchor":"middle","font-size":13,"font-weight":700,fill:siste?"var(--accent)":"var(--muted)"});
       });
-      var start=px([0,h]);ci(g,ball||start,8,"var(--accent)");
+      var start=px([0,h]);ci(g,ball||start,Math.max(5,Math.min(8,0.12*sk)),"var(--accent)");
     }
     $("eKast").addEventListener("click",function(){
       var k=bane(fart(),vinkel(),hoyde());if(anim)cancelAnimationFrame(anim);
@@ -631,7 +721,7 @@ details p{margin:6px 0 0}
       var h=hoyde(),d=boy()/100,L=landing(h,d),S=landing(h,0);
       var g=$("gBilde");g.innerHTML="";bakke(g,Y0+4);
       // utøver i landing: hofta synker d
-      var sk=230,ax=150,a=[ax,Y0],Dh=0.9-d*1.15,hx=ax-Math.min(0.25,d*0.7)*sk;
+      var sk=230,ax=190,a=[ax,Y0],Dh=0.9-d*1.15,hx=ax-Math.min(0.25,d*0.7)*sk;
       var hp=[hx,Y0-Dh*sk-14],km=mid(a,hp,.5),dl=Math.hypot(hp[0]-a[0],hp[1]-a[1])/2,off=Math.sqrt(Math.max(0,(0.45*sk)*(0.45*sk)-dl*dl));
       var ux=(hp[0]-a[0])/(2*dl),uy=(hp[1]-a[1])/(2*dl),k=[km[0]-uy*off,km[1]+ux*off];
       var lean=d*1.6,s=[hp[0]+Math.sin(lean)*120,hp[1]-Math.cos(lean)*120],hd=[hp[0]+Math.sin(lean)*162,hp[1]-Math.cos(lean)*162];
