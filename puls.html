@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Puls og kretsløp</title>
+<style>
+/* Kretsløpet øverst med blod som strømmer, innstillinger og avlesning i to kolonner under. Stables på mobil. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c;
+  --bench:#dfe5e8; --bench-line:#c4ced3; --rod:#c92a2a; --blaa:#1c6fd1;
+  --display:"Segoe UI", system-ui, sans-serif; --body:"Segoe UI", system-ui, sans-serif; --mono:ui-monospace, "Consolas", monospace;
+}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69;
+  --bench:#232c31; --bench-line:#334047; --rod:#ff6b6b; --blaa:#5aa2f5;
+}
+
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:grid;gap:12px}
+h1{font-family:var(--display);margin:0;font-size:28px}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.faner{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.faner button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:7px;cursor:pointer}
+.faner button b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--bench);color:var(--ink);font-size:12px;margin-right:6px}
+.faner button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.faner button[aria-selected="true"] b{background:var(--accent);color:#fff}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.modus{display:grid;gap:16px}
+.stage{background:var(--bench);border:1px solid var(--bench-line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;flex-wrap:wrap;gap:6px 14px;padding:10px 14px;font-size:14px;color:var(--muted);border-bottom:1px solid var(--bench-line)}
+.label{font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;font-size:12px}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body);fill:var(--ink)}
+#dBilde text{font-size:19px}
+#dBilde text,#aBilde text,#bBilde text{paint-order:stroke;stroke:var(--bench);stroke-width:5px;stroke-linejoin:round}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:14px;align-content:start}
+.panel h2{margin:0;font-size:18px}
+.ctl{display:grid;gap:4px}
+.ctl label,.ctl .navn{display:flex;justify-content:space-between;gap:10px;font-weight:600;font-size:15px}
+.ctl output{font-family:var(--mono);color:var(--accent);font-weight:700}
+.ctl small{color:var(--muted);font-size:13px}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.valg{display:flex;flex-wrap:wrap;gap:6px}
+.valg button,.knapp{font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:6px 12px}
+.valg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.knapp.hoved{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700;font-size:16px;padding:8px 18px}
+.valg button:disabled{opacity:.35;cursor:default}
+.tall{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tall div{border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.tall b{display:block;font-family:var(--mono);font-size:22px}
+.tall span{font-size:13px;color:var(--muted)}
+.melding{border-radius:10px;padding:8px 12px;font-weight:600;font-size:15px;background:var(--bench);border:1px solid var(--bench-line)}
+.melding.feil{color:var(--bad);border-color:var(--bad)}
+.melding.ok{color:var(--ok);border-color:var(--ok)}
+.prov ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:15px}
+details{border:1px dashed var(--line);border-radius:10px;padding:8px 12px;font-size:14px;color:var(--muted)}
+details summary{cursor:pointer;font-weight:700;color:var(--ink)}
+details p{margin:6px 0 0}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.maaler{display:grid;gap:4px;font-size:14px;font-weight:600}
+.spor{height:16px;border-radius:99px;background:var(--bench);border:1px solid var(--bench-line);overflow:hidden}
+.spor div{height:100%;border-radius:99px;transition:width .4s}
+.tall{grid-template-columns:1fr 1fr}
+@media (prefers-reduced-motion:reduce){.spor div{transition:none}}
+</style>
+<!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1040px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head>
+<body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Puls og kretsløp</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg1 Idrett · Treningslære 1</div>
+      <h1>Puls og kretsløp</h1>
+      <p class="lk-lead">Se hvordan hjertet, blodet og lungene jobber når du trener, og hva som skiller et trent og et utrent hjerte.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg en aktivitet, for eksempel <b>Jogge</b>.</span></li><li><span>Se hvor fort blodet går rundt, og les av puls, slagvolum og pust.</span></li><li><span>Bytt mellom <b>Utrent</b> og <b>Godt trent</b>.</span></li><li><span>Svar på spørsmålene under <b>Prøv dette</b>.</span></li></ol>
+      
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Puls og kretsløp</h1>
+      <p class="sub">Se hvordan hjertet og lungene jobber når du trener.</p>
+    </div>
+  </header>
+
+  <div class="stage">
+    <div class="stage-head"><span class="label">Kretsløpet</span><span>Prikkene er blodet. Rødt har mye oksygen, blått lite. Jo fortere prikkene går, jo mer blod pumper hjertet.</span></div>
+    <svg id="kBilde" viewBox="0 0 960 440" role="img" aria-label="Lungene, hjertet og musklene med blod som strømmer rundt"></svg>
+  </div>
+  <div class="grid">
+    <section class="panel"><h2>Still inn</h2>
+      <div class="ctl"><span class="navn">Aktivitet</span><div class="valg" id="pAkt"></div></div>
+      <div class="ctl"><span class="navn">Utøveren</span><div class="valg" id="pTrent"><button type="button" data-v="0" aria-pressed="true">Utrent</button><button type="button" data-v="1" aria-pressed="false">Godt trent</button></div><small>Begge løper i samme fart.</small></div>
+      <div class="ctl"><label for="pFart">Finjuster innsatsen <output id="pFartUt"></output></label><input type="range" id="pFart" min="0" max="100" value="0"></div>
+    </section>
+    <section class="panel"><h2>Hva skjer i kroppen?</h2>
+      <div class="tall">
+        <div><span>Puls</span><b id="tPuls"></b><span>slag per minutt</span></div>
+        <div><span>Blod per slag</span><b id="tSlag"></b><span>slagvolum</span></div>
+        <div><span>Blod per minutt</span><b id="tMin"></b><span>minuttvolum</span></div>
+        <div><span>Pust</span><b id="tPust"></b><span>åndedrag per minutt</span></div>
+      </div>
+      <div class="maaler"><span>Hjertets kapasitet</span><div class="spor"><div id="tKap"></div></div></div>
+      <div class="melding" id="pMelding" role="status"></div>
+      <details><summary>Ekstra: regn ut minuttvolumet</summary><p>Minuttvolum = puls × slagvolum. Eksempel: 70 slag × 70 ml = 4900 ml ≈ 4,9 liter blod i minuttet. Det er omtrent alt blodet i kroppen.</p></details>
+    </section>
+  </div>
+  <section class="panel prov"><h2>Prøv dette</h2><ol>
+    <li>Gå fra <b>Hvile</b> til <b>Spurt</b>. Hva skjer med pulsen, slagvolumet og pusten?</li>
+    <li>Velg <b>Jogge</b>. Bytt mellom utrent og godt trent. Hvem har lavest puls, og hvorfor?</li>
+    <li>Hvor går grensen der den utrente ikke får nok oksygen til musklene?</li>
+    <li>Sammenlign hvilepulsen til de to. Hvorfor slår det trente hjertet sjeldnere?</li></ol></section>
+</div>
+<script>
+(function(){
+  "use strict";
+  var $=function(id){return document.getElementById(id)};
+  var REDUSERT=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Tenkte, avrundede tall for en 16-åring. Innsats w: 0 = hvile, 1 = spurt.
+  var PERSON=[
+    {navn:"utrente",hvile:70,maks:200,svHvile:70,svMaks:110},
+    {navn:"godt trente",hvile:50,maks:195,svHvile:100,svMaks:150}
+  ];
+  var AKT=[["😴 Hvile",0],["🚶 Gå",20],["🏃 Jogge",45],["🏃‍♂️ Løpe hardt",75],["⚡ Spurt",100]];
+  var S={w:0,p:0};
+  function regn(){
+    var P=PERSON[S.p], w=S.w/100;
+    var behov=5+25*w;                                   // liter blod musklene trenger per minutt
+    var sv=P.svHvile+(P.svMaks-P.svHvile)*Math.min(1,w/0.5);
+    var puls=Math.max(P.hvile,behov*1000/sv), over=puls>P.maks;
+    if(over) puls=P.maks;
+    var q=puls*sv/1000, kap=P.maks*P.svMaks/1000;
+    var pust=Math.round(12+43*Math.min(1,Math.max(0,(behov-5)/(kap-5))));
+    return {puls:Math.round(puls),sv:Math.round(sv),q:q,pust:pust,over:over,andel:Math.min(1,behov/kap),P:P,behov:behov};
+  }
+  // ---------- tegning ----------
+  var LOOP="M480 210 C 620 210 700 160 700 110 C 700 60 620 40 480 40 C 340 40 260 60 260 110 C 260 160 340 210 480 210 C 620 210 720 260 720 330 C 720 400 620 410 480 410 C 340 410 240 400 240 330 C 240 260 340 210 480 210";
+  function tegn(){
+    var svg=$("kBilde");
+    svg.innerHTML=
+      '<path id="bane" d="'+LOOP+'" fill="none" stroke="var(--line)" stroke-width="22" stroke-linecap="round"/>'+
+      '<g id="prikker"></g>'+
+      '<g><rect x="360" y="12" width="240" height="64" rx="32" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>'+
+      '<text x="480" y="52" text-anchor="middle" font-size="22" font-weight="700">🫁 Lungene</text></g>'+
+      '<g><rect x="340" y="370" width="280" height="64" rx="32" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>'+
+      '<text x="480" y="410" text-anchor="middle" font-size="22" font-weight="700">💪 Musklene</text></g>'+
+      '<g id="hjerte" style="transform-origin:480px 210px"><path d="M480 262 C430 232 412 208 414 186 C416 162 446 152 480 176 C514 152 544 162 546 186 C548 208 530 232 480 262 Z" fill="var(--rod)" stroke="var(--ink)" stroke-width="3"/>'+
+      '<text x="480" y="206" text-anchor="middle" font-size="16" font-weight="700" style="fill:#fff;stroke:none">Hjertet</text></g>'+
+      '<text x="140" y="120" font-size="17" font-weight="700" fill="var(--muted)">Lille kretsløp</text>'+
+      '<text x="760" y="330" font-size="17" font-weight="700" fill="var(--muted)">Store kretsløp</text>'+
+      '<text x="40" y="250" font-size="16" font-weight="700" style="fill:var(--rod)">● mye O₂</text><text x="40" y="276" font-size="16" font-weight="700" style="fill:var(--blaa)">● lite O₂</text>';
+    var g=$("prikker"), h="";
+    for(var i=0;i<36;i++) h+='<circle r="7"/>';
+    g.innerHTML=h;
+  }
+  var bane, lengde, prikker, fase=0, sist=0, slag=0;
+  // Fargen på blodet: etter lungene rødt, etter musklene blått. Banen går lunge-runde først (0–0,5), så kropp (0,5–1).
+  var tLunge=0.25, tMuskel=0.75;
+  function finnGrenser(){            // rødt fra toppen av lungerunden til bunnen av kropprunden
+    var minY=1e9, maxY=-1e9;
+    for(var i=0;i<=400;i++){ var p=bane.getPointAtLength(i/400*lengde);
+      if(p.y<minY){minY=p.y;tLunge=i/400} if(p.y>maxY){maxY=p.y;tMuskel=i/400} }
+  }
+  function farge(t){ return t>tLunge&&t<tMuskel?"var(--rod)":"var(--blaa)"; }
+  function animer(ts){
+    var r=regn(), dt=Math.min(0.1,(ts-sist)/1000||0); sist=ts;
+    fase=(fase+dt*r.q/60)%1;                        // en runde ≈ 5 liter
+    slag=(slag+dt*r.puls/60)%1;
+    var sk=1+0.08*Math.max(0,Math.sin(slag*Math.PI*2));
+    $("hjerte").style.transform="scale("+sk.toFixed(3)+")";
+    plasser();
+    if(!REDUSERT) requestAnimationFrame(animer);
+  }
+  function plasser(){
+    for(var i=0;i<prikker.length;i++){
+      var t=(i/prikker.length+fase)%1, p=bane.getPointAtLength(t*lengde);
+      prikker[i].setAttribute("cx",p.x.toFixed(1)); prikker[i].setAttribute("cy",p.y.toFixed(1));
+      prikker[i].setAttribute("fill",farge(t));
+    }
+  }
+  function vis(){
+    var r=regn();
+    $("tPuls").textContent=r.puls; $("tSlag").textContent=r.sv+" ml";
+    $("tMin").textContent=r.q.toFixed(1).replace(".",",")+" l"; $("tPust").textContent=r.pust;
+    $("pFartUt").textContent=S.w+" %";
+    var k=$("tKap"); k.style.width=Math.round(r.andel*100)+"%"; k.style.background=r.over?"var(--bad)":"var(--ok)";
+    var m=$("pMelding");
+    if(r.over){ m.className="melding feil"; m.textContent="Hjertet når makspuls ("+r.P.maks+"). Musklene får ikke nok oksygen, så de bruker anaerob energi og det blir melkesyre."; }
+    else if(S.w===0){ m.className="melding"; m.textContent="Hvile: hjertet til den "+r.P.navn+" slår "+r.puls+" ganger i minuttet."; }
+    else { m.className="melding ok"; m.textContent="Hjertet klarer å levere nok oksygen. Det bruker "+Math.round(r.andel*100)+" % av kapasiteten."; }
+    $("pAkt").querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",+b.dataset.v===S.w)});
+    if(REDUSERT) plasser();
+  }
+  AKT.forEach(function(a){var b=document.createElement("button");b.type="button";b.textContent=a[0];b.dataset.v=a[1];
+    b.onclick=function(){S.w=a[1];$("pFart").value=a[1];vis()};$("pAkt").appendChild(b)});
+  $("pTrent").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;S.p=+b.dataset.v;
+    this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});vis()});
+  $("pFart").oninput=function(){S.w=+this.value;vis()};
+  tegn(); bane=$("bane"); lengde=bane.getTotalLength(); finnGrenser(); prikker=[].slice.call($("prikker").children);
+  vis(); requestAnimationFrame(animer);
+})();
+</script>
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body>
+</html>
