@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Robotarm</title>
+<style>
+/* Samme oppsett som cnc-koordinater.html: figur øverst, styring og kode i kort under. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c;
+  --bench:#dfe5e8; --bench-line:#c4ced3;
+  --display:"Segoe UI", system-ui, sans-serif;
+  --body:"Segoe UI", system-ui, sans-serif;
+  --mono:ui-monospace, "Consolas", monospace;
+  --steel:#9aa6af; --steel-dark:#4c5760; --tcp:#1c6fd1; --kloss:#e0a400; --kloss-dark:#8a6500;
+}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69;
+  --bench:#232c31; --bench-line:#334047; color-scheme:dark;
+  --steel:#7d8a94; --steel-dark:#c3ccd2; --tcp:#5aa2f5}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px 20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0}
+h2{font:700 20px var(--display);margin:0}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:15px;flex-wrap:wrap}
+.oppdrag{font:600 18px var(--display)}
+.oppdrag b{color:var(--accent)}
+#fig{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none}
+.notes{padding:10px 14px;border-top:1px solid var(--line);min-height:46px;font-size:16px}
+.notes.ok{color:var(--ok);font-weight:700}
+.notes.bad{color:var(--bad);font-weight:700}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.akse{display:grid;grid-template-columns:44px 1fr 56px;align-items:center;gap:10px}
+.akse b{font:800 20px var(--display);color:var(--accent)}
+.akse small{display:block;font:500 12px var(--body);color:var(--muted)}
+.akse input{width:100%;accent-color:var(--accent)}
+.akse output{font:700 18px var(--mono);text-align:right}
+.rad{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:600 15px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:10px 14px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.grip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.hint{color:var(--muted);font-size:14px;margin:0}
+input[type=text]{font:500 15px var(--body);padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);flex:1;min-width:140px}
+ol.prog{margin:0;padding:0;list-style:none;display:grid;gap:4px;counter-reset:p;max-height:320px;overflow:auto}
+ol.prog li{counter-increment:p;display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:15px;cursor:pointer}
+ol.prog li::before{content:counter(p) ".";font-weight:700;color:var(--muted);min-width:1.6em}
+ol.prog li span{flex:1;min-width:0}
+ol.prog li code{font:13px var(--mono);color:var(--muted);white-space:nowrap}
+ol.prog li.naa{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+ol.prog li button{border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer;padding:2px 6px}
+ol.prog:empty::after{content:"Ingen punkter ennå.";color:var(--muted);font-size:15px}
+pre.kode{margin:0;font:13.5px/1.45 var(--mono);background:#10161a;color:#d7e3ea;border-radius:10px;padding:12px 14px;overflow:auto;max-height:420px;white-space:pre}
+pre.kode .c{color:#7f9aa8}
+pre.kode .s{color:#ffc66d}
+.wide{grid-column:1/-1}
+details summary{cursor:pointer;font-weight:600}
+</style>
+<!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+:root{--lk-w:1040px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header{display:none!important}
+</style><!--lk:head-slutt--></head>
+<body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Robotarm</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg1 TIF og Vg2 industriteknologi · Robot og automasjon</div>
+      <h1>Robotarm</h1>
+      <p class="lk-lead">Styr en robotarm med tre akser. Flytt klossen fra A til kassa B, lagre punktene og få Python-kode som Fusion kan kjøre.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Dra i <b>A1</b>, <b>A2</b> og <b>A3</b> til griperen står rundt klossen. Trykk på griperen for å lukke.</span></li><li><span>Lagre et punkt for hver bevegelse: hjem, over, ned, grip, løft, sving, ned, slipp.</span></li><li><span>Trykk <b>Kjør</b>. Treffer armen bordet, stopper programmet.</span></li><li><span>Kopier Python-koden og kjør den i Fusion.</span></li></ol>
+      
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Robotarm</h1>
+      <p class="sub">Styr robotarmen, lagre punkter og få Python-kode til Fusion.</p>
+    </div>
+  </header>
+
+  <section class="stage" id="figur" aria-label="Figur">
+    <div class="stage-head">
+      <span class="oppdrag">Oppdrag: flytt <b>klossen</b> fra <b>A</b> til kassa <b>B</b>.</span>
+      <button class="btn" id="nyStart" type="button">↺ Start på nytt</button>
+    </div>
+    <svg id="fig" viewBox="0 0 640 360" role="img" aria-label="Robotarm sett fra siden og ovenfra, med klossen på A og kassa B"></svg>
+    <div class="notes" id="note" aria-live="polite">Dra i glidebryterne og se hvordan armen beveger seg.</div>
+  </section>
+
+  <div class="grid">
+    <section class="card" aria-labelledby="h-styr">
+      <h2 id="h-styr">1 · Styr roboten</h2>
+      <div id="glidere"></div>
+      <div class="rad">
+        <button class="btn grip" id="griper" type="button" aria-pressed="false">✋ Griperen er åpen</button>
+        <button class="btn" id="hjem" type="button">🏠 Hjem</button>
+      </div>
+      <p class="hint">A1 snur foten. A2 er skulderen. A3 er albuen. <b>TCP</b> er punktet mellom fingrene på griperen.</p>
+    </section>
+
+    <section class="card" aria-labelledby="h-prog">
+      <h2 id="h-prog">2 · Lagre punkter</h2>
+      <div class="rad">
+        <input type="text" id="navn" placeholder="Navn, for eksempel «Over A»" maxlength="30" aria-label="Navn på punktet">
+        <button class="btn primary" id="lagre" type="button">＋ Lagre punkt</button>
+      </div>
+      <ol class="prog" id="prog"></ol>
+      <div class="rad">
+        <button class="btn primary" id="kjor" type="button">▶ Kjør</button>
+        <button class="btn" id="slett" type="button">⌫ Slett siste</button>
+        <button class="btn" id="tom" type="button">🗑 Tøm</button>
+        <button class="btn" id="eksempel" type="button">Vis eksempel</button>
+      </div>
+      <label class="akse" style="grid-template-columns:auto 1fr 56px"><span>Fart</span><input type="range" id="fart" min="0.5" max="2" step="0.5" value="1"><output id="fartUt">1 s</output></label>
+      <p class="hint">Trykk på et punkt i lista for å flytte roboten dit.</p>
+    </section>
+
+    <section class="card wide" aria-labelledby="h-kode">
+      <h2 id="h-kode">3 · Python-kode for Fusion</h2>
+      <p class="hint" style="font-size:15px;color:var(--ink)">Punktene dine blir til et Python-script. Fusion kjører scriptet og beveger leddene <b>A1</b>, <b>A2</b> og <b>A3</b> i robotmodellen.</p>
+      <div class="rad">
+        <button class="btn primary" id="kopier" type="button">📋 Kopier koden</button>
+        <button class="btn" id="lastned" type="button">⬇ Last ned RobotSekvens.py</button>
+        <span id="kopiMsg" class="hint" role="status"></span>
+      </div>
+      <pre class="kode" id="kode"></pre>
+      <details>
+        <summary>Slik kjører du koden i Fusion</summary>
+        <ol>
+          <li>Robotmodellen må ha tre rotasjonsledd (<i>Revolute joints</i>) som heter <b>A1</b>, <b>A2</b> og <b>A3</b>.</li>
+          <li>I Fusion: <b>Utilities → Add-Ins → Scripts and Add-Ins</b>. Trykk <b>+ → Create script</b>, velg <b>Python</b> og kall det <b>RobotSekvens</b>.</li>
+          <li>Trykk <b>Edit</b>. Slett alt og lim inn koden. Lagre.</li>
+          <li>Åpne robotmodellen. Velg scriptet og trykk <b>Run</b>.</li>
+        </ol>
+        <p class="hint">Griperen står som kommentar (#) i koden. Scriptet beveger bare aksene. Vinklene passer til roboten i simulatoren. En annen robot kan trenge andre vinkler.</p>
+      </details>
+    </section>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const ROLIG = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Samme robot og vinkler som i Vg2 Robot og automasjon 1: A2 og A3 måles fra loddrett.
+const LIM = {A1:[-170,170], A2:[-30,90], A3:[0,150]};
+const HJEM = {A1:0, A2:0, A3:90};
+const AKSER = ["A1","A2","A3"];
+const NAVN = {A1:"fot", A2:"skulder", A3:"albue"};
+const S = {x:170, y:282}, L1 = 125, L2 = 110, G = 30, GULV = 330;
+const STED_A = 0, STED_B = 90;              // A1-vinkel til A og kassa B
+const REK = 128;                             // klossen står 128 px (ca. 0,5 m) fra foten
+const KLOSS = {w:24, h:26}, KASSE = {x0:REK+S.x-31, x1:REK+S.x+31, h:38};
+const rad = d => d*Math.PI/180;
+const begrens = (k, v) => Math.min(LIM[k][1], Math.max(LIM[k][0], v));
+
+let a = {...HJEM}, lukket = false, kjorer = false, krasj = false;
+let kloss, program = [];
+function nyKloss(){ kloss = {a1:STED_A, x:S.x + REK, hold:false}; }  // klossen står på A
+nyKloss();
+
+function posisjon(v){
+  const t1 = rad(v.A2), t2 = rad(v.A2 + v.A3);
+  const p1 = {x:S.x + L1*Math.sin(t1), y:S.y - L1*Math.cos(t1)};
+  const p2 = {x:p1.x + L2*Math.sin(t2), y:p1.y - L2*Math.cos(t2)};
+  const tcp = {x:p2.x + G*Math.sin(t2), y:p2.y - G*Math.cos(t2)};
+  return {t2, p1, p2, tcp};
+}
+const nar = (v, mal, tol) => Math.abs(((v - mal + 540) % 360) - 180) <= (tol || 6);
+
+// ---------- tegning ----------
+function tegn(){
+  const {t2, p1, p2, tcp} = posisjon(a);
+  const arm = (f, t, b) => `<line x1="${f.x}" y1="${f.y}" x2="${t.x}" y2="${t.y}" stroke="var(--steel-dark)" stroke-width="${b+4}" stroke-linecap="round"/><line x1="${f.x}" y1="${f.y}" x2="${t.x}" y2="${t.y}" stroke="${krasj ? "var(--bad)" : "var(--steel)"}" stroke-width="${b}" stroke-linecap="round"/>`;
+  const apen = lukket ? 0 : 1, nx = Math.cos(t2), ny = Math.sin(t2);
+  const finger = s => { const bx = p2.x + s*nx*(5 + 6*apen), by = p2.y + s*ny*(5 + 6*apen);
+    return `<line x1="${bx}" y1="${by}" x2="${bx + G*Math.sin(t2)}" y2="${by - G*Math.cos(t2)}" stroke="${krasj ? "var(--bad)" : "var(--steel-dark)"}" stroke-width="6" stroke-linecap="round"/>`; };
+  let s = `<rect x="0" y="0" width="640" height="360" fill="var(--bench)"/>`;
+  s += `<text x="16" y="26" font-size="14" font-weight="700" fill="var(--muted)">FRA SIDEN</text>`;
+  s += `<rect x="10" y="${GULV}" width="430" height="20" fill="var(--bench-line)"/><line x1="10" y1="${GULV}" x2="440" y2="${GULV}" stroke="var(--steel-dark)" stroke-width="2"/>`;
+
+  // Fra siden vises bare det som står i samme retning som armen (se ovenfra for resten)
+  const iPlan = v => nar(a.A1, v, 6);
+  if (iPlan(STED_B)) s += `<g><path d="M${KASSE.x0} ${GULV-KASSE.h} V${GULV} H${KASSE.x1} V${GULV-KASSE.h}" fill="none" stroke="var(--steel-dark)" stroke-width="4"/><text x="${(KASSE.x0+KASSE.x1)/2}" y="${GULV-KASSE.h-8}" text-anchor="middle" font-size="16" font-weight="800" fill="var(--ink)">B</text></g>`;
+  if (!kloss.hold && iPlan(kloss.a1)){
+    s += `<g><rect x="${kloss.x - KLOSS.w/2}" y="${GULV - KLOSS.h}" width="${KLOSS.w}" height="${KLOSS.h}" rx="3" fill="var(--kloss)" stroke="var(--kloss-dark)" stroke-width="2"/>`;
+    if (nar(kloss.a1, STED_A, 1) && Math.abs(kloss.x - (S.x+REK)) < 1) s += `<text x="${kloss.x}" y="${GULV-KLOSS.h-8}" text-anchor="middle" font-size="16" font-weight="800" fill="var(--ink)">A</text>`;
+    s += `</g>`;
+  }
+  // Fot, armer og griper
+  s += `<path d="M${S.x-42} ${GULV} L${S.x-30} ${S.y+8} H${S.x+30} L${S.x+42} ${GULV} Z" fill="var(--steel)" stroke="var(--steel-dark)" stroke-width="2"/>`;
+  s += arm(S, p1, 22) + arm(p1, p2, 18) + finger(1) + finger(-1);
+  if (kloss.hold) s += `<rect x="${tcp.x - KLOSS.w/2}" y="${tcp.y - KLOSS.h/2}" width="${KLOSS.w}" height="${KLOSS.h}" rx="3" fill="var(--kloss)" stroke="var(--kloss-dark)" stroke-width="2"/>`;
+  s += `<circle cx="${S.x}" cy="${S.y}" r="15" fill="var(--panel)" stroke="var(--accent)" stroke-width="4"/><circle cx="${p1.x}" cy="${p1.y}" r="13" fill="var(--panel)" stroke="var(--accent)" stroke-width="4"/>`;
+  s += `<text x="${S.x-64}" y="${S.y+6}" font-size="17" font-weight="800" fill="var(--accent)">A2</text>`;
+  s += `<text x="${p1.x + (p1.x < S.x + 30 ? -52 : 20)}" y="${p1.y - 14}" font-size="17" font-weight="800" fill="var(--accent)">A3</text>`;
+  s += `<circle cx="${tcp.x}" cy="${tcp.y}" r="5" fill="var(--tcp)"/><text x="${tcp.x + 10}" y="${tcp.y - 10}" font-size="14" font-weight="700" fill="var(--tcp)">TCP</text>`;
+
+  // Ovenfra: A1
+  const C = {x:545, y:150}, R = 78, skala = R*.85/150;
+  const pkt = (v, r) => [C.x + r*Math.cos(rad(v)), C.y - r*Math.sin(rad(v))];
+  s += `<line x1="460" y1="14" x2="460" y2="346" stroke="var(--bench-line)" stroke-width="2"/>`;
+  s += `<text x="476" y="26" font-size="14" font-weight="700" fill="var(--muted)">OVENFRA</text>`;
+  s += `<circle cx="${C.x}" cy="${C.y}" r="${R}" fill="var(--panel)" stroke="var(--line)" stroke-width="2" stroke-dasharray="4 4"/>`;
+  const [bx, by] = pkt(STED_B, (KASSE.x0 + KASSE.x1)/2 - S.x > 0 ? ((KASSE.x0 + KASSE.x1)/2 - S.x)*skala : 0);
+  s += `<rect x="${bx-15}" y="${by-15}" width="30" height="30" fill="none" stroke="var(--steel-dark)" stroke-width="3"/><text x="${bx-22}" y="${by+5}" text-anchor="end" font-size="15" font-weight="800" fill="var(--ink)">B</text>`;
+  const kr = kloss.hold ? Math.max(0, tcp.x - S.x) : kloss.x - S.x;
+  const [kx, ky] = pkt(kloss.hold ? a.A1 : kloss.a1, kr*skala);
+  if (!kloss.hold) s += `<rect x="${kx-8}" y="${ky-8}" width="16" height="16" rx="2" fill="var(--kloss)" stroke="var(--kloss-dark)" stroke-width="2"/>`;
+  const [ax, ay] = pkt(STED_A, (S.x + REK - S.x)*skala);
+  s += `<text x="${ax}" y="${ay+30}" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ink)">A</text>`;
+  const [ex, ey] = pkt(a.A1, Math.max(14, Math.max(0, tcp.x - S.x)*skala));
+  s += `<line x1="${C.x}" y1="${C.y}" x2="${ex}" y2="${ey}" stroke="var(--steel-dark)" stroke-width="12" stroke-linecap="round"/>`;
+  if (kloss.hold) s += `<rect x="${kx-8}" y="${ky-8}" width="16" height="16" rx="2" fill="var(--kloss)" stroke="var(--kloss-dark)" stroke-width="2"/>`;
+  s += `<circle cx="${ex}" cy="${ey}" r="4" fill="var(--tcp)"/><circle cx="${C.x}" cy="${C.y}" r="12" fill="var(--panel)" stroke="var(--accent)" stroke-width="4"/>`;
+  s += `<text x="${C.x}" y="${C.y + R + 30}" text-anchor="middle" font-size="17" font-weight="800" fill="var(--accent)">A1 = ${Math.round(a.A1)}°</text>`;
+  $("fig").innerHTML = s;
+}
+
+// ---------- regler: krasj, grip og slipp ----------
+const note = (t, k) => { const n = $("note"); n.textContent = t; n.className = "notes" + (k ? " " + k : ""); };
+function sjekkKrasj(){
+  const {p2, tcp} = posisjon(a);
+  if (tcp.y > GULV - 2 || p2.y > GULV - 2) return "Krasj! Griperen traff bordet.";
+  const ved = (v, x, b, h) => nar(a.A1, v, 6) && Math.abs(tcp.x - x) < b/2 + 3 && tcp.y > GULV - h;
+  if (!kloss.hold && lukket && ved(kloss.a1, kloss.x, KLOSS.w, KLOSS.h)) return "Krasj! Griperen var lukket og traff klossen.";
+  if (nar(a.A1, STED_B, 10) && tcp.y > GULV - KASSE.h - 2 && (Math.abs(tcp.x - KASSE.x0) < 6 || Math.abs(tcp.x - KASSE.x1) < 6)) return "Krasj! Griperen traff kanten på kassa.";
+  return "";
+}
+function settGriper(lukk){
+  lukket = lukk;
+  const b = $("griper"); b.setAttribute("aria-pressed", lukk); b.textContent = lukk ? "✊ Griperen er lukket" : "✋ Griperen er åpen";
+  const {tcp} = posisjon(a);
+  if (lukk && !kloss.hold){
+    if (nar(a.A1, kloss.a1, 6) && Math.abs(tcp.x - kloss.x) < 10 && Math.abs(tcp.y - (GULV - KLOSS.h/2)) < 12){ kloss.hold = true; note("Du har klossen! Løft den opp før du svinger.", "ok"); }
+    else note("Griperen lukket seg, men den holder ingenting.");
+  } else if (!lukk && kloss.hold){
+    kloss.hold = false; kloss.a1 = a.A1; kloss.x = tcp.x;
+    if (nar(a.A1, STED_B, 6) && tcp.x > KASSE.x0 + 6 && tcp.x < KASSE.x1 - 6){ kloss.x = (KASSE.x0 + KASSE.x1)/2; note("Klossen ligger i kassa B. Oppdraget er løst! Lagre punktene og se koden under.", "ok"); }
+    else note(tcp.y < GULV - KLOSS.h - 20 ? "Klossen falt ned! Kjør ned før du åpner griperen." : "Klossen står ikke i kassa B.", "bad");
+  }
+  tegn();
+}
+
+// ---------- glidebrytere ----------
+$("glidere").innerHTML = AKSER.map(k => `<div class="akse"><b>${k}<small>${NAVN[k]}</small></b><input type="range" min="${LIM[k][0]}" max="${LIM[k][1]}" step="1" value="${a[k]}" aria-label="${k} ${NAVN[k]}"><output>${a[k]}°</output></div>`).join("") + `<div style="height:4px"></div>`;
+const inp = [...$("glidere").querySelectorAll("input")], ut = [...$("glidere").querySelectorAll("output")];
+const visVerdier = () => inp.forEach((r, i) => { const v = Math.round(a[AKSER[i]]); r.value = v; ut[i].textContent = v + "°"; });
+inp.forEach((r, i) => r.oninput = () => {
+  if (kjorer) return;
+  const gml = {...a}; a[AKSER[i]] = +r.value;
+  const k = sjekkKrasj();
+  if (k){ a = gml; visVerdier(); note(k + " Armen stopper.", "bad"); return; }
+  ut[i].textContent = r.value + "°"; tegn();
+});
+
+// ---------- bevegelse ----------
+function flytt(til, sek){
+  return new Promise(ok => {
+    const fra = {...a}, t0 = performance.now(), dur = ROLIG ? 0 : sek*1000;
+    const steg = n => {
+      const f = dur ? Math.min(1, (n - t0)/dur) : 1, e = .5 - .5*Math.cos(Math.PI*f);  // myk start og stopp, som i Fusion-scriptet
+      const gml = {...a};
+      AKSER.forEach(k => a[k] = fra[k] + (til[k] - fra[k])*e);
+      const kr = sjekkKrasj();
+      if (kr){ a = gml; krasj = true; visVerdier(); tegn(); note(kr + " Programmet stoppet.", "bad"); return ok(false); }
+      visVerdier(); tegn();
+      if (f < 1) requestAnimationFrame(steg); else ok(true);
+    };
+    requestAnimationFrame(steg);
+  });
+}
+
+// ---------- program ----------
+function visProgram(naa){
+  $("prog").innerHTML = program.map((p, i) => `<li data-i="${i}" class="${i === naa ? "naa" : ""}"><span>${esc(p.navn)}${p.lukk ? " ✊" : ""}</span><code>${p.A1}° ${p.A2}° ${p.A3}°</code><button type="button" data-x="${i}" aria-label="Slett punkt ${i+1}">✕</button></li>`).join("");
+  lagKode();
+}
+const esc = t => t.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+$("prog").onclick = async e => {
+  if (kjorer) return;
+  const x = e.target.closest("[data-x]");
+  if (x){ program.splice(+x.dataset.x, 1); visProgram(); return; }
+  const li = e.target.closest("li"); if (!li) return;
+  const p = program[+li.dataset.i]; kjorer = true; krasj = false;
+  const ok = await flytt(p, +$("fart").value);
+  if (ok && p.lukk !== lukket) settGriper(p.lukk);
+  kjorer = false;
+};
+$("lagre").onclick = () => {
+  if (kjorer) return;
+  const n = $("navn").value.trim() || ("Punkt " + (program.length + 1));
+  program.push({A1:Math.round(a.A1), A2:Math.round(a.A2), A3:Math.round(a.A3), lukk:lukket, navn:n});
+  $("navn").value = ""; visProgram();
+  note(`Lagret «${n}». Flytt roboten og lagre neste punkt.`);
+};
+$("navn").onkeydown = e => { if (e.key === "Enter") $("lagre").click(); };
+$("slett").onclick = () => { if (!kjorer){ program.pop(); visProgram(); } };
+$("tom").onclick = () => { if (!kjorer){ program = []; visProgram(); } };
+$("eksempel").onclick = () => {
+  if (kjorer) return;
+  program = [
+    {A1:0,  A2:0,  A3:90,  lukk:false, navn:"Hjem"},
+    {A1:0,  A2:30, A3:110, lukk:false, navn:"Over A"},
+    {A1:0,  A2:40, A3:120, lukk:true,  navn:"Ned og grip"},
+    {A1:0,  A2:20, A3:100, lukk:true,  navn:"Løft"},
+    {A1:90, A2:20, A3:100, lukk:true,  navn:"Sving til B"},
+    {A1:90, A2:40, A3:120, lukk:false, navn:"Ned og slipp"},
+    {A1:90, A2:20, A3:100, lukk:false, navn:"Opp"},
+    {A1:0,  A2:0,  A3:90,  lukk:false, navn:"Hjem"}];
+  visProgram(); note("Eksempelet er lagt inn. Trykk ▶ Kjør.");
+};
+$("kjor").onclick = async () => {
+  if (kjorer || !program.length) { if (!program.length) note("Lagre minst ett punkt først."); return; }
+  kjorer = true; krasj = false; tegn();
+  for (let i = 0; i < program.length; i++){
+    visProgram(i);
+    const p = program[i];
+    if (!(await flytt(p, +$("fart").value))) break;
+    if (p.lukk !== lukket) settGriper(p.lukk);
+    await new Promise(r => setTimeout(r, ROLIG ? 0 : 150));
+  }
+  kjorer = false; visProgram();
+};
+$("hjem").onclick = async () => { if (kjorer) return; kjorer = true; krasj = false; await flytt(HJEM, +$("fart").value); kjorer = false; };
+$("griper").onclick = () => { if (!kjorer) settGriper(!lukket); };
+$("nyStart").onclick = () => { if (kjorer) return; a = {...HJEM}; krasj = false; nyKloss(); settGriper(false); visVerdier(); tegn(); note("Klossen står på A igjen."); };
+$("fart").oninput = () => { $("fartUt").textContent = $("fart").value.replace(".", ",") + " s"; lagKode(); };
+
+// ---------- Python-kode (samme oppbygging som RobotSekvens i Vg2 Robot og automasjon 1) ----------
+function pyTekst(){
+  const linjer = program.length ? program.map((p, i) => {
+    const d = `{'A1': ${p.A1}, 'A2': ${p.A2}, 'A3': ${p.A3}},`;
+    const forrige = i ? program[i-1].lukk : false;
+    const g = p.lukk !== forrige ? (p.lukk ? "  (griper: lukk)" : "  (griper: åpne)") : "";
+    return "    " + d.padEnd(36) + "# " + p.navn.replace(/[\r\n]/g, " ") + g;
+  }) : ["    {'A1': 0, 'A2': 0, 'A3': 90},       # Hjem (lagre egne punkter i simulatoren)"];
+  return [
+"# RobotSekvens - laget i Robotarm-simulatoren (simulatorer.vercel.app/robotarm.html)",
+"#",
+"# Kjør scriptet i Fusion: Utilities > Add-Ins > Scripts and Add-Ins.",
+"# Navnene A1, A2 og A3 må være de samme som navnene på leddene (joints) i Fusion.",
+"# Griperen står bare som kommentar. Scriptet beveger aksene.",
+"",
+"import adsk.core",
+"import adsk.fusion",
+"import traceback",
+"import math",
+"import time",
+"",
+"# ======== ENDRE HER ========",
+"",
+`FART = ${(+$("fart").value).toFixed(1)}        # sekunder per bevegelse`,
+"ANTALL_GANGER = 1 # hvor mange ganger sekvensen kjøres",
+"",
+"SEKVENS = [",
+...linjer,
+"]",
+"",
+"# ===========================",
+"",
+"",
+"def run(context):",
+"    app = adsk.core.Application.get()",
+"    ui = app.userInterface",
+"    try:",
+"        design = adsk.fusion.Design.cast(app.activeProduct)",
+"        ledd = {j.name: j for j in design.rootComponent.allJoints",
+"                if j.jointMotion.jointType == adsk.fusion.JointTypes.RevoluteJointType}",
+"",
+"        # Sjekk at alle navn finnes",
+"        ukjente = sorted({n for p in SEKVENS for n in p if n not in ledd})",
+"        if ukjente:",
+"            ui.messageBox('Finner ikke disse aksene: %s\\n\\nAkser i modellen: %s'",
+"                          % (', '.join(ukjente), ', '.join(sorted(ledd))))",
+"            return",
+"",
+"        def begrens(v, j):",
+"            lim = j.jointMotion.rotationLimits",
+"            if lim.isMinimumValueEnabled:",
+"                v = max(v, lim.minimumValue)",
+"            if lim.isMaximumValueEnabled:",
+"                v = min(v, lim.maximumValue)",
+"            return v",
+"",
+"        steg = max(2, int(FART * 25))",
+"        for _ in range(ANTALL_GANGER):",
+"            for punkt in SEKVENS:",
+"                start = {n: ledd[n].jointMotion.rotationValue for n in punkt}",
+"                mal = {n: begrens(math.radians(g), ledd[n]) for n, g in punkt.items()}",
+"                for i in range(1, steg + 1):",
+"                    t = 0.5 - 0.5 * math.cos(math.pi * i / steg)  # myk start og stopp",
+"                    for n in punkt:",
+"                        ledd[n].jointMotion.rotationValue = start[n] + (mal[n] - start[n]) * t",
+"                    app.activeViewport.refresh()",
+"                    adsk.doEvents()",
+"                    time.sleep(FART / steg)",
+"    except:",
+"        ui.messageBox('Feil:\\n{}'.format(traceback.format_exc()))",
+""].join("\n");
+}
+function lagKode(){
+  // Farger: kommentarer grå, tekst i anførselstegn gul
+  $("kode").innerHTML = pyTekst().split("\n").map(l => {
+    const i = l.indexOf("#");
+    const kode = i >= 0 ? l.slice(0, i) : l, kom = i >= 0 ? l.slice(i) : "";
+    return esc(kode).replace(/'[^']*'/g, m => `<span class="s">${m}</span>`) + (kom ? `<span class="c">${esc(kom)}</span>` : "");
+  }).join("\n");
+}
+$("kopier").onclick = async () => {
+  const t = pyTekst();
+  try { await navigator.clipboard.writeText(t); $("kopiMsg").textContent = "Kopiert!"; }
+  catch(e){ const r = document.createRange(); r.selectNodeContents($("kode")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $("kopiMsg").textContent = "Trykk Ctrl+C for å kopiere."; }
+  setTimeout(() => $("kopiMsg").textContent = "", 3000);
+};
+$("lastned").onclick = () => {
+  const url = URL.createObjectURL(new Blob([pyTekst()], {type:"text/x-python"}));
+  const l = document.createElement("a"); l.href = url; l.download = "RobotSekvens.py"; document.body.appendChild(l); l.click(); l.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+
+visProgram(); tegn();
+})();
+</script>
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body>
+</html>
