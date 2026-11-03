@@ -35,7 +35,7 @@ def finn_rotasjonsledd():
     if not design:
         return []
     funnet = []
-    for j in design.rootComponent.allJoints:
+    for j in list(design.rootComponent.allJoints) + list(design.rootComponent.allAsBuiltJoints):
         if j.isSuppressed:
             continue
         if j.jointMotion.jointType == adsk.fusion.JointTypes.RevoluteJointType:

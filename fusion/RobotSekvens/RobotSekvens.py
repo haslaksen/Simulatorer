@@ -36,7 +36,7 @@ def run(context):
     ui = app.userInterface
     try:
         design = adsk.fusion.Design.cast(app.activeProduct)
-        ledd = {j.name: j for j in design.rootComponent.allJoints
+        ledd = {j.name: j for j in list(design.rootComponent.allJoints) + list(design.rootComponent.allAsBuiltJoints)
                 if j.jointMotion.jointType == adsk.fusion.JointTypes.RevoluteJointType}
 
         # Sjekk at alle navn finnes

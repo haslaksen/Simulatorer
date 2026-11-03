@@ -225,7 +225,7 @@ details summary{cursor:pointer;font-weight:600}
         <ol class="steg" style="margin-top:10px">
           <li><span>Last ned <a href="https://search.abb.com/library/Download.aspx?DocumentID=9AKK107991A7944&amp;LanguageCode=en&amp;DocumentPartId=&amp;Action=Launch" target="_blank" rel="noopener">GoFa CRB 15000 5 kg, STEP (joint)</a> fra ABB. Pakk ut zip-fila.</span></li>
           <li><span>I Fusion: <b>File → Open → Open from my computer</b>. Velg fila som slutter på <b>.stp</b>.</span></li>
-          <li><span>Lag <b>Revolute joints</b> mellom delene, fra foten og ut. Kall dem <b>A1</b> til <b>A6</b>. Sett foten til <b>Ground</b>.</span></li>
+          <li><span>Lag <b>Revolute joints</b> (eller <b>As-built Joints</b>) mellom delene, fra foten og ut. Kall dem <b>A1</b> til <b>A6</b>. Sett foten til <b>Ground</b>.</span></li>
           <li><span>Kjør <b>RobotAkser</b> og sjekk at alle akser på 0° står som i simulatoren: overarmen rett opp, underarmen vannrett fram.</span></li>
           <li><span>Kjør <b>RobotSekvens</b>.</span></li>
         </ol>
@@ -482,7 +482,7 @@ function pyTekst(){
 "    ui = app.userInterface",
 "    try:",
 "        design = adsk.fusion.Design.cast(app.activeProduct)",
-"        ledd = {j.name: j for j in design.rootComponent.allJoints",
+"        ledd = {j.name: j for j in list(design.rootComponent.allJoints) + list(design.rootComponent.allAsBuiltJoints)",
 "                if j.jointMotion.jointType == adsk.fusion.JointTypes.RevoluteJointType}",
 "",
 "        # Sjekk at alle navn finnes",
