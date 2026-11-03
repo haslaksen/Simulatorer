@@ -3,8 +3,8 @@
 # Elevoppgave: endre SEKVENS under, kjør scriptet og se roboten bevege seg.
 # Navnene (A1, A2 ...) må være de samme som navnene på joints i Fusion.
 # Akser som ikke er nevnt i et punkt, blir stående der de er.
-# Vinklene under passer til roboten i leksjonen. Din robot kan trenge andre vinkler:
-# finn dem først med glidebryterne i RobotAkser.
+# Vinklene under passer til GoFa-roboten fra LagRobot (alle akser 0 = hjem).
+# En annen robot kan trenge andre vinkler: finn dem først med glidebryterne i RobotAkser.
 
 import adsk.core
 import adsk.fusion
@@ -18,13 +18,14 @@ FART = 1.0        # sekunder per bevegelse
 ANTALL_GANGER = 1 # hvor mange ganger sekvensen kjøres
 
 SEKVENS = [
-    {'A1': 0,  'A2': 0,  'A3': 90},   # Hjem
-    {'A2': 30, 'A3': 110},            # Over delen
-    {'A2': 40, 'A3': 120},            # Ned og grip
-    {'A2': 20, 'A3': 100},            # Løft
-    {'A1': 90},                       # Sving
-    {'A2': 40, 'A3': 120},            # Ned og slipp
-    {'A1': 0,  'A2': 0,  'A3': 90},   # Hjem
+    {'A1': 0, 'A2': 0,  'A3': 0,  'A5': 0},   # Hjem
+    {'A2': 20, 'A3': 30, 'A5': 40},           # Over delen
+    {'A2': 35, 'A3': 35, 'A5': 20},           # Ned og grip
+    {'A2': 20, 'A3': 30, 'A5': 40},           # Løft
+    {'A1': 90},                               # Sving
+    {'A2': 35, 'A3': 35, 'A5': 20},           # Ned og slipp
+    {'A2': 20, 'A3': 30, 'A5': 40},           # Opp
+    {'A1': 0, 'A2': 0,  'A3': 0,  'A5': 0},   # Hjem
 ]
 
 # ===========================
