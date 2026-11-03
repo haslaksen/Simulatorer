@@ -267,8 +267,9 @@ function caliper(p,o){
   const C=c(),x=S.v/100,s=C.L/C.n,d=decomp(S.v);
   let g=defs(p);
   if(S.mode==='practice'&&x>0) g+=`<rect class="wk" x="0" y="36" width="${x}" height="22" fill="url(#${p}wk)"/>`;
+  g+=`<path class="edge" d="M-9 0 V-4 L-1.2 -11.5 L0 -17 H1.2 L1.7 -13 L-3 -4.5 V0 Z" fill="url(#${p}st)"/>`;
   g+=`<rect class="edge" x="-18" y="0" width="${MAX+30}" height="18" rx="1" fill="url(#${p}st)"/>`;
-  g+=`<path class="edge" d="M-18 18 H0 V60 L-5 74 L-12 74 L-18 46 Z" fill="url(#${p}st)"/>`;
+  g+=`<path class="edge" d="M-18 18 H0 V66 L-1.4 68 L-18 38 Z" fill="url(#${p}st)"/>`;
   g+=`<text class="small" x="-15" y="8" font-size="2.6">mm</text>`;
   for(let i=0;i<=MAX;i++){
     const len=i%10===0?4.4:i%5===0?3.2:2.2;
@@ -276,8 +277,9 @@ function caliper(p,o){
     if(i%10===0) g+=`<text class="lbl" x="${i}" y="5.3" font-size="3.6" text-anchor="middle">${i/10}</text>`;
   }
   // slider
+  g+=`<path class="edge" d="M${x+9} -2.5 V-4 L${x+1.2} -11.5 L${x} -17 H${x-1.2} L${x-1.7} -13 L${x+3} -4.5 V-2.5 Z" fill="url(#${p}st)"/>`;
   g+=`<rect class="edge" x="${x-3}" y="-2.5" width="${C.L+11}" height="3" rx="1" fill="url(#${p}st)"/>`;
-  g+=`<path class="edge" d="M${x} 20 V60 L${x+5} 74 L${x+12} 74 L${x+18} 46 V20 Z" fill="url(#${p}st)"/>`;
+  g+=`<path class="edge" d="M${x} 20 V66 L${x+1.4} 68 L${x+18} 38 V20 Z" fill="url(#${p}st)"/>`;
   g+=`<rect class="edge" x="${x-3}" y="10.5" width="${C.L+11}" height="18.5" rx="1.5" fill="url(#${p}st)"/>`;
   g+=`<rect class="plate" x="${x-1.2}" y="10.5" width="${C.L+3.4}" height="8.4"/>`;
   g+=`<text class="small" x="${x+C.L+3.2}" y="23.5" font-size="1.7" text-anchor="end">${rs()} mm</text>`;
@@ -307,7 +309,7 @@ function loupeGeom(){
 }
 
 function render(){
-  ov.setAttribute('viewBox',`-22 -6 ${MAX+34} 86`);
+  ov.setAttribute('viewBox',`-22 -19 ${MAX+34} 89`);
   const L=loupeGeom();
   ov.innerHTML=caliper('o')+`<rect class="lens" x="${L.x0}" y="${L.y0}" width="${L.w}" height="${L.h}" rx=".6"/>`;
   ov.classList.toggle('drag',S.mode==='free');
