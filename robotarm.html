@@ -101,6 +101,9 @@ details summary{cursor:pointer;font-weight:600}
 .lk-zoom{display:none}
 .lk-big .lk-zoom{display:inline-block;min-width:36px;font-weight:700}
 .lk-big .lk-rot{scroll-margin-top:44px}
+.lk-lay .lk-rot{display:grid!important;max-width:none!important;width:max-content!important;margin:0 auto!important;align-items:start;align-content:start;gap:16px!important;grid-auto-flow:row dense}
+.lk-lay .lk-rot>.grid{display:contents!important}
+.lk-lay .lk-rot>*{margin:0!important;min-width:0;max-width:none}
 #lkBig{font-weight:700}
 .lk-big #lkBig{background:var(--lk-orange);border-color:var(--lk-orange);color:#fff}
 :root{--lk-w:1040px}
@@ -488,10 +491,26 @@ var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
 b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
 document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};
 var g=document.getElementById("lkBig"),big=false,f=1,fs=document.fullscreenElement!==undefined;
-function pass(){if(!big||!root)return;r.style.setProperty("--lk-scale",1);var w=root.getBoundingClientRect().width||1;
-var z=Math.max(.5,Math.min(2.5,Math.floor(Math.min(2,(r.clientWidth-24)/w)*f*100)/100));r.style.setProperty("--lk-scale",z);window.dispatchEvent(new Event("resize"));}
+function vis(e){return getComputedStyle(e).display!=="none"&&e.getBoundingClientRect().height>0;}
+var mrk=[];function nul(){mrk.forEach(function(e){e.style.gridColumn="";e.style.gridRow="";});mrk=[];root.style.gridTemplateColumns="";r.classList.remove("lk-lay");}
+function lay(k,W){nul();if(!k)return;var kids=[].slice.call(root.children).filter(vis),gi=-1;
+kids.forEach(function(e,n){if(gi<0&&e.classList.contains("grid")&&e.children.length>1)gi=n;});
+var L,R;if(gi>0){L=kids.slice(0,gi);R=[].slice.call(kids[gi].children).filter(vis).concat(kids.slice(gi+1));}
+else{var n=kids.findIndex(function(e){return e.getBoundingClientRect().height>300;});if(n<0||n===kids.length-1)return false;L=kids.slice(0,n+1);R=kids.slice(n+1);}
+var PW=500;R=R.map(function(e){return[e,e.getBoundingClientRect().width>PW*1.6&&k>1?2:1];});
+r.classList.add("lk-lay");root.style.gridTemplateColumns=W+"px repeat("+k+","+PW+"px)";
+L.forEach(function(e,n){var last=n===L.length-1;e.style.gridColumn=last?"1":"1 / -1";e.style.gridRow=last?(n+1)+" / span "+(R.length+2):String(n+1);mrk.push(e);});
+var c=0;R.forEach(function(x){if(c+x[1]>k)c=0;x[0].style.gridColumn=(2+c)+" / span "+x[1];x[0].style.gridRow="auto";c=(c+x[1])%k;mrk.push(x[0]);});return true;}
+function pass(){if(!big||!root)return;r.style.setProperty("--lk-scale",1);nul();
+var q=root.getBoundingClientRect(),W=q.width,vw=r.clientWidth-24,vh=window.innerHeight-52,best=0,bz=0;
+if(q.width>=r.clientWidth-2&&q.height>=window.innerHeight-60&&q.height<=window.innerHeight+2)return;
+for(var k=0;k<4;k++){if(lay(k,W)===false)break;var p=root.getBoundingClientRect(),z=Math.min(2,vw/p.width,vh/p.height);if(z>bz+.03){bz=z;best=k;}}
+lay(best,W);var z=Math.max(.3,Math.min(2.5,Math.floor(bz*f*100)/100));r.style.setProperty("--lk-scale",z);window.dispatchEvent(new Event("resize"));
+if(f<=1)sjekk(z,vw,vh,3);}
+function sjekk(z,vw,vh,n){requestAnimationFrame(function(){var p=root.getBoundingClientRect(),m=Math.min(1,(vw+24)/p.width,vh/p.height);
+if(m<.99&&n>0){z=Math.max(.3,Math.floor(z*m*100)/100);r.style.setProperty("--lk-scale",z);window.dispatchEvent(new Event("resize"));sjekk(z,vw,vh,n-1);}});}
 function sett(on){if(on===big)return;big=on;r.classList.toggle("lk-big",on);g.textContent=on?"✕ Avslutt storskjerm":"⛶ Storskjerm";
-f=1;if(on){pass();if(root)root.scrollIntoView();}else{s=1;b.textContent="A+";r.style.setProperty("--lk-scale",1);window.dispatchEvent(new Event("resize"));window.scrollTo(0,0);}}
+f=1;if(on){pass();if(root)root.scrollIntoView();}else{s=1;b.textContent="A+";nul();r.style.setProperty("--lk-scale",1);window.dispatchEvent(new Event("resize"));window.scrollTo(0,0);}}
 document.getElementById("lkMinus").onclick=function(){f=Math.max(.5,f-.1);pass();};
 document.getElementById("lkPlus").onclick=function(){f=Math.min(1.5,f+.1);pass();};
 g.onclick=function(){var on=!big;sett(on);try{if(on&&fs&&!document.fullscreenElement)r.requestFullscreen().catch(function(){});

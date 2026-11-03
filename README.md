@@ -15,7 +15,7 @@ Interaktive simulatorer for Teknologi- og industrifag (Vg1 TIF og Vg2 Industrite
 
 `index.html` er oversiktssiden.
 
-**Storskjerm:** knappen «⛶ Storskjerm» øverst til høyre skjuler innledningen, går i fullskjerm og forstørrer simulatoren så den fyller bredden (for fremviser). A− og A+ justerer størrelsen, Esc avslutter.
+**Storskjerm:** knappen «⛶ Storskjerm» øverst til høyre skjuler innledningen, går i fullskjerm, legger panelene ved siden av simulatoren og skalerer alt så hele simulatoren får plass på skjermen uten å scrolle (for fremviser). A− og A+ justerer størrelsen, Esc avslutter. Simulatorer som velger oppsett etter bredden, må måle med `clientWidth` (ikke `getBoundingClientRect`), ellers bytter de til mobiloppsett når de skaleres ned.
 
 ## Leksjonsstilen
 
