@@ -185,7 +185,8 @@ details summary{cursor:pointer;font-weight:600}
       <p class="hint" style="font-size:15px;color:var(--ink)">Punktene dine blir til et Python-script. Last ned alle scriptene, så kan du kjøre programmet ditt på en robot i <b>Autodesk Fusion</b>.</p>
       <div class="rad">
         <button class="btn primary" id="lastzip" type="button">⬇ Last ned alle script (zip)</button>
-        <span id="zipMsg" class="hint" role="status"></span>
+        <button class="btn" id="kopier" type="button">📋 Kopier Python-koden</button>
+        <span id="zipMsg" class="hint" role="status"></span><span id="kopiMsg" class="hint" role="status"></span>
       </div>
       <div class="filer">
         <div><b>LagRobot</b><span>Bygger roboten for deg: fot, tre ledd (A1, A2, A3), griper, kloss og kasse.</span></div>
@@ -201,14 +202,8 @@ details summary{cursor:pointer;font-weight:600}
         <li><span>Velg <b>RobotSekvens</b> og trykk <b>Run</b>. Roboten kjører punktene dine.</span></li>
       </ol>
       <p class="hint"><b>Nye punkter?</b> Last ned på nytt. Eller velg RobotSekvens, trykk <b>Edit</b>, slett alt og lim inn koden under. <b>Egen robot?</b> Leddene må hete A1, A2 og A3. Griperen står bare som kommentar (#), scriptet beveger aksene.</p>
-      <details>
-        <summary>Se koden i RobotSekvens</summary>
-        <div class="rad" style="margin:8px 0">
-          <button class="btn" id="kopier" type="button">📋 Kopier koden</button>
-          <span id="kopiMsg" class="hint" role="status"></span>
-        </div>
-        <pre class="kode" id="kode"></pre>
-      </details>
+      <h3 class="h3">Python-koden i RobotSekvens</h3>
+      <pre class="kode" id="kode"></pre>
     </section>
   </div>
 </div>
