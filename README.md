@@ -1,6 +1,6 @@
 # Simulatorer
 
-Interaktive simulatorer for Teknologi- og industrifag (Vg1 TIF og Vg2 Industriteknologi). Hver simulator er én frittstående HTML-fil, og ser ut som leksjonene: samme toppstripe (A+ og lys/mørk), samme farger og skrift, og en kort «Slik gjør du» i fire steg før selve simulatoren.
+Interaktive simulatorer for Teknologi- og industrifag (Vg1 TIF og Vg2 Industriteknologi). Hver simulator er én frittstående HTML-fil, og ser ut som leksjonene: samme toppstripe (Storskjerm, A+ og lys/mørk), samme farger og skrift, og en kort «Slik gjør du» i fire steg før selve simulatoren.
 
 | Emne | Simulatorer |
 |---|---|
@@ -14,6 +14,8 @@ Interaktive simulatorer for Teknologi- og industrifag (Vg1 TIF og Vg2 Industrite
 | Idrett (Vg3 Treningslære) | `biomekanikk.html` |
 
 `index.html` er oversiktssiden.
+
+**Storskjerm:** knappen «⛶ Storskjerm» øverst til høyre skjuler innledningen, går i fullskjerm og forstørrer simulatoren så den fyller bredden (for fremviser). A− og A+ justerer størrelsen, Esc avslutter.
 
 ## Leksjonsstilen
 
