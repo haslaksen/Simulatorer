@@ -2,8 +2,8 @@
 #
 # Scriptet lager et nytt design med:
 #   - Fot (står fast), Sokkel (A1), Overarm (A2), Underarm (A3), Håndledd med griper (A5)
-#   - fire rotasjonsledd (Revolute joints) som heter A1, A2, A3 og A5, med aksegrenser
-#   - en kloss på A og en kasse på B, som i Robotarm-simulatoren
+#   - fire rotasjonsledd (as-built Revolute joints) som heter A1, A2, A3 og A5, med aksegrenser
+#   - en kloss på A og en kasse på B (to egne deler), som i Robotarm-simulatoren
 # Målene er fra ABBs produktspesifikasjon (forenklet). Alle akser på 0 = hjem, som på GoFa:
 # overarmen rett opp og underarmen vannrett fram. A4 og A6 er ikke med.
 # Etterpå kan du kjøre RobotAkser eller RobotSekvens.
@@ -72,9 +72,10 @@ def leddpunkt(occ, x, z):
 
 
 def lag_ledd(root, navn, bevegelig, fast, x, z, retning):
-    inp = root.joints.createInput(leddpunkt(bevegelig, x, z), leddpunkt(fast, x, z))
+    # As-built joint: delene står allerede riktig, så Fusion flytter dem ikke når leddet lages
+    inp = root.asBuiltJoints.createInput(bevegelig, fast, leddpunkt(bevegelig, x, z))
     inp.setAsRevoluteJointMotion(retning)
-    j = root.joints.add(inp)
+    j = root.asBuiltJoints.add(inp)
     j.name = navn
     lo, hi = GRENSER[navn]
     lim = j.jointMotion.rotationLimits
@@ -85,6 +86,15 @@ def lag_ledd(root, navn, bevegelig, fast, x, z, retning):
     lim.isRestValueEnabled = True
     lim.restValue = 0
     return j
+
+
+def snur(j, occ, punkt):
+    """Snur leddet 30 grader og sjekker at delen flytter seg. Gir punktet etter snuingen."""
+    j.jointMotion.rotationValue = math.radians(30)
+    t = punkt.copy()
+    t.transformBy(occ.transform2)
+    j.jointMotion.rotationValue = 0
+    return t
 
 
 def run(context):
@@ -125,38 +135,46 @@ def run(context):
                                       boks(tbm, Wx + 160, 0, Uz + 50, 80, 20, 14),
                                       boks(tbm, Wx + 160, 0, Uz - 50, 80, 20, 14)])
 
-        # Kloss på A (retning X) og kasse på B (retning Y), står fast
-        bord = ny_del(root, 'Kloss A og kasse B')
+        # Klossen på A (retning X) er en egen del, så den kan flyttes for seg
+        kloss = ny_del(root, 'Kloss A')
+        legg_til(kloss.component, [boks(tbm, REK, 0, 50, 100, 100, 100)])
+
+        # Kassa på B (retning Y) står fast
+        kasse = ny_del(root, 'Kasse B')
         k, v, h = 250, 8, 150
-        legg_til(bord.component, [boks(tbm, REK, 0, 50, 100, 100, 100),
-                                  boks(tbm, 0, REK, 3, k, k, 6),
+        legg_til(kasse.component, [boks(tbm, 0, REK, 3, k, k, 6),
                                   boks(tbm, -k / 2 + v / 2, REK, h / 2, v, k, h),
                                   boks(tbm, k / 2 - v / 2, REK, h / 2, v, k, h),
                                   boks(tbm, 0, REK - k / 2 + v / 2, h / 2, k, v, h),
                                   boks(tbm, 0, REK + k / 2 - v / 2, h / 2, k, v, h)])
         fot.isGrounded = True
-        bord.isGrounded = True
+        kasse.isGrounded = True
 
         # Rotasjonsleddene
         Z = adsk.fusion.JointDirections.ZAxisJointDirection
         Y = adsk.fusion.JointDirections.YAxisJointDirection
-        lag_ledd(root, 'A1', sokkel, fot, 0, FOT, Z)
-        lag_ledd(root, 'A2', overarm, sokkel, 0, A2z, Y)
+        a1 = lag_ledd(root, 'A1', sokkel, fot, 0, FOT, Z)
+        a2 = lag_ledd(root, 'A2', overarm, sokkel, 0, A2z, Y)
         a3 = lag_ledd(root, 'A3', underarm, overarm, 0, A3z, Y)
-        lag_ledd(root, 'A5', handledd, underarm, Wx, Uz, Y)
+        a5 = lag_ledd(root, 'A5', handledd, underarm, Wx, Uz, Y)
 
-        # Sjekk at pluss-vinkel på A3 vipper underarmen ned, som på GoFa og i simulatoren
-        a3.jointMotion.rotationValue = math.radians(30)
-        tupp = P(Wx, 0, Uz)
-        tupp.transformBy(underarm.transform2)
-        a3.jointMotion.rotationValue = 0
+        # Sjekk at hvert ledd faktisk snur delen sin
+        tupp = P(Wx + GRIPER, 0, Uz)
+        test = [('A1', a1, sokkel, P(75, 0, A2z)), ('A2', a2, overarm, P(0, 0, A3z)),
+                ('A3', a3, underarm, P(Wx, 0, Uz)), ('A5', a5, handledd, tupp)]
+        stive = [n for n, j, occ, p in test if snur(j, occ, p).distanceTo(p) < 0.1]
+        ned = snur(a3, underarm, P(Wx, 0, Uz)).z < cm(Uz)   # pluss på A3 skal vippe underarmen ned
         app.activeViewport.fit()
 
-        if tupp.z > cm(Uz):
+        if stive:
+            ui.messageBox('Roboten er laget, men disse leddene snur seg ikke: ' + ', '.join(stive) + '.\n'
+                          'Si fra til læreren.')
+        elif not ned:
             ui.messageBox('Roboten er laget, men A2, A3 og A5 går motsatt vei av simulatoren.\n'
                           'Sett minus foran vinklene til A2, A3 og A5 i koden, eller si fra til læreren.')
         else:
             ui.messageBox('Roboten (forenklet ABB GoFa) er laget!\n\nLeddene heter A1, A2, A3 og A5. '
-                          'Alle på 0 er hjem.\nKjør nå RobotAkser (glidebrytere) eller RobotSekvens (punktene dine).')
+                          'Alle på 0 er hjem.\nDra i armen for å snu den, eller kjør RobotAkser '
+                          '(glidebrytere) eller RobotSekvens (punktene dine).')
     except:
         ui.messageBox('Feil:\n{}'.format(traceback.format_exc()))
