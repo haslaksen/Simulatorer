@@ -155,7 +155,7 @@ SIMULATORER = [
          steg=["Dra i <b>A1</b>, <b>A2</b> og <b>A3</b> til griperen står rundt klossen. Trykk på griperen for å lukke.",
                "Lagre et punkt for hver bevegelse: hjem, over, ned, grip, løft, sving, ned, slipp.",
                "Trykk <b>Kjør</b>. Treffer armen bordet, stopper programmet.",
-               "Kopier Python-koden og kjør den i Fusion."],
+               "Last ned alle scriptene og kjør roboten i Fusion."],
          rot=".wrap", skjul=[".wrap > header"], farger=VERKSTED),
     dict(fil="strekkprove.html", navn="Strekkprøve", emne="Materiallære",
          ingress="Dra en prøvestav til den ryker, og se hvordan spenning–tøyningskurven bygger seg opp.",

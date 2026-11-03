@@ -64,6 +64,13 @@ ol.prog:empty::after{content:"Ingen punkter ennå.";color:var(--muted);font-size
 pre.kode{margin:0;font:13.5px/1.45 var(--mono);background:#10161a;color:#d7e3ea;border-radius:10px;padding:12px 14px;overflow:auto;max-height:420px;white-space:pre}
 pre.kode .c{color:#7f9aa8}
 pre.kode .s{color:#ffc66d}
+.filer{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.filer div{border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:8px;padding:8px 12px;display:grid;font-size:15px}
+.filer span{color:var(--muted);font-size:14px}
+.h3{font:700 17px var(--display);margin:4px 0 0}
+ol.steg{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:8px}
+ol.steg li{counter-increment:s;display:flex;gap:10px;align-items:baseline;font-size:15.5px}
+ol.steg li::before{content:counter(s);flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:700;display:grid;place-items:center;font-size:14px}
 .wide{grid-column:1/-1}
 details summary{cursor:pointer;font-weight:600}
 </style>
@@ -122,7 +129,7 @@ details summary{cursor:pointer;font-weight:600}
     </div>
     <div class="lk-card">
       <h2>Slik gjør du</h2>
-      <ol class="lk-steps"><li><span>Dra i <b>A1</b>, <b>A2</b> og <b>A3</b> til griperen står rundt klossen. Trykk på griperen for å lukke.</span></li><li><span>Lagre et punkt for hver bevegelse: hjem, over, ned, grip, løft, sving, ned, slipp.</span></li><li><span>Trykk <b>Kjør</b>. Treffer armen bordet, stopper programmet.</span></li><li><span>Kopier Python-koden og kjør den i Fusion.</span></li></ol>
+      <ol class="lk-steps"><li><span>Dra i <b>A1</b>, <b>A2</b> og <b>A3</b> til griperen står rundt klossen. Trykk på griperen for å lukke.</span></li><li><span>Lagre et punkt for hver bevegelse: hjem, over, ned, grip, løft, sving, ned, slipp.</span></li><li><span>Trykk <b>Kjør</b>. Treffer armen bordet, stopper programmet.</span></li><li><span>Last ned alle scriptene og kjør roboten i Fusion.</span></li></ol>
       
     </div>
   </div>
@@ -174,23 +181,33 @@ details summary{cursor:pointer;font-weight:600}
     </section>
 
     <section class="card wide" aria-labelledby="h-kode">
-      <h2 id="h-kode">3 · Python-kode for Fusion</h2>
-      <p class="hint" style="font-size:15px;color:var(--ink)">Punktene dine blir til et Python-script. Fusion kjører scriptet og beveger leddene <b>A1</b>, <b>A2</b> og <b>A3</b> i robotmodellen.</p>
+      <h2 id="h-kode">3 · Kjør roboten i Fusion</h2>
+      <p class="hint" style="font-size:15px;color:var(--ink)">Punktene dine blir til et Python-script. Last ned alle scriptene, så kan du kjøre programmet ditt på en robot i <b>Autodesk Fusion</b>.</p>
       <div class="rad">
-        <button class="btn primary" id="kopier" type="button">📋 Kopier koden</button>
-        <button class="btn" id="lastned" type="button">⬇ Last ned RobotSekvens.py</button>
-        <span id="kopiMsg" class="hint" role="status"></span>
+        <button class="btn primary" id="lastzip" type="button">⬇ Last ned alle script (zip)</button>
+        <span id="zipMsg" class="hint" role="status"></span>
       </div>
-      <pre class="kode" id="kode"></pre>
+      <div class="filer">
+        <div><b>LagRobot</b><span>Bygger roboten for deg: fot, tre ledd (A1, A2, A3), griper, kloss og kasse.</span></div>
+        <div><b>RobotAkser</b><span>Glidebrytere for hver akse inne i Fusion. Lagre punkter og kjør.</span></div>
+        <div><b>RobotSekvens</b><span>Kjører punktene du lagret her i simulatoren.</span></div>
+      </div>
+      <h3 class="h3">Slik gjør du</h3>
+      <ol class="steg">
+        <li><span><b>Pakk ut</b> zip-fila: høyreklikk → <b>Pakk ut alle</b>. Du får mappa <b>robotscript-for-fusion</b> med tre mapper inni.</span></li>
+        <li><span>Åpne Fusion. Trykk <b>Shift + S</b> (eller <b>Utilities → Add-Ins → Scripts and Add-Ins</b>).</span></li>
+        <li><span>Trykk <b>+</b> og velg <b>Script or add-in from device</b>. Velg mappa <b>LagRobot</b>. Gjør det samme med <b>RobotAkser</b> og <b>RobotSekvens</b>.</span></li>
+        <li><span>Velg <b>LagRobot</b> og trykk <b>Run</b>. Fusion lager et nytt design med roboten. Det tar noen sekunder.</span></li>
+        <li><span>Velg <b>RobotSekvens</b> og trykk <b>Run</b>. Roboten kjører punktene dine.</span></li>
+      </ol>
+      <p class="hint"><b>Nye punkter?</b> Last ned på nytt. Eller velg RobotSekvens, trykk <b>Edit</b>, slett alt og lim inn koden under. <b>Egen robot?</b> Leddene må hete A1, A2 og A3. Griperen står bare som kommentar (#), scriptet beveger aksene.</p>
       <details>
-        <summary>Slik kjører du koden i Fusion</summary>
-        <ol>
-          <li>Robotmodellen må ha tre rotasjonsledd (<i>Revolute joints</i>) som heter <b>A1</b>, <b>A2</b> og <b>A3</b>.</li>
-          <li>I Fusion: <b>Utilities → Add-Ins → Scripts and Add-Ins</b>. Trykk <b>+ → Create script</b>, velg <b>Python</b> og kall det <b>RobotSekvens</b>.</li>
-          <li>Trykk <b>Edit</b>. Slett alt og lim inn koden. Lagre.</li>
-          <li>Åpne robotmodellen. Velg scriptet og trykk <b>Run</b>.</li>
-        </ol>
-        <p class="hint">Griperen står som kommentar (#) i koden. Scriptet beveger bare aksene. Vinklene passer til roboten i simulatoren. En annen robot kan trenge andre vinkler.</p>
+        <summary>Se koden i RobotSekvens</summary>
+        <div class="rad" style="margin:8px 0">
+          <button class="btn" id="kopier" type="button">📋 Kopier koden</button>
+          <span id="kopiMsg" class="hint" role="status"></span>
+        </div>
+        <pre class="kode" id="kode"></pre>
       </details>
     </section>
   </div>
@@ -473,10 +490,51 @@ $("kopier").onclick = async () => {
   catch(e){ const r = document.createRange(); r.selectNodeContents($("kode")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $("kopiMsg").textContent = "Trykk Ctrl+C for å kopiere."; }
   setTimeout(() => $("kopiMsg").textContent = "", 3000);
 };
-$("lastned").onclick = () => {
-  const url = URL.createObjectURL(new Blob([pyTekst()], {type:"text/x-python"}));
-  const l = document.createElement("a"); l.href = url; l.download = "RobotSekvens.py"; document.body.appendChild(l); l.click(); l.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+// ---------- Last ned alle script som én zip (LagRobot, RobotAkser og RobotSekvens med elevens punkter) ----------
+const CRC = (() => { const t = []; for (let n = 0; n < 256; n++){ let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+const crc32 = b => { let c = 0xFFFFFFFF; for (const x of b) c = CRC[(c ^ x) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+function lagZip(filer){  // filer: [[navn, tekst]], lagres uten komprimering
+  const enc = new TextEncoder(), deler = [], sentral = []; let pos = 0;
+  const d = new Date(), tid = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1), dato = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  for (const [navn, tekst] of filer){
+    const n = enc.encode(navn), data = enc.encode(tekst), c = crc32(data);
+    const h = new DataView(new ArrayBuffer(30));
+    [[0,0x04034b50,4],[4,20,2],[6,0x0800,2],[8,0,2],[10,tid,2],[12,dato,2],[14,c,4],[18,data.length,4],[22,data.length,4],[26,n.length,2],[28,0,2]].forEach(([o,v,l]) => l === 4 ? h.setUint32(o, v, true) : h.setUint16(o, v, true));
+    deler.push(new Uint8Array(h.buffer), n, data);
+    const z = new DataView(new ArrayBuffer(46));
+    [[0,0x02014b50,4],[4,20,2],[6,20,2],[8,0x0800,2],[10,0,2],[12,tid,2],[14,dato,2],[16,c,4],[20,data.length,4],[24,data.length,4],[28,n.length,2],[30,0,2],[32,0,2],[34,0,2],[36,0,2],[38,0,4],[42,pos,4]].forEach(([o,v,l]) => l === 4 ? z.setUint32(o, v, true) : z.setUint16(o, v, true));
+    sentral.push(new Uint8Array(z.buffer), n);
+    pos += 30 + n.length + data.length;
+  }
+  const str = sentral.reduce((s, x) => s + x.length, 0), e = new DataView(new ArrayBuffer(22));
+  [[0,0x06054b50,4],[8,filer.length,2],[10,filer.length,2],[12,str,4],[16,pos,4]].forEach(([o,v,l]) => l === 4 ? e.setUint32(o, v, true) : e.setUint16(o, v, true));
+  return new Blob([...deler, ...sentral, new Uint8Array(e.buffer)], {type:"application/zip"});
+}
+const LES_MEG = `Robotscript for Fusion (fra Robotarm-simulatoren)
+
+1. Pakk ut zip-fila.
+2. I Fusion: Shift + S (Utilities > Add-Ins > Scripts and Add-Ins).
+3. Trykk + og velg "Script or add-in from device". Velg mappa LagRobot.
+   Gjør det samme med RobotAkser og RobotSekvens.
+4. Kjør LagRobot (Run). Fusion lager et nytt design med roboten.
+5. Kjør RobotSekvens. Roboten kjører punktene fra simulatoren.
+   Eller kjør RobotAkser for å styre aksene med glidebrytere.
+
+Leddene heter A1 (fot), A2 (skulder) og A3 (albue).
+`;
+$("lastzip").onclick = async () => {
+  const msg = $("zipMsg"); msg.textContent = "Lager zip-fila …";
+  try {
+    const hent = async f => { const r = await fetch("fusion/" + f); if (!r.ok) throw new Error(f); return r.text(); };
+    const navn = ["LagRobot/LagRobot.py", "LagRobot/LagRobot.manifest", "RobotAkser/RobotAkser.py", "RobotAkser/RobotAkser.manifest", "RobotSekvens/RobotSekvens.manifest"];
+    const tekster = await Promise.all(navn.map(hent));
+    const filer = navn.map((n, i) => ["robotscript-for-fusion/" + n, tekster[i]]);
+    filer.push(["robotscript-for-fusion/RobotSekvens/RobotSekvens.py", pyTekst()], ["robotscript-for-fusion/LES-MEG.txt", LES_MEG]);
+    const url = URL.createObjectURL(lagZip(filer));
+    const l = document.createElement("a"); l.href = url; l.download = "robotscript-for-fusion.zip"; document.body.appendChild(l); l.click(); l.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    msg.textContent = program.length ? `Lastet ned, med dine ${program.length} punkter.` : "Lastet ned. Lagre punkter først hvis RobotSekvens skal kjøre programmet ditt.";
+  } catch (e) { msg.textContent = "Fikk ikke lastet ned. Åpne simulatoren på simulatorer.vercel.app og prøv igjen."; }
 };
 
 visProgram(); tegn();

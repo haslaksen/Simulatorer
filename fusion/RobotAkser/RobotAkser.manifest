@@ -1,0 +1,10 @@
+{
+	"autodeskProduct": "Fusion",
+	"type": "script",
+	"author": "Håkon",
+	"description": {
+		"": "Styr robotens akser (Revolute joints) med glidebrytere, lagre punkter og kjør sekvens."
+	},
+	"supportedOS": "windows|mac",
+	"editEnabled": true
+}

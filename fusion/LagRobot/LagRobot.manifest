@@ -1,0 +1,10 @@
+{
+	"autodeskProduct": "Fusion",
+	"type": "script",
+	"author": "Håkon",
+	"description": {
+		"": "Bygger en enkel robotarm med leddene A1, A2 og A3, en kloss og en kasse (passer til Robotarm-simulatoren)."
+	},
+	"supportedOS": "windows|mac",
+	"editEnabled": true
+}
