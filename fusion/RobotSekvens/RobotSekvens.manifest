@@ -1,0 +1,10 @@
+{
+	"autodeskProduct": "Fusion",
+	"type": "script",
+	"author": "Håkon",
+	"description": {
+		"": "Kjør en robotsekvens skrevet som en liste med aksevinkler (elevoppgave)."
+	},
+	"supportedOS": "windows|mac",
+	"editEnabled": true
+}
