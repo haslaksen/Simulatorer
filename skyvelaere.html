@@ -166,6 +166,13 @@ td{font-family:var(--mono)}
 .wk{stroke:var(--work-lo);stroke-width:1;vector-effect:non-scaling-stroke}
 .knurl{stroke:var(--steel-lo);stroke-width:1;vector-effect:non-scaling-stroke}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+/* Liten PC: oppgaven står til høyre for skyvelæra, så begge synes uten å rulle */
+@media (min-width:1000px){
+  main.wrap{max-width:1240px;display:grid;grid-template-columns:minmax(0,1fr) 290px;align-items:start}
+  main.wrap>.toolbar,main.wrap>.howto{grid-column:1/-1}
+  main.wrap>.bench{grid-column:1;grid-row:2}
+  main.wrap>#practice,main.wrap>#free{grid-column:2;grid-row:2;position:sticky;top:72px}
+}
 </style>
 
 <main class="wrap">

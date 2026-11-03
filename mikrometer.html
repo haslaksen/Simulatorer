@@ -133,6 +133,15 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .chk input{accent-color:var(--accent);width:18px;height:18px}
 .hint{font-size:13px;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* Liten PC: oppgaven står til høyre for mikrometeret, så begge synes uten å rulle */
+@media (min-width:1000px){
+  .wrap{max-width:1300px;grid-template-columns:minmax(0,1fr) 300px;align-items:start}
+  .wrap>header{grid-column:1/-1}
+  .wrap>.stage{grid-column:1;grid-row:2}
+  .wrap>.grid{grid-column:2;grid-row:2;grid-template-columns:1fr}
+  .wrap>.grid>#taskcard{order:-1}
+  #lupe{height:clamp(170px,calc(100vh - 560px),300px)}
+}
 </style>
 
 <div class="wrap">
@@ -342,8 +351,10 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   function drawOver(){
     const W = over.getBoundingClientRect().width;
     const big = geom(1), cur = geom(rng);
-    const p = Math.min((W-32)/(big.xmax-big.xmin), 5);
     const topPad = 44, botPad = 10;
+    // Liten PC: begrens høyden så hele mikrometeret får plass i vinduet
+    const maxH = window.innerWidth >= 1000 ? Math.max(200, window.innerHeight - 450) : 1e9;
+    const p = Math.min((W-32)/(big.xmax-big.xmin), 5, (maxH-topPad-botPad)/(big.ymax-big.ymin));
     const Hc = Math.round((big.ymax - big.ymin)*p + topPad + botPad);
     const {H} = fit(over, oc, Hc);
     oc.clearRect(0,0,W,H);
