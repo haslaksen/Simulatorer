@@ -72,6 +72,22 @@ ol.steg{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:8px}
 ol.steg li{counter-increment:s;display:flex;gap:10px;align-items:baseline;font-size:15.5px}
 ol.steg li::before{content:counter(s);flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:700;display:grid;place-items:center;font-size:14px}
 .wide{grid-column:1/-1}
+/* Liten PC: roboten til venstre, 1 Styr og 2 Lagre punkter til høyre, så alt synes uten å rulle */
+@media (min-width:1000px){
+  .wrap{max-width:1400px;grid-template-columns:minmax(0,1fr) 460px;align-items:start}
+    .wrap>.grid{display:contents}
+  .wrap>.grid>.card:not(.wide){grid-column:2}
+  .wrap>.grid>.card:nth-child(1){grid-row:1}
+  .wrap>.grid>.card:nth-child(2){grid-row:2}
+  .wrap>.grid>.wide{grid-column:1/-1;grid-row:3}
+  .wrap>.stage{grid-column:1;grid-row:1 / span 2}
+  #fig{max-height:calc(100vh - 230px)}
+  .wrap>.grid>.card:not(.wide) .btn{padding:8px 11px}
+}
+@media (min-width:1000px) and (max-height:800px){
+  .wrap{padding-block-start:12px;gap:12px}
+  .wrap>.grid>.card:not(.wide){padding:12px 14px;gap:9px}
+}
 details summary{cursor:pointer;font-weight:600}
 .gofa{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
 .gofa a{color:var(--accent);font-weight:600}
