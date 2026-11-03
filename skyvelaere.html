@@ -277,10 +277,10 @@ function caliper(p,o){
     if(i%10===0) g+=`<text class="lbl" x="${i}" y="5.3" font-size="3.6" text-anchor="middle">${i/10}</text>`;
   }
   // fast del: nebb oppe, hode, kjeft nede
-  g+=`<path class="edge" d="M-7 -21 H-4.6 C-3.6 -15 -3 -10 -3 -6.5 V57.5 Q-3.2 58.5 -5 58 Q-8.5 56 -10 50 L-17 24 V-6.5 H-7 Z" ${ST}/>`;
+  g+=`<path class="edge" d="M-7 -21 H-4.6 C-3.6 -15 -3 -10 -3 -6.5 V60 L-4.2 59 Q-8.5 52 -10.5 45 L-17 24 V-6.5 H-7 Z" ${ST}/>`;
   // glider: nebb, kjeft, tommelgrep, låseskrue, ramme
   g+=`<path class="edge" d="M${x-9.4} -21 H${x-7} V-5 H${x-3} V0 H${x-13.5} C${x-13.5} -8 ${x-11.6} -15 ${x-9.4} -21 Z" ${ST}/>`;
-  g+=`<path class="edge" d="M${x-3} 23 V57.5 Q${x-2.8} 58.5 ${x-1} 58 Q${x+2.5} 56 ${x+4} 50 L${x+7} 29 Q${x+8} 24.5 ${x+11.5} 23 Z" ${ST}/>`;
+  g+=`<path class="edge" d="M${x-3} 23 V60 L${x-1.8} 59 Q${x+2} 52 ${x+3.5} 45 L${x+7} 29 Q${x+8} 24.5 ${x+11.5} 23 Z" ${ST}/>`;
   g+=`<path class="edge" d="M${x+12} 23 V27.5 H${x+Lv-1} Q${x+Lv+5} 31.5 ${x+Lv+8} 30 V23 Z" ${ST}/>`;
   g+=`<rect class="edge" x="${ls-2.2}" y="-7.4" width="4.4" height="2.8" rx=".5" ${ST}/>`;
   for(const a of [-1.4,-.5,.4,1.3]) g+=`<line class="knurl" x1="${ls+a}" y1="-7" x2="${ls+a}" y2="-5"/>`;
