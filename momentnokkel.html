@@ -26,6 +26,14 @@
 .lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
 .lk-intro{zoom:var(--lk-scale)}
 @media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+.lk-big .lk-intro,.lk-big .lk-top .lk-nav,.lk-big #lkSize{display:none}
+.lk-big .lk-top{height:44px}
+.lk-big .lk-tools{margin-left:auto}
+.lk-zoom{display:none}
+.lk-big .lk-zoom{display:inline-block;min-width:36px;font-weight:700}
+.lk-big .lk-rot{scroll-margin-top:44px}
+#lkBig{font-weight:700}
+.lk-big #lkBig{background:var(--lk-orange);border-color:var(--lk-orange);color:#fff}
 :root{--lk-w:1040px}
 :root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
 .wrap > header > div:first-child{display:none!important}
@@ -33,7 +41,7 @@
 <div class="lk-top" role="banner">
   <a class="lk-brand" href="index.html">Simulator · <span>Momentnøkkel</span></a>
   <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
-  <div class="lk-tools"><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+  <div class="lk-tools"><button class="lk-btn lk-zoom" id="lkMinus" type="button" title="Mindre">A−</button><button class="lk-btn lk-zoom" id="lkPlus" type="button" title="Større">A+</button><button class="lk-btn" id="lkBig" type="button" title="Fyll hele skjermen (for fremviser). Esc avslutter.">⛶ Storskjerm</button><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
 </div>
 <section class="lk-intro" id="lk-intro">
   <div class="lk-in">
@@ -772,4 +780,15 @@ table.mt td.hit{outline:2px solid var(--accent);outline-offset:-2px;font-weight:
 var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
 var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
 b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
-document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};})();</script><!--lk:js-slutt--></body></html>
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};
+var g=document.getElementById("lkBig"),big=false,f=1,fs=document.fullscreenElement!==undefined;
+function pass(){if(!big||!root)return;r.style.setProperty("--lk-scale",1);var w=root.getBoundingClientRect().width||1;
+var z=Math.max(.5,Math.min(2.5,Math.floor(Math.min(2,(r.clientWidth-24)/w)*f*100)/100));r.style.setProperty("--lk-scale",z);window.dispatchEvent(new Event("resize"));}
+function sett(on){if(on===big)return;big=on;r.classList.toggle("lk-big",on);g.textContent=on?"✕ Avslutt storskjerm":"⛶ Storskjerm";
+f=1;if(on){pass();if(root)root.scrollIntoView();}else{s=1;b.textContent="A+";r.style.setProperty("--lk-scale",1);window.dispatchEvent(new Event("resize"));window.scrollTo(0,0);}}
+document.getElementById("lkMinus").onclick=function(){f=Math.max(.5,f-.1);pass();};
+document.getElementById("lkPlus").onclick=function(){f=Math.min(1.5,f+.1);pass();};
+g.onclick=function(){var on=!big;sett(on);try{if(on&&fs&&!document.fullscreenElement)r.requestFullscreen().catch(function(){});
+if(!on&&document.fullscreenElement)document.exitFullscreen().catch(function(){});}catch(e){}};
+document.addEventListener("fullscreenchange",function(){if(!document.fullscreenElement&&big)sett(false);});
+var t;window.addEventListener("resize",function(e){if(!big||!e.isTrusted)return;clearTimeout(t);t=setTimeout(pass,150);});})();</script><!--lk:js-slutt--></body></html>
