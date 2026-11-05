@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Motor og generator</title>
+<style>
+/* Tre faner: DC-motor, generator og AC-motor. Figuren til venstre, knappene til høyre. Stables på mobil. */
+:root{
+  --bg:#eef1f3; --panel:#ffffff; --ink:#1b2328; --muted:#5c6a73; --line:#cfd7dc;
+  --accent:#d9661f; --accent-ink:#ffffff; --ok:#1f8a4c; --bad:#c23b2c;
+  --bench:#dfe5e8; --bench-line:#c4ced3;
+  --nord:#c92a2a; --sor:#1c6fd1; --cu:#b8692e; --cu-lys:#e0a273; --kraft:#1f8a4c; --glow:#ffcf4a;
+  --l1:#8a5a2b; --l2:#2b2f33; --l3:#8d969e; --spole:#b8692e;
+  --display:"Segoe UI", system-ui, sans-serif; --body:"Segoe UI", system-ui, sans-serif; --mono:ui-monospace, "Consolas", monospace;
+}
+:root[data-theme="dark"]{
+  --bg:#13181b; --panel:#1c2327; --ink:#e7ecef; --muted:#9aa7af; --line:#2f3a40;
+  --accent:#f08a45; --accent-ink:#1a1206; --ok:#4cc27e; --bad:#ff7a69;
+  --bench:#232c31; --bench-line:#334047;
+  --nord:#ff6b6b; --sor:#5aa2f5; --cu:#e0a273; --cu-lys:#f3c79f; --kraft:#4cc27e; --glow:#ffd75e;
+  --l1:#c08850; --l2:#d6dbe0; --l3:#8d969e;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:16px}
+header{display:grid;gap:12px}
+h1{font-family:var(--display);margin:0;font-size:28px}
+h2{font-family:var(--display);margin:0 0 6px;font-size:20px}
+.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.faner{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.faner button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:7px;cursor:pointer}
+.faner button b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--bench);color:var(--ink);font-size:12px;margin-right:6px}
+.faner button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.faner button[aria-selected="true"] b{background:var(--accent);color:#fff}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.modus{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:start}
+.stage{background:var(--bench);border:1px solid var(--bench-line);border-radius:14px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body);fill:var(--ink)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:14px;align-content:start}
+.knapper{display:flex;flex-wrap:wrap;gap:8px}
+.knapper button,.stor{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);padding:11px 16px;cursor:pointer}
+.knapper button:hover{border-color:var(--ink)}
+.knapper button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.slider{display:grid;gap:6px;font-weight:600}
+.slider input{width:100%;accent-color:var(--accent)}
+.les{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.les div{background:var(--bench);border-radius:10px;padding:8px 10px}
+.les span{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+.les b{font:700 20px/1.3 var(--mono)}
+.forklar{font-size:15px;min-height:3em;margin:0}
+.graf{background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.prov ol{margin:0;padding-left:1.3em;display:grid;gap:8px}
+.prov details{font-size:14px;color:var(--muted)}
+.prov summary{cursor:pointer;color:var(--accent);font-weight:600}
+.merk{font-size:13px;color:var(--muted);margin:0}
+@media (max-width:820px){.modus{grid-template-columns:1fr}}
+</style>
+<!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
+:root{--lk-bg:#f5f7fa;--lk-panel:#ffffff;--lk-ink:#14181d;--lk-muted:#56606c;--lk-line:#d9dfe6;--lk-blue:#1c6fd1;--lk-blue-soft:#e4eefc;--lk-orange:#e8590c;--lk-orange-soft:#fff0e5;--lk-green:#2b8a3e;--lk-green-soft:#e7f5ea;--lk-red:#c92a2a;--lk-red-soft:#fdeaea;--lk-steel-soft:#eceff3;--lk-on-accent:#ffffff;--lk-scale:1;--lk-font:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;--lk-mono:"Cascadia Mono", Consolas, "JetBrains Mono", ui-monospace, monospace}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{--lk-bg:#12161b;--lk-panel:#1b2128;--lk-ink:#eef1f5;--lk-muted:#a3adb9;--lk-line:#2f3843;--lk-blue:#5aa2f5;--lk-blue-soft:#1b2c42;--lk-orange:#ff8a3d;--lk-orange-soft:#3a2516;--lk-green:#51cf66;--lk-green-soft:#183020;--lk-red:#ff6b6b;--lk-red-soft:#3a1c1c;--lk-steel-soft:#262e37;--lk-on-accent:#ffffff;color-scheme:dark}
+.lk-top{margin:0;max-width:none;width:auto;flex-direction:row;justify-content:flex-start;text-align:left;box-shadow:none;position:sticky;top:0;z-index:1000;background:var(--lk-panel);border-bottom:1px solid var(--lk-line);display:flex;align-items:center;gap:12px;padding:0 16px;height:56px;font-family:var(--lk-font);color:var(--lk-ink);line-height:1.5}
+.lk-top .lk-brand{font-weight:700;white-space:nowrap;font-size:15px;color:inherit;text-decoration:none}
+.lk-top .lk-brand span{color:var(--lk-orange)}
+.lk-top .lk-nav{margin:0;padding:0;background:none;border:0;display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.lk-top .lk-nav::-webkit-scrollbar{display:none}
+.lk-top .lk-nav a{white-space:nowrap;text-decoration:none;color:var(--lk-muted);font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid transparent}
+.lk-top .lk-nav a:hover{color:var(--lk-blue);border-color:var(--lk-blue);background:var(--lk-blue-soft)}
+.lk-tools{display:flex;gap:5px}
+.lk-btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid var(--lk-line);background:var(--lk-panel);color:var(--lk-ink);border-radius:10px;padding:5px 10px}
+.lk-btn:hover{border-color:var(--lk-blue)}
+.lk-intro{font-family:var(--lk-font);color:var(--lk-ink);padding:28px 16px 12px;line-height:1.5;scroll-margin-top:56px}
+.lk-in{max-width:var(--lk-w);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lk-kicker{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lk-orange);margin-bottom:6px}
+.lk-intro h1{font-family:var(--lk-font);font-size:40px;line-height:1.1;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 12px;color:var(--lk-ink)}
+.lk-lead{font-size:18px;color:var(--lk-muted);margin:0;max-width:60ch}
+.lk-card{background:var(--lk-panel);border:1px solid var(--lk-line);border-radius:14px;padding:16px 18px}
+.lk-card h2{font-family:var(--lk-font);font-size:18px;font-weight:700;letter-spacing:0;text-transform:none;margin:0 0 8px;color:var(--lk-ink)}
+.lk-steps{counter-reset:lk;list-style:none;padding:0;margin:0}
+.lk-steps li{counter-increment:lk;display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:15px;line-height:1.4}
+.lk-steps li::before{content:counter(lk);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--lk-orange);color:#fff}
+.lk-hb{display:inline-block;margin-top:10px;font-size:14px;color:var(--lk-blue)}
+.lk-rot{zoom:var(--lk-scale);scroll-margin-top:56px}
+.lk-intro{zoom:var(--lk-scale)}
+@media (max-width:800px){.lk-in{grid-template-columns:1fr}.lk-intro h1{font-size:30px}.lk-top .lk-nav{display:none}}
+.lk-big .lk-intro,.lk-big .lk-top .lk-nav,.lk-big #lkSize{display:none}
+.lk-big .lk-top{height:44px}
+.lk-big .lk-tools{margin-left:auto}
+.lk-zoom{display:none}
+.lk-big .lk-zoom{display:inline-block;min-width:36px;font-weight:700}
+.lk-big .lk-rot{scroll-margin-top:44px}
+#lkBig{font-weight:700}
+.lk-big #lkBig{background:var(--lk-orange);border-color:var(--lk-orange);color:#fff}
+:root{--lk-w:1100px}
+:root[data-theme]{--bg:var(--lk-bg);--panel:var(--lk-panel);--ink:var(--lk-ink);--muted:var(--lk-muted);--line:var(--lk-line);--accent:var(--lk-orange);--accent-ink:var(--lk-on-accent);--ok:var(--lk-green);--bad:var(--lk-red);--bench:var(--lk-steel-soft);--bench-line:var(--lk-line);--display:var(--lk-font);--body:var(--lk-font);--mono:var(--lk-mono);}
+.wrap > header > div:first-child{display:none!important}
+</style><!--lk:head-slutt--></head>
+<body><!--lk:start-->
+<div class="lk-top" role="banner">
+  <a class="lk-brand" href="index.html">Simulator · <span>Motor og generator</span></a>
+  <nav class="lk-nav"><a href="#lk-intro">Slik gjør du</a><a id="lkSimLink" href="#simulator">Simulator</a><a href="index.html">Alle simulatorer</a></nav>
+  <div class="lk-tools"><button class="lk-btn lk-zoom" id="lkMinus" type="button" title="Mindre">A−</button><button class="lk-btn lk-zoom" id="lkPlus" type="button" title="Større">A+</button><button class="lk-btn" id="lkBig" type="button" title="Fyll hele skjermen (for fremviser). Esc avslutter.">⛶ Storskjerm</button><button class="lk-btn" id="lkSize" type="button" title="Større tekst for fremviser">A+</button><button class="lk-btn" id="lkTheme" type="button" title="Lys/mørk">☾</button></div>
+</div>
+<section class="lk-intro" id="lk-intro">
+  <div class="lk-in">
+    <div>
+      <div class="lk-kicker">Vg2 industriteknologi · Elektro</div>
+      <h1>Motor og generator</h1>
+      <p class="lk-lead">Se hvordan strøm og magneter får en motor til å gå rundt, og hvordan en generator lager strøm.</p>
+    </div>
+    <div class="lk-card">
+      <h2>Slik gjør du</h2>
+      <ol class="lk-steps"><li><span>Velg <b>DC-motor</b>, <b>Generator</b> eller <b>AC-motor</b>.</span></li><li><span>Slå på motoren, eller dra glideren for å dreie generatoren.</span></li><li><span>Snu + og −, bytt kommutator eller bytt faser, og se hva som skjer.</span></li><li><span>Svar på spørsmålene under <b>Prøv dette</b>.</span></li></ol>
+      
+    </div>
+  </div>
+</section>
+<!--lk:slutt-->
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Motor og generator</h1>
+      <p class="sub">Se hvordan strøm og magneter får en motor til å gå, og hvordan en generator lager strøm.</p>
+    </div>
+    <div class="faner" role="tablist" aria-label="Velg">
+      <button role="tab" aria-selected="true" data-fane="dc"><b>1</b>DC-motor</button>
+      <button role="tab" aria-selected="false" data-fane="gen"><b>2</b>Generator</button>
+      <button role="tab" aria-selected="false" data-fane="ac"><b>3</b>AC-motor</button>
+    </div>
+  </header>
+
+  <!-- 1 DC-motor -->
+  <section class="modus" id="fane-dc">
+    <div class="stage"><svg id="dcSvg" viewBox="0 0 500 430" role="img" aria-label="DC-motor sett fra enden: magnet N til venstre, S til høyre, spole som dreier, kommutator og børster koblet til et batteri"></svg></div>
+    <div class="panel">
+      <h2>Likestrømsmotor (DC)</h2>
+      <div class="knapper">
+        <button type="button" id="dcPaa" aria-pressed="false">⚡ Slå på</button>
+        <button type="button" id="dcSnu">🔄 Snu + og −</button>
+      </div>
+      <label class="slider">Spenning: <span id="dcVtxt">12 V</span><input type="range" id="dcV" min="0" max="12" step="1" value="12"></label>
+      <div class="knapper">
+        <button type="button" id="dcKomm" aria-pressed="true">Med kommutator</button>
+      </div>
+      <div class="les"><div><span>Turtall</span><b id="dcN">0 o/min</b></div><div><span>Retning</span><b id="dcDir">–</b></div></div>
+      <p class="forklar" id="dcTekst">Trykk «Slå på».</p>
+      <p class="merk">Grønne piler = kraften på lederen. ⊙ = strøm ut mot deg, ⊗ = strøm inn. Figuren går i sakte film.</p>
+    </div>
+  </section>
+
+  <!-- 2 Generator -->
+  <section class="modus" id="fane-gen" hidden>
+    <div class="stage"><svg id="genSvg" viewBox="0 0 500 430" role="img" aria-label="Generator sett fra enden: spolen dreies mellom magnetene, og en lampe lyser"></svg></div>
+    <div class="panel">
+      <h2>Generator</h2>
+      <label class="slider">Hvor fort dreier du? <span id="genWtxt">0 %</span><input type="range" id="genW" min="0" max="100" step="5" value="0"></label>
+      <div class="knapper" role="group" aria-label="Type">
+        <button type="button" id="genAC" aria-pressed="true">Sleperinger (AC)</button>
+        <button type="button" id="genDC" aria-pressed="false">Kommutator (DC)</button>
+      </div>
+      <svg class="graf" id="genGraf" viewBox="0 0 320 140" role="img" aria-label="Graf: spenningen over tid"></svg>
+      <div class="les"><div><span>Spenning nå</span><b id="genU">0 V</b></div><div><span>Strømtype</span><b id="genType">AC</b></div></div>
+      <p class="forklar" id="genTekst">Dra glideren for å dreie spolen.</p>
+    </div>
+  </section>
+
+  <!-- 3 AC-motor -->
+  <section class="modus" id="fane-ac" hidden>
+    <div class="stage"><svg id="acSvg" viewBox="0 0 500 430" role="img" aria-label="Trefase asynkronmotor sett fra enden: tre spolepar L1, L2 og L3 lager et magnetfelt som går rundt, og rotoren følger etter"></svg></div>
+    <div class="panel">
+      <h2>Trefase asynkronmotor (AC)</h2>
+      <div class="knapper">
+        <button type="button" id="acPaa" aria-pressed="false">⚡ Slå på</button>
+        <button type="button" id="acSnu">🔄 Bytt L1 og L2</button>
+      </div>
+      <div class="les"><div><span>Magnetfeltet</span><b id="acFelt">0 o/min</b></div><div><span>Rotoren</span><b id="acRotor">0 o/min</b></div></div>
+      <p class="forklar" id="acTekst">Trykk «Slå på».</p>
+      <p class="merk">Den store pila viser magnetfeltet. Spolene lyser når det går mye strøm i dem. Figuren går i sakte film (50 Hz er for fort å se).</p>
+    </div>
+  </section>
+
+  <section class="panel prov"><h2>Prøv dette</h2><ol id="provListe"></ol></section>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const TAU = Math.PI * 2;
+  const C = {x:250, y:180}, R = 92;
+  const pt = (r, a) => [C.x + r * Math.cos(a), C.y - r * Math.sin(a)];
+  const f1 = n => Math.round(n * 10) / 10;
+
+  // ---------- felles tegning: magneter og feltlinjer ----------
+  function magneter(){
+    let s = '';
+    for (const y of [130, 155, 180, 205, 230]) s += '<path d="M118 '+y+' H382" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="5 6" opacity=".55"/><path d="M372 '+(y-4)+' L382 '+y+' L372 '+(y+4)+'" fill="none" stroke="var(--muted)" stroke-width="1.2" opacity=".55"/>';
+    s += '<path d="M30 90 H112 Q140 180 112 270 H30 Z" fill="var(--nord)"/><text x="62" y="192" font-size="36" font-weight="800" style="fill:#fff">N</text>';
+    s += '<path d="M470 90 H388 Q360 180 388 270 H470 Z" fill="var(--sor)"/><text x="418" y="192" font-size="36" font-weight="800" style="fill:#fff">S</text>';
+    return s;
+  }
+  function leder(a, i, navn){
+    // i > 0: strøm ut (⊙), i < 0: inn (⊗), 0: ingen
+    const [x, y] = pt(R, a);
+    let s = '<circle cx="'+x+'" cy="'+y+'" r="15" fill="var(--panel)" stroke="var(--cu)" stroke-width="4"/>';
+    if (i > 0.02) s += '<circle cx="'+x+'" cy="'+y+'" r="4" fill="var(--ink)"/>';
+    else if (i < -0.02) s += '<path d="M'+(x-7)+' '+(y-7)+' L'+(x+7)+' '+(y+7)+' M'+(x+7)+' '+(y-7)+' L'+(x-7)+' '+(y+7)+'" stroke="var(--ink)" stroke-width="3"/>';
+    s += '<text x="'+(x + (Math.cos(a) >= 0 ? 20 : -32))+'" y="'+(y - 14)+'" font-size="14" font-weight="700">'+navn+'</text>';
+    return s;
+  }
+  function pil(x, y, dy, farge){
+    if (Math.abs(dy) < 4) return '';
+    const sg = Math.sign(dy);
+    return '<path d="M'+x+' '+y+' V'+(y+dy)+'" stroke="'+farge+'" stroke-width="6" stroke-linecap="round"/><path d="M'+(x-10)+' '+(y+dy-sg*2)+' L'+x+' '+(y+dy+sg*14)+' L'+(x+10)+' '+(y+dy-sg*2)+' Z" fill="'+farge+'"/>';
+  }
+  function bue(r, a0, a1){
+    const [x0, y0] = pt(r, a0), [x1, y1] = pt(r, a1);
+    const stor = ((a1 - a0) % TAU + TAU) % TAU > Math.PI ? 1 : 0;
+    return 'M'+x0+' '+y0+' A'+r+' '+r+' 0 '+stor+' 0 '+x1+' '+y1;
+  }
+  function kommutator(a, lysA, lysB){
+    const g = 0.28;
+    return '<path d="'+bue(26, a - Math.PI/2 + g, a + Math.PI/2 - g)+'" fill="none" stroke="'+(lysA ? 'var(--cu-lys)' : 'var(--cu)')+'" stroke-width="12"/>' +
+           '<path d="'+bue(26, a + Math.PI/2 + g, a + 3*Math.PI/2 - g)+'" fill="none" stroke="'+(lysB ? 'var(--cu-lys)' : 'var(--cu)')+'" stroke-width="12"/>';
+  }
+  function spole(a){
+    const [xa, ya] = pt(R, a), [xb, yb] = pt(R, a + Math.PI);
+    return '<path d="M'+xa+' '+ya+' L'+xb+' '+yb+'" stroke="var(--cu)" stroke-width="3" stroke-dasharray="8 6" opacity=".7"/>';
+  }
+
+  // ---------- 1 DC-motor ----------
+  const dc = {th: 0.35, w: 0, paa: false, pol: 1, V: 12, komm: true};
+  function dcStrømA(){
+    if (!dc.paa || dc.V === 0) return 0;
+    const I = dc.V / 12;
+    return dc.komm ? dc.pol * Math.sign(Math.cos(dc.th) || 1) * I : dc.pol * I;
+  }
+  function dcSteg(dt){
+    const iA = dcStrømA();
+    const tau = iA * Math.cos(dc.th);
+    dc.w += (9.5 * tau - 1.5 * dc.w) * dt;
+    dc.th = (dc.th + dc.w * dt) % TAU;
+  }
+  function dcTegn(){
+    const iA = dcStrømA(), a = dc.th;
+    let s = magneter() + spole(a);
+    const [xa, ya] = pt(R, a), [xb, yb] = pt(R, a + Math.PI);
+    s += pil(xa, ya, -iA * 55, 'var(--kraft)') + pil(xb, yb, iA * 55, 'var(--kraft)');
+    s += leder(a, iA, 'A') + leder(a + Math.PI, -iA, 'B');
+    // kommutator og børster
+    s += kommutator(a, iA !== 0 && Math.cos(a) < 0, iA !== 0 && Math.cos(a) >= 0);
+    if (!dc.komm) s = magneter() + spole(a) + pil(xa, ya, -iA * 55, 'var(--kraft)') + pil(xb, yb, iA * 55, 'var(--kraft)') + leder(a, iA, 'A') + leder(a + Math.PI, -iA, 'B') +
+      '<circle cx="'+C.x+'" cy="'+C.y+'" r="26" fill="none" stroke="var(--cu)" stroke-width="5"/><circle cx="'+C.x+'" cy="'+C.y+'" r="16" fill="none" stroke="var(--cu)" stroke-width="5"/>';
+    s += '<circle cx="'+C.x+'" cy="'+C.y+'" r="6" fill="var(--muted)"/>';
+    const plV = dc.pol > 0 ? '+' : '−', plH = dc.pol > 0 ? '−' : '+';
+    const bx1 = dc.komm ? C.x - 50 : C.x - 30, bx2 = dc.komm ? C.x + 32 : C.x + 21;
+    s += '<rect x="'+bx1+'" y="'+(C.y-9)+'" width="'+(dc.komm ? 18 : 9)+'" height="18" rx="2" fill="#555"/><rect x="'+bx2+'" y="'+(C.y-9)+'" width="'+(dc.komm ? 18 : 9)+'" height="18" rx="2" fill="#555"/>';
+    // ledninger til batteriet
+    const bLx = bx1 + 4, bRx = bx2 + (dc.komm ? 14 : 5);
+    s += '<path d="M'+bLx+' '+(C.y+9)+' V330 H215 M'+bRx+' '+(C.y+9)+' V330 H285" fill="none" stroke="var(--ink)" stroke-width="3"/>';
+    s += '<path d="M215 314 V346" stroke="var(--ink)" stroke-width="4"/><path d="M228 320 V340" stroke="var(--ink)" stroke-width="9"/><path d="M228 330 H285" stroke="var(--ink)" stroke-width="3"/>';
+    if (dc.pol < 0) s = s.replace('<path d="M215 314 V346" stroke="var(--ink)" stroke-width="4"/><path d="M228 320 V340" stroke="var(--ink)" stroke-width="9"/>', '<path d="M228 314 V346" stroke="var(--ink)" stroke-width="4"/><path d="M215 320 V340" stroke="var(--ink)" stroke-width="9"/>');
+    s += '<text x="196" y="312" font-size="22" font-weight="800">'+plV+'</text><text x="292" y="312" font-size="22" font-weight="800">'+plH+'</text>';
+    s += '<text x="250" y="376" text-anchor="middle" font-size="15" font-weight="700">Batteri '+dc.V+' V '+(dc.paa ? '· PÅ' : '· AV')+'</text>';
+    s += '<text x="250" y="60" text-anchor="middle" font-size="14" fill="var(--muted)">'+(dc.komm ? 'Kommutator + børster' : 'To hele ringer (ingen kommutator)')+'</text>';
+    s += '<path d="M250 64 V'+(C.y-34)+'" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>';
+    s += '<text x="40" y="410" font-size="13" fill="var(--muted)">Sett fra enden av motoren</text>';
+    $('dcSvg').innerHTML = s;
+    const rpm = Math.abs(dc.w) / (9.5 * 2 / Math.PI / 1.5) * 3000;
+    $('dcN').textContent = (rpm < 30 ? 0 : Math.round(rpm / 50) * 50) + ' o/min';
+    $('dcDir').textContent = Math.abs(dc.w) < 0.15 ? '–' : (dc.w > 0 ? '↺ mot klokka' : '↻ med klokka');
+    let t;
+    if (!dc.paa) t = 'Motoren er av. Uten strøm blir det ingen kraft.';
+    else if (dc.V === 0) t = 'Spenningen er 0 V. Da går det ingen strøm.';
+    else if (!dc.komm) t = 'Uten kommutator snur ikke strømmen. Spolen vipper fram og tilbake og stopper på tvers.';
+    else t = 'Kommutatoren snur strømmen hver halve runde. Da dytter kraften alltid samme vei, og motoren går rundt.';
+    $('dcTekst').textContent = t;
+  }
+  $('dcPaa').onclick = () => { dc.paa = !dc.paa; $('dcPaa').setAttribute('aria-pressed', dc.paa); $('dcPaa').textContent = dc.paa ? '⏹ Slå av' : '⚡ Slå på'; if (dc.paa && Math.abs(Math.cos(dc.th)) < 0.2) dc.th += 0.4; start(); };
+  $('dcSnu').onclick = () => { dc.pol = -dc.pol; start(); };
+  $('dcV').oninput = e => { dc.V = +e.target.value; $('dcVtxt').textContent = dc.V + ' V'; start(); };
+  $('dcKomm').onclick = () => { dc.komm = !dc.komm; $('dcKomm').setAttribute('aria-pressed', dc.komm); $('dcKomm').textContent = dc.komm ? 'Med kommutator' : 'Uten kommutator'; if (dc.paa && Math.abs(Math.cos(dc.th)) < 0.2) dc.th += 0.4; start(); };
+
+  // ---------- 2 Generator ----------
+  const gen = {th: 0, w: 0, mal: 0, ac: true, logg: [], t: 0};
+  const WMAX = TAU * 0.8, UMAX = 12;
+  function genU(){ const e = -(gen.w / WMAX) * UMAX * Math.cos(gen.th); return gen.ac ? e : Math.abs(e); }
+  function genSteg(dt){
+    gen.w += (gen.mal - gen.w) * Math.min(1, dt * 3);
+    gen.th = (gen.th + gen.w * dt) % TAU;
+    gen.t += dt;
+    gen.logg.push([gen.t, genU()]);
+    while (gen.logg.length && gen.t - gen.logg[0][0] > 4) gen.logg.shift();
+  }
+  function genTegn(){
+    const a = gen.th, u = genU(), e = -(gen.w / WMAX) * Math.cos(a);
+    let s = magneter() + spole(a) + leder(a, e, 'A') + leder(a + Math.PI, -e, 'B');
+    if (gen.ac) s += '<circle cx="'+C.x+'" cy="'+C.y+'" r="26" fill="none" stroke="var(--cu)" stroke-width="5"/><circle cx="'+C.x+'" cy="'+C.y+'" r="16" fill="none" stroke="var(--cu)" stroke-width="5"/>';
+    else s += kommutator(a, false, false);
+    s += '<circle cx="'+C.x+'" cy="'+C.y+'" r="6" fill="var(--muted)"/>';
+    const bx1 = gen.ac ? C.x - 30 : C.x - 50, bx2 = gen.ac ? C.x + 21 : C.x + 32, bw = gen.ac ? 9 : 18;
+    s += '<rect x="'+bx1+'" y="'+(C.y-9)+'" width="'+bw+'" height="18" rx="2" fill="#555"/><rect x="'+bx2+'" y="'+(C.y-9)+'" width="'+bw+'" height="18" rx="2" fill="#555"/>';
+    s += '<path d="M'+(bx1+4)+' '+(C.y+9)+' V340 H226 M'+(bx2+bw-4)+' '+(C.y+9)+' V340 H274" fill="none" stroke="var(--ink)" stroke-width="3"/>';
+    // lampe
+    const lys = Math.min(1, Math.abs(u) / UMAX);
+    s += '<circle cx="250" cy="340" r="'+(26 + 22 * lys)+'" fill="var(--glow)" opacity="'+(0.6 * lys)+'"/>';
+    s += '<circle cx="250" cy="340" r="24" fill="'+(lys > 0.05 ? 'var(--glow)' : 'var(--panel)')+'" stroke="var(--ink)" stroke-width="3" opacity="'+(0.35 + 0.65 * Math.max(lys, 0.0))+'"/>';
+    s += '<circle cx="250" cy="340" r="24" fill="none" stroke="var(--ink)" stroke-width="3"/><path d="M233 323 L267 357 M267 323 L233 357" stroke="var(--ink)" stroke-width="3"/>';
+    s += '<text x="250" y="395" text-anchor="middle" font-size="15" font-weight="700">Lampe</text>';
+    // sveiv
+    const [hx, hy] = pt(60, a + 0.6);
+    s += '<path d="M'+C.x+' '+C.y+' L'+hx+' '+hy+'" stroke="var(--muted)" stroke-width="5" stroke-linecap="round" opacity=".5"/><circle cx="'+hx+'" cy="'+hy+'" r="7" fill="var(--accent)"/>';
+    s += '<text x="250" y="60" text-anchor="middle" font-size="14" fill="var(--muted)">'+(gen.ac ? 'Sleperinger (to hele ringer)' : 'Kommutator (delt ring)')+'</text>';
+    s += '<path d="M250 64 V'+(C.y-34)+'" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>';
+    s += '<text x="40" y="410" font-size="13" fill="var(--muted)">Sett fra enden. Du dreier sveiven.</text>';
+    $('genSvg').innerHTML = s;
+    // graf
+    let g = '<path d="M30 70 H315" stroke="var(--line)" stroke-width="1.5"/><path d="M30 10 V130" stroke="var(--line)" stroke-width="1.5"/>';
+    g += '<text x="24" y="20" text-anchor="end" font-size="11" fill="var(--muted)">+12</text><text x="24" y="74" text-anchor="end" font-size="11" fill="var(--muted)">0</text><text x="24" y="128" text-anchor="end" font-size="11" fill="var(--muted)">−12</text>';
+    g += '<text x="312" y="86" text-anchor="end" font-size="11" fill="var(--muted)">tid →</text>';
+    if (gen.logg.length > 1){
+      const t0 = gen.t - 4;
+      g += '<polyline fill="none" stroke="var(--accent)" stroke-width="3" points="'+gen.logg.map(([t, v]) => (30 + (t - t0) / 4 * 285).toFixed(1)+','+(70 - v / UMAX * 56).toFixed(1)).join(' ')+'"/>';
+    }
+    $('genGraf').innerHTML = g;
+    $('genU').textContent = f1(u).toFixed(1).replace('.', ',').replace('-', '−') + ' V';
+    $('genType').textContent = gen.ac ? 'AC' : 'DC';
+    let t;
+    if (gen.mal < 0.05) t = 'Står spolen stille, blir det ingen strøm. Dra glideren.';
+    else if (gen.ac) t = 'Spolen skjærer gjennom magnetfeltet. Spenningen går opp og ned og skifter retning: vekselstrøm.';
+    else t = 'Kommutatoren snur tilkoblingen hver halve runde. Spenningen skifter ikke retning: likestrøm.';
+    $('genTekst').textContent = t;
+  }
+  $('genW').oninput = e => { gen.mal = +e.target.value / 100 * WMAX; $('genWtxt').textContent = e.target.value + ' %'; start(); };
+  const settType = ac => { gen.ac = ac; $('genAC').setAttribute('aria-pressed', ac); $('genDC').setAttribute('aria-pressed', !ac); gen.logg = []; start(); };
+  $('genAC').onclick = () => settType(true);
+  $('genDC').onclick = () => settType(false);
+
+  // ---------- 3 AC-motor ----------
+  const ac = {fi: 0, rot: 0, wr: 0, paa: false, retning: 1, t: 0};
+  const WF = TAU * 0.35; // feltets fart i sakte film
+  const FASER = [{n:'L1', v:'var(--l1)', a: Math.PI/2}, {n:'L2', v:'var(--l2)', a: Math.PI/2 - TAU/3}, {n:'L3', v:'var(--l3)', a: Math.PI/2 - 2*TAU/3}];
+  function acStrom(k){ if (!ac.paa) return 0; const idx = ac.retning > 0 ? k : [1, 0, 2][k]; return Math.cos(ac.fi - idx * TAU / 3); }
+  function acSteg(dt){
+    if (ac.paa) ac.fi += WF * dt;
+    const mal = ac.paa ? -0.95 * WF * ac.retning : 0; // retning 1: feltet går med klokka
+    ac.wr += (mal - ac.wr) * Math.min(1, dt * 1.2);
+    ac.rot = (ac.rot + ac.wr * dt) % TAU;
+  }
+  function acTegn(){
+    let s = '<circle cx="'+C.x+'" cy="'+C.y+'" r="150" fill="var(--panel)" stroke="var(--line)" stroke-width="22"/>';
+    let bx = 0, by = 0;
+    FASER.forEach((f, k) => {
+      const i = acStrom(k);
+      for (const ekstra of [0, Math.PI]){
+        const a = f.a + ekstra, [x, y] = pt(128, a), deg = -a * 180 / Math.PI;
+        const ii = ekstra ? -i : i;
+        s += '<g transform="translate('+x+' '+y+') rotate('+(deg+90)+')"><rect x="-30" y="-14" width="60" height="28" rx="6" fill="'+f.v+'" opacity="'+(0.25 + 0.75 * Math.abs(i))+'" stroke="var(--ink)" stroke-width="1.5"/></g>';
+        const [tx, ty] = pt(170, a);
+        s += '<text x="'+tx+'" y="'+(ty+5)+'" text-anchor="middle" font-size="14" font-weight="800" fill="'+f.v+'">'+f.n+'</text>';
+      }
+      bx += i * Math.cos(f.a); by += i * Math.sin(f.a);
+    });
+    // rotor (kortslutningsrotor)
+    s += '<circle cx="'+C.x+'" cy="'+C.y+'" r="80" fill="var(--bench)" stroke="var(--muted)" stroke-width="3"/>';
+    for (let k = 0; k < 12; k++){ const [x, y] = pt(66, ac.rot + k * TAU / 12); s += '<circle cx="'+x+'" cy="'+y+'" r="7" fill="var(--cu)"/>'; }
+    const [mx, my] = pt(52, ac.rot);
+    s += '<path d="M'+C.x+' '+C.y+' L'+mx+' '+my+'" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/><circle cx="'+C.x+'" cy="'+C.y+'" r="10" fill="var(--muted)"/>';
+    // feltpil
+    const st = Math.hypot(bx, by);
+    if (st > 0.1){
+      const a = Math.atan2(by, bx), [x1, y1] = pt(100, a), [x0, y0] = pt(100, a + Math.PI);
+      s += '<path d="M'+x0+' '+y0+' L'+x1+' '+y1+'" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" opacity=".9"/>';
+      const [p1x, p1y] = pt(80, a + 0.16), [p2x, p2y] = pt(80, a - 0.16), [px, py] = pt(116, a);
+      s += '<path d="M'+p1x+' '+p1y+' L'+px+' '+py+' L'+p2x+' '+p2y+' Z" fill="var(--accent)"/>';
+      s += '<text x="'+(pt(132, a)[0])+'" y="'+(pt(132, a)[1]+5)+'" text-anchor="middle" font-size="15" font-weight="800" style="fill:var(--nord)">N</text>';
+      s += '<text x="'+(pt(116, a + Math.PI)[0])+'" y="'+(pt(116, a + Math.PI)[1]+5)+'" text-anchor="middle" font-size="15" font-weight="800" style="fill:var(--sor)">S</text>';
+    }
+    s += '<text x="40" y="410" font-size="13" fill="var(--muted)">Sett fra enden. Stator ytterst, rotor inni.</text>';
+    $('acSvg').innerHTML = s;
+    const rr = Math.abs(ac.wr) / WF * 3000;
+    $('acFelt').textContent = ac.paa ? '3000 o/min' : '0 o/min';
+    $('acRotor').textContent = (rr < 30 ? 0 : Math.round(rr / 10) * 10) + ' o/min';
+    let t;
+    if (!ac.paa) t = 'Motoren er av.';
+    else if (rr < 2700) t = 'Magnetfeltet går rundt og drar rotoren med seg. Rotoren får fart …';
+    else t = 'Rotoren går litt saktere enn feltet (2850 mot 3000 o/min). Derfor heter den asynkronmotor. ' + (ac.retning > 0 ? 'Retning: ↻ med klokka.' : 'Retning: ↺ mot klokka.');
+    $('acTekst').textContent = t;
+  }
+  $('acPaa').onclick = () => { ac.paa = !ac.paa; $('acPaa').setAttribute('aria-pressed', ac.paa); $('acPaa').textContent = ac.paa ? '⏹ Slå av' : '⚡ Slå på'; start(); };
+  $('acSnu').onclick = () => { ac.retning = -ac.retning; start(); };
+
+  // ---------- faner, Prøv dette og løkke ----------
+  const PROV = {
+    dc: [['Slå på. Hvilken vei går motoren? Trykk «Snu + og −». Hva skjer?', 'Motoren snur. Strømmen går motsatt vei, så kraften snur.'],
+         ['Senk spenningen fra 12 V til 6 V. Hva skjer med turtallet?', 'Turtallet blir omtrent halvparten. Mindre spenning gir lavere fart.'],
+         ['Trykk «Med kommutator» så det står «Uten kommutator». Hva skjer?', 'Spolen vipper og blir stående på tvers. Kommutatoren trengs for at motoren skal gå rundt.'],
+         ['Når er de grønne kraftpilene lengst?', 'Når lederne er nærmest magnetene (til venstre og høyre).']],
+    gen: [['Dra glideren litt. Lyser lampa? Dra den helt ut. Hva skjer?', 'Fortere dreiing gir høyere spenning og sterkere lys.'],
+          ['Se på grafen med sleperinger. Hvorfor kalles det vekselstrøm?', 'Spenningen går opp og ned og skifter mellom pluss og minus.'],
+          ['Bytt til kommutator. Hva skjer med grafen?', 'Grafen blir aldri negativ. Strømmen går alltid samme vei: likestrøm.'],
+          ['Sett glideren på 0 %. Hvorfor slukner lampa?', 'Står spolen stille, endrer ikke magnetfeltet seg i spolen. Da blir det ingen spenning.']],
+    ac: [['Slå på. Hvilken vei går magnetfeltet? Hvilken vei går rotoren?', 'Samme vei. Rotoren følger magnetfeltet.'],
+         ['Trykk «Bytt L1 og L2». Hva skjer?', 'Feltet og motoren snur. Bytter du to faser, snur en trefasemotor.'],
+         ['Hvor fort går feltet, og hvor fort går rotoren?', 'Feltet 3000 o/min, rotoren litt saktere, ca. 2850 o/min.'],
+         ['Hvorfor trenger ikke denne motoren kommutator eller børster?', 'Magnetfeltet går rundt av seg selv fordi de tre fasene kommer etter hverandre.']]
+  };
+  let fane = 'dc';
+  function visProv(){
+    $('provListe').innerHTML = PROV[fane].map(([q, a]) => '<li>'+q+'<details><summary>Svar</summary>'+a+'</details></li>').join('');
+  }
+  document.querySelectorAll('.faner button').forEach(b => b.onclick = () => {
+    fane = b.dataset.fane;
+    document.querySelectorAll('.faner button').forEach(x => x.setAttribute('aria-selected', x === b));
+    ['dc', 'gen', 'ac'].forEach(f => $('fane-' + f).hidden = f !== fane);
+    visProv(); start();
+  });
+
+  const STEG = {dc: [dcSteg, dcTegn], gen: [genSteg, genTegn], ac: [acSteg, acTegn]};
+  let kjorer = false, sist = 0, sistTegn = 0;
+  function rolig(){
+    if (fane === 'dc') return !dc.paa && Math.abs(dc.w) < 0.01;
+    if (fane === 'gen') return gen.mal === 0 && Math.abs(gen.w) < 0.01 && gen.logg.every(([, v]) => Math.abs(v) < 0.01);
+    return !ac.paa && Math.abs(ac.wr) < 0.01;
+  }
+  function loop(t){
+    const dt = Math.min(0.05, (t - sist) / 1000 || 0); sist = t;
+    STEG[fane][0](dt);
+    if (t - sistTegn > 32){ STEG[fane][1](); sistTegn = t; }
+    if (rolig() || document.hidden){ STEG[fane][1](); kjorer = false; return; }
+    requestAnimationFrame(loop);
+  }
+  function start(){
+    STEG[fane][1]();
+    if (!kjorer){ kjorer = true; sist = performance.now(); requestAnimationFrame(loop); }
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) start(); });
+  // fanevalg fra adressen: motor-generator.html#gen
+  const h = location.hash.slice(1);
+  const knapp = document.querySelector('.faner button[data-fane="'+h+'"]');
+  if (knapp) knapp.click(); else { visProv(); start(); }
+  dcTegn(); genTegn(); acTegn(); STEG[fane][1]();
+})();
+</script>
+<!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
+var root=document.querySelector('.wrap');if(root){root.classList.add("lk-rot");if(!root.id)root.id="simulator";}
+var a=document.getElementById("lkSimLink");if(a&&root)a.href="#"+root.id;
+b.onclick=function(){s=s>=1.3?1:+(s+.15).toFixed(2);r.style.setProperty("--lk-scale",s);b.textContent=s===1?"A+":"A"+Math.round(s*100)+"%";window.dispatchEvent(new Event("resize"));};
+document.getElementById("lkTheme").onclick=function(){r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";window.dispatchEvent(new Event("resize"));};
+var g=document.getElementById("lkBig"),big=false,f=1,fs=document.fullscreenElement!==undefined;
+function pass(){if(!big||!root)return;r.style.setProperty("--lk-scale",1);var w=root.getBoundingClientRect().width||1;
+var z=Math.max(.5,Math.min(2.5,Math.floor(Math.min(2,(r.clientWidth-24)/w)*f*100)/100));r.style.setProperty("--lk-scale",z);window.dispatchEvent(new Event("resize"));}
+function sett(on){if(on===big)return;big=on;r.classList.toggle("lk-big",on);g.textContent=on?"✕ Avslutt storskjerm":"⛶ Storskjerm";
+f=1;if(on){pass();if(root)root.scrollIntoView();}else{s=1;b.textContent="A+";r.style.setProperty("--lk-scale",1);window.dispatchEvent(new Event("resize"));window.scrollTo(0,0);}}
+document.getElementById("lkMinus").onclick=function(){f=Math.max(.5,f-.1);pass();};
+document.getElementById("lkPlus").onclick=function(){f=Math.min(1.5,f+.1);pass();};
+g.onclick=function(){var on=!big;sett(on);try{if(on&&fs&&!document.fullscreenElement)r.requestFullscreen().catch(function(){});
+if(!on&&document.fullscreenElement)document.exitFullscreen().catch(function(){});}catch(e){}};
+document.addEventListener("fullscreenchange",function(){if(!document.fullscreenElement&&big)sett(false);});
+var t;window.addEventListener("resize",function(e){if(!big||!e.isTrusted)return;clearTimeout(t);t=setTimeout(pass,150);});})();</script><!--lk:js-slutt--></body>
+</html>

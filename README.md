@@ -8,7 +8,7 @@ Interaktive simulatorer for Teknologi- og industrifag (Vg1 TIF og Vg2 Industrite
 | Materiallære og mekanikk | `strekkprove.html` · `charpy.html` · `bjelke.html` |
 | Maskinering | `skjaeredata.html` · `cnc-dreiebenk.html` · `cnc-koordinater.html` |
 | Montering | `momentnokkel.html` |
-| Elektro | `multimeter.html` · `tangamperemeter.html` |
+| Elektro | `multimeter.html` · `tangamperemeter.html` · `motor-generator.html` |
 | Pneumatikk | `pneumatikk-og-hydraulikk.html` |
 | Automasjon | `robotlab.html` |
 | Idrett (Vg3 Treningslære) | `biomekanikk.html` |
