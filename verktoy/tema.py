@@ -361,3 +361,6 @@ if __name__ == "__main__":
     for c in SIMULATORER:
         if not valgt or c["fil"] in valgt:
             bygg(c)
+    # Oppdater-knappen («Ny versjon av siden er klar») i alle sidene, se oppdater.py.
+    import oppdater
+    oppdater.legg_inn()
