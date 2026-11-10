@@ -48,7 +48,7 @@ svg .lbl,svg .vlbl{font-family:"Barlow Condensed","Arial Narrow",sans-serif}</st
     <div>
       <div class="lk-kicker">Vg2 industriteknologi · Måleteknikk</div>
       <h1>Skyvelære</h1>
-      <p class="lk-lead">Les av en skyvelære med nonius. Start med 0,1 mm nonius. Når du får det til, prøver du 0,05 og 0,02.</p>
+      <p class="lk-lead">Les av en skyvelære med nonius. Start med 0,1 mm nonius. Når du får det til, prøver du 0,05.</p>
     </div>
     <div class="lk-card">
       <h2>Slik gjør du</h2>
@@ -193,7 +193,6 @@ td{font-family:var(--mono)}
       <div class="seg" id="resSeg">
         <button type="button" class="num" data-res="10" aria-pressed="true">0,1</button>
         <button type="button" class="num" data-res="5" aria-pressed="false">0,05</button>
-        <button type="button" class="num" data-res="2" aria-pressed="false">0,02</button>
       </div>
     </div>
   </div>
@@ -238,7 +237,7 @@ td{font-family:var(--mono)}
       <ol>
         <li>Les hovedskalaen ved nullstreken på noniusen. Siste hele millimeter til venstre for nullstreken er heltallet.</li>
         <li>Finn den ene noniusstreken som står i flukt med en strek på hovedskalaen.</li>
-        <li>Gang nummeret på den streken med oppløsningen (f.eks. 17 × 0,02 = 0,34 mm) og legg det til heltallet.</li>
+        <li>Gang nummeret på den streken med oppløsningen (f.eks. 7 × 0,05 = 0,35 mm) og legg det til heltallet.</li>
       </ol>
       <p>Tallene på hovedskalaen er centimeter: 1 betyr 10 mm, 2 betyr 20 mm. Tallene på noniusen er tideler: 3 betyr 0,3 mm.</p>
     </div>
@@ -249,17 +248,16 @@ td{font-family:var(--mono)}
         <tbody>
           <tr><td>0,1 mm</td><td>10</td><td>19 mm</td></tr>
           <tr><td>0,05 mm</td><td>20</td><td>39 mm</td></tr>
-          <tr><td>0,02 mm</td><td>50</td><td>49 mm</td></tr>
         </tbody>
       </table></div>
-      <p>Med 0,02 mm nonius ender svaret alltid på et partall: 23,34 kan stemme, 23,35 kan ikke.</p>
+      <p>Med 0,05 mm nonius ender svaret alltid på 0 eller 5: 23,35 kan stemme, 23,34 kan ikke.</p>
     </div>
   </section>
 </main>
 
 <script>
 (function(){
-const RES={10:{n:10,L:19,k:2,dec:1},5:{n:20,L:39,k:2,dec:2},2:{n:50,L:49,k:1,dec:2}};
+const RES={10:{n:10,L:19,k:2,dec:1},5:{n:20,L:39,k:2,dec:2}};
 const MAX=200, ZOOMS=[1,2,4,8];
 const S={mode:'practice',res:10,v:0,z:1,off:null,showKey:false,showFree:true,task:0,right:0,tries:0,answered:false};
 const $=id=>document.getElementById(id);
