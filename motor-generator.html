@@ -56,6 +56,14 @@ svg text{font-family:var(--body);fill:var(--ink)}
 .prov details{font-size:14px;color:var(--muted)}
 .prov summary{cursor:pointer;color:var(--accent);font-weight:600}
 .merk{font-size:13px;color:var(--muted);margin:0}
+.stegrad{display:flex;gap:6px;flex-wrap:wrap}
+.stegrad button{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:700 15px var(--body);cursor:pointer}
+.stegrad button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.stegnav{display:flex;gap:8px;justify-content:space-between}
+.stegnav .neste{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.stegnav button:disabled{opacity:.35;cursor:default}
+.prikk{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--glow);border:1px solid #8a6200;vertical-align:middle}
+#fane-dc .forklar{font-size:17px}
 @media (max-width:820px){.modus{grid-template-columns:1fr}}
 </style>
 <!--lk:head--><script>document.documentElement.dataset.theme="light";</script><style id="leksjonstema">
@@ -132,22 +140,25 @@ svg text{font-family:var(--body);fill:var(--ink)}
     </div>
   </header>
 
-  <!-- 1 DC-motor -->
+  <!-- 1 DC-motor: steg for steg -->
   <section class="modus" id="fane-dc">
-    <div class="stage"><svg id="dcSvg" viewBox="0 0 500 430" role="img" aria-label="DC-motor sett fra enden: magnet N til venstre, S til høyre, spole som dreier, kommutator og børster koblet til et batteri"></svg></div>
+    <div class="stage"><svg id="dcSvg" viewBox="0 0 500 430" role="img" aria-label="DC-motor sett på skrå: magnet N til venstre, S til høyre, en spole av kobber som kan dreie, kommutator, kullbørster og batteri"></svg></div>
     <div class="panel">
-      <h2>Likestrømsmotor (DC)</h2>
+      <div class="stegrad" id="dcPrikker" role="tablist" aria-label="Steg"></div>
+      <h2 id="dcTittel">Likestrømsmotor (DC)</h2>
+      <p class="forklar" id="dcTekst"></p>
       <div class="knapper">
         <button type="button" id="dcPaa" aria-pressed="false">⚡ Slå på</button>
         <button type="button" id="dcSnu">🔄 Snu + og −</button>
-      </div>
-      <label class="slider">Spenning: <span id="dcVtxt">12 V</span><input type="range" id="dcV" min="0" max="12" step="1" value="12"></label>
-      <div class="knapper">
         <button type="button" id="dcKomm" aria-pressed="true">Med kommutator</button>
       </div>
-      <div class="les"><div><span>Turtall</span><b id="dcN">0 o/min</b></div><div><span>Retning</span><b id="dcDir">–</b></div></div>
-      <p class="forklar" id="dcTekst">Trykk «Slå på».</p>
-      <p class="merk">Grønne piler = kraften på lederen. ⊙ = strøm ut mot deg, ⊗ = strøm inn. Figuren går i sakte film.</p>
+      <label class="slider" id="dcVrad">Spenning: <span id="dcVtxt">12 V</span><input type="range" id="dcV" min="0" max="12" step="1" value="12"></label>
+      <div class="les" id="dcLes"><div><span>Turtall</span><b id="dcN">0 o/min</b></div><div><span>Retning</span><b id="dcDir">–</b></div></div>
+      <p class="merk" id="dcMerk"><span class="prikk"></span> Gule prikker = strømmen &nbsp; <b style="color:var(--kraft)">➜</b> Grønn pil = kraften</p>
+      <div class="stegnav">
+        <button type="button" class="stor" id="dcForrige">◀ Forrige</button>
+        <button type="button" class="stor neste" id="dcNeste">Neste ▶</button>
+      </div>
     </div>
   </section>
 
@@ -230,58 +241,213 @@ svg text{font-family:var(--body);fill:var(--ink)}
     return '<path d="M'+xa+' '+ya+' L'+xb+' '+yb+'" stroke="var(--cu)" stroke-width="3" stroke-dasharray="8 6" opacity=".7"/>';
   }
 
-  // ---------- 1 DC-motor ----------
-  const dc = {th: 0.35, w: 0, paa: false, pol: 1, V: 12, komm: true};
-  function dcStrømA(){
+  // ---------- 1 DC-motor, steg for steg ----------
+  // Motoren tegnes på skrå (3D-punkter projiseres til skjermen). Akselen går innover i bildet (z).
+  // Magnetfeltet går fra N (venstre) mot S (høyre). Kraften på en leder: opp eller ned.
+  const DCSTEG = [
+    {t:'Magnetfeltet', x:'Mellom nordpolen (N) og sørpolen (S) går det et magnetfelt. De stiplede linjene viser feltet. Det går fra N til S.'},
+    {t:'Strøm gir kraft', x:'Vi legger en kobberleder i magnetfeltet. Trykk «Slå på». Når det går strøm i lederen, blir den dyttet ut av feltet. Trykk «Snu + og −» og se hva som skjer.'},
+    {t:'Spolen dreier', x:'Nå bøyer vi lederen til en spole som kan dreie på en aksel. Strømmen går inn på den ene siden og ut på den andre. Da blir den ene siden dyttet opp og den andre ned, og spolen dreier.'},
+    {t:'Kommutatoren', x:'Kommutatoren er en delt kobberring på akselen. Kullbørstene glir mot den. Hver halve runde bytter spolen kontakt, og strømmen i spolen snur. Prøv «Uten kommutator».'},
+    {t:'Prøv selv', x:'Endre spenningen og snu + og −. Se på turtallet og retningen.'}
+  ];
+  const dc = {steg: 0, th: 0.5, w: 0, paa: false, pol: 1, V: 12, komm: true, fase: 0, løft: 0};
+  const KAM = {cy: Math.cos(0.3), sy: Math.sin(0.3), cp: Math.cos(0.45), sp: Math.sin(0.45)};
+  function p3(x, y, z){
+    const x1 = x * KAM.cy - z * KAM.sy, z1 = x * KAM.sy + z * KAM.cy;
+    const sx = x1, sy = -y * KAM.cp + z1 * KAM.sp, d = z1 * KAM.cp + y * KAM.sp;
+    const k = 1600 / (1600 - d);
+    return [250 + sx * k, 175 + sy * k, d];
+  }
+  const P = a => a.map(v => v[0].toFixed(1) + ' ' + v[1].toFixed(1)).join(' L');
+  const RL = 52, DZ = 85, ZK = 125; // spolens radius, halve lengde, kommutatorens plass
+  function boks(x0, x1, y0, y1, z0, z1, farge, mork, tekst){
+    const c = (x, y, z) => p3(x, y, z);
+    const sider = [
+      {p:[c(x0,y0,z1), c(x1,y0,z1), c(x1,y1,z1), c(x0,y1,z1)], f:farge},           // foran
+      {p:[c(x0,y1,z0), c(x1,y1,z0), c(x1,y1,z1), c(x0,y1,z1)], f:mork},    // topp
+      {p:[c(x1,y0,z0), c(x1,y1,z0), c(x1,y1,z1), c(x1,y0,z1)], f:mork, o:.8},    // høyre side
+      {p:[c(x0,y0,z0), c(x0,y1,z0), c(x0,y1,z1), c(x0,y0,z1)], f:mork, o:.8}     // venstre side
+    ];
+    let s = '';
+    for (const sd of sider){
+      const [a, b, d] = sd.p, kryss = (b[0]-a[0])*(d[1]-a[1]) - (b[1]-a[1])*(d[0]-a[0]);
+      if (Math.abs(kryss) < 1) continue;
+      s += '<path d="M'+P(sd.p)+' Z" fill="'+sd.f+'" opacity="'+(sd.o || 1)+'" stroke="rgba(0,0,0,.35)" stroke-width="1"/>';
+    }
+    if (tekst){ const m = c((x0+x1)/2, (y0+y1)/2 - 12, z1); s += '<text x="'+m[0]+'" y="'+m[1]+'" text-anchor="middle" font-size="40" font-weight="800" style="fill:#fff">'+tekst+'</text>'; }
+    return s;
+  }
+  function dcMagneter(svak){
+    let s = '';
+    // feltlinjer fra N til S
+    for (const y of [-40, 0, 40]) for (const z of [-60, 0, 60]){
+      const a = p3(-88, y, z), b = p3(88, y, z), m = p3(10, y, z);
+      s += '<path d="M'+P([a, b])+'" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="5 5" opacity="'+(svak ? .35 : .8)+'"/>';
+      const r = p3(-6, y, z);
+      s += '<path d="M'+(m[0]-8)+' '+(m[1]-5)+' L'+m[0]+' '+m[1]+' L'+(m[0]-8)+' '+(m[1]+5)+'" fill="none" stroke="var(--muted)" stroke-width="1.6" opacity="'+(svak ? .35 : .9)+'"/>';
+    }
+    s += boks(-175, -90, -75, 75, -95, 95, 'var(--nord)', '#8f1d1d', 'N');
+    return s;
+  }
+  // S-magneten tegnes til slutt, fordi den er nærmest oss på høyre side
+  const dcMagnetS = () => boks(90, 175, -75, 75, -95, 95, 'var(--sor)', '#124b8f', 'S');
+  // gule prikker som går langs en linje (strøm). retn: +1 framover, -1 bakover, 0 ingen
+  function prikker(pts, retn){
+    if (!retn) return '';
+    const L = [0];
+    for (let i = 1; i < pts.length; i++) L.push(L[i-1] + Math.hypot(pts[i][0]-pts[i-1][0], pts[i][1]-pts[i-1][1]));
+    const tot = L[L.length-1], step = 20;
+    let s = '', off = ((dc.fase * retn) % step + step) % step;
+    for (let d = off; d < tot; d += step){
+      let i = 1; while (i < L.length - 1 && L[i] < d) i++;
+      const f = (d - L[i-1]) / ((L[i] - L[i-1]) || 1);
+      const x = pts[i-1][0] + (pts[i][0]-pts[i-1][0]) * f, y = pts[i-1][1] + (pts[i][1]-pts[i-1][1]) * f;
+      s += '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="4" fill="var(--glow)" stroke="#8a6200" stroke-width="1"/>';
+    }
+    return s;
+  }
+  function kobber(pts, b){
+    const d = 'M' + P(pts);
+    return '<path d="'+d+'" fill="none" stroke="#6b3a14" stroke-width="'+(b+3)+'" stroke-linecap="round" stroke-linejoin="round"/><path d="'+d+'" fill="none" stroke="var(--cu)" stroke-width="'+b+'" stroke-linecap="round" stroke-linejoin="round"/>';
+  }
+  function kraftpil(x, y, z, opp){
+    const a = p3(x, y, z), lengde = 46 * opp, sg = Math.sign(lengde);
+    if (!opp) return '';
+    const yb = a[1] - lengde;
+    return '<path d="M'+a[0]+' '+(a[1] - sg*14)+' V'+yb+'" stroke="var(--kraft)" stroke-width="7" stroke-linecap="round"/><path d="M'+(a[0]-12)+' '+(yb+sg*2)+' L'+a[0]+' '+(yb-sg*16)+' L'+(a[0]+12)+' '+(yb+sg*2)+' Z" fill="var(--kraft)"/>';
+  }
+  function batteri(pol, paa){
+    // et ekte batteri liggende foran motoren, + til høyre når pol = 1
+    let s = '<rect x="190" y="365" width="120" height="40" rx="8" fill="#2b2f33"/><rect x="190" y="365" width="38" height="40" rx="8" fill="#d9661f"/><rect x="220" y="365" width="8" height="40" fill="#d9661f"/>';
+    s += '<rect x="310" y="376" width="8" height="18" rx="2" fill="#9aa3aa"/>';
+    s += '<text x="'+(pol > 0 ? 296 : 204)+'" y="392" text-anchor="middle" font-size="20" font-weight="800" style="fill:#fff">+</text><text x="'+(pol > 0 ? 204 : 296)+'" y="392" text-anchor="middle" font-size="22" font-weight="800" style="fill:#fff">−</text>';
+    s += '<text x="262" y="391" text-anchor="middle" font-size="12" font-weight="700" style="fill:#fff">'+dc.V+' V</text>';
+    s += '<text x="250" y="424" text-anchor="middle" font-size="13" fill="var(--muted)">'+(paa ? 'Strømmen er PÅ' : 'Strømmen er AV')+'</text>';
+    return s;
+  }
+  function dcStrom(){ // + : strømmen går «framover» langs spolen (fra høyre børste)
     if (!dc.paa || dc.V === 0) return 0;
-    const I = dc.V / 12;
-    return dc.komm ? dc.pol * Math.sign(Math.cos(dc.th) || 1) * I : dc.pol * I;
+    const s = dc.komm ? (Math.cos(dc.th) >= 0 ? 1 : -1) : 1;
+    return dc.pol * s * dc.V / 12;
   }
   function dcSteg(dt){
-    const iA = dcStrømA();
-    const tau = iA * Math.cos(dc.th);
-    dc.w += (9.5 * tau - 1.5 * dc.w) * dt;
-    dc.th = (dc.th + dc.w * dt) % TAU;
+    if (dc.steg === 1){
+      const mal = dc.paa ? -dc.pol * 18 : 0;
+      dc.løft += (mal - dc.løft) * Math.min(1, dt * 5);
+      if (dc.paa) dc.fase += dt * 40;
+      return;
+    }
+    if (dc.steg < 2){ dc.w = 0; return; }
+    const i = dcStrom();
+    dc.w += (-9.5 * i * Math.cos(dc.th) - 1.5 * dc.w) * dt;
+    dc.th = ((dc.th + dc.w * dt) % TAU + TAU) % TAU;
+    if (i) dc.fase += dt * 40 * Math.abs(i);
+  }
+  function dcLeder(){
+    // steg 2: én rett leder mellom magnetene, koblet til batteriet foran
+    const y = dc.løft, a = p3(0, y, -DZ), b = p3(0, y, DZ), i = dc.paa ? dc.pol : 0;
+    const v1 = [b, [b[0], b[1] + 20], [175, 330], [190, 385]];
+    const v2 = [[310, 385], [330, 330], [b[0] + 30, b[1] + 25], b];
+    let s = '<path d="M'+P(v1)+'" fill="none" stroke="'+(dc.pol > 0 ? 'var(--ink)' : 'var(--bad)')+'" stroke-width="3"/><path d="M'+P(v2)+'" fill="none" stroke="'+(dc.pol > 0 ? 'var(--bad)' : 'var(--ink)')+'" stroke-width="3"/>';
+    s += kobber([a, b], 9);
+    // strømmen: fra + gjennom lederen. pol 1: + til høyre, inn fra framme og bakover
+    s += prikker([[310, 385], [330, 330], [b[0] + 30, b[1] + 25], b, a], i) ;
+    s += kraftpil(0, y, 0, i ? -i : 0);
+    return s;
+  }
+  function dcSpole(visKomm){
+    const c = Math.cos(dc.th), sn = Math.sin(dc.th);
+    const A = (z) => p3(RL * c, RL * sn, z), B = (z) => p3(-RL * c, -RL * sn, z);
+    const kr = 20;
+    // aksel
+    let s = '<path d="M'+P([p3(0, 0, -DZ - 30), p3(0, 0, ZK + 40)])+'" stroke="#7d868d" stroke-width="7" stroke-linecap="round"/>';
+    // spolen: segment A foran → side A → bak → side B → segment B foran
+    const ka = p3(kr * c, kr * sn, ZK - 12), kb = p3(-kr * c, -kr * sn, ZK - 12);
+    const sti = [ka, A(DZ), A(-DZ), B(-DZ), B(DZ), kb];
+    // tegn den bakerste halvdelen først
+    s += kobber(sti, 7);
+    const i = dcStrom();
+    s += prikker(sti, Math.sign(i));
+    // kraft på de to lange sidene: side A har strøm bakover (−z) når i > 0 → kraft ned
+    if (i){ s += kraftpil(RL * c, RL * sn, 0, -Math.sign(i)) + kraftpil(-RL * c, -RL * sn, 0, Math.sign(i)); }
+    // kommutator eller sleperinger
+    const ring = (a0, a1, z0, z1, farge) => {
+      const ytre = [], n = 18;
+      for (let k = 0; k <= n; k++){ const a = a0 + (a1 - a0) * k / n; ytre.push(p3(kr * Math.cos(a), kr * Math.sin(a), z1)); }
+      for (let k = n; k >= 0; k--){ const a = a0 + (a1 - a0) * k / n; ytre.push(p3(kr * Math.cos(a), kr * Math.sin(a), z0)); }
+      return '<path d="M'+P(ytre)+' Z" fill="'+farge+'" stroke="#6b3a14" stroke-width="1.2"/>';
+    };
+    const lysA = i && c >= 0, lysB = i && c < 0;
+    if (dc.komm){
+      const g = 0.25;
+      s += ring(dc.th - Math.PI/2 + g, dc.th + Math.PI/2 - g, ZK - 12, ZK + 12, lysA ? 'var(--cu-lys)' : 'var(--cu)');
+      s += ring(dc.th + Math.PI/2 + g, dc.th + 3*Math.PI/2 - g, ZK - 12, ZK + 12, lysB ? 'var(--cu-lys)' : 'var(--cu)');
+    } else {
+      s += ring(0, TAU, ZK - 14, ZK - 2, 'var(--cu)') + ring(0, TAU, ZK + 2, ZK + 14, 'var(--cu)');
+    }
+    // kullbørster med fjær, venstre og høyre
+    const bz = dc.komm ? [ZK, ZK] : [ZK - 8, ZK + 8];
+    s += boks(kr + 1, kr + 22, -7, 7, bz[1] - 6, bz[1] + 6, '#3a3f44', '#24282c');
+    s += boks(-kr - 22, -kr - 1, -7, 7, bz[0] - 6, bz[0] + 6, '#3a3f44', '#24282c');
+    const bh = p3(kr + 22, 0, bz[1]), bv = p3(-kr - 22, 0, bz[0]);
+    // ledninger fra børstene til batteriet
+    const vH = [[310, 385], [325, 345], [bh[0] + 6, bh[1] + 60], bh];
+    const vV = [bv, [bv[0] - 6, bv[1] + 60], [175, 345], [190, 385]];
+        let led = '<path d="M'+P(vH)+'" fill="none" stroke="'+(dc.pol > 0 ? 'var(--bad)' : 'var(--ink)')+'" stroke-width="3"/><path d="M'+P(vV)+'" fill="none" stroke="'+(dc.pol > 0 ? 'var(--ink)' : 'var(--bad)')+'" stroke-width="3"/>';
+    if (i){ led += prikker(dc.pol > 0 ? vH : vH.slice().reverse(), 1) + prikker(dc.pol > 0 ? vV : vV.slice().reverse(), 1); }
+    return led + s;
   }
   function dcTegn(){
-    const iA = dcStrømA(), a = dc.th;
-    let s = magneter() + spole(a);
-    const [xa, ya] = pt(R, a), [xb, yb] = pt(R, a + Math.PI);
-    s += pil(xa, ya, -iA * 55, 'var(--kraft)') + pil(xb, yb, iA * 55, 'var(--kraft)');
-    s += leder(a, iA, 'A') + leder(a + Math.PI, -iA, 'B');
-    // kommutator og børster
-    s += kommutator(a, iA !== 0 && Math.cos(a) < 0, iA !== 0 && Math.cos(a) >= 0);
-    if (!dc.komm) s = magneter() + spole(a) + pil(xa, ya, -iA * 55, 'var(--kraft)') + pil(xb, yb, iA * 55, 'var(--kraft)') + leder(a, iA, 'A') + leder(a + Math.PI, -iA, 'B') +
-      '<circle cx="'+C.x+'" cy="'+C.y+'" r="26" fill="none" stroke="var(--cu)" stroke-width="5"/><circle cx="'+C.x+'" cy="'+C.y+'" r="16" fill="none" stroke="var(--cu)" stroke-width="5"/>';
-    s += '<circle cx="'+C.x+'" cy="'+C.y+'" r="6" fill="var(--muted)"/>';
-    const plV = dc.pol > 0 ? '+' : '−', plH = dc.pol > 0 ? '−' : '+';
-    const bx1 = dc.komm ? C.x - 50 : C.x - 30, bx2 = dc.komm ? C.x + 32 : C.x + 21;
-    s += '<rect x="'+bx1+'" y="'+(C.y-9)+'" width="'+(dc.komm ? 18 : 9)+'" height="18" rx="2" fill="#555"/><rect x="'+bx2+'" y="'+(C.y-9)+'" width="'+(dc.komm ? 18 : 9)+'" height="18" rx="2" fill="#555"/>';
-    // ledninger til batteriet
-    const bLx = bx1 + 4, bRx = bx2 + (dc.komm ? 14 : 5);
-    s += '<path d="M'+bLx+' '+(C.y+9)+' V330 H215 M'+bRx+' '+(C.y+9)+' V330 H285" fill="none" stroke="var(--ink)" stroke-width="3"/>';
-    s += '<path d="M215 314 V346" stroke="var(--ink)" stroke-width="4"/><path d="M228 320 V340" stroke="var(--ink)" stroke-width="9"/><path d="M228 330 H285" stroke="var(--ink)" stroke-width="3"/>';
-    if (dc.pol < 0) s = s.replace('<path d="M215 314 V346" stroke="var(--ink)" stroke-width="4"/><path d="M228 320 V340" stroke="var(--ink)" stroke-width="9"/>', '<path d="M228 314 V346" stroke="var(--ink)" stroke-width="4"/><path d="M215 320 V340" stroke="var(--ink)" stroke-width="9"/>');
-    s += '<text x="196" y="312" font-size="22" font-weight="800">'+plV+'</text><text x="292" y="312" font-size="22" font-weight="800">'+plH+'</text>';
-    s += '<text x="250" y="376" text-anchor="middle" font-size="15" font-weight="700">Batteri '+dc.V+' V '+(dc.paa ? '· PÅ' : '· AV')+'</text>';
-    s += '<text x="250" y="60" text-anchor="middle" font-size="14" fill="var(--muted)">'+(dc.komm ? 'Kommutator + børster' : 'To hele ringer (ingen kommutator)')+'</text>';
-    s += '<path d="M250 64 V'+(C.y-34)+'" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>';
-    s += '<text x="40" y="410" font-size="13" fill="var(--muted)">Sett fra enden av motoren</text>';
+    const st = dc.steg;
+    let s = dcMagneter(st >= 2);
+    if (st === 1) s += dcLeder();
+    if (st >= 2) s += dcSpole(st === 3);
+    s += dcMagnetS();
+    if (st >= 1) s += batteri(dc.pol, dc.paa);
+    if (st === 3){
+      const m = p3(0, 0, ZK);
+      s += '<circle cx="'+m[0]+'" cy="'+m[1]+'" r="46" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="6 5"/>';
+      s += '<text x="'+(m[0] - 50)+'" y="'+(m[1] + 58)+'" text-anchor="end" font-size="15" font-weight="700" style="fill:var(--accent)">'+(dc.komm ? 'Kommutator' : 'To hele ringer')+'</text>';
+    }
+    if (st === 0){
+      s += '<text x="250" y="395" text-anchor="middle" font-size="17" font-weight="700">Magnetfeltet går fra N til S</text>';
+    }
     $('dcSvg').innerHTML = s;
+    // tekst og knapper for steget
+    $('dcTittel').textContent = (st + 1) + '. ' + DCSTEG[st].t;
+    let t = DCSTEG[st].x;
+    if (st === 3 && !dc.komm) t = 'Uten kommutator snur ikke strømmen i spolen. Spolen vipper fram og tilbake og blir stående på tvers. Trykk «Med kommutator» igjen.';
+    $('dcTekst').textContent = t;
+    $('dcPaa').hidden = st === 0;
+    $('dcSnu').hidden = !(st === 1 || st === 4);
+    $('dcKomm').hidden = st !== 3;
+    $('dcVrad').hidden = $('dcLes').hidden = st !== 4;
+    $('dcMerk').hidden = st === 0;
+    $('dcForrige').disabled = st === 0;
+    $('dcNeste').hidden = st === DCSTEG.length - 1;
     const rpm = Math.abs(dc.w) / (9.5 * 2 / Math.PI / 1.5) * 3000;
     $('dcN').textContent = (rpm < 30 ? 0 : Math.round(rpm / 50) * 50) + ' o/min';
     $('dcDir').textContent = Math.abs(dc.w) < 0.15 ? '–' : (dc.w > 0 ? '↺ mot klokka' : '↻ med klokka');
-    let t;
-    if (!dc.paa) t = 'Motoren er av. Uten strøm blir det ingen kraft.';
-    else if (dc.V === 0) t = 'Spenningen er 0 V. Da går det ingen strøm.';
-    else if (!dc.komm) t = 'Uten kommutator snur ikke strømmen. Spolen vipper fram og tilbake og stopper på tvers.';
-    else t = 'Kommutatoren snur strømmen hver halve runde. Da dytter kraften alltid samme vei, og motoren går rundt.';
-    $('dcTekst').textContent = t;
   }
-  $('dcPaa').onclick = () => { dc.paa = !dc.paa; $('dcPaa').setAttribute('aria-pressed', dc.paa); $('dcPaa').textContent = dc.paa ? '⏹ Slå av' : '⚡ Slå på'; if (dc.paa && Math.abs(Math.cos(dc.th)) < 0.2) dc.th += 0.4; start(); };
+  function dcGåTil(k){
+    dc.steg = Math.max(0, Math.min(DCSTEG.length - 1, k));
+    dc.paa = false; dc.w = 0; dc.løft = 0; dc.komm = true; dc.pol = 1;
+    if (dc.steg === 4) dc.paa = true; // «Prøv selv» starter med motoren på
+    $('dcPrikker').innerHTML = DCSTEG.map((d, k) => '<button type="button" role="tab" aria-selected="'+(k === dc.steg)+'" data-steg="'+k+'" title="'+d.t+'">'+(k + 1)+'</button>').join('');
+    oppdaterDcKnapper(); start();
+  }
+  function oppdaterDcKnapper(){
+    $('dcPaa').setAttribute('aria-pressed', dc.paa); $('dcPaa').textContent = dc.paa ? '⏹ Slå av' : '⚡ Slå på';
+    $('dcKomm').setAttribute('aria-pressed', dc.komm); $('dcKomm').textContent = dc.komm ? 'Med kommutator' : 'Uten kommutator';
+  }
+  $('dcPrikker').onclick = e => { const b = e.target.closest('button'); if (b) dcGåTil(+b.dataset.steg); };
+  $('dcForrige').onclick = () => dcGåTil(dc.steg - 1);
+  $('dcNeste').onclick = () => dcGåTil(dc.steg + 1);
+  $('dcPaa').onclick = () => { dc.paa = !dc.paa; if (dc.paa && Math.abs(Math.cos(dc.th)) < 0.3) dc.th += 0.5; oppdaterDcKnapper(); start(); };
   $('dcSnu').onclick = () => { dc.pol = -dc.pol; start(); };
   $('dcV').oninput = e => { dc.V = +e.target.value; $('dcVtxt').textContent = dc.V + ' V'; start(); };
-  $('dcKomm').onclick = () => { dc.komm = !dc.komm; $('dcKomm').setAttribute('aria-pressed', dc.komm); $('dcKomm').textContent = dc.komm ? 'Med kommutator' : 'Uten kommutator'; if (dc.paa && Math.abs(Math.cos(dc.th)) < 0.2) dc.th += 0.4; start(); };
+  $('dcKomm').onclick = () => { dc.komm = !dc.komm; if (dc.paa && Math.abs(Math.cos(dc.th)) < 0.3) dc.th += 0.5; oppdaterDcKnapper(); start(); };
 
   // ---------- 2 Generator ----------
   const gen = {th: 0, w: 0, mal: 0, ac: true, logg: [], t: 0};
@@ -394,10 +560,11 @@ svg text{font-family:var(--body);fill:var(--ink)}
 
   // ---------- faner, Prøv dette og løkke ----------
   const PROV = {
-    dc: [['Slå på. Hvilken vei går motoren? Trykk «Snu + og −». Hva skjer?', 'Motoren snur. Strømmen går motsatt vei, så kraften snur.'],
-         ['Senk spenningen fra 12 V til 6 V. Hva skjer med turtallet?', 'Turtallet blir omtrent halvparten. Mindre spenning gir lavere fart.'],
-         ['Trykk «Med kommutator» så det står «Uten kommutator». Hva skjer?', 'Spolen vipper og blir stående på tvers. Kommutatoren trengs for at motoren skal gå rundt.'],
-         ['Når er de grønne kraftpilene lengst?', 'Når lederne er nærmest magnetene (til venstre og høyre).']],
+    dc: [['Steg 2: Slå på strømmen. Hvilken vei blir lederen dyttet? Trykk «Snu + og −». Hva skjer?', 'Lederen blir dyttet ut av magnetfeltet. Snur du strømmen, blir den dyttet motsatt vei.'],
+         ['Steg 3: Den ene siden av spolen blir dyttet opp. Hva skjer med den andre siden? Hvorfor dreier spolen?', 'Den andre siden blir dyttet ned. Strømmen går motsatt vei der. Opp på én side og ned på den andre gjør at spolen dreier.'],
+         ['Steg 4: Trykk «Uten kommutator». Hva skjer? Hva er kommutatoren til?', 'Spolen vipper og blir stående. Kommutatoren snur strømmen i spolen hver halve runde, så motoren går rundt hele tiden.'],
+         ['Steg 5: Senk spenningen fra 12 V til 6 V. Hva skjer med turtallet?', 'Turtallet blir omtrent halvparten. Mindre spenning gir lavere fart.'],
+         ['Steg 5: Hvordan får du en DC-motor til å gå andre veien?', 'Snu + og − på batteriet.']],
     gen: [['Dra glideren litt. Lyser lampa? Dra den helt ut. Hva skjer?', 'Fortere dreiing gir høyere spenning og sterkere lys.'],
           ['Se på grafen med sleperinger. Hvorfor kalles det vekselstrøm?', 'Spenningen går opp og ned og skifter mellom pluss og minus.'],
           ['Bytt til kommutator. Hva skjer med grafen?', 'Grafen blir aldri negativ. Strømmen går alltid samme vei: likestrøm.'],
@@ -421,7 +588,7 @@ svg text{font-family:var(--body);fill:var(--ink)}
   const STEG = {dc: [dcSteg, dcTegn], gen: [genSteg, genTegn], ac: [acSteg, acTegn]};
   let kjorer = false, sist = 0, sistTegn = 0;
   function rolig(){
-    if (fane === 'dc') return !dc.paa && Math.abs(dc.w) < 0.01;
+    if (fane === 'dc') return !dc.paa && Math.abs(dc.w) < 0.01 && Math.abs(dc.løft) < 0.05;
     if (fane === 'gen') return gen.mal === 0 && Math.abs(gen.w) < 0.01 && gen.logg.every(([, v]) => Math.abs(v) < 0.01);
     return !ac.paa && Math.abs(ac.wr) < 0.01;
   }
@@ -441,7 +608,7 @@ svg text{font-family:var(--body);fill:var(--ink)}
   const h = location.hash.slice(1);
   const knapp = document.querySelector('.faner button[data-fane="'+h+'"]');
   if (knapp) knapp.click(); else { visProv(); start(); }
-  dcTegn(); genTegn(); acTegn(); STEG[fane][1]();
+  dcGåTil(0); genTegn(); acTegn(); STEG[fane][1]();
 })();
 </script>
 <!--lk:js--><script>(function(){var r=document.documentElement,s=1,b=document.getElementById("lkSize");
