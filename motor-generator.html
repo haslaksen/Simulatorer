@@ -309,7 +309,7 @@ svg text{font-family:var(--body);fill:var(--ink)}
   }
   function kobber(pts, b){
     const d = 'M' + P(pts);
-    return '<path d="'+d+'" fill="none" stroke="#6b3a14" stroke-width="'+(b+3)+'" stroke-linecap="round" stroke-linejoin="round"/><path d="'+d+'" fill="none" stroke="var(--cu)" stroke-width="'+b+'" stroke-linecap="round" stroke-linejoin="round"/>';
+    return '<path d="'+d+'" fill="none" stroke="#6b3a14" stroke-width="'+(b+1.6)+'" stroke-linecap="round" stroke-linejoin="round"/><path d="'+d+'" fill="none" stroke="var(--cu)" stroke-width="'+b+'" stroke-linecap="round" stroke-linejoin="round"/>';
   }
   function kraftpil(x, y, z, opp){
     const a = p3(x, y, z), lengde = 46 * opp, sg = Math.sign(lengde);
@@ -366,7 +366,15 @@ svg text{font-family:var(--body);fill:var(--ink)}
     const ka = p3(kr * c, kr * sn, ZK - 12), kb = p3(-kr * c, -kr * sn, ZK - 12);
     const sti = [ka, A(DZ), A(-DZ), B(-DZ), B(DZ), kb];
     // tegn den bakerste halvdelen først
-    s += kobber(sti, 7);
+    // spolen: 6 vindinger kobbertråd ved siden av hverandre, som en ekte spole
+    const nx = -sn, ny = c, N = 6;
+    for (let j = 0; j < N; j++){
+      const o = (j - (N - 1) / 2) * 4.2, z = DZ - Math.abs(j - (N - 1) / 2) * 1.5;
+      const Aj = zz => p3(RL * c + nx * o, RL * sn + ny * o, zz), Bj = zz => p3(-RL * c + nx * o, -RL * sn + ny * o, zz);
+      s += kobber([Aj(z), Aj(-z), Bj(-z), Bj(z), Aj(z)], 3.2);
+    }
+    // tilførselstrådene fra spolen til kommutatoren
+    s += kobber([ka, A(DZ)], 3.2) + kobber([B(DZ), kb], 3.2);
     const i = dcStrom();
     s += prikker(sti, Math.sign(i));
     // kraft på de to lange sidene: side A har strøm bakover (−z) når i > 0 → kraft ned
