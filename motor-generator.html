@@ -366,13 +366,19 @@ svg text{font-family:var(--body);fill:var(--ink)}
     const ka = p3(kr * c, kr * sn, ZK - 12), kb = p3(-kr * c, -kr * sn, ZK - 12);
     const sti = [ka, A(DZ), A(-DZ), B(-DZ), B(DZ), kb];
     // tegn den bakerste halvdelen først
-    // spolen: 6 vindinger kobbertråd ved siden av hverandre, som en ekte spole
-    const nx = -sn, ny = c, N = 6;
-    for (let j = 0; j < N; j++){
-      const o = (j - (N - 1) / 2) * 4.2, z = DZ - Math.abs(j - (N - 1) / 2) * 1.5;
-      const Aj = zz => p3(RL * c + nx * o, RL * sn + ny * o, zz), Bj = zz => p3(-RL * c + nx * o, -RL * sn + ny * o, zz);
-      s += kobber([Aj(z), Aj(-z), Bj(-z), Bj(z), Aj(z)], 3.2);
+    // spolen: 6 vindinger kobbertråd viklet som en ekte spole, med runde hjørner
+    const N = 6, nx = -sn, ny = c;
+    function vinding(o){
+      const rr = 16, u0 = RL, w0 = DZ, pkt = [];
+      const hj = [[u0 - rr, w0 - rr, 0], [-u0 + rr, w0 - rr, Math.PI / 2], [-u0 + rr, -w0 + rr, Math.PI], [u0 - rr, -w0 + rr, 1.5 * Math.PI]];
+      for (const [uc, wc, f0] of hj) for (let k = 0; k <= 6; k++){
+        const f = f0 + (Math.PI / 2) * k / 6, u = uc + rr * Math.cos(f), w = wc + rr * Math.sin(f);
+        pkt.push(p3(u * c + nx * o, u * sn + ny * o, w));
+      }
+      pkt.push(pkt[0]);
+      return pkt;
     }
+    for (let j = 0; j < N; j++) s += kobber(vinding((j - (N - 1) / 2) * 4.2), 3.2);
     // tilførselstrådene fra spolen til kommutatoren
     s += kobber([ka, A(DZ)], 3.2) + kobber([B(DZ), kb], 3.2);
     const i = dcStrom();
