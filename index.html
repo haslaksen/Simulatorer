@@ -114,6 +114,35 @@ document.getElementById("btnTheme").onclick = () => {
   r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark";
 };
 </script>
+<script>
+/* ⋯ ved hver simulator kopierer emne, «Simulator: navn», kort tekst og lenke (pent, for Teams/OneNote), som ⋯ ved tittelen inne i simulatorene. */
+(function () {
+  var st = document.createElement("style");
+  st.textContent = ".simrad{position:relative}.simrad .sim{padding-right:2.6rem}.lk-kopi{position:absolute;top:.45rem;right:.1rem;font:700 20px/1 system-ui,sans-serif;color:var(--ink);background:none;border:0;border-radius:8px;padding:2px 8px;cursor:pointer;opacity:.45}.lk-kopi:hover,.lk-kopi:focus-visible{opacity:1;background:var(--blue-soft)}.lk-kopi::before{content:attr(data-t)}@media print{.lk-kopi{display:none}}";
+  document.head.appendChild(st);
+  function esc(t) { return t.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  var F = "font-family:'Segoe UI',Calibri,Arial,sans-serif";
+  document.querySelectorAll("a.sim").forEach(function (a) {
+    var navn = a.querySelector("b").textContent.trim(), tekst = (a.querySelector("span") || {}).textContent || "";
+    var emne = a.closest(".card").querySelector("h3"), lenke = location.origin + "/" + a.getAttribute("href").replace(/\.html$/, "");
+    var hint = "Kopier tittel og lenke til " + navn + " (for Teams eller OneNote)";
+    var rad = document.createElement("div"); rad.className = "simrad"; a.before(rad); rad.append(a);
+    var b = document.createElement("button"); b.type = "button"; b.className = "lk-kopi"; b.dataset.t = "⋯"; b.title = hint; b.setAttribute("aria-label", hint);
+    b.onclick = async function (e) {
+      e.preventDefault(); e.stopPropagation();
+      var html = "<div style=\"" + F + "\">" + (emne ? "<div style=\"color:#e8590c;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:13px;margin:0 0 6px;" + F + "\">" + esc(emne.textContent.trim()) + "</div>" : "") +
+        "<h1 style=\"color:#14181d;font-weight:700;font-size:26px;margin:0 0 6px;" + F + "\">Simulator: " + esc(navn) + "</h1>" +
+        (tekst ? "<p style=\"color:#56606c;font-size:15px;margin:0 0 6px;" + F + "\">" + esc(tekst.trim()) + "</p>" : "") +
+        "<p style=\"margin:8px 0 0;font-size:14px;" + F + "\"><a href=\"" + lenke + "\">" + lenke + "</a></p></div>";
+      var ren = "Simulator: " + navn + "\n" + lenke;
+      try { await navigator.clipboard.write([new ClipboardItem({ "text/html": new Blob([html], { type: "text/html" }), "text/plain": new Blob([ren], { type: "text/plain" }) })]); b.dataset.t = "✓ Kopiert"; }
+      catch (x) { try { await navigator.clipboard.writeText(ren); b.dataset.t = "✓ Kopiert"; } catch (y) { prompt("Kopier lenken:", lenke); } }
+      setTimeout(function () { b.dataset.t = "⋯"; }, 2000);
+    };
+    rad.append(b);
+  });
+})();
+</script>
 <!--lk:oppdater--><script>
 /* Oppdater-knapp (samme som i Verkstedhåndboka): når siden er endret på nettet, kommer
    «Ny versjon av siden er klar. Oppdater» nederst. Siden sjekkes når du kommer tilbake til den
