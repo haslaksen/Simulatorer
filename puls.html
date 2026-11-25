@@ -283,7 +283,7 @@ var html="<div style=\"font-family:'Segoe UI',Calibri,Arial,sans-serif\">"+(k?"<
 "<h1 style=\""+stil(h,26)+"\">Simulator: "+esc(navn)+"</h1>"+(l?"<p style=\""+stil(l,15)+"\">"+esc(l.textContent.trim())+"</p>":"")+
 "<p style=\"margin:8px 0 0;font-size:14px;font-family:'Segoe UI',Calibri,Arial,sans-serif\"><a href=\""+lenke+"\">"+lenke+"</a></p></div>";
 try{await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob(["Simulator: "+navn+"\n"+lenke],{type:"text/plain"})})]);b.dataset.t="✓ Kopiert";}
-catch(x){try{await navigator.clipboard.writeText(lenke);b.dataset.t="✓ Lenke kopiert";}catch(y){prompt("Kopier lenken:",lenke);}}
+catch(x){try{await navigator.clipboard.writeText("Simulator: "+navn+"\n"+lenke);b.dataset.t="✓ Kopiert";}catch(y){prompt("Kopier lenken:",lenke);}}
 setTimeout(function(){b.dataset.t="⋯";},2000);};h.appendChild(b);})();</script><!--lk:js-slutt--><!--lk:oppdater--><script>
 /* Oppdater-knapp (samme som i Verkstedhåndboka): når siden er endret på nettet, kommer
    «Ny versjon av siden er klar. Oppdater» nederst. Siden sjekkes når du kommer tilbake til den
