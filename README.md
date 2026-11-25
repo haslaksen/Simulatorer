@@ -15,6 +15,8 @@ Interaktive simulatorer for Teknologi- og industrifag (Vg1 TIF og Vg2 Industrite
 
 `index.html` er oversiktssiden.
 
+**Kopier lenke:** ⋯ ved tittelen kopierer tittel, ingress og lenke til simulatoren, klart til å limes inn i Teams eller OneNote (som ⋯ i leksjonene).
+
 **Storskjerm:** knappen «⛶ Storskjerm» øverst til høyre skjuler innledningen, går i fullskjerm og forstørrer simulatoren så den fyller bredden (for fremviser). A− og A+ justerer størrelsen, Esc avslutter.
 
 ## Leksjonsstilen
