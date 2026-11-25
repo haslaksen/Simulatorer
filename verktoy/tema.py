@@ -278,6 +278,9 @@ if(!on&&document.fullscreenElement)document.exitFullscreen().catch(function(){})
 document.addEventListener("fullscreenchange",function(){if(!document.fullscreenElement&&big)sett(false);});
 var t;window.addEventListener("resize",function(e){if(!big||!e.isTrusted)return;clearTimeout(t);t=setTimeout(pass,150);});})();"""
 
+# ⋯ ved tittelen: kopier tittel og lenke til simulatoren (samme som ⋯ i leksjonene)
+KOPI_JS = (pathlib.Path(__file__).resolve().parent / "kopi.js").read_text(encoding="utf-8").split("\n", 1)[1].strip()
+
 START, SLUTT = "<!--lk:start-->", "<!--lk:slutt-->"
 HSTART, HSLUTT = "<!--lk:head-->", "<!--lk:head-slutt-->"
 
@@ -348,7 +351,7 @@ def bygg(c):
     j = m[-1].end()
     s = s[:j] + topp + s[j:]
     k = s.rfind("</body>")
-    js = f"<!--lk:js--><script>{LK_JS % c['rot']}</script><!--lk:js-slutt-->"
+    js = f"<!--lk:js--><script>{LK_JS % c['rot']}</script><script>{KOPI_JS}</script><!--lk:js-slutt-->"
     s = s[:k] + js + s[k:] if k > 0 else s + js
     if 'lang="nb"' not in s[:300]:
         s = s.replace("<html>", '<html lang="nb">', 1)
